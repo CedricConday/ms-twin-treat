@@ -1,0 +1,23 @@
+# data caches — never commit fetched datasets
+data/cache/
+data/**/*.h5ad
+data/**/*.csv
+data/**/*.parquet
+*.zarr
+
+# model weights
+*.ckpt
+*.pt
+*.safetensors
+bricks/**/weights/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+.env
+
+# os
+.DS_Store
