@@ -89,16 +89,20 @@ class ABMBrick:
         self.n_steps = n_steps
         self.seed = seed
 
-    def __call__(self, state: dict) -> dict:
+    def run(self, state: dict) -> dict:
         treat = 0.0
         interv = state.get("intervention")
         if isinstance(interv, dict):
             treat = float(interv.get("treat", 0.0))
-        damage = simulate(n_steps=self.n_steps, treat=treat, seed=self.seed)
+        # per-patient seed from the VPop (B9) gives each virtual patient its own draw
+        seed = int(state.get("seed", self.seed))
+        damage = simulate(n_steps=self.n_steps, treat=treat, seed=seed)
         state["abm_damage"] = damage
         state["abm_meta"] = {"validated": False, "engine": self.name,
-                             "final_damage": float(damage[-1]), "treat": treat}
+                             "final_damage": float(damage[-1]), "treat": treat, "seed": seed}
         return state
+
+    __call__ = run
 
 
 if __name__ == "__main__":

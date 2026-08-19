@@ -41,6 +41,8 @@ from bricks.intervention import (          # noqa: E402  B7
     InterventionStage,
 )
 from bricks.qsp import QSPBrick            # noqa: E402  B4
+from bricks.readout import ReadoutStage    # noqa: E402  B8
+from bricks.vpop import sample_vpop        # noqa: E402  B9
 
 
 def build_stages(with_data: bool, arm: str) -> list:
@@ -71,11 +73,7 @@ def build_stages(with_data: bool, arm: str) -> list:
         QSPBrick(),                                               # B4  REAL (toy)
         ABMBrick(),                                               # B5  REAL (toy)
         BarrierStage(),                                           # B6  REAL (toy)
-        PassThroughStage(
-            "B8 clinical readout", "readout",
-            value={"lesion_proxy": None, "relapse_proxy": None},
-            requires=("abm_damage", "cns_exposure"),
-            reason="B8 not built — micro-to-clinical map is open research"),
+        ReadoutStage(),                                           # B8  REAL (toy, barrier-gated)
     ]
     return stages
 
@@ -98,11 +96,13 @@ class _CellStage:
         bench = getattr(self.model, "benchmark", None)
         deltas = {}
         if bench is not None:
-            for ct in bench.cell_types():
-                prof = bench.profiles[ct] if hasattr(bench, "profiles") else None
+            # NOTE: cell_types is a property, not a method (harness.py) — no parens.
+            for ct in bench.cell_types:
+                prof = bench.profiles.get(ct) if hasattr(bench, "profiles") else None
                 if prof is None:
                     continue
-                deltas[ct] = self.model.predict(prof.control_mean, ct)
+                # store the delta (perturbed - control), which is what cell_delta means
+                deltas[ct] = self.model.predict(prof.control_mean, ct) - prof.control_mean
         state["cell_delta"] = deltas
         state["cell_meta"] = {"validated": False, "model": self.model.name,
                               "note": "beats no null yet; bar is mean-shift 0.85"}
@@ -112,26 +112,14 @@ class _CellStage:
 
 
 def make_cohort(n: int, arm: str | None = None) -> list[MultiScaleState]:
-    """Stand-in for B9 VPop.
+    """The virtual population — now the REAL B9 (bricks/vpop.py).
 
-    A real virtual population samples parameter sets against plausibility
-    bounds and weights them to a target prevalence (Allen-Rieger / MAPEL). This
-    only varies seed and barrier state, so the cohort machinery is exercised.
-    It is NOT a virtual population and must not be described as one.
+    B9 Latin-hypercube samples physiological parameter sets and rejects the
+    implausible region via a plausibility filter (Allen-Rieger flavour), then
+    hands the accepted cohort to the spine. Method real, filter model a toy
+    (validated=False). This replaces the old seed-jitter stand-in.
     """
-    out = []
-    for i in range(n):
-        m: MultiScaleState = {
-            "patient_id": f"vp{i:03d}",
-            "seed": i,
-            # varies lesion activity across patients; invented spread
-            "bbb_disruption": round(0.1 + 0.6 * (i % 5) / 4.0, 3),
-            "vpop_STANDIN": True,
-        }
-        if arm:
-            m["intervention_name"] = arm
-        out.append(m)
-    return out
+    return sample_vpop(n=n, seed=0, arm=arm)
 
 
 def main() -> int:

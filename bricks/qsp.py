@@ -66,17 +66,19 @@ class QSPBrick:
         self.params = params
         self.t_end = t_end
 
-    def __call__(self, state: dict) -> dict:
+    def run(self, state: dict) -> dict:
         treat = 0.0
         interv = state.get("intervention")
         if isinstance(interv, dict):
             treat = float(interv.get("treat", 0.0))
-        # allow a vpop sample to override params
-        params = self.params
+        # per-patient params from the VPop (B9) override the defaults
+        params = {**(self.params or {}), **(state.get("qsp_params") or {})}
         traj = simulate(params=params, treat=treat, t_end=self.t_end)
         state["qsp_traj"] = {**traj, "treat": treat, "validated": False,
                              "note": "toy neuroinflammation ODE, not a validated MS QSP model"}
         return state
+
+    __call__ = run
 
 
 if __name__ == "__main__":
