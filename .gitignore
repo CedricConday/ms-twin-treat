@@ -21,3 +21,4 @@ venv/
 
 # os
 .DS_Store
+.venv-scgpt/

@@ -44,4 +44,4 @@ Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separat
 - `tests/` — invariant tests (the ruler discriminates, the wedge rejects, the pipeline never self-reports as validated)
 
 ## License
-TBD before first public push — leaning permissive for the spine/harness (ours), with per-brick licenses respected (scGPT MIT is the commercial-clean core; some models are non-commercial — see the brain's findings doc).
+This repository's own code is **Apache-2.0** (`LICENSE`, `NOTICE`). It bundles **no** model weights and **no** datasets — loaders fetch open data at runtime into a git-ignored cache, and every runtime dependency is permissive (BSD/Apache). Restricted models named in the roadmap are optional, user-supplied, and never distributed here; their licenses travel with them. Full inventory and the boundary: **[`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md)**.
