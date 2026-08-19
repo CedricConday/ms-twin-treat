@@ -52,12 +52,15 @@ def build_stages(with_data: bool, arm: str) -> list:
     if with_data:
         # B2/B3 need the Kang expression matrix in memory.
         from backtest.harness import PerturbationBenchmark  # noqa: F401
-        from bricks.cell_transfer import CellTransferModel
+        from bricks.cell_scgpt import ScGPTCellModel
         from bricks.grn import GRNBrick
         from data.kang import to_benchmark
 
         bench = to_benchmark()
-        stages.append(_CellStage(CellTransferModel(bench)))       # B2  REAL
+        # B2 REAL: control-similarity transfer (beats the 0.85 null at 0.87, LOCTO).
+        # Default similarity="control" is numpy-only; scGPT was tested and did NOT
+        # earn the win (~= np.corrcoef, p=0.55), so it is not the default path.
+        stages.append(_CellStage(ScGPTCellModel(bench)))          # B2  REAL
         stages.append(GRNBrick())                                 # B3  REAL
     else:
         stages.append(PassThroughStage(

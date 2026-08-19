@@ -1,13 +1,13 @@
 """Deck figures — honest, validated palette. Static PNGs for a slide deck.
 
-Two figures, both light-surface, colorblind-safe (dataviz reference palette):
-  fig1_backtest.png  — per-cell-type: the mean-shift bar vs our cell model.
-                       We fall just short everywhere; Megakaryocytes are the tell.
-  fig2_arms.png      — mean lesion_proxy per real trial arm. Worked arms separate
-                       from untreated (status green); the harmed arm (APL, status
-                       red) reads like untreated because the model can't flag it yet.
+  fig1_backtest.png — the cell-model backtest on Kang IFN-β (aggregate, LOCTO):
+                      we now beat the null (control-sim 0.87 > bar 0.85), and
+                      scGPT (0.87) does NOT earn it (≈ np.corrcoef, p=0.55).
+  fig2_arms.png     — mean lesion_proxy per real trial arm. Worked arms separate
+                      from untreated; the harmed arm (APL) reads like untreated
+                      because the model can't flag it yet.
 
-All numbers are verified in RESULTS.md. Nothing here is evidence about MS.
+All numbers verified in RESULTS.md. Nothing here is evidence about MS.
 Run:  python -m results.figures   ->  writes results/figures/*.png
 """
 
@@ -42,37 +42,40 @@ def _style(ax):
     ax.tick_params(length=0)
 
 
-# --- Figure 1: the honest backtest -----------------------------------------
+# --- Figure 1: the cell-model backtest, aggregate --------------------------
 def fig_backtest():
-    # verified per-cell-type delta_pearson, sorted by the bar (mean-shift) desc
+    # verified aggregate delta_pearson (LOCTO) on Kang IFN-β; sg's scorecard.
+    # (label, score, color, note)
     rows = [
-        ("Dendritic cells", 0.932, 0.899), ("FCGR3A+ Mono", 0.930, 0.900),
-        ("CD14+ Mono", 0.912, 0.870), ("B cells", 0.905, 0.881),
-        ("CD4 T", 0.888, 0.868), ("NK", 0.887, 0.864),
-        ("CD8 T", 0.870, 0.850), ("Megakaryocytes", 0.476, 0.432),
+        ("noise ceiling", 0.9075, BASE, "attainable limit"),
+        ("control-similarity transfer", 0.8732, BLUE, "beats the bar — winner"),
+        ("scGPT-blood embeddings", 0.8696, MUTED, "≈ free correlation (p=0.55)"),
+        ("global-mean-shift null (the bar)", 0.8498, ORANGE, "the bar to beat"),
+        ("affine transfer (v0)", 0.8204, BASE, "below the bar"),
+        ("identity null", 0.0000, BASE, "captures nothing"),
     ]
     labels = [r[0] for r in rows]
-    bar = [r[1] for r in rows]
-    model = [r[2] for r in rows]
+    vals = [r[1] for r in rows]
+    colors = [r[2] for r in rows]
+    notes = [r[3] for r in rows]
     y = range(len(rows))
-    h = 0.38
 
-    fig, ax = plt.subplots(figsize=(8.4, 5.2))
-    ax.barh([i + h / 2 + 0.02 for i in y], bar, height=h, color=ORANGE, label="mean-shift null (the bar)")
-    ax.barh([i - h / 2 - 0.02 for i in y], model, height=h, color=BLUE, label="our cell model (LOCTO)")
-    ax.set_yticks(list(y)); ax.set_yticklabels(labels)
+    fig, ax = plt.subplots(figsize=(10.6, 4.8))
+    ax.barh(list(y), vals, height=0.62, color=colors)
     ax.invert_yaxis()
+    ax.set_yticks(list(y)); ax.set_yticklabels(labels)
     ax.set_xlim(0, 1.0)
-    ax.set_xlabel("delta_pearson  (higher = better; 1.0 = perfect)")
-    ax.axvline(0.85, color=MUTED, lw=1, ls=(0, (4, 3)))
+    ax.set_xlabel("aggregate delta_pearson  (higher = better; 1.0 = perfect)")
+    ax.axvline(0.8498, color=MUTED, lw=1, ls=(0, (4, 3)))
+    for i, (v, n) in enumerate(zip(vals, notes)):
+        ax.text(v + 0.008, i, f"{v:.3f}   {n}", va="center", color=SEC, fontsize=8.5)
     ax.grid(axis="x", color=GRID, lw=0.8); ax.set_axisbelow(True)
-    ax.legend(frameon=False, loc="lower right", fontsize=9.5)
     _style(ax)
-    fig.tight_layout(rect=[0, 0, 1, 0.86])
-    fig.text(0.5, 0.965, "Backtest: our cell model vs the null it must beat",
+    fig.tight_layout(rect=[0, 0, 1, 0.85])
+    fig.text(0.5, 0.965, "The cell model now beats the null — and scGPT didn't earn it",
              ha="center", va="top", fontsize=13, color=INK, weight="bold")
-    fig.text(0.5, 0.905, "Kang 2018 IFN-β PBMCs · aggregate 0.82 model vs 0.85 bar — does NOT beat it yet (honest)",
-             ha="center", va="top", fontsize=9.5, color=SEC)
+    fig.text(0.5, 0.905, "Kang IFN-β · leave-one-cell-type-out · scGPT clears the bar but ties free correlation (p=0.55)",
+             ha="center", va="top", fontsize=9, color=SEC)
     p = os.path.join(OUT, "fig1_backtest.png")
     fig.savefig(p, dpi=200, facecolor=SURFACE); plt.close(fig)
     return p
@@ -80,7 +83,6 @@ def fig_backtest():
 
 # --- Figure 2: arm separation, and the gap we don't hide -------------------
 def fig_arms():
-    # verified mean lesion_proxy per arm (results/experiment.py)
     arms = [
         ("untreated", 32.7, MUTED, ""),
         ("IFN-β", 23.7, GOOD, "(−9.0)"),

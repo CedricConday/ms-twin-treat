@@ -11,12 +11,16 @@ The first thing built was the scorer, not the simulation. It passes its own gate
 ## 2. Real-data backtest — Kang 2018 IFN-β PBMCs (8 immune cell types)
 | model | aggregate delta_pearson | reading |
 |---|---|---|
-| identity null (predict no change) | **0.0000** | IFN-β changes a lot; predict-nothing captures nothing |
-| global-mean-shift null | **0.8498** | the interferon signature is largely shared — a *hard* bar |
-| **cell-transfer model (B2)** | **0.8204** | **honest: does NOT beat the bar yet** |
+| identity null (predict no change) | 0.0000 | captures nothing |
+| affine transfer (v0) | 0.8204 | below the bar |
+| global-mean-shift null (**the bar**) | 0.8498 | interferon signature is largely shared — a *hard* bar |
+| scGPT-blood embeddings | 0.8696 | beats the bar |
+| **control-similarity transfer** | **0.8732** | **beats the bar — the winner, LOCTO** |
+| noise ceiling (perfect model) | 0.9075 | the attainable limit |
 
-- Per-cell-type mean-shift ranges 0.87–0.93 **except Megakaryocytes = 0.476** — the harness auto-finds the one cell type where "everyone responds the same" breaks down.
-- **Honest state:** our cell model (affine cross-cell-type transfer, leave-one-cell-type-out) scores *below* the null. A model that can't beat "everyone responds the same" hasn't earned "cell-type specific." Beating 0.85 is the job handed to the scGPT swing (2nd instance).
+- **We beat the null — 0.87 > 0.85, honestly.** A control-state-similarity-weighted transfer, leave-one-cell-type-out. Negative-control checked: scrambling which similarity pairs with which delta collapses it to 0.78 (below baseline), so the gain is the similarity, **not a leak**.
+- **scGPT was run for real and did NOT earn the win.** Its embeddings clear the bar (0.8696) but do **not** beat plain Pearson correlation of the control profiles (0.8732) — paired over 8 folds the difference is undetectable (Wilcoxon p=0.55). *"scGPT beats the null"* is literally true but misleading; *"scGPT gave us the win"* is **false**. scGPT's **encoder** validated (94% leave-one-out cell-type accuracy, recovers immune lineage); its MLM **decoder** did not, so only the encoder + gene-embedding table were used.
+- **Honest limits, stated not buried:** the bar is *leaky in its own favor* (it averages in the held-out cell type's true delta) — the fair leave-one-out null is 0.8232, and we beat that too. **Megakaryocytes** (63/69 cells, split-half reliability 0.06) is an unscoreable noise fold that drags every model down; on the 7 measurable cell types the picture is cleaner: bar 0.903, model 0.929, ceiling 0.990 — the model closes ~30% of the gap to what's attainable. With n=8 the margin is real but **not statistically conclusive** (p≈0.055); the model wins 7/8 cell types and loses Dendritic cells (0.915 vs 0.932).
 
 ## 3. Recovered biology (independent sanity signals, not fitted)
 - **GRN brick (B3)** top co-expression edges from raw Kang data: **IFIT1/IFIT3–ISG15** (the canonical interferon-stimulated-gene module IFN-β induces) and **HLA-DRB1–HLA-DRA** (MHC-II). The pipeline rediscovered the interferon response without being told to.
