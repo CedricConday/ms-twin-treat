@@ -59,8 +59,8 @@ def main() -> int:
         note = ""
         if arm == "untreated":
             note = "control"
-        elif "target: HARMED" in LIBRARY[arm].notes or arm == "APL CGP77116":
-            note = "REAL outcome: HARMED (Phase II halted) — model can't flag it yet"
+        elif arm == "APL CGP77116":
+            note = "REAL outcome: HARMED (Phase II halted) — now flagged (mechanism-encoded)"
         elif treat > 0:
             note = "REAL outcome: worked/approved"
         print(f"{arm:<22} {treat:>6.2f} {stats.mean(lesions):>14.1f} "
@@ -73,12 +73,13 @@ def main() -> int:
         print(f"  {arm:<22} delta = {d:+.1f}")
 
     print("\nHONEST READING:")
-    print("  - Treated arms (IFN-β, glatiramer) separate from untreated: the toy")
-    print("    pipeline is directionally coherent end to end.")
-    print("  - APL CGP77116 reads ~ untreated because its treat value is a 0.0")
-    print("    placeholder. In reality it HARMED patients. The model cannot yet")
-    print("    express a negative effect — that is the next thing the backtest must")
-    print("    force, and we are not hiding it.")
+    print("  - Treated arms (IFN-β, glatiramer) separate from untreated, and APL now")
+    print("    reads WORSE than untreated: the stack directs all four known arms right.")
+    print("  - BUT APL's harm is MECHANISM-ENCODED, not discovered: we set its")
+    print("    immunogenic parameter from its documented encephalitogenic biology")
+    print("    (Bielekova 2000), not from the relapse outcome. That is a capability")
+    print("    milestone (the model can now express harm), NOT validation — the params")
+    print("    are hand-assigned and the arms informed the setup.")
     print("  - Every number is a proxy from toy models. Nothing here is evidence")
     print("    about multiple sclerosis.")
     return 0

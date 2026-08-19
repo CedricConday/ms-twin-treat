@@ -116,6 +116,7 @@ class PerturbationBenchmark:
         gene_names: list[str],
         control_means: dict[str, np.ndarray],
         perturbed_means: dict[str, np.ndarray],
+        reliability: dict[str, float] | None = None,
     ) -> None:
         shared = sorted(set(control_means) & set(perturbed_means))
         if not shared:
@@ -126,6 +127,26 @@ class PerturbationBenchmark:
                                 np.asarray(perturbed_means[ct], float))
             for ct in shared
         }
+        # Per-cell-type reliability of the MEASURED delta (see `ceiling`).
+        self.reliability: dict[str, float] = dict(reliability or {})
+
+    # --- how much of the score is even reachable -----------------------------
+    # A score means nothing without the ceiling it is scored against. The delta
+    # we measure carries sampling noise, badly so where a cell type is rare, and
+    # no model can correlate with noise. `reliability` is the split-half
+    # reliability of the full-sample delta (see data/kang.py); its square root is
+    # the highest delta_pearson any model could achieve against that measurement.
+    LOW_RELIABILITY = 0.5   # below this, a fold is scoring noise, not biology
+
+    def ceiling(self, cell_type: str) -> float | None:
+        r = self.reliability.get(cell_type)
+        return float(np.sqrt(max(r, 0.0))) if r is not None else None
+
+    @property
+    def unreliable_cell_types(self) -> list[str]:
+        """Folds whose measured delta is too noisy to score anything against."""
+        return [ct for ct in self.profiles
+                if self.reliability.get(ct, 1.0) < self.LOW_RELIABILITY]
 
     @property
     def cell_types(self) -> list[str]:
@@ -145,7 +166,15 @@ class PerturbationBenchmark:
             pred_perturbed = model.predict(prof.control_mean, ct)
             pred_delta = np.asarray(pred_perturbed, float).ravel() - prof.control_mean
             scores = score_delta(prof.true_delta, pred_delta)
-            rows.append({"cell_type": ct, "model": model.name, **scores})
+            row = {"cell_type": ct, "model": model.name, **scores}
+            ceil = self.ceiling(ct)
+            if ceil is not None:
+                # Score in context: 0.48 against a ceiling of 0.33 is a noise
+                # fold, not a failure; 0.91 against a ceiling of 0.99 is a miss.
+                row["ceiling"] = ceil
+                row["frac_of_ceiling"] = (scores["delta_pearson"] / ceil
+                                          if ceil > 1e-9 else float("nan"))
+            rows.append(row)
         return pd.DataFrame(rows).set_index("cell_type")
 
     def report(self, model: PerturbationModel, nulls: list[PerturbationModel]) -> dict:
@@ -155,11 +184,26 @@ class PerturbationBenchmark:
         cell types. `beats_all_nulls` is the honest gate: pass it, and the model
         has demonstrated something a trivial predictor cannot.
         """
-        model_score = self.evaluate(model)["delta_pearson"].mean()
+        table = self.evaluate(model)
+        model_score = table["delta_pearson"].mean()
         null_scores = {n.name: self.evaluate(n)["delta_pearson"].mean() for n in nulls}
-        return {
+        out = {
             "model": model.name,
             "model_delta_pearson": float(model_score),
             "null_delta_pearson": {k: float(v) for k, v in null_scores.items()},
             "beats_all_nulls": bool(all(model_score > v + 1e-9 for v in null_scores.values())),
         }
+        if self.reliability:
+            noisy = self.unreliable_cell_types
+            out["ceiling"] = float(np.mean([self.ceiling(ct) for ct in self.profiles]))
+            out["unreliable_cell_types"] = noisy
+            if noisy:
+                # The aggregate silently averages in folds nothing can score.
+                # Report the restricted number too, so a comparison is not
+                # dominated by which model got luckier on noise.
+                keep = [ct for ct in self.profiles if ct not in noisy]
+                out["model_delta_pearson_reliable_only"] = float(
+                    table.loc[keep, "delta_pearson"].mean())
+                out["ceiling_reliable_only"] = float(
+                    np.mean([self.ceiling(ct) for ct in keep]))
+        return out

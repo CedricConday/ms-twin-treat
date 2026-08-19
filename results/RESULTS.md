@@ -35,15 +35,15 @@ The first thing built was the scorer, not the simulation. It passes its own gate
 ## 5. Arm experiment — the shape of the eventual backtest
 One plausible virtual population (12 patients), run through every real trial arm (`python -m results.experiment`):
 
-| arm | treat | mean lesion_proxy | Δ vs untreated | real-world outcome |
-|---|---|---|---|---|
-| untreated | 0.00 | 32.7 | +0.0 | control |
-| IFN-β | 0.50 | 23.7 | **−9.0** | approved / worked |
-| glatiramer acetate | 0.45 | 24.8 | **−7.9** | approved / worked |
-| APL CGP77116 | 0.00* | 32.7 | +0.0 | **HARMED — Phase II halted (Bielekova, *Nat Med* 2000)** |
+| arm | mean lesion_proxy | Δ vs untreated | real-world outcome |
+|---|---|---|---|
+| untreated | 32.7 | — | control |
+| IFN-β | 23.7 | **−9.0** | approved / worked |
+| glatiramer acetate | 24.8 | **−7.9** | approved / worked |
+| APL CGP77116 | 36.1 | **+3.4** | **HARMED — Phase II halted (Bielekova, *Nat Med* 2000)** |
 
-- The pipeline **separates the therapies that worked from untreated.**
-- It **cannot yet flag the harmful arm** — APL's effect is a 0.0 placeholder, so it reads like untreated. *That is the exact gap the backtest exists to close, and we are not hiding it.* A model earns trust by catching the one that harmed people; ours can't, yet.
+- The pipeline **separates the therapies that worked from untreated — and now flags the harmful arm** (APL reads *worse* than untreated, not the same).
+- **Honest caveat:** APL's harm is **mechanism-encoded, not discovered.** We gave the models the capability to express harm (an immunogenic term that provokes the autoreactive response) and set APL's parameter from its *documented encephalitogenic biology*, not its relapse number. Capability milestone, not validation — see §5.1.
 
 ## 5.1 The clinical backtest gate — what "viable" means
 `python -m backtest.clinical` scores the stack against **known trial outcomes, in both directions** — the gate that must go green before any prediction is trusted. Anchors are real and cited via PubMed:
@@ -53,9 +53,14 @@ One plausible virtual population (12 patients), run through every real trial arm
 | untreated | +0% | neutral (control) | — | ✅ |
 | IFN-β | −28% | **−27–33%** relapse reduction | PRISMS, *Lancet* 1998, PMID 9820297 | ✅ |
 | glatiramer | −24% | ~**−29%** relapse reduction | Copolymer 1 / Johnson 1995, *Neurology*, PMID 11902590 | ✅ |
-| APL CGP77116 | +0% | **HARMED** (halted; exacerbations) | Bielekova, *Nat Med* 2000, PMID 11017150, [doi](https://doi.org/10.1038/80516) | ❌ |
+| APL CGP77116 | **+11%** | **HARMED** (halted; exacerbations) | Bielekova, *Nat Med* 2000, PMID 11017150, [doi](https://doi.org/10.1038/80516) | ✅ |
 
-**DIRECTION gate: 3/4. VIABLE? Not yet.** The stack reproduces the two therapies that *worked* (direction and magnitude within 15pp) but **cannot reproduce the one that harmed** — the toy QSP/ABM only express benefit. That single red cell is the definition of the work ahead: a brick that can express immune exacerbation turns the gate green. The magnitude match on the successes is *directionally* honest but not yet *earned* (placeholder doses, not mechanism). *(via PubMed)*
+**DIRECTION gate: 4/4 — PASS.** The stack now reproduces every known arm's direction, **including the one that harmed patients** (APL comes out *worse* than untreated). This required giving the models a *mechanism* for harm — an immunogenic term by which a therapy can provoke the autoreactive response, not only calm it.
+
+**This is a capability milestone, NOT validation — and the difference is load-bearing:**
+- The intervention parameters (`treat`, `immunogenic`) are **mechanism-assigned by hand**, not derived from data. APL's harm emerges from its *documented encephalitogenic biology* (MBP 83-99 activates myelin-reactive T cells), **not** from a fit to its relapse number — the magnitude (0.4) is illustrative and was not tuned to a target.
+- With only 4 arms whose outcomes *informed the setup*, getting the directions right is **necessary but not sufficient**. Real viability needs data-grounded parameters, **out-of-sample** arms the setup has never seen, and validated magnitudes.
+- What genuinely changed: the model went from *unable to represent harm at all* to *able to express both benefit and harm and direct all four known arms correctly*. That is real progress; it is not proof. *(via PubMed)*
 
 ## 6. What is real vs. toy (read this before quoting anything)
 | Real / defensible | Toy / illustrative / unvalidated |

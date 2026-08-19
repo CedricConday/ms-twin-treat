@@ -37,19 +37,21 @@ _DEFAULTS = dict(s_A=0.02, r_CA=0.9, mu_A=0.25, k_C=0.8, mu_C=0.5,
                  k_dmg=0.6, k_rep=0.05)
 
 
-def _rhs(t, y, p, treat):
+def _rhs(t, y, p, treat, immuno):
     A, C, M = y
-    dA = p["s_A"] + p["r_CA"] * C * A * (1.0 - A) - p["mu_A"] * A - treat * A
+    # treat suppresses activation; immuno PROVOKES it (the mechanism of harm)
+    dA = (p["s_A"] + p["r_CA"] * C * A * (1.0 - A) - p["mu_A"] * A
+          - treat * A + immuno * (1.0 - A))
     dC = p["k_C"] * A - p["mu_C"] * C
     dM = -p["k_dmg"] * A * M + p["k_rep"] * (1.0 - M)
     return [dA, dC, dM]
 
 
-def simulate(params: dict | None = None, treat: float = 0.0,
+def simulate(params: dict | None = None, treat: float = 0.0, immuno: float = 0.0,
              t_end: float = 40.0, n: int = 200, y0=(0.15, 0.05, 1.0)) -> dict:
     """Integrate the toy neuroinflammation ODE. Returns trajectories."""
     p = {**_DEFAULTS, **(params or {})}
-    sol = solve_ivp(_rhs, (0.0, t_end), list(y0), args=(p, treat),
+    sol = solve_ivp(_rhs, (0.0, t_end), list(y0), args=(p, treat, immuno),
                     t_eval=np.linspace(0, t_end, n), method="LSODA",
                     rtol=1e-6, atol=1e-9)
     if not sol.success:
@@ -68,13 +70,15 @@ class QSPBrick:
 
     def run(self, state: dict) -> dict:
         treat = 0.0
+        immuno = 0.0
         interv = state.get("intervention")
         if isinstance(interv, dict):
             treat = float(interv.get("treat", 0.0))
+            immuno = float(interv.get("immunogenic", 0.0))
         # per-patient params from the VPop (B9) override the defaults
         params = {**(self.params or {}), **(state.get("qsp_params") or {})}
-        traj = simulate(params=params, treat=treat, t_end=self.t_end)
-        state["qsp_traj"] = {**traj, "treat": treat, "validated": False,
+        traj = simulate(params=params, treat=treat, immuno=immuno, t_end=self.t_end)
+        state["qsp_traj"] = {**traj, "treat": treat, "immuno": immuno, "validated": False,
                              "note": "toy neuroinflammation ODE, not a validated MS QSP model"}
         return state
 

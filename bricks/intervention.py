@@ -32,6 +32,11 @@ class Intervention:
     """One therapy, expressed in the only terms the toy models understand.
 
     treat        0.0 = untreated, 1.0 = attack fully suppressed. Illustrative.
+    immunogenic  0.0 = neutral; >0 = the therapy PROVOKES the autoreactive
+                 response instead of calming it (e.g. an altered peptide ligand
+                 that activates encephalitogenic T cells). This is the mechanism
+                 by which a therapy can HARM. Set from a drug's known immunology,
+                 never fit to its clinical outcome.
     cns_required does the agent have to cross into the CNS to work? Antigen-
                  specific tolerance acts peripherally (False); a remyelination
                  agent must reach the lesion (True). B6 uses this to decide
@@ -40,6 +45,7 @@ class Intervention:
 
     name: str
     treat: float = 0.0
+    immunogenic: float = 0.0
     dose: float = 1.0
     cns_required: bool = False
     notes: str = ""
@@ -48,6 +54,8 @@ class Intervention:
     def __post_init__(self) -> None:
         if not 0.0 <= self.treat <= 1.0:
             raise ValueError(f"treat must be in [0,1], got {self.treat}")
+        if not 0.0 <= self.immunogenic <= 1.0:
+            raise ValueError(f"immunogenic must be in [0,1], got {self.immunogenic}")
         if self.dose < 0:
             raise ValueError(f"dose must be >= 0, got {self.dose}")
 
@@ -82,13 +90,15 @@ GLATIRAMER = Intervention(
 )
 
 APL_CGP77116 = Intervention(
-    "APL CGP77116", treat=-0.0, cns_required=False,
+    "APL CGP77116", treat=0.0, immunogenic=0.4, cns_required=False,
     notes=(
         "altered peptide ligand of MBP 83-99. Phase II HALTED: 3 patients had MS "
         "exacerbations, 2 immunologically linked to the drug (Bielekova et al., "
-        "Nature Medicine 2000). Backtest target: HARMED. treat=0 is a placeholder - "
-        "a model that earns its keep would predict a NEGATIVE effect here, and this "
-        "brick cannot yet express that."
+        "Nature Medicine 2000, doi:10.1038/80516). Backtest target: HARMED. "
+        "immunogenic=0.4 encodes the DOCUMENTED MECHANISM (the peptide is "
+        "encephalitogenic - it activates myelin-reactive T cells), NOT the relapse "
+        "outcome. Harm should EMERGE from the mechanism, not be asserted. The 0.4 "
+        "magnitude is illustrative and not fit to any number."
     ),
 )
 

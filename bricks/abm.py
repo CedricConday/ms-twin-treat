@@ -37,11 +37,12 @@ if _HAVE_MESA:
 
     class MSABM(mesa.Model):
         def __init__(self, width=20, height=20, n_immune=40, aggression=0.5,
-                     treat=0.0, seed=0):
+                     treat=0.0, immuno=0.0, seed=0):
             super().__init__(seed=seed)
             self.grid = MultiGrid(width, height, torus=True)
             self.myelin = np.ones((width, height))
-            eff = aggression * (1.0 - float(treat))
+            # treat lowers aggression; immuno RAISES it (harm). Clamp to a probability.
+            eff = float(np.clip(aggression * (1.0 - float(treat) + float(immuno)), 0.0, 1.0))
             for _ in range(n_immune):
                 agent = _ImmuneAgent(self, eff)
                 self.grid.place_agent(agent, (self.random.randrange(width),
@@ -53,23 +54,23 @@ if _HAVE_MESA:
             self.damage.append(float((1.0 - self.myelin).mean()))
 
 
-def simulate(n_steps=60, treat=0.0, seed=0, **kw) -> np.ndarray:
+def simulate(n_steps=60, treat=0.0, immuno=0.0, seed=0, **kw) -> np.ndarray:
     """Run the ABM and return the damage-over-time curve (mean myelin lost)."""
     if not _HAVE_MESA:
-        return _simulate_numpy(n_steps=n_steps, treat=treat, seed=seed, **kw)
-    model = MSABM(treat=treat, seed=seed, **kw)
+        return _simulate_numpy(n_steps=n_steps, treat=treat, immuno=immuno, seed=seed, **kw)
+    model = MSABM(treat=treat, immuno=immuno, seed=seed, **kw)
     for _ in range(n_steps):
         model.step()
     return np.asarray(model.damage)
 
 
-def _simulate_numpy(n_steps=60, treat=0.0, seed=0, width=20, height=20,
+def _simulate_numpy(n_steps=60, treat=0.0, immuno=0.0, seed=0, width=20, height=20,
                     n_immune=40, aggression=0.5) -> np.ndarray:
     """Pure-numpy fallback ABM if mesa is unavailable — same output shape."""
     rng = np.random.default_rng(seed)
     myelin = np.ones((width, height))
     pos = np.column_stack([rng.integers(0, width, n_immune), rng.integers(0, height, n_immune)])
-    eff = aggression * (1.0 - float(treat))
+    eff = float(np.clip(aggression * (1.0 - float(treat) + float(immuno)), 0.0, 1.0))
     damage = []
     for _ in range(n_steps):
         pos = (pos + rng.integers(-1, 2, pos.shape)) % [width, height]
@@ -91,15 +92,18 @@ class ABMBrick:
 
     def run(self, state: dict) -> dict:
         treat = 0.0
+        immuno = 0.0
         interv = state.get("intervention")
         if isinstance(interv, dict):
             treat = float(interv.get("treat", 0.0))
+            immuno = float(interv.get("immunogenic", 0.0))
         # per-patient seed from the VPop (B9) gives each virtual patient its own draw
         seed = int(state.get("seed", self.seed))
-        damage = simulate(n_steps=self.n_steps, treat=treat, seed=seed)
+        damage = simulate(n_steps=self.n_steps, treat=treat, immuno=immuno, seed=seed)
         state["abm_damage"] = damage
         state["abm_meta"] = {"validated": False, "engine": self.name,
-                             "final_damage": float(damage[-1]), "treat": treat, "seed": seed}
+                             "final_damage": float(damage[-1]), "treat": treat,
+                             "immuno": immuno, "seed": seed}
         return state
 
     __call__ = run

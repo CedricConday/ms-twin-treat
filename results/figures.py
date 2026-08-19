@@ -87,7 +87,7 @@ def fig_arms():
         ("untreated", 32.7, MUTED, ""),
         ("IFN-β", 23.7, GOOD, "(−9.0)"),
         ("glatiramer acetate", 24.8, GOOD, "(−7.9)"),
-        ("APL CGP77116", 32.7, CRIT, ""),
+        ("APL CGP77116", 36.1, CRIT, "(+3.4)"),
     ]
     labels = [a[0] for a in arms]
     vals = [a[1] for a in arms]
@@ -114,8 +114,8 @@ def fig_arms():
                fontsize=9.5, bbox_to_anchor=(0.5, 0.015))
     fig.text(0.5, 0.965, "Virtual cohort across real trial arms",
              ha="center", va="top", fontsize=13, color=INK, weight="bold")
-    fig.text(0.5, 0.90, "The pipeline separates the therapies that worked — and openly can't yet catch the one that harmed patients",
-             ha="center", va="top", fontsize=9.5, color=SEC)
+    fig.text(0.5, 0.90, "Separates the therapies that worked — and now flags the harmful arm (mechanism-encoded, not discovered)",
+             ha="center", va="top", fontsize=9, color=SEC)
     p = os.path.join(OUT, "fig2_arms.png")
     fig.savefig(p, dpi=200, facecolor=SURFACE); plt.close(fig)
     return p

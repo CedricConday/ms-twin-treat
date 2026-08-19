@@ -80,6 +80,16 @@ def test_abm_treatment_reduces_damage():
     assert simulate(treat=0.8, seed=0)[-1] < simulate(treat=0.0, seed=0)[-1]
 
 
+def test_immunogenic_intervention_causes_harm():
+    """The harm mechanism: an immunogenic therapy makes things WORSE than untreated
+    (more demyelination) — the opposite of a suppressive one. Without this the stack
+    cannot reproduce a therapy that harmed patients (e.g. APL CGP77116)."""
+    from bricks.qsp import simulate as qsp
+    from bricks.abm import simulate as abm
+    assert qsp(treat=0.0, immuno=0.4)["M"][-1] < qsp(treat=0.0, immuno=0.0)["M"][-1]
+    assert abm(treat=0.0, immuno=0.4, seed=0)[-1] > abm(treat=0.0, immuno=0.0, seed=0)[-1]
+
+
 def test_barrier_peripheral_full_exposure():
     """A drug that need not cross the barrier is not penalized."""
     from bricks.barrier import BarrierStage

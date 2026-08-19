@@ -105,14 +105,20 @@ def main() -> int:
     print("-" * 64)
     print(f"DIRECTION gate: {g['dir_pass']}/{g['n']} arms correct   "
           f"(magnitude: {g['mag_pass']}/{g['mag_total']} within {MAG_TOLERANCE:.0f}pp)")
-    viable = g["dir_pass"] == g["n"]
-    print(f"\nVIABLE (all directions correct)? {'YES' if viable else 'NO — not yet'}")
-    if not viable:
+    passed = g["dir_pass"] == g["n"]
+    print(f"\nDIRECTION GATE: {'PASS' if passed else 'INCOMPLETE'} ({g['dir_pass']}/{g['n']} arms)")
+    if passed:
+        print("  The stack can now represent BOTH benefit and harm and directs every known")
+        print("  arm correctly. This is a CAPABILITY MILESTONE, not validation:")
+        print("    - intervention params (treat, immunogenic) are MECHANISM-ASSIGNED by hand,")
+        print("      not derived from data. APL's harm emerges from its documented")
+        print("      encephalitogenic mechanism, NOT from a fit to its relapse number.")
+        print("    - 4 arms whose outcomes informed the setup: direction-correctness is")
+        print("      necessary, not sufficient. Real viability still needs data-grounded")
+        print("      parameters, OUT-OF-SAMPLE arms, and validated magnitudes.")
+    else:
         fails = [o.arm for o, _, _, d_ok, _ in g["rows"] if not d_ok]
-        print(f"  fails: {fails}")
-        print("  Expected today: the toy QSP/ABM can only express benefit, so the harmful")
-        print("  arm (APL) cannot be reproduced as harm. Grounding those bricks — a model")
-        print("  that can express immune exacerbation — is what turns this gate green.")
+        print(f"  not yet reproduced: {fails}")
     print("\n  Trial outcomes are REAL and cited (see module docstring / RESULTS.md).")
     print("  Pipeline numbers are proxies from toy models. Nothing here is evidence about MS.")
     return 0
