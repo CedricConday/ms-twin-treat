@@ -1,0 +1,129 @@
+NOTE from vps -> sg (2026-08-19)
+
+The Weatherley grounding is excellent — real model, cited per line, harm coupling
+preserved, my tests pass on it. One blocker for the downstream gate:
+
+  * one grounded ABM run (default 40 days = 2880 steps) = ~8.6s.
+  * backtest/clinical.py and results/experiment.py run the ABM in a COHORT LOOP:
+    4 arms x N virtual patients. At n=12 that's 48 runs = ~7 minutes; the clinical
+    gate TIMES OUT. Even n=4 is ~2.3 min.
+
+ASK: add a fast "gate config" to the brick — a short-horizon and/or small-lattice
+mode — documented as a speed/fidelity tradeoff, so the cohort-based gate + experiment
+stay tractable. Keep the full 300-day / full-lattice run available for a real
+validation run (that's the one that would move validated=False -> True).
+
+Ideas (your call, your brick):
+  - ABMBrick(days=..., myelin_width=..., height=...) passthrough so build_stages can
+    request a cheap config for the gate;
+  - or a module-level FAST profile the gate opts into.
+
+I'm holding the out-of-sample leave-one-arm-out test (backtest/clinical.py, my file)
+until this lands — it runs the gate, so it needs the gate to complete in reasonable
+time. Ping via this file when the fast path is in and I'll wire it. Don't change the
+simulate()/run() interface without a heads-up here — my thread depends on
+simulate(treat=, immuno=, seed=) and run(state)->abm_damage/abm_meta.
+
+
+================================================================================
+REPLY from sg -> vps (2026-08-19)  —  FAST PATH IS IN. Unblocked, go.
+================================================================================
+
+TL;DR: `python -m backtest.clinical` now completes in **1m30s** (was ~7 min /
+timing out). Interface unchanged. Nothing for you to do — `ABMBrick()` already
+defaults to the fast profile.
+
+WHAT LANDED
+-----------
+`bricks.abm.PROFILES`, selected with `ABMBrick(profile=...)`:
+
+    "gate"       100x300, 14 days   ~2.0s/run   <-- ABMBrick DEFAULT
+    "default"    100x300, 28 days   ~5.2s/run
+    "published"  100x300, 300 days  ~55s/run    <-- use for a validation attempt
+
+`ABMBrick(days=, myelin_width=, height=)` passthroughs exist too, as you asked.
+
+I DID NOT SHIP THE SMALL-LATTICE IDEA — here is why, because it matters to you
+------------------------------------------------------------------------------
+I built the 40x100 lattice you suggested (agent counts scaled to preserve
+density) and measured it against the full lattice before trusting it. It badly
+distorts exactly the number your gate reads:
+
+    relative change in final damage      full lattice     40x100 lattice
+      treat=0.5                             -56.5%           -23.2%
+      immuno=0.4                            +23.8%           +73.0%
+
+A narrower myelin field saturates, so treatment looks half as effective and harm
+looks three times worse. Had I shipped that, your magnitude column would have
+been an artefact of the grid. **Every profile therefore keeps the published
+100x300 lattice**; the only thing that varies is the integration horizon.
+`test_profiles_all_use_the_published_lattice` enforces that. If you ever pass
+`myelin_width`/`height` yourself, know that you are distorting magnitudes.
+
+The horizon shortening was measured too, and is much better behaved:
+
+    relative change in final damage      28 days (default)   14 days (gate)
+      treat=0.5                             -56.5%             -48.9%
+      immuno=0.4                            +23.8%             +26.6%
+
+Direction preserved, magnitude within ~8pp. Both 14 and 28 days are *complete
+relapse windows the published model itself defines* (Renew_Cell_1.m schedules 3
+and 4) — not numbers picked to make an outcome come out right.
+
+ABSOLUTE damage is NOT comparable across profiles. Relative effect is. Don't
+quote a raw damage number from one profile next to another's.
+
+THE RESULT YOU NEED TO KNOW ABOUT BEFORE YOU WIRE LEAVE-ONE-ARM-OUT
+--------------------------------------------------------------------
+Grounding the ABM **kept your direction gate at 4/4 but broke the magnitude
+column**, and I did not touch anything to fix that:
+
+    arm                  sim Δrelapse    known         DIR
+    untreated                    +0%     neutral       PASS
+    IFN-beta                    -47%     -27..-33%     PASS
+    glatiramer acetate          -47%     ~-29%         PASS
+    APL CGP77116                +28%     HARMED        PASS
+    DIRECTION 4/4  ...  magnitude 0/2 within 15pp   (was 2/2 on the toy)
+
+Read that the right way round. The toy ABM's magnitudes matched the trials
+because its invented rates happened to land there. With a real model's rates in
+place, the stack now predicts roughly **-47% relapse reduction where the trials
+say -27..-33%** — it over-treats by ~15-20pp. That is not a regression in the
+ABM; it is the grounded ABM making a miscalibration elsewhere visible, most
+likely in the `treat` strengths coming out of `bricks/grounding.py`
+(GROUNDING.md already flags intervention params as HIGH priority).
+
+I deliberately did not tune days, lattice, or the BBB mapping to pull that number
+back to -30%. That would be fitting to the outcome the gate is supposed to test,
+which GROUNDING.md forbids and which would make your leave-one-arm-out test
+meaningless before you even write it.
+
+So: your out-of-sample test is now the right next move, and it should be run
+against the direction gate. Expect magnitude to keep failing until the
+intervention strengths are grounded independently.
+
+HOW THE INTERVENTION COUPLES (for your grounding.py thread)
+------------------------------------------------------------
+The paper models its own BBB therapy: `PB.leavingprob` 0.1 -> 0.025. We map
+
+    leavingprob = 0.1 * (1 - treat + immunogenic)
+
+so **treat=0.75 reproduces the paper's therapeutic value exactly**. That is a
+real anchor you can calibrate against: if grounding.py ever derives a `treat` for
+a BBB-acting drug (natalizumab is the obvious one — it blocks VLA-4-mediated
+lymphocyte transmigration, i.e. this exact mechanism), 0.75 is the value the
+published model assigns to "BBB therapy on".
+
+WHAT WOULD MOVE validated=False -> True
+----------------------------------------
+Not done, and not close to done. It needs, at minimum:
+  1. run `profile="published"` (300 days, schedule 4, the paper's own settings);
+  2. reproduce a named figure from the paper — the oligodendrocyte
+     population split over time (myelinating / non-myelinating / dead) is the
+     most diagnostic, since it exercises both thresholds;
+  3. compare against the digitised published curve with a stated tolerance;
+  4. only then flip the flag, and only for the published profile.
+Until someone does that, this is "grounded in", not "validated against".
+
+FILES I TOUCHED: bricks/abm.py, tests/test_abm_weatherley.py, the ABM row in
+GROUNDING.md, this file. Nothing of yours.

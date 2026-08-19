@@ -19,7 +19,7 @@ real **out-of-sample** test instead of a restatement of what we already told it.
 | **Intervention** | `treat`, `immunogenic` | ✅ **from a 2-param mechanism-class rule** (`grounding.py`) — not per-arm hand-tuning | next: derive the class strengths from data (IFN-β magnitude from Kang; others need their single-cell data — the honest gap) | partial |
 | **Barrier** (PBPK) | rate constants → CNS penetration | ✅ **baseline GROUNDED** — `k_pc` calibrated to ~0.15% CNS (Pardridge 2019); other rate constants still illustrative | remaining constants: published PK; small molecules higher | partial |
 | **QSP** | disease / cytokine ODE rates | invented | published immune/cytokine kinetics; no open MS QSP exists (greenfield) | MED–HARD |
-| **ABM** | aggression / damage / repair | invented | the **Weatherley MS ABM** (MIT, PLoS Comp Bio) rules/rates — a real published open model to port | MED |
+| **ABM** (`abm.py`) | agent rates, myelin/oligo thresholds, BBB permeability | ✅ **GROUNDED** — ported from the **Weatherley MS ABM** ([doi:10.1371/journal.pcbi.1013273](https://doi.org/10.1371/journal.pcbi.1013273), MIT); every rate cited to its source file, `validated=False` until a paper figure is reproduced | remaining: reproduce a published figure at `profile="published"` to earn `validated=True` | partial |
 | **Readout** | micro → clinical map | invented proxy scales | MSOAC / trial relapse data, held-out validated. **Hardest — open research.** | HARD |
 
 ## First concrete grounding target (identified this session)
@@ -31,6 +31,23 @@ matching standard mAb CNS pharmacokinetics. (Surfaced via a PubMed search for
 antibody blood-brain-barrier PK — candidate primary sources found; pin one before
 setting the number.) This is an **independent** correction, not a fit to any MS
 outcome, so it strengthens the gate rather than circularizing it.
+
+## What grounding the ABM immediately exposed (2026-08-19)
+Replacing the toy ABM's invented rates with the Weatherley model's published ones
+**kept the clinical direction gate at 4/4 but dropped the magnitude check from 2/2
+to 0/2**: the stack now predicts ~**-47%** relapse reduction where the trials report
+**-27..-33%**.
+
+That is the mechanism of this file working as intended, not a regression. The toy's
+magnitudes matched the trials because its made-up rates happened to land there. With
+a real model underneath, the miscalibration moved to where it actually lives — most
+likely the `treat` strengths from `bricks/grounding.py`, already the **HIGH** priority
+row above. Nothing was tuned to pull that number back; doing so would have fitted the
+model to the outcome the gate exists to test.
+
+**Expect this pattern again.** Grounding one brick will often break a number that a
+toy was accidentally getting right. That is the point — a broken number you can see
+is worth more than a right-looking one you can't explain.
 
 ## Why this is the path to "viable"
 The clinical gate is only a real test when the parameters it grades were **not** set
