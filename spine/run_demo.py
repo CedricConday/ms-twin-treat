@@ -1,21 +1,21 @@
-"""End-to-end demo: one virtual cohort through every scale of the spine.
+"""End-to-end demo: a virtual cohort through every scale of the spine.
 
-This is the "built" milestone from BUILD_PLAN §7 — and it is wired BEFORE the
-bricks exist, on purpose. Every stage below starts life as a labelled
-pass-through. As each brick lands it REPLACES its pass-through, so this script
-runs at every commit from now on rather than only at the end. A half-finished
-build still demonstrates something; a half-finished build with the wiring last
-demonstrates nothing.
+The wiring was built BEFORE the bricks, on purpose (PARALLEL_PLAN §3). Each
+brick that lands REPLACES its pass-through, so this script runs at every commit
+rather than only at the end. What follows is therefore an honest picture of how
+much of the pipeline is real right now — read the summary at the bottom.
 
 Run:
-    python spine/run_demo.py            # 3 virtual patients
-    python spine/run_demo.py --n 10     # bigger cohort
+    python spine/run_demo.py                    # 3 patients, no dataset needed
+    python spine/run_demo.py --n 10             # bigger cohort
+    python spine/run_demo.py --arm untreated    # switch treatment arm
+    python spine/run_demo.py --with-data        # also run B2/B3 (loads Kang, slow)
 
-What this shows: that molecular -> cell -> network -> tissue -> barrier ->
-clinical composes as one state, and where each scale plugs in.
+What this shows: that intervention -> cell -> network -> QSP -> population ->
+barrier -> clinical composes as one state, and where each scale plugs in.
 
-What this does NOT show: that any scale is correct. Nearly everything is
-STANDIN. See the report at the bottom of the run.
+What this does NOT show: that any scale is correct. Every brick is a toy or a
+stand-in. See BUILD_PLAN §5 — built is not validated.
 """
 
 from __future__ import annotations
@@ -33,90 +33,139 @@ from spine.pipeline import (  # noqa: E402
     is_standin,
 )
 
-# --------------------------------------------------------------------------- #
-# stage table — the eight bricks, in scale order.
-#
-# TO REPLACE A STAND-IN: import your brick and swap it in below. Keep `name`
-# and the key it produces identical so the contract in PARALLEL_PLAN §4 holds.
-# --------------------------------------------------------------------------- #
-
-STAGES = [
-    PassThroughStage(
-        "B7 intervention", "intervention",
-        value={"agent": "IFN-beta", "dose": 1.0, "on": True},
-        reason="B7 not built — fixed IFN-beta on/off",
-    ),
-    PassThroughStage(
-        "B2 cell perturbation", "cell_delta",
-        value={}, requires=("intervention",),
-        reason="B2 not built — no per-cell-type delta predicted yet",
-    ),
-    PassThroughStage(
-        "B3 gene regulatory net", "grn_edges",
-        value=[], requires=("cell_delta",),
-        reason="B3 not built — no GRN inferred yet",
-    ),
-    PassThroughStage(
-        "B4 QSP / ODE", "qsp_traj",
-        value={"t": [], "y": []}, requires=("intervention",),
-        reason="B4 not built — no inflammation ODE integrated yet",
-    ),
-    PassThroughStage(
-        "B5 population ABM", "abm_damage",
-        value=[], requires=("qsp_traj",),
-        reason="B5 not built — no agent-based myelin damage yet",
-    ),
-    PassThroughStage(
-        "B6 barrier / PBPK", "cns_exposure",
-        value=0.0, requires=("intervention",),
-        reason="B6 not built — no blood/CSF/CNS compartment model yet",
-    ),
-    PassThroughStage(
-        "B8 clinical readout", "readout",
-        value={"lesion_proxy": None, "relapse_proxy": None},
-        requires=("abm_damage", "cns_exposure"),
-        reason="B8 not built — micro-to-clinical map is open research",
-    ),
-]
+# real bricks — no dataset required
+from bricks.abm import ABMBrick            # noqa: E402  B5
+from bricks.barrier import BarrierStage    # noqa: E402  B6
+from bricks.intervention import (          # noqa: E402  B7
+    LIBRARY,
+    InterventionStage,
+)
+from bricks.qsp import QSPBrick            # noqa: E402  B4
 
 
-def make_cohort(n: int) -> list[MultiScaleState]:
+def build_stages(with_data: bool, arm: str) -> list:
+    """Assemble the pipeline. Data-dependent bricks are opt-in."""
+    stages: list = [InterventionStage(arm)]                       # B7  REAL
+
+    if with_data:
+        # B2/B3 need the Kang expression matrix in memory.
+        from backtest.harness import PerturbationBenchmark  # noqa: F401
+        from bricks.cell_transfer import CellTransferModel
+        from bricks.grn import GRNBrick
+        from data.kang import to_benchmark
+
+        bench = to_benchmark()
+        stages.append(_CellStage(CellTransferModel(bench)))       # B2  REAL
+        stages.append(GRNBrick())                                 # B3  REAL
+    else:
+        stages.append(PassThroughStage(
+            "B2 cell perturbation", "cell_delta", value={},
+            requires=("intervention",),
+            reason="skipped: needs the Kang matrix, run with --with-data"))
+        stages.append(PassThroughStage(
+            "B3 gene regulatory net", "grn_edges", value=[],
+            requires=("cell_delta",),
+            reason="skipped: needs the Kang matrix, run with --with-data"))
+
+    stages += [
+        QSPBrick(),                                               # B4  REAL (toy)
+        ABMBrick(),                                               # B5  REAL (toy)
+        BarrierStage(),                                           # B6  REAL (toy)
+        PassThroughStage(
+            "B8 clinical readout", "readout",
+            value={"lesion_proxy": None, "relapse_proxy": None},
+            requires=("abm_damage", "cns_exposure"),
+            reason="B8 not built — micro-to-clinical map is open research"),
+    ]
+    return stages
+
+
+class _CellStage:
+    """Adapts the harness-facing PerturbationModel to a spine Stage.
+
+    B2 implements `predict(control_mean, cell_type)` because that is what the
+    backtest harness scores. The spine wants `run(state)`. Rather than give the
+    brick two personalities, the adapter lives here.
+    """
+
+    name = "B2 cell perturbation"
+    requires = ("intervention",)
+
+    def __init__(self, model) -> None:
+        self.model = model
+
+    def run(self, state: MultiScaleState) -> MultiScaleState:
+        bench = getattr(self.model, "benchmark", None)
+        deltas = {}
+        if bench is not None:
+            for ct in bench.cell_types():
+                prof = bench.profiles[ct] if hasattr(bench, "profiles") else None
+                if prof is None:
+                    continue
+                deltas[ct] = self.model.predict(prof.control_mean, ct)
+        state["cell_delta"] = deltas
+        state["cell_meta"] = {"validated": False, "model": self.model.name,
+                              "note": "beats no null yet; bar is mean-shift 0.85"}
+        return state
+
+    __call__ = run
+
+
+def make_cohort(n: int, arm: str | None = None) -> list[MultiScaleState]:
     """Stand-in for B9 VPop.
 
     A real virtual population samples parameter sets against plausibility
-    bounds and weights them to a target prevalence. This just varies a seed so
-    the cohort machinery is exercised — it is NOT a virtual population.
+    bounds and weights them to a target prevalence (Allen-Rieger / MAPEL). This
+    only varies seed and barrier state, so the cohort machinery is exercised.
+    It is NOT a virtual population and must not be described as one.
     """
-    return [{"patient_id": f"vp{i:03d}", "seed": i} for i in range(n)]
+    out = []
+    for i in range(n):
+        m: MultiScaleState = {
+            "patient_id": f"vp{i:03d}",
+            "seed": i,
+            # varies lesion activity across patients; invented spread
+            "bbb_disruption": round(0.1 + 0.6 * (i % 5) / 4.0, 3),
+            "vpop_STANDIN": True,
+        }
+        if arm:
+            m["intervention_name"] = arm
+        out.append(m)
+    return out
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=3, help="cohort size")
+    ap.add_argument("--arm", default="IFN-beta", choices=sorted(LIBRARY))
+    ap.add_argument("--with-data", action="store_true",
+                    help="also run B2/B3 (loads the Kang dataset)")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
-    pipe = Pipeline(STAGES, name="ms-twin-treat v0")
-    cohort = make_cohort(args.n)
+    stages = build_stages(args.with_data, args.arm)
+    pipe = Pipeline(stages, name="ms-twin-treat v0")
+    cohort = make_cohort(args.n, args.arm)
 
-    print(f"MS-Twin spine — {len(pipe.stages)} stages, cohort of {len(cohort)}")
-    print("=" * 72)
+    print(f"MS-Twin spine — {len(pipe.stages)} stages, cohort of {len(cohort)}, arm={args.arm!r}")
+    print("=" * 76)
 
     results = []
     for i, member in enumerate(cohort, 1):
-        print(f"\npatient {member['patient_id']}  ({i}/{len(cohort)})")
+        print(f"\npatient {member['patient_id']}  ({i}/{len(cohort)})  "
+              f"bbb_disruption={member['bbb_disruption']}")
         results.append(pipe.run(member, verbose=not args.quiet))
 
-    print("\n" + "=" * 72)
-    print(pipe.report(results[-1]))
+    final = results[-1]
+    print("\n" + "=" * 76)
+    print(pipe.report(final))
 
-    n_stand = sum(1 for k in results[-1] if is_standin(results[-1][k]))
-    print("\n" + "=" * 72)
-    if n_stand:
-        print(f"BUILT, NOT VALIDATED — {n_stand} of {len(results[-1])} state keys are STANDIN.")
-        print("The scales compose. Nothing here is a scientific claim.")
-    else:
-        print("No stand-ins left. Every key came from a real brick.")
+    keys = [k for k in final if not k.endswith("_meta")]
+    n_stand = sum(1 for k in keys if pipe._unvalidated(final, k))
+    print("\n" + "=" * 76)
+    print(f"BUILT, NOT VALIDATED — {n_stand} of {len(keys)} state keys are unvalidated.")
+    print("Every brick is a toy or a stand-in. The scales compose; that is the claim.")
+    print("Nothing here is evidence about multiple sclerosis.")
     return 0
 
 

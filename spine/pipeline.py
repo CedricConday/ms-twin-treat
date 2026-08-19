@@ -44,12 +44,36 @@ def standin(value: Any, reason: str = "") -> dict:
 
 
 def is_standin(value: Any) -> bool:
-    return isinstance(value, dict) and value.get(STANDIN_FLAG) is True
+    """True if a value is not validated science.
+
+    Two conventions are in use and both count, because counting only one of
+    them would let the run report call a toy model a result:
+
+      1. `standin(x)`            -> {"value": x, "STANDIN": True}
+         A placeholder for a brick that is not built.
+
+      2. `{..., "validated": False}`
+         The bricks' own convention (see bricks/qsp.py, abm.py, grn.py). The
+         computation is real; the parameterisation is illustrative. Output
+         travels as a normal dict so downstream code can read its keys
+         directly.
+
+    Form 2 is preferred for a brick that actually computes something, because
+    a consumer can do `state["intervention"]["treat"]` without unwrapping.
+    """
+    if not isinstance(value, dict):
+        return False
+    return value.get(STANDIN_FLAG) is True or value.get("validated") is False
 
 
 def unwrap(value: Any) -> Any:
-    """Read a value whether or not it is wrapped as a stand-in."""
-    return value["value"] if is_standin(value) else value
+    """Read a value whether or not it is wrapped by `standin()`.
+
+    Only form 1 is a wrapper. Form 2 IS the value, so it passes through.
+    """
+    if isinstance(value, dict) and value.get(STANDIN_FLAG) is True and "value" in value:
+        return value["value"]
+    return value
 
 
 # --------------------------------------------------------------------------- #
@@ -155,10 +179,32 @@ class Pipeline:
         return out
 
     # ----------------------------------------------------------------- report
+    @staticmethod
+    def _unvalidated(state: MultiScaleState, key: str) -> bool:
+        """Is this key unvalidated, by any of the conventions in use?
+
+        A brick may return a bare array and put its provenance in a sibling
+        `<key>_meta` — bricks/abm.py writes `abm_damage` (ndarray) alongside
+        `abm_meta = {"validated": False}`. Checking only the value itself would
+        report a toy model's output as a validated-path key, which is precisely
+        the overclaim BUILD_PLAN §5 forbids.
+        """
+        if is_standin(state[key]):
+            return True
+        # Bricks name their meta by BRICK prefix, not by key:
+        #   abm_damage -> abm_meta,  cell_delta -> cell_meta,  grn_edges -> grn_meta
+        # so check both forms. Checking only `<key>_meta` silently reports a toy
+        # model's raw ndarray output as validated.
+        for meta_key in (f"{key}_meta", f"{key.split('_')[0]}_meta"):
+            meta = state.get(meta_key)
+            if isinstance(meta, dict) and meta.get("validated") is False:
+                return True
+        return False
+
     def report(self, state: MultiScaleState) -> str:
         """Honest summary. Counts stand-ins so 'it ran' cannot be read as 'it works'."""
-        keys = sorted(state)
-        stand = [k for k in keys if is_standin(state[k])]
+        keys = [k for k in sorted(state) if not k.endswith("_meta")]
+        stand = [k for k in keys if self._unvalidated(state, k)]
         real = [k for k in keys if k not in stand]
         lines = [
             f"pipeline: {self.name}",
