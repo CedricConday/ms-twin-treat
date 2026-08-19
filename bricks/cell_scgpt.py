@@ -55,6 +55,7 @@ WHAT scGPT DID AND DID NOT CONTRIBUTE — full account in claims/B2-SCGPT/NOTES.
     similarity source              aggregate delta_pearson
     global mean shift (the bar)              0.8498
     scGPT-blood cell embeddings              0.8696   beats the bar
+    scGPT-human cell embeddings              0.8708   beats the bar
     control-profile correlation              0.8732   beats the bar
     noise ceiling (perfect model)            0.9075
 

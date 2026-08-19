@@ -62,18 +62,21 @@ VERDICT: the bar is beaten. 0.8732 vs 0.8498, LOCTO, on real Kang IFN-beta.
   scGPT was the primary swing. It was run for real, and it works. It did not
   earn the headline.
 
-    similarity source                aggregate delta_pearson
-    global mean shift (the bar)                0.8498
-    scGPT-blood cell embeddings                0.8696   beats the bar
-    control-profile Pearson                    0.8732   beats the bar
-    ensemble of the two                        0.8726
-    noise ceiling (perfect model)              0.9075
+    similarity source                aggregate    7 measurable cell types
+    global mean shift (the bar)         0.8498              0.9032
+    scGPT-blood cell embeddings         0.8696  beats bar   0.9247
+    scGPT-human cell embeddings         0.8708  beats bar   0.9266
+    ensemble control + scGPT-blood      0.8726  beats bar   0.9281
+    control-profile Pearson             0.8732  beats bar   0.9293
+    noise ceiling (perfect model)       0.9075              0.9897
 
   scGPT cell embeddings BEAT THE BAR. They do not beat plain Pearson
   correlation of the control mean profiles — a metric that costs nothing.
   Paired over the 8 folds: mean difference -0.0036, Wilcoxon p=0.55. There is
   no detectable difference between a 156 MB pretrained transformer and
-  np.corrcoef here.
+  np.corrcoef here. Both checkpoints agree (blood 0.8696, human 0.8708), and
+  ensembling scGPT with the correlation does not beat the correlation alone —
+  so this is not a one-checkpoint fluke or a bad-blend artifact.
 
   scGPT's pretrained GENE embeddings contributed nothing at all. Two smoother
   formulations (rank-512 linear kernel, sparse k=16 kNN) both degraded the score
@@ -163,8 +166,19 @@ VERDICT: the bar is beaten. 0.8732 vs 0.8498, LOCTO, on real Kang IFN-beta.
   cores. Then `similarity="scgpt"` in ScGPTCellModel picks it up. The heavy env
   never touches the pinned .venv — the brick reads the npz with plain numpy.
 
+  !! REPO HYGIENE — needs a decision before any push !!
+  .venv-scgpt/ (26,925 files, torch included) was swept into commit 9a8acb6a by
+  a broad `git add` from another lane, in the window between the venv being
+  created and the .gitignore entry landing. .git is now ~323 MB.
+  Commit 994730d9 untracks it (files stay on disk, .gitignore now bites), so
+  nothing further will be added — but the blobs are still in history.
+  Nothing has been pushed, so this is still cheap to fix properly. It needs a
+  history rewrite (git filter-repo --path .venv-scgpt --invert-paths) which
+  touches every lane's commits, so it is NOT something this lane should do
+  unilaterally. Cedric/vps call it. Do it before the first push, not after.
+
   Files owned by this lane (nothing else was modified except a one-line
-  .gitignore entry for .venv-scgpt/):
+  .gitignore entry for .venv-scgpt/ and the untracking above):
     bricks/cell_scgpt.py        the brick
     scripts/scgpt_model.py      scGPT encoder re-implementation + validation notes
     scripts/scgpt_data.py       Kang -> scGPT tokenization (binning, <cls>, padding)
