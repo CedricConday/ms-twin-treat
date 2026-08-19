@@ -89,6 +89,23 @@ VERDICT: the bar is beaten. 0.8732 vs 0.8498, LOCTO, on real Kang IFN-beta.
       misleading if said alone, because the free baseline does it better.
       "scGPT gave us the win" is FALSE. Do not put that in the deck.
 
+  SCOPE OF THE NEGATIVE RESULT — do not let this widen in the retelling.
+  scGPT was tested in exactly two roles:
+    (i)  as the cell-state SIMILARITY METRIC (blood + whole-human checkpoints);
+    (ii) as a GENE-EMBEDDING SMOOTHER over the predicted delta (rank-512 linear
+         kernel and sparse k=16 kNN).
+  It was NOT tested in the mode scGPT is actually promoted for: GEARS-style
+  FINE-TUNED PERTURBATION PREDICTION. That route needs the MLM decoder head,
+  which did not validate here (section 4), so it was never opened.
+
+    SUPPORTED : "scGPT buys nothing over np.corrcoef as a cell-state metric
+                 on this benchmark."
+    NOT SUPPORTED : "scGPT doesn't work for perturbation prediction."
+
+  The difference between those two sentences is the difference between a
+  defensible negative result and an overclaim. Anyone wanting the stronger
+  claim has to clear the decoder first.
+
   The scGPT path is kept and reproducible rather than deleted, so the negative
   result stays falsifiable.
 

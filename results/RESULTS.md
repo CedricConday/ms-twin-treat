@@ -12,15 +12,20 @@ The first thing built was the scorer, not the simulation. It passes its own gate
 | model | aggregate delta_pearson | reading |
 |---|---|---|
 | identity null (predict no change) | 0.0000 | captures nothing |
-| affine transfer (v0) | 0.8204 | below the bar |
-| global-mean-shift null (**the bar**) | 0.8498 | interferon signature is largely shared — a *hard* bar |
-| scGPT-blood embeddings | 0.8696 | beats the bar |
-| **control-similarity transfer** | **0.8732** | **beats the bar — the winner, LOCTO** |
+| leave-one-out mean shift (**THE CANONICAL BAR**) | 0.8166 | the *fair* null: only what a held-out model may see |
+| affine transfer (v0) | 0.8204 | barely clears the fair bar, loses the leaky one |
+| global-mean-shift null (leaky — harder secondary) | 0.8498 | averages in the held-out cell type's own delta |
+| scGPT-blood embeddings | 0.8696 | clears both bars |
+| scGPT-human embeddings | 0.8708 | clears both bars |
+| **control-similarity transfer** | **0.8732** | **the winner — clears both bars, LOCTO** |
 | noise ceiling (perfect model) | 0.9075 | the attainable limit |
 
-- **We beat the null — 0.87 > 0.85, honestly.** A control-state-similarity-weighted transfer, leave-one-cell-type-out. Negative-control checked: scrambling which similarity pairs with which delta collapses it to 0.78 (below baseline), so the gain is the similarity, **not a leak**.
+**Which bar is canonical, and why it matters.** The two mean-shift nulls are not interchangeable, and grading different bricks against different ones makes their scores incomparable. The **leave-one-out** null (0.8166) is restricted to exactly the information a LOCTO model has — that is the canonical bar. The **global** null (0.8498) averages the true delta over *all* cell types *including the one being predicted*, so it is leaky **in the null's favour**; it is retained as the *harder* secondary check, and clearing it too is the stronger claim. Both are now printed side by side by `python -m backtest.run_kang`.
+
+- **We beat both nulls — 0.8732 vs 0.8166 canonical and 0.8498 leaky, honestly.** A control-state-similarity-weighted transfer, leave-one-cell-type-out. Negative-control checked: scrambling which similarity pairs with which delta collapses it to 0.78 (below baseline), so the gain is the similarity, **not a leak**.
 - **scGPT was run for real and did NOT earn the win.** Its embeddings clear the bar (0.8696) but do **not** beat plain Pearson correlation of the control profiles (0.8732) — paired over 8 folds the difference is undetectable (Wilcoxon p=0.55). *"scGPT beats the null"* is literally true but misleading; *"scGPT gave us the win"* is **false**. scGPT's **encoder** validated (94% leave-one-out cell-type accuracy, recovers immune lineage); its MLM **decoder** did not, so only the encoder + gene-embedding table were used.
-- **Honest limits, stated not buried:** the bar is *leaky in its own favor* (it averages in the held-out cell type's true delta) — the fair leave-one-out null is 0.8232, and we beat that too. **Megakaryocytes** (63/69 cells, split-half reliability 0.06) is an unscoreable noise fold that drags every model down; on the 7 measurable cell types the picture is cleaner: bar 0.903, model 0.929, ceiling 0.990 — the model closes ~30% of the gap to what's attainable. With n=8 the margin is real but **not statistically conclusive** (p≈0.055); the model wins 7/8 cell types and loses Dendritic cells (0.915 vs 0.932).
+- **Scope of that negative result — do not widen it.** scGPT was tested in exactly two roles: as the **cell-state similarity metric** (both blood and whole-human checkpoints), and as a **gene-embedding smoother** over the predicted delta (rank-512 kernel and sparse kNN; both degraded the score and nested selection zeroed them in all 8 folds). It was **not** tested in the mode scGPT is actually promoted for — GEARS-style *fine-tuned perturbation prediction* — because that needs the MLM decoder head, which did not validate here. Supported claim: *"scGPT buys nothing over `np.corrcoef` as a cell-state metric on this benchmark."* **Not** supported: *"scGPT doesn't work for perturbation prediction."* Clearing the decoder is the prerequisite for anyone wanting to test the stronger claim.
+- **Honest limits, stated not buried:** the bar is *leaky in its own favor* (it averages in the held-out cell type's true delta) — the fair leave-one-out null is 0.8166 (0.8232 with the >=0 floor), and we beat that too. **Megakaryocytes** (63/69 cells, split-half reliability 0.06) is an unscoreable noise fold that drags every model down; on the 7 measurable cell types the picture is cleaner: bar 0.903, model 0.929, ceiling 0.990 — the model closes ~30% of the gap to what's attainable. With n=8 the margin is real but **not statistically conclusive** (p≈0.055); the model wins 7/8 cell types and loses Dendritic cells (0.915 vs 0.932).
 
 ## 3. Recovered biology (independent sanity signals, not fitted)
 - **GRN brick (B3)** top co-expression edges from raw Kang data: **IFIT1/IFIT3–ISG15** (the canonical interferon-stimulated-gene module IFN-β induces) and **HLA-DRB1–HLA-DRA** (MHC-II). The pipeline rediscovered the interferon response without being told to.
@@ -66,7 +71,7 @@ One plausible virtual population (12 patients), run through every real trial arm
 | Real / defensible | Toy / illustrative / unvalidated |
 |---|---|
 | The backtest harness + its gate | Every disease/PK/ABM parameter value |
-| The Kang IFN-β numbers (0.00 / 0.85 / 0.82 / Megakaryocyte 0.48) | The QSP, ABM, barrier, readout *models* |
+| The Kang IFN-β numbers (0.00 / 0.8166 / 0.8498 / 0.8732; Megakaryocyte flagged unscoreable) | The QSP, ABM, barrier, readout *models* |
 | The recovered interferon module (GRN) | The named-drug → `treat` mapping |
 | The plausible-patient *method* (LHS + rejection) | The plausibility *model* it filters against |
 | That the scales compose end to end | Any clinical proxy (lesion/relapse numbers) |
