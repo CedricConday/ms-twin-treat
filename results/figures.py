@@ -47,7 +47,7 @@ def fig_backtest():
     # verified aggregate delta_pearson (LOCTO) on Kang IFN-β; sg's scorecard.
     # (label, score, color, note)
     rows = [
-        ("noise ceiling", 0.9075, BASE, "attainable limit"),
+        ("noise ceiling", 0.8925, BASE, "attainable limit"),
         ("control-similarity transfer", 0.8732, BLUE, "beats the bar — winner"),
         ("scGPT-blood embeddings", 0.8696, MUTED, "≈ free correlation (p=0.55)"),
         ("global-mean-shift null (the bar)", 0.8498, ORANGE, "the bar to beat"),
