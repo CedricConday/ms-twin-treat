@@ -14,8 +14,9 @@ Method (Allen-Rieger flavour of plausible-patient generation):
 
 This is the real method; the model it filters against is a TOY, so the resulting
 cohort is method-real, biology-illustrative (validated=False). MAPEL prevalence-
-weighting (reweight the accepted cohort to a target biomarker prevalence) is the
-documented next step, not yet implemented -- see TODO below.
+weighting (reweight the accepted cohort to a target biomarker prevalence) is
+implemented in weight_to_prevalence() below (simplified to a single severity axis;
+full MAPEL optimizes multiple axes).
 
 What makes this NOT the make_cohort() stand-in it replaces: that only jittered a
 seed. This samples a parameter space and rejects the implausible region, which

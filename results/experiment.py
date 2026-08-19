@@ -9,10 +9,11 @@ see whether the model ranks them correctly.
 Two honest results come out of this:
   1. The pipeline SEPARATES treated from untreated (the toy models are at least
      directionally coherent end to end).
-  2. It CANNOT yet flag the harmful arm (APL CGP77116, halted in Phase II for
-     causing MS exacerbations) — its treat value is a placeholder 0.0, so it reads
-     like untreated. That gap is exactly what the backtest exists to close, and
-     naming it is the honest version of this story.
+  2. It now FLAGS the harmful arm (APL CGP77116, halted in Phase II for causing MS
+     exacerbations) — it reads worse than untreated. But that harm is
+     MECHANISM-ENCODED, not discovered: APL's immunogenic parameter is set from its
+     documented encephalitogenic biology, not its relapse outcome. That is a
+     capability milestone, not validation.
 
 Everything here is toy/unvalidated (see each brick). Numbers are proxies, not
 clinical endpoints. Run:  python -m results.experiment
