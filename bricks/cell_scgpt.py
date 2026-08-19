@@ -3,10 +3,14 @@
 THE QUESTION
 ------------
 Given how *other* immune cell types respond to IFN-beta, predict a held-out cell
-type's response — well enough to beat the global-mean-shift null (the "bar",
-0.8498 aggregate delta_pearson on Kang). Beating that bar is the only way to
-earn the words "cell-type specific": IFN-beta's interferon signature is largely
-shared, so reproducing the average response is easy and means nothing.
+type's response — well enough to beat the mean-shift nulls. Beating them is the
+only way to earn the words "cell-type specific": IFN-beta's interferon signature
+is largely shared, so reproducing the average response is easy and means nothing.
+
+Two bars, both reported (see bricks/baselines.py for why they differ):
+  leave-one-out mean shift  0.8166   THE CANONICAL BAR — the fair one
+  global mean shift         0.8498   leaky in the null's favour; harder
+This model scores 0.8732 and clears both.
 
 THE MODEL
 ---------
@@ -44,20 +48,25 @@ HONESTY RULES OBSERVED HERE
   goes with which training delta collapses the model to ~0.78, below even the
   plain leave-one-out mean shift. The gain comes from the similarity, not from
   a leak.
-- **The bar is leaky in its own favour** and we did not "fix" it to look better:
-  `PerturbationBenchmark.global_mean_delta()` averages the true delta over ALL
-  cell types including the held-out one, so the null we must beat has seen data
-  this model never gets. We beat it anyway, and report the fair
-  leave-one-out mean-shift number (0.8232) alongside.
+- **We clear the fair bar AND the leaky one.** The global mean shift averages
+  the true delta over ALL cell types including the held-out one, so it has seen
+  data this model never gets — leaky in the null's favour. We did not quietly
+  swap to the friendlier comparison: both are printed, canonical first.
+- **One fold cannot be scored at all.** Megakaryocytes (63/69 cells) have a
+  measured-delta reliability of 0.045, so that fold scores noise for every model
+  here including the nulls. The scorecard prints the aggregate restricted to the
+  measurable cell types next to the headline, because the unrestricted mean
+  rewards whoever got luckier on noise.
 
 WHAT scGPT DID AND DID NOT CONTRIBUTE — full account in claims/B2-SCGPT/NOTES.
 
-    similarity source              aggregate delta_pearson
-    global mean shift (the bar)              0.8498
-    scGPT-blood cell embeddings              0.8696   beats the bar
-    scGPT-human cell embeddings              0.8708   beats the bar
-    control-profile correlation              0.8732   beats the bar
-    noise ceiling (perfect model)            0.9075
+    similarity source              aggregate    7 measurable cell types
+    loo mean shift (CANONICAL BAR)    0.8166              0.8689
+    global mean shift (leaky)         0.8498              0.9032
+    scGPT-blood cell embeddings       0.8696              0.9247
+    scGPT-human cell embeddings       0.8708              0.9266
+    control-profile correlation       0.8732              0.9293
+    noise ceiling (perfect model)     0.8925              0.9898
 
 scGPT is real here and it works: the encoder validates at 94% 1-NN cell-type
 accuracy on Kang control cells, and its cell embeddings beat the bar as the
@@ -67,6 +76,14 @@ difference -0.0036, Wilcoxon p=0.55: no detectable difference). scGPT's
 pretrained *gene* embeddings contributed nothing at all: two smoother
 formulations (rank-512 kernel and sparse kNN) both degraded the score, and the
 nested selection zeroed them out in all 8 folds.
+
+Scope of that negative result, so it does not widen in the retelling: scGPT was
+tested as a cell-state SIMILARITY METRIC and as a GENE-EMBEDDING SMOOTHER. It
+was NOT tested in the GEARS-style fine-tuned perturbation mode it is actually
+promoted for, because that needs the MLM decoder head, which did not validate
+(see scripts/scgpt_model.py). Supported: "scGPT buys nothing over np.corrcoef as
+a cell-state metric on this benchmark." NOT supported: "scGPT doesn't work for
+perturbation prediction." 
 
 So the honest label on this brick is **cell-state transfer beats the bar**, not
 "scGPT beats the bar". The default similarity is therefore the cheap one; the
@@ -269,7 +286,8 @@ def _scrambled_similarity_control(bench: PerturbationBenchmark, n_rep: int = 20)
 
 def _scorecard() -> None:
     from data.kang import to_benchmark
-    from bricks.baselines import GlobalMeanShiftNull, IdentityNull
+    from bricks.baselines import (GlobalMeanShiftNull, IdentityNull,
+                                  LeaveOneOutMeanShiftNull)
 
     print("B2-SCGPT — LOCTO scorecard on real Kang IFN-beta data.\n")
     bench = to_benchmark()
@@ -295,14 +313,18 @@ def _scorecard() -> None:
             row += f"{v:13.3f}{' +' if v > r_bar[ct] else ' -'}"
         print(row)
 
+    r_canon = bench.evaluate(LeaveOneOutMeanShiftNull(bench))["delta_pearson"]
+    r_canon_floor = bench.evaluate(
+        LeaveOneOutMeanShiftNull(bench, floor=True))["delta_pearson"]
+
     print("\n-- nulls, worst to best --")
     print(f"  identity (no change)             {r_ident.mean():.4f}")
     print(f"  scrambled-similarity control     {_scrambled_similarity_control(bench):.4f}"
           f"   (our model with the metric broken)")
-    print(f"  leave-one-out mean shift         {_loo_meanshift(bench):.4f}"
-          f"   (the fair, non-leaky null)")
-    print(f"  BAR: global mean shift           {r_bar.mean():.4f}"
-          f"   <-- the handoff's 0.85; leaky, it averages in the held-out delta")
+    print(f"  loo mean shift  [CANONICAL BAR]  {r_canon.mean():.4f}"
+          f"   ({r_canon_floor.mean():.4f} with the >=0 floor)")
+    print(f"  global mean shift (leaky)        {r_bar.mean():.4f}"
+          f"   <-- harder secondary; it averages in the held-out delta")
 
     print("\n-- models --")
     best = None
@@ -313,28 +335,29 @@ def _scorecard() -> None:
         if best is None or agg > best[1]:
             best = (lab, agg)
 
-    print("\n-- how much of this is even reachable --")
-    print("  Megakaryocytes have 63 control / 69 stimulated cells and a split-half")
-    print("  delta reliability of 0.06 — that fold scores noise, for every model")
-    print("  here including the null. Run scripts/noise_ceiling.py for the table.")
-    print("  Mean attainable delta_pearson for a PERFECT model = 0.9075.")
+    if bench.reliability:
+        print("\n-- how much of this is even reachable --")
+        ceilings = [bench.ceiling(ct) for ct in bench.cell_types]
+        print(f"  ceiling for a PERFECT model      {sum(ceilings)/len(ceilings):.4f}")
+        noisy = bench.unreliable_cell_types
+        if noisy:
+            keep = [ct for ct in bench.cell_types if ct not in noisy]
+            for ct in noisy:
+                print(f"  {ct} has delta reliability "
+                      f"{bench.reliability[ct]:.3f} — that fold scores noise, for")
+                print("  every model here including the nulls, and drags every aggregate.")
+            print(f"  Restricted to the {len(keep)} measurable cell types:")
+            print(f"    canonical bar {r_canon.loc[keep].mean():.4f}"
+                  f"   leaky bar {r_bar.loc[keep].mean():.4f}"
+                  f"   ceiling {sum(bench.ceiling(c) for c in keep)/len(keep):.4f}")
+            for m, lab in zip(models, labels):
+                print(f"    {lab:<30} {scores[m.name].loc[keep].mean():.4f}")
 
     primary = scores[models[0].name].mean()
     print(f"\nselected temperature per fold (inner LOO): "
           f"{sorted(set(models[0]._chosen_T.values()))}")
     print(f"\nmodel={primary:.4f}  bar={r_bar.mean():.4f}  BEATS={primary > r_bar.mean()}")
     print(f"(best variant: {best[0]} at {best[1]:.4f})")
-
-
-def _loo_meanshift(bench: PerturbationBenchmark) -> float:
-    cts = bench.cell_types
-    d = np.vstack([bench.profiles[ct].true_delta for ct in cts])
-    c = np.vstack([bench.profiles[ct].control_mean for ct in cts])
-    out = []
-    for i in range(len(cts)):
-        train = [j for j in range(len(cts)) if j != i]
-        out.append(_pearson(d[i], np.maximum(d[train].mean(axis=0), -c[i])))
-    return float(np.mean(out))
 
 
 if __name__ == "__main__":
