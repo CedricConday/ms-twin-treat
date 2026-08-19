@@ -58,17 +58,38 @@ def unwrap(value: Any) -> Any:
 
 @runtime_checkable
 class Stage(Protocol):
-    """One scale of the model.
+    """One scale of the model. Canonical interface is BUILD_PLAN.md §3(b):
 
-    `requires` lets the pipeline fail loudly at the boundary rather than deep
-    inside a brick's numerics, which is where a missing upstream key would
-    otherwise surface as an unrelated exception.
+        class Stage(Protocol):
+            name: str
+            def run(self, state: dict) -> dict: ...
+
+    `requires` is optional and additive — it lets the pipeline fail at the
+    boundary with a useful message rather than deep inside a brick's numerics,
+    where a missing upstream key surfaces as an unrelated exception. A brick
+    that does not declare it simply gets no pre-check.
     """
 
     name: str
-    requires: tuple[str, ...]
 
-    def __call__(self, state: MultiScaleState) -> MultiScaleState: ...
+    def run(self, state: MultiScaleState) -> MultiScaleState: ...
+
+
+def invoke(stage: Any, state: MultiScaleState) -> MultiScaleState:
+    """Call a stage by its declared interface.
+
+    BUILD_PLAN §3(b) specifies `.run(state)`. Plain callables are also accepted
+    so a lambda or a partial can stand in during development without needing a
+    class. `.run()` wins when both exist.
+    """
+    runner = getattr(stage, "run", None)
+    if callable(runner):
+        return runner(state)
+    if callable(stage):
+        return stage(state)
+    raise StageError(
+        f"stage {getattr(stage, 'name', stage)!r} has neither .run(state) nor __call__"
+    )
 
 
 class StageError(RuntimeError):
@@ -109,7 +130,7 @@ class Pipeline:
         for i, stage in enumerate(self.stages, 1):
             before = set(state)
             self._check(stage, state)
-            result = stage(state)
+            result = invoke(stage, state)
             if not isinstance(result, dict):
                 raise StageError(
                     f"stage {stage.name!r} returned {type(result).__name__}, expected the state dict"
@@ -176,6 +197,9 @@ class PassThroughStage:
         self._value = value
         self._reason = reason
 
-    def __call__(self, state: MultiScaleState) -> MultiScaleState:
+    def run(self, state: MultiScaleState) -> MultiScaleState:
         state[self.produces] = standin(self._value, self._reason)
         return state
+
+    # convenience so a stage is usable either way
+    __call__ = run
