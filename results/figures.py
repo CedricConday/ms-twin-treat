@@ -4,8 +4,9 @@
                       we now beat the null (control-sim 0.87 > bar 0.85), and
                       scGPT (0.87) does NOT earn it (≈ np.corrcoef, p=0.55).
   fig2_arms.png     — mean lesion_proxy per real trial arm. Worked arms separate
-                      from untreated; the harmed arm (APL) reads like untreated
-                      because the model can't flag it yet.
+                      from untreated; the harmed arm (APL) now reads WORSE than
+                      untreated (harm mechanism-encoded from known biology, not
+                      discovered).
 
 All numbers verified in RESULTS.md. Nothing here is evidence about MS.
 Run:  python -m results.figures   ->  writes results/figures/*.png
