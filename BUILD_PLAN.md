@@ -71,7 +71,7 @@ Kick off heavy installs in the background FIRST (torch, pyscenic) so they finish
 - **WIRE IT:** one `spine/run_demo.py` that assembles [intervention → cell → GRN → QSP → ABM → barrier → readout] over a small VPop and prints the state flowing end to end. THIS is the "built" milestone.
 
 ## 5. GUARDRAILS (non-negotiable)
-- Author identity ALWAYS `cedric@condaydigital.com` (or the noreply). **NEVER** `a personal email address`.
+- Author identity ALWAYS `cedric@condaydigital.com` (or the GitHub noreply). **NEVER** a personal email address.
 - **Push stays held until Cedric says go (target 1300).** Local commits fine; no remote, no push.
 - No datasets/weights in git. No secrets.
 - **Built ≠ validated. Do not let the demo's "it runs" become "it works."** Every stand-in is labelled STANDIN in code + output. Under-promise to the MS community, always.
