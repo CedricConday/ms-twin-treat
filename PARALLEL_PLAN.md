@@ -110,6 +110,9 @@ against the contract in §4; they slot in when the spine lands.
 reads the keys it needs and writes the keys it produces. A stage that cannot
 compute a key yet writes a value clearly marked `STANDIN`.
 
+**Canonical definition is `BUILD_PLAN.md` §3(b) — that came first, and the
+bricks are written against it. Restated here so nobody has to cross-reference:**
+
 ```python
 # spine/pipeline.py
 from typing import Any, Protocol
@@ -118,8 +121,14 @@ MultiScaleState = dict[str, Any]
 
 class Stage(Protocol):
     name: str
-    def __call__(self, state: MultiScaleState) -> MultiScaleState: ...
+    def run(self, state: MultiScaleState) -> MultiScaleState: ...
 ```
+
+`spine/pipeline.py` also accepts a plain callable, so a lambda or partial can
+stand in during development, but **`.run(state)` is the interface to write
+against.** An optional `requires: tuple[str, ...]` attribute makes the pipeline
+fail at the stage boundary with a readable message instead of inside your
+numerics.
 
 Reserved keys — **owner of the brick owns the key**:
 
