@@ -51,7 +51,7 @@ def _is_plausible(r_CA: float, k_dmg: float) -> bool:
     traj = qsp_simulate(params={"r_CA": r_CA, "k_dmg": k_dmg}, treat=0.0)
     final_damage = 1.0 - float(traj["M"][-1])
     lo, hi = PLAUSIBLE_DAMAGE
-    return lo <= final_damage <= hi and np.isfinite(final_damage)
+    return bool(np.isfinite(final_damage) and lo <= final_damage <= hi)
 
 
 def sample_vpop(n: int = 20, seed: int = 0, arm: str | None = None,

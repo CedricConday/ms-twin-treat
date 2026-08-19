@@ -1,0 +1,3 @@
+# Dev/test deps (on top of requirements.txt). Runtime does not need these.
+-r requirements.txt
+pytest==9.1.1
