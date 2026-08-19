@@ -1,0 +1,173 @@
+B2-SCGPT — owner: sg
+=====================================================================
+VERDICT: the bar is beaten. 0.8732 vs 0.8498, LOCTO, on real Kang IFN-beta.
+         But read section 3 before calling it a scGPT win, because it isn't.
+=====================================================================
+
+1. WIRING (this is all vps needs)
+---------------------------------
+    from bricks.cell_scgpt import ScGPTCellModel
+    model = ScGPTCellModel(bench)              # bench = data.kang.to_benchmark()
+
+  constructor : ScGPTCellModel(benchmark, similarity="control",
+                               checkpoint="blood", temperature=None, floor=True)
+  class name  : ScGPTCellModel
+  import path : bricks.cell_scgpt
+  model.name  : "cell:control-sim-transfer(LOCTO,blood)"
+
+  Implements BOTH interfaces, same as bricks/cell_transfer.py:
+    - PerturbationModel : predict(control_mean, cell_type) -> perturbed_mean
+    - Stage             : __call__(state) -> state, writes state["cell_delta"]
+                          as {cell_type: delta_vector}
+
+  It is a drop-in replacement for CellTransferModel — same constructor shape
+  (takes the benchmark), same two interfaces, no new dependencies. Nothing to
+  install: the DEFAULT path needs only numpy and the benchmark. Do not wire the
+  scGPT path (see 3); it needs a 156 MB checkpoint and a second venv to score
+  no better.
+
+  Reproduce the scorecard:   python -m bricks.cell_scgpt
+  Tests:                     python -m pytest tests/test_cell_scgpt.py -q   (8 pass)
+
+
+2. WHAT THE MODEL IS
+--------------------
+  The mean-shift null averages every training cell type's delta with equal
+  weight — it insists a megakaryocyte responds to IFN-beta like a monocyte.
+  This model keeps the averaging and *weights* it by cell-state similarity:
+
+      w_j  = softmax_j( sim(X, j) / T )     over training cell types j != X
+      dhat = sum_j w_j * unit(delta_j)      unit-normalized so one high-amplitude
+                                            cell type can't hijack the direction
+      pred = max(dhat * scale, -control_X)  log1p data is >= 0, so a gene sitting
+                                            at zero in X cannot go down
+
+  `sim` comes from CONTROL data only. The floor is not a fudge — the null
+  cheerfully predicts negative expression for genes a cell type doesn't express,
+  and pays for it. Temperature T is picked per fold by an INNER leave-one-out
+  over the 7 training cell types; it lands on 0.05 in every fold.
+
+  Honesty properties, all of them checked and not merely asserted:
+    - LOCTO is enforced and TESTED: tests/test_cell_scgpt.py corrupts a cell
+      type's perturbed profile into noise and asserts its prediction is
+      bit-identical. Same test for the selected temperature.
+    - Nested selection: the reported number for a fold was not tuned on it.
+    - Negative control: scramble which similarity goes with which training delta
+      and the model collapses to 0.7828 — BELOW the plain leave-one-out mean
+      shift (0.8232). The gain is the similarity, not a leak.
+
+
+3. WHAT scGPT ACTUALLY CONTRIBUTED — the part that must not get rounded up
+--------------------------------------------------------------------------
+  scGPT was the primary swing. It was run for real, and it works. It did not
+  earn the headline.
+
+    similarity source                aggregate delta_pearson
+    global mean shift (the bar)                0.8498
+    scGPT-blood cell embeddings                0.8696   beats the bar
+    control-profile Pearson                    0.8732   beats the bar
+    ensemble of the two                        0.8726
+    noise ceiling (perfect model)              0.9075
+
+  scGPT cell embeddings BEAT THE BAR. They do not beat plain Pearson
+  correlation of the control mean profiles — a metric that costs nothing.
+  Paired over the 8 folds: mean difference -0.0036, Wilcoxon p=0.55. There is
+  no detectable difference between a 156 MB pretrained transformer and
+  np.corrcoef here.
+
+  scGPT's pretrained GENE embeddings contributed nothing at all. Two smoother
+  formulations (rank-512 linear kernel, sparse k=16 kNN) both degraded the score
+  monotonically, and the nested selection set their weight to zero in all 8
+  folds. It blurs the interferon signature across genes scGPT thinks are
+  related, which is exactly the specificity the bar is testing for.
+
+  So: "a cell-state transfer model beats the null" is supported.
+      "scGPT beats the null" is ALSO literally true (0.8696 > 0.8498) but
+      misleading if said alone, because the free baseline does it better.
+      "scGPT gave us the win" is FALSE. Do not put that in the deck.
+
+  The scGPT path is kept and reproducible rather than deleted, so the negative
+  result stays falsifiable.
+
+
+4. scGPT ENGINEERING — what was built, and what did NOT validate
+----------------------------------------------------------------
+  The `scgpt` package pins flash-attn and an old torch and fights this
+  CPU/aarch64 box, so scripts/scgpt_model.py re-implements the encoder in plain
+  torch and loads `best_model.pt` by name. Architecture was read off scGPT's own
+  source, not guessed (see the module docstring for the line-by-line mapping).
+  Every encoder parameter in the checkpoint is matched; only the unused
+  perturbation-flag and MVC heads are left over.
+
+  VALIDATED:
+    - gene embeddings involve no forward pass, so they are faithful by
+      construction; biologically, the 20-gene ISG set is far more coherent than
+      random gene sets (mean pairwise cosine +0.21 vs +0.02 +/- 0.01, z=+17.5).
+    - the ENCODER: <cls> embeddings of Kang control cells give 94.3%
+      leave-one-out 1-NN cell-type accuracy (chance 12.5%), cosine silhouette
+      0.34, and recover immune lineage structure — myeloid block, T/NK block,
+      megakaryocytes as the outlier.
+
+  DID NOT VALIDATE — stated plainly because it bounds what we can claim:
+    - the MLM expression DECODER head. Asked to reconstruct masked expression
+      bins it regresses nearly to a constant (pearson r ~0.11 blood / 0.27
+      human; prediction sd ~1 against a true bin sd of ~14). Cause not
+      established: it may be a subtle mismatch in the re-implementation that we
+      failed to find, or these re-hosted heads may not be the MLM head at
+      inference scale. We therefore use ONLY the encoder and the gene embedding
+      table, never `decoder`. Nothing in the scorecard depends on it.
+      If anyone later wants scGPT's *generative* perturbation prediction
+      (GEARS-style), this is the blocker to clear first.
+
+
+5. WHAT THIS RESULT IS NOT
+--------------------------
+  BUILT != VALIDATED. This is one backtest, one dataset, one perturbation
+  (IFN-beta on PBMCs), 8 cell types. It is NOT "we can predict MS drugs."
+
+  Three specific limits worth carrying into any writeup:
+
+  a) The bar is leaky in its own favour and we did not quietly fix it to look
+     better. PerturbationBenchmark.global_mean_delta() averages the true delta
+     over ALL cell types including the held-out one, so the null we beat has
+     seen data our model never gets. The fair leave-one-out mean shift is
+     0.8232. We beat the leaky version anyway; that is the harder comparison
+     and it's the one reported.
+
+  b) One of the 8 folds is unscoreable. Megakaryocytes have 63 control / 69
+     stimulated cells and a split-half delta reliability of 0.058 — that fold is
+     scoring measurement noise, for every model including the null, and it drags
+     every aggregate down by roughly 0.05. Run scripts/noise_ceiling.py.
+     On the 7 measurable cell types: bar 0.9032, model 0.9293, ceiling 0.9897 —
+     the model closes ~30% of the gap between the null and what is achievable.
+
+  c) With 8 folds the statistics are suggestive, not conclusive. The model wins
+     7/8 cell types, but a paired Wilcoxon against the bar gives p=0.055 (and
+     n=8 cannot produce better than p=0.008 even on a clean sweep). The
+     aggregate margin is real; do not dress it as significance.
+
+  It loses one cell type outright: Dendritic cells, 0.915 vs the bar's 0.932.
+
+
+6. REPRODUCING THE scGPT PATH (optional, not needed to wire)
+------------------------------------------------------------
+    python3 -m venv .venv-scgpt && . .venv-scgpt/bin/activate
+    pip install --index-url https://download.pytorch.org/whl/cpu torch
+    pip install "numpy<2.1" scipy anndata scanpy
+    # checkpoints (gitignored, ~156 MB / ~205 MB):
+    #   https://huggingface.co/perturblab/scgpt-blood  -> data/cache/scgpt/blood/
+    #   https://huggingface.co/perturblab/scgpt-human  -> data/cache/scgpt/human/
+    python scripts/scgpt_embed.py --ckpt data/cache/scgpt/blood --n-per-type 128
+
+  Writes data/cache/scgpt_embeddings_blood.npz (gitignored). ~25 min on 4 CPU
+  cores. Then `similarity="scgpt"` in ScGPTCellModel picks it up. The heavy env
+  never touches the pinned .venv — the brick reads the npz with plain numpy.
+
+  Files owned by this lane (nothing else was modified except a one-line
+  .gitignore entry for .venv-scgpt/):
+    bricks/cell_scgpt.py        the brick
+    scripts/scgpt_model.py      scGPT encoder re-implementation + validation notes
+    scripts/scgpt_data.py       Kang -> scGPT tokenization (binning, <cls>, padding)
+    scripts/scgpt_embed.py      embedding extraction CLI (.venv-scgpt only)
+    scripts/noise_ceiling.py    split-half reliability / attainable ceiling
+    tests/test_cell_scgpt.py    8 invariant tests incl. the leakage test
