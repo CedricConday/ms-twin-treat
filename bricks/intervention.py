@@ -26,6 +26,8 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+from bricks.grounding import IMMUNOGENIC, NEUTRAL, SUPPRESSIVE, mechanism_to_params
+
 
 @dataclass(frozen=True)
 class Intervention:
@@ -48,6 +50,7 @@ class Intervention:
     immunogenic: float = 0.0
     dose: float = 1.0
     cns_required: bool = False
+    mechanism: str = ""
     notes: str = ""
     meta: dict[str, Any] = field(default_factory=dict)
 
@@ -66,41 +69,40 @@ class Intervention:
 
 
 # --------------------------------------------------------------------------- #
-# A small library of arms, so a backtest can be pointed at a known outcome.
-#
-# The trial outcomes in the comments are REAL and citable. The `treat` values
-# are NOT derived from them — they are placeholders awaiting calibration. The
-# point of naming real arms is that this pipeline has somewhere to aim: a model
-# earns trust by separating the ones that worked from the ones that harmed.
+# The library of arms. Parameters are NOT hand-set per drug — they come from the
+# mechanism-class rule in bricks/grounding.py, keyed on each drug's INDEPENDENT
+# (in-vitro) mechanism, never on its clinical outcome. The trial outcomes in the
+# notes are REAL and citable; they are the TARGETS the gate checks against, not
+# inputs to the parameters. This is what lets the clinical gate test the rule
+# rather than restate four hand-tuned numbers.
 # --------------------------------------------------------------------------- #
 
-UNTREATED = Intervention(
-    "untreated", treat=0.0,
-    notes="control arm",
-)
+def _from_mechanism(name: str, mechanism: str, *, cns_required: bool = False,
+                    notes: str = "", strength: float | None = None) -> Intervention:
+    treat, immuno = mechanism_to_params(mechanism, strength)
+    return Intervention(name, treat=treat, immunogenic=immuno,
+                        cns_required=cns_required, mechanism=mechanism, notes=notes)
 
-IFN_BETA = Intervention(
-    "IFN-beta", treat=0.5, cns_required=False,
-    notes="approved DMT; the Kang 2018 dataset in this repo is IFN-beta stimulated PBMCs",
-)
 
-GLATIRAMER = Intervention(
-    "glatiramer acetate", treat=0.45, cns_required=False,
-    notes="approved 1996; tolerance-adjacent, acts peripherally. Backtest target: WORKED",
-)
+UNTREATED = _from_mechanism("untreated", NEUTRAL, notes="control arm")
 
-APL_CGP77116 = Intervention(
-    "APL CGP77116", treat=0.0, immunogenic=0.4, cns_required=False,
-    notes=(
-        "altered peptide ligand of MBP 83-99. Phase II HALTED: 3 patients had MS "
-        "exacerbations, 2 immunologically linked to the drug (Bielekova et al., "
-        "Nature Medicine 2000, doi:10.1038/80516). Backtest target: HARMED. "
-        "immunogenic=0.4 encodes the DOCUMENTED MECHANISM (the peptide is "
-        "encephalitogenic - it activates myelin-reactive T cells), NOT the relapse "
-        "outcome. Harm should EMERGE from the mechanism, not be asserted. The 0.4 "
-        "magnitude is illustrative and not fit to any number."
-    ),
-)
+IFN_BETA = _from_mechanism(
+    "IFN-beta", SUPPRESSIVE,
+    notes="approved DMT; immunomodulatory (suppressive class). The Kang 2018 dataset "
+          "in this repo is IFN-beta-stimulated PBMCs. Backtest target: WORKED.")
+
+GLATIRAMER = _from_mechanism(
+    "glatiramer acetate", SUPPRESSIVE,
+    notes="approved 1996; tolerance-adjacent, immunomodulatory (suppressive class), "
+          "acts peripherally. Backtest target: WORKED.")
+
+APL_CGP77116 = _from_mechanism(
+    "APL CGP77116", IMMUNOGENIC,
+    notes="altered peptide ligand of MBP 83-99. IMMUNOGENIC class: encephalitogenic in "
+          "T-cell assays — an INDEPENDENT, in-vitro property (Bielekova et al., Nat Med "
+          "2000, doi:10.1038/80516). Phase II HALTED: 3 exacerbations, 2 drug-linked. "
+          "Backtest target: HARMED. Its harm parameter comes from the immunogenic class "
+          "rule, NOT from its relapse number.")
 
 LIBRARY = {i.name: i for i in (UNTREATED, IFN_BETA, GLATIRAMER, APL_CGP77116)}
 

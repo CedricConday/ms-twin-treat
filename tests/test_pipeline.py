@@ -80,6 +80,18 @@ def test_abm_treatment_reduces_damage():
     assert simulate(treat=0.8, seed=0)[-1] < simulate(treat=0.0, seed=0)[-1]
 
 
+def test_intervention_params_from_mechanism_rule():
+    """Params come from the mechanism-class rule (grounding.py), not per-arm tuning:
+    two suppressive drugs share the class strength, and it is NOT fit to their
+    (different) outcomes. This is what lets the clinical gate test the rule."""
+    from bricks.intervention import IFN_BETA, GLATIRAMER, APL_CGP77116
+    from bricks.grounding import SUPPRESSIVE_STRENGTH, IMMUNOGENIC_STRENGTH
+    assert IFN_BETA.treat == GLATIRAMER.treat == SUPPRESSIVE_STRENGTH
+    assert IFN_BETA.immunogenic == 0.0
+    assert APL_CGP77116.treat == 0.0
+    assert APL_CGP77116.immunogenic == IMMUNOGENIC_STRENGTH
+
+
 def test_immunogenic_intervention_causes_harm():
     """The harm mechanism: an immunogenic therapy makes things WORSE than untreated
     (more demyelination) — the opposite of a suppressive one. Without this the stack

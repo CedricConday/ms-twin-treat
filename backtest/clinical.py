@@ -110,12 +110,13 @@ def main() -> int:
     if passed:
         print("  The stack can now represent BOTH benefit and harm and directs every known")
         print("  arm correctly. This is a CAPABILITY MILESTONE, not validation:")
-        print("    - intervention params (treat, immunogenic) are MECHANISM-ASSIGNED by hand,")
-        print("      not derived from data. APL's harm emerges from its documented")
-        print("      encephalitogenic mechanism, NOT from a fit to its relapse number.")
-        print("    - 4 arms whose outcomes informed the setup: direction-correctness is")
-        print("      necessary, not sufficient. Real viability still needs data-grounded")
-        print("      parameters, OUT-OF-SAMPLE arms, and validated magnitudes.")
+        print("    - intervention params now come from a 2-PARAMETER MECHANISM-CLASS RULE")
+        print("      (bricks/grounding.py), keyed on each drug's independent in-vitro")
+        print("      mechanism — NOT hand-tuned per arm, NOT fit to any relapse number.")
+        print("      The gate now tests the RULE, not four hand-set values.")
+        print("    - but the rule is coarse and reasoned, not data-fit; with only 4 arms a")
+        print("      rigorous leave-one-out (fit strengths on N-1, predict the Nth) needs")
+        print("      more arms than we have data for. Necessary, not yet sufficient.")
     else:
         fails = [o.arm for o, _, _, d_ok, _ in g["rows"] if not d_ok]
         print(f"  not yet reproduced: {fails}")

@@ -16,7 +16,7 @@ real **out-of-sample** test instead of a restatement of what we already told it.
 | Brick | Parameter(s) | Now | Ground against | Priority |
 |---|---|---|---|---|
 | **Cell** (`cell_scgpt`) | cell-state response | ✅ **DATA-GROUNDED** — Kang IFN-β, beats the null (0.87) | — this is what "grounded" looks like | done |
-| **Intervention** | `treat`, `immunogenic` | hand-set per drug (mechanism-motivated) | IFN-β: the immune-response magnitude in the Kang data we already have. Others: their single-cell data — the honest gap (no open atlas for ocrelizumab/fingolimod) | **HIGH** |
+| **Intervention** | `treat`, `immunogenic` | ✅ **from a 2-param mechanism-class rule** (`grounding.py`) — not per-arm hand-tuning | next: derive the class strengths from data (IFN-β magnitude from Kang; others need their single-cell data — the honest gap) | partial |
 | **Barrier** (PBPK) | rate constants → CNS penetration | ✅ **baseline GROUNDED** — `k_pc` calibrated to ~0.15% CNS (Pardridge 2019); other rate constants still illustrative | remaining constants: published PK; small molecules higher | partial |
 | **QSP** | disease / cytokine ODE rates | invented | published immune/cytokine kinetics; no open MS QSP exists (greenfield) | MED–HARD |
 | **ABM** | aggression / damage / repair | invented | the **Weatherley MS ABM** (MIT, PLoS Comp Bio) rules/rates — a real published open model to port | MED |
