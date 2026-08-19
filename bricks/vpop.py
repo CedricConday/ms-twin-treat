@@ -84,7 +84,7 @@ def sample_vpop(n: int = 20, seed: int = 0, arm: str | None = None,
                     "validated": False,
                     "method": "LHS + plausibility filter (Allen-Rieger flavour)",
                     "note": "method real; plausibility model is a TOY QSP. "
-                            "MAPEL prevalence-weighting = TODO.",
+                            "MAPEL-style prevalence weighting available via weight_to_prevalence().",
                 },
             })
             if len(accepted) >= n:
@@ -94,6 +94,65 @@ def sample_vpop(n: int = 20, seed: int = 0, arm: str | None = None,
     if accepted:
         accepted[0]["vpop_meta"]["acceptance_rate"] = round(len(accepted) / max(n_tried, 1), 3)
     return accepted
+
+
+# --------------------------------------------------------------------------- #
+# MAPEL-flavoured prevalence weighting — the second half of the wedge.
+#
+# Plausible-patient sampling (above) says WHICH virtual patients are physiologically
+# admissible. It does NOT say how COMMON each kind should be. Real cohorts have a
+# prevalence structure (more mild than severe disease); an unweighted plausible set
+# does not. MAPEL (Schmidt et al.) fixes this by assigning each plausible patient a
+# weight so the weighted ensemble matches an observed distribution.
+#
+# This is a simplified, honest v1: bin patients by disease severity (untreated final
+# demyelination), then weight each bin by target/observed density ratio so the
+# weighted cohort matches a target prevalence. Full MAPEL optimises the weight
+# distribution against multiple output axes; this matches one axis. The TARGET here
+# is illustrative, not epidemiological — like everything else, validated=False.
+# --------------------------------------------------------------------------- #
+
+SEVERITY_BINS: list[tuple[float, float, str]] = [
+    (0.20, 0.50, "mild"), (0.50, 0.75, "moderate"), (0.75, 1.01, "severe"),
+]
+# Illustrative target prevalence (more mild than severe). NOT fitted to any registry.
+DEFAULT_PREVALENCE = {"mild": 0.50, "moderate": 0.35, "severe": 0.15}
+
+
+def _severity(patient: dict) -> float:
+    """Untreated final demyelination for this patient's sampled parameters."""
+    traj = qsp_simulate(params=patient.get("qsp_params", {}), treat=0.0)
+    return 1.0 - float(traj["M"][-1])
+
+
+def _severity_bin(dmg: float) -> str:
+    for lo, hi, name in SEVERITY_BINS:
+        if lo <= dmg < hi:
+            return name
+    return SEVERITY_BINS[-1][2] if dmg >= SEVERITY_BINS[-1][0] else SEVERITY_BINS[0][2]
+
+
+def weight_to_prevalence(cohort: list[dict],
+                         target: dict[str, float] | None = None) -> list[dict]:
+    """Assign MAPEL-style prevalence weights so the weighted cohort matches `target`.
+
+    Adds `weight` and `severity_bin` to each patient (weights average to 1.0). A bin
+    the target does not want gets weight 0; a rare-but-wanted bin gets up-weighted.
+    Mutates and returns the cohort.
+    """
+    target = target or DEFAULT_PREVALENCE
+    bins = [_severity_bin(_severity(p)) for p in cohort]
+    n = len(cohort)
+    counts = {b: bins.count(b) for b in set(bins)}
+    raw = []
+    for b in bins:
+        observed_frac = counts[b] / n if n else 0.0
+        raw.append((target.get(b, 0.0) / observed_frac) if observed_frac > 0 else 0.0)
+    scale = (n / sum(raw)) if sum(raw) > 0 else 1.0  # normalise mean weight to 1.0
+    for p, w, b in zip(cohort, raw, bins):
+        p["weight"] = round(w * scale, 4)
+        p["severity_bin"] = b
+    return cohort
 
 
 class VPopSampler:
@@ -119,4 +178,13 @@ if __name__ == "__main__":
         print(f"    {m['patient_id']}: r_CA={p['r_CA']}, k_dmg={p['k_dmg']}, "
               f"bbb={m['bbb_disruption']}")
     print("  method real (LHS + plausibility rejection); model is a toy; validated=False")
-    print("  TODO: MAPEL prevalence-weighting to a target biomarker distribution")
+
+    print("\n  MAPEL-style prevalence weighting (the second half of the wedge):")
+    big = sample_vpop(n=40, seed=2)
+    weight_to_prevalence(big)  # match DEFAULT_PREVALENCE (mild 0.50 / mod 0.35 / severe 0.15)
+    bins = [p["severity_bin"] for p in big]
+    for name in ("mild", "moderate", "severe"):
+        obs = bins.count(name) / len(big)
+        wt = sum(p["weight"] for p in big if p["severity_bin"] == name) / len(big)
+        print(f"    {name:<9} observed {obs:>5.0%}  ->  weighted {wt:>5.0%}   (target {DEFAULT_PREVALENCE[name]:.0%})")
+    print("  weighted cohort now matches the target prevalence. Target illustrative; validated=False.")

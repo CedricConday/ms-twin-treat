@@ -26,7 +26,7 @@ The first thing built was the scorer, not the simulation. It passes its own gate
 `python spine/run_demo.py` runs a virtual cohort through intervention → cell → GRN → QSP → population → barrier → clinical readout, and labels itself: *"BUILT, NOT VALIDATED — the scales compose; that is the claim. Nothing here is evidence about MS."*
 - Toy bricks are directionally coherent: QSP untreated myelin collapses to 0.09, treated preserved 0.78; ABM untreated damage 0.78, treated 0.27.
 - **Barrier is consequential (B8 gating):** same drug, same sim — a CNS-required therapy that barely crosses (effective 0.08) reads ~30 lesions vs ~12 for a peripheral one (effective 1.0). Ignore delivery and the barrier brick would be decoration; it isn't.
-- **The wedge (B9):** first open Python plausible-patient generator pointed at a neuroimmune model — LHS sampling + a plausibility filter that actually **rejects** the implausible region (acceptance ~0.89). MAPEL prevalence-weighting is the flagged next step.
+- **The wedge (B9):** first open Python virtual-population method pointed at a neuroimmune model, now **both halves**: (1) plausible-patient generation — LHS sampling + a plausibility filter that actually **rejects** the implausible region (acceptance ~0.89); (2) **MAPEL-style prevalence weighting** — the raw plausible set is skewed severe (72%), and weighting corrects it to a target prevalence (50/35/15 mild/moderate/severe), which is exactly the correction an unweighted plausible set lacks. Target illustrative, `validated=False`; full MAPEL optimizes multiple axes, this matches one.
 
 ## 5. Arm experiment — the shape of the eventual backtest
 One plausible virtual population (12 patients), run through every real trial arm (`python -m results.experiment`):

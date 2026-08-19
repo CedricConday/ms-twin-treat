@@ -117,6 +117,21 @@ def test_vpop_filter_discriminates():
     assert _is_plausible(0.90, 0.70)        # disease develops -> accept
 
 
+def test_vpop_prevalence_weighting_matches_target():
+    """MAPEL step: after weighting, the weighted mass per severity bin matches the
+    target prevalence -- the correction the raw plausible set does not have."""
+    from bricks.vpop import sample_vpop, weight_to_prevalence, DEFAULT_PREVALENCE
+    cohort = sample_vpop(n=40, seed=2)
+    weight_to_prevalence(cohort)
+    n = len(cohort)
+    present = {p["severity_bin"] for p in cohort}
+    for name, target in DEFAULT_PREVALENCE.items():
+        if name not in present:
+            continue  # a bin absent from the draw can't be matched into existence
+        weighted_mass = sum(p["weight"] for p in cohort if p["severity_bin"] == name) / n
+        assert abs(weighted_mass - target) < 0.02
+
+
 def test_vpop_patients_have_pipeline_keys():
     from bricks.vpop import sample_vpop
     for m in sample_vpop(n=5, seed=1):
