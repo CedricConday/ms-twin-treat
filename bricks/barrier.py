@@ -12,15 +12,19 @@ Three compartments, linear transfer, integrated with scipy:
 
     P plasma   C csf   N cns parenchyma
 
-**What is real:** the integration, the mass balance, and the shape of the
-answer. Exposure is computed as AUC in the CNS over AUC in plasma, which is the
-standard way this ratio is expressed.
+**What is real:** the integration, the mass balance, the shape of the answer
+(AUC in CNS over AUC in plasma), AND — now — the baseline CNS-penetration
+MAGNITUDE. `k_pc` is calibrated so a large molecule reaches ~0.15% of blood
+level in the CNS at baseline, matching the published therapeutic-antibody figure
+of ~0.1-0.2% (Pardridge 2019, Expert Opin Investig Drugs,
+doi:10.1080/13543784.2019.1627325 — via PubMed). Active-lesion BBB disruption
+raises it (~0.6% at full disruption), which is directionally correct.
 
-**What is NOT real:** every rate constant. These are illustrative magnitudes
-chosen to produce a plausible low-single-digit-percent CNS penetration for a
-large molecule, not values fitted to any drug or any measurement. No open MS
-PBPK model was used (see the research brain). Output is flagged
-`validated: False` and must not be read as a pharmacokinetic prediction.
+**What is NOT real:** the OTHER rate constants (k_cp, k_cn, k_nc, k_el) remain
+illustrative, and the disruption scaling is directional, not fitted. Only the
+baseline CNS-penetration fraction is grounded to an independent published value
+(never to an MS outcome). Output stays `validated: False` and must not be read
+as a full pharmacokinetic prediction.
 
 Barrier state matters in MS specifically — the BBB is disrupted in active
 lesions — so `bbb_disruption` scales the plasma-to-CSF rate. That coupling is
@@ -45,7 +49,8 @@ except Exception:  # pragma: no cover - scipy is pinned, but never hard-fail a b
 
 # illustrative rate constants (1/h). NOT fitted to anything.
 DEFAULTS = {
-    "k_pc": 0.010,   # plasma -> csf   (restrictive barrier)
+    "k_pc": 0.00035, # plasma -> csf — GROUNDED: calibrated so a large molecule reaches
+                     # ~0.15% of blood level in CNS at baseline (Pardridge 2019, see docstring)
     "k_cp": 0.120,   # csf -> plasma   (efflux dominates influx)
     "k_cn": 0.050,   # csf -> cns parenchyma
     "k_nc": 0.080,   # cns -> csf

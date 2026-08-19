@@ -17,7 +17,7 @@ real **out-of-sample** test instead of a restatement of what we already told it.
 |---|---|---|---|---|
 | **Cell** (`cell_scgpt`) | cell-state response | ✅ **DATA-GROUNDED** — Kang IFN-β, beats the null (0.87) | — this is what "grounded" looks like | done |
 | **Intervention** | `treat`, `immunogenic` | hand-set per drug (mechanism-motivated) | IFN-β: the immune-response magnitude in the Kang data we already have. Others: their single-cell data — the honest gap (no open atlas for ocrelizumab/fingolimod) | **HIGH** |
-| **Barrier** (PBPK) | rate constants → CNS penetration | illustrative (~8% CNS-effective — too high by orders of magnitude) | published monoclonal-antibody CNS:serum ratio ~**0.1–0.2%** (small molecules higher). First concrete anchor, below. | MED |
+| **Barrier** (PBPK) | rate constants → CNS penetration | ✅ **baseline GROUNDED** — `k_pc` calibrated to ~0.15% CNS (Pardridge 2019); other rate constants still illustrative | remaining constants: published PK; small molecules higher | partial |
 | **QSP** | disease / cytokine ODE rates | invented | published immune/cytokine kinetics; no open MS QSP exists (greenfield) | MED–HARD |
 | **ABM** | aggression / damage / repair | invented | the **Weatherley MS ABM** (MIT, PLoS Comp Bio) rules/rates — a real published open model to port | MED |
 | **Readout** | micro → clinical map | invented proxy scales | MSOAC / trial relapse data, held-out validated. **Hardest — open research.** | HARD |

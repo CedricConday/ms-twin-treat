@@ -97,6 +97,14 @@ def test_barrier_peripheral_full_exposure():
     assert s["cns_exposure"]["effective"] == 1.0
 
 
+def test_barrier_cns_penetration_grounded():
+    """Baseline large-molecule CNS penetration is GROUNDED to the published
+    therapeutic-antibody figure (~0.1-0.2%, Pardridge 2019) — not invented."""
+    from bricks.barrier import simulate
+    frac = simulate(dose=1.0, bbb_disruption=0.0)["fraction"]
+    assert 0.001 <= frac <= 0.002
+
+
 def test_barrier_cns_required_is_gated():
     from bricks.barrier import BarrierStage
     s = BarrierStage().run({"intervention": {"dose": 1.0, "cns_required": True}, "bbb_disruption": 0.1})
