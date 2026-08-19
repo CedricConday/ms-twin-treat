@@ -12,23 +12,36 @@ Not a cure. Not a trial replacement. Not a promise to patients. **In-silico evid
 ## Scope
 This repo is the **treat** arm only — intervention on someone who *already has* MS. A separate **prevent** arm (pre-symptomatic, genetically-susceptible virtual patient) is scoped in the research brain and will live in its own repo when it earns one. The two arms share a spine and will converge; they do not share a repo yet.
 
-## v0 — the smallest honest loop
-> one cell type · one known MS intervention · one readout · backtested against one published result
+## What runs today (v0)
+The whole spine is built and runs end to end — **and it is honest about being a skeleton, not a validated model.** The backtest harness came first, on purpose: nothing is trusted until it replays known history.
 
-- **Cell brick:** scGPT (MIT — brain + blood checkpoints)
-- **Population:** PhysiCell, seeded by the rules in `MS_ABM_Weatherley` (MIT)
-- **Backtest anchor:** Kang GSE96583 — IFN-β (a real first-line MS drug) on immune cells. Does the loop reproduce the known IFN-β effect?
-- **Success** = it reproduces the known outcome → validated micro-loop + a spine to extend.
-- **Failure** = we learn exactly where the gap is → also the point.
+- **Backtest harness** (`backtest/`) — validated on synthetic data (oracle 1.00 › mean-shift null › identity 0.00) and run on real biology: **Kang 2018 IFN-β PBMCs**, 8 immune cell types. Identity null 0.00; the global-mean-shift bar is **0.85**; Megakaryocytes (0.48) are the outlier the harness surfaces on its own.
+- **Cell model** (`bricks/cell_transfer.py`) — cross-cell-type transfer, leave-one-cell-type-out. **Scores 0.82 — it does NOT beat the 0.85 null yet.** Said out loud, because a model that can't beat "everyone responds the same" hasn't earned "cell-type specific." (scGPT is the swing to beat it.)
+- **GRN** recovers the interferon module (IFIT1/IFIT3–ISG15) + MHC-II from raw data. **QSP / ABM / barrier / readout** are toy models, directionally coherent, every one flagged `validated=False`.
+- **The wedge** (`bricks/vpop.py`) — a first open Python plausible-patient generator (LHS + a rejection filter that actually rejects) pointed at a neuroimmune model. No such implementation exists on GitHub.
 
-## Status
-Pre-v0. Scaffolding. Research and full brick/data map live in the brain repo (`ms-twin/docs/RESEARCH_FINDINGS.md`).
+**Reproduce it:**
+```bash
+python -m pip install -r requirements.txt
+python -m backtest.selftest      # the ruler validates itself
+python -m backtest.run_kang      # real IFN-β backtest — the 0.85 bar
+python spine/run_demo.py         # the full pipeline, end to end, self-labeling
+python -m results.experiment     # virtual cohort across real trial arms
+python -m pytest                 # 13 invariant tests (needs requirements-dev.txt)
+```
+
+See **[`results/RESULTS.md`](results/RESULTS.md)** for every verified number and an explicit real-vs-toy table, and `results/figures/` for the deck figures. Full brick/data map + citations: `../ms-twin/docs/RESEARCH_FINDINGS.md`.
+
+## Honest state of the science
+Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separates the therapies that *worked* (IFN-β, glatiramer) from untreated — and **openly cannot yet flag the one that harmed patients** (APL CGP77116, halted in Phase II). That gap is exactly what the backtest exists to close, and it is not hidden. **Nothing in this repo is evidence about multiple sclerosis.**
 
 ## Layout
 - `spine/` — the multi-scale orchestration layer (ours)
-- `bricks/` — adapters to the component models (other people's models, our wrappers)
+- `bricks/` — the ten bricks (cell, GRN, QSP, ABM, barrier, intervention, readout, vpop, …)
 - `data/` — loaders + backtest anchors (open datasets only; no raw patient data in-repo)
 - `backtest/` — the validation harness. Trust nothing until it replays known history.
+- `results/` — end-to-end experiment, RESULTS.md, deck figures
+- `tests/` — invariant tests (the ruler discriminates, the wedge rejects, the pipeline never self-reports as validated)
 
 ## License
 TBD before first public push — leaning permissive for the spine/harness (ours), with per-brick licenses respected (scGPT MIT is the commercial-clean core; some models are non-commercial — see the brain's findings doc).
