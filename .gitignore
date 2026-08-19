@@ -22,3 +22,6 @@ venv/
 # os
 .DS_Store
 .venv-scgpt/
+
+# local safety backup of .git (do NOT commit)
+.git.bak/
