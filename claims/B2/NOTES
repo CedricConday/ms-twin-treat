@@ -1,0 +1,9 @@
+WIRING (for cbk / run_demo.py) — B2 cell brick
+  from bricks.cell_transfer import CellTransferModel
+  from data.kang import to_benchmark
+  bench = to_benchmark()                 # loads Kang (37MB, ~sec); load ONCE, reuse
+  cell = CellTransferModel(bench)        # Stage: cell(state) -> writes state["cell_delta"]
+Also a harness PerturbationModel: cell.predict(control_mean, cell_type).
+HONEST: aggregate delta_pearson 0.82 — does NOT beat the 0.85 mean-shift bar. Real, not a stand-in.
+NOTE: loads real data, so heavier than the self-contained bricks. If the demo runs per-VPop-sample,
+      call this once outside the sample loop (cell_delta doesn't depend on the vpop sample).

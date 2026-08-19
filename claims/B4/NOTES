@@ -1,0 +1,7 @@
+WIRING (for cbk / run_demo.py) — B4 QSP brick
+  from bricks.qsp import QSPBrick
+  qsp = QSPBrick()                       # Stage: qsp(state) -> writes state["qsp_traj"]
+Self-contained (no data load). READS state["intervention"]["treat"] (0..1) if B7 set it, else 0.
+Toy neuroinflammation ODE via scipy (tellurium wheels fail to build here). validated=False.
+Fast (<0.1s). Safe to call per-vpop-sample; can also take params dict to vary per sample:
+  QSPBrick(params={...}) or bricks.qsp.simulate(params=..., treat=...).

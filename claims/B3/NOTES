@@ -1,0 +1,7 @@
+WIRING (for cbk / run_demo.py) — B3 GRN brick
+  from bricks.grn import GRNBrick
+  grn = GRNBrick()                       # Stage: grn(state) -> writes state["grn_edges"] + grn_meta
+Loads Kang internally (~seconds, Spearman co-expression over top-variance genes). Self-contained
+otherwise (no state inputs needed). Undirected, validated=False. Heavier GRNBoost2 path exists as
+bricks.grn.grnboost2_edges() — do NOT put it in the auto demo (dask, can hang).
+NOTE: like B2 it loads real data; if looping over a vpop, call once outside the loop.

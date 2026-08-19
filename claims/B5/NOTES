@@ -1,0 +1,6 @@
+WIRING (for cbk / run_demo.py) — B5 ABM brick
+  from bricks.abm import ABMBrick
+  abm = ABMBrick(n_steps=60, seed=0)     # Stage: abm(state) -> writes state["abm_damage"] + abm_meta
+Self-contained (no data load). READS state["intervention"]["treat"] (0..1) if B7 set it, else 0.
+mesa 3.5 grid model; pure-numpy fallback auto-used if mesa import fails (same output shape).
+validated=False. ~0.1-0.3s per run. Safe per-vpop-sample (vary seed for stochastic replicates).
