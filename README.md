@@ -27,7 +27,8 @@ python -m backtest.selftest      # the ruler validates itself
 python -m backtest.run_kang      # real IFN-β backtest — the 0.85 bar
 python spine/run_demo.py         # the full pipeline, end to end, self-labeling
 python -m results.experiment     # virtual cohort across real trial arms
-python -m pytest                 # 13 invariant tests (needs requirements-dev.txt)
+python -m backtest.clinical      # two-directional clinical gate vs REAL trial outcomes (defines "viable")
+python -m pytest                 # invariant tests (needs requirements-dev.txt)
 ```
 
 See **[`results/RESULTS.md`](results/RESULTS.md)** for every verified number and an explicit real-vs-toy table, and `results/figures/` for the deck figures. Full brick/data map + citations: `../ms-twin/docs/RESEARCH_FINDINGS.md`.

@@ -41,6 +41,18 @@ One plausible virtual population (12 patients), run through every real trial arm
 - The pipeline **separates the therapies that worked from untreated.**
 - It **cannot yet flag the harmful arm** — APL's effect is a 0.0 placeholder, so it reads like untreated. *That is the exact gap the backtest exists to close, and we are not hiding it.* A model earns trust by catching the one that harmed people; ours can't, yet.
 
+## 5.1 The clinical backtest gate — what "viable" means
+`python -m backtest.clinical` scores the stack against **known trial outcomes, in both directions** — the gate that must go green before any prediction is trusted. Anchors are real and cited via PubMed:
+
+| arm | sim Δrelapse | known outcome | source | direction |
+|---|---|---|---|---|
+| untreated | +0% | neutral (control) | — | ✅ |
+| IFN-β | −28% | **−27–33%** relapse reduction | PRISMS, *Lancet* 1998, PMID 9820297 | ✅ |
+| glatiramer | −24% | ~**−29%** relapse reduction | Copolymer 1 / Johnson 1995, *Neurology*, PMID 11902590 | ✅ |
+| APL CGP77116 | +0% | **HARMED** (halted; exacerbations) | Bielekova, *Nat Med* 2000, PMID 11017150, [doi](https://doi.org/10.1038/80516) | ❌ |
+
+**DIRECTION gate: 3/4. VIABLE? Not yet.** The stack reproduces the two therapies that *worked* (direction and magnitude within 15pp) but **cannot reproduce the one that harmed** — the toy QSP/ABM only express benefit. That single red cell is the definition of the work ahead: a brick that can express immune exacerbation turns the gate green. The magnitude match on the successes is *directionally* honest but not yet *earned* (placeholder doses, not mechanism). *(via PubMed)*
+
 ## 6. What is real vs. toy (read this before quoting anything)
 | Real / defensible | Toy / illustrative / unvalidated |
 |---|---|
