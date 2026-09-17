@@ -70,16 +70,49 @@ SUPPRESSIVE_STRENGTH = 0.78
 # no independent source for it has been pinned. Left where it was, on purpose.
 IMMUNOGENIC_STRENGTH = 0.4
 
+# --- the third thing a mechanism can be (2026-09-17) -------------------------
+# REGULATORY_DISRUPTION. Two classes were not enough: a drug can suppress the
+# immune system AND make the disease worse, because its target also carries a
+# regulatory or reparative function. Lenercept (TNF blockade) and atacicept
+# (BAFF/APRIL blockade) are both immunosuppressive and both harmed patients, and
+# no value of SUPPRESSIVE_STRENGTH can express that — it is the rule's shape.
+#
+# The flag is per drug and set from INDEPENDENT biology, never from the trial:
+#
+#   TNF blockade — TNF-deficient mice develop SEVERE MOG-induced EAE with high
+#   mortality, and treating them with TNF reduces severity (Liu et al., Nat Med
+#   1998;4(1):78-83, PMID 9427610); TNFR2 is required for oligodendrocyte
+#   progenitor proliferation and remyelination (Arnett et al., Nat Neurosci
+#   2001;4(11):1116-22, PMID 11600888). Removing TNF removes a brake and a repair
+#   signal. Both are animal-model mechanism papers, not readings of the lenercept
+#   trial.
+#
+# A flagged drug keeps its suppressive strength and additionally gets
+# IMMUNOGENIC_STRENGTH on the harm channel. No new constant is introduced: one
+# tuned until lenercept came out harmful would be fitted to the outcome the gate
+# is supposed to test. Whether the existing two numbers produce net harm is then
+# a PREDICTION of this rule, and it is allowed to be wrong.
 
-def mechanism_to_params(mechanism: str, strength: float | None = None) -> tuple[float, float]:
+
+def mechanism_to_params(mechanism: str, strength: float | None = None,
+                       disrupts_regulation: bool = False) -> tuple[float, float]:
     """Map an INDEPENDENT mechanism class to (treat, immunogenic).
 
     No clinical outcome enters here. `strength` lets a caller override the class
     default from independent potency data; left None, the class constant is used
     (which keeps every drug in a class identical — the honest, un-fit default).
+
+    `disrupts_regulation` marks a suppressive drug whose target ALSO carries a
+    regulatory or reparative function that the drug removes (see
+    REGULATORY_DISRUPTION above). Such a drug gets both channels: it suppresses
+    the attack AND provokes it. It reuses IMMUNOGENIC_STRENGTH rather than
+    introducing a third constant, deliberately — a new number chosen to make the
+    known-harmful arms come out harmful would be fitted to the answer, which is
+    the one thing this module exists not to do.
     """
     if mechanism == SUPPRESSIVE:
-        return (SUPPRESSIVE_STRENGTH if strength is None else float(strength), 0.0)
+        treat = SUPPRESSIVE_STRENGTH if strength is None else float(strength)
+        return (treat, IMMUNOGENIC_STRENGTH if disrupts_regulation else 0.0)
     if mechanism == IMMUNOGENIC:
         return (0.0, IMMUNOGENIC_STRENGTH if strength is None else float(strength))
     if mechanism == NEUTRAL:

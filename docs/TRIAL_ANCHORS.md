@@ -61,7 +61,7 @@ choice dressed as a measurement.
 | dimethyl fumarate | Nrf2 activation; immunomodulatory | suppressive |
 | ocrelizumab | anti-CD20; B-cell depletion | suppressive |
 | alemtuzumab | anti-CD52; lymphocyte depletion | suppressive |
-| lenercept | TNF-receptor p55-IgG fusion; TNF blockade | suppressive |
+| lenercept | TNF-receptor p55-IgG fusion; TNF blockade | suppressive **+ regulation-disrupting** (TNF-/- mice get severe EAE, PMID 9427610; TNFR2 needed for remyelination, PMID 11600888) |
 | atacicept | TACI-Ig; blocks BAFF and APRIL, depletes plasma cells | suppressive |
 | IFN-gamma | pro-inflammatory type II interferon | immunogenic |
 | APL CGP77116 | altered peptide ligand of MBP 83-99; encephalitogenic in T-cell assays | immunogenic |

@@ -78,8 +78,9 @@ class Intervention:
 # --------------------------------------------------------------------------- #
 
 def _from_mechanism(name: str, mechanism: str, *, cns_required: bool = False,
-                    notes: str = "", strength: float | None = None) -> Intervention:
-    treat, immuno = mechanism_to_params(mechanism, strength)
+                    notes: str = "", strength: float | None = None,
+                    disrupts_regulation: bool = False) -> Intervention:
+    treat, immuno = mechanism_to_params(mechanism, strength, disrupts_regulation)
     return Intervention(name, treat=treat, immunogenic=immuno,
                         cns_required=cns_required, mechanism=mechanism, notes=notes)
 
@@ -153,17 +154,26 @@ ALEMTUZUMAB = _from_mechanism(
 # patients in controlled trials. The class rule predicts benefit for each, so both
 # are arms the current rule is expected to get wrong -- that is why they are here.
 LENERCEPT = _from_mechanism(
-    "lenercept", SUPPRESSIVE,
-    notes="TNF receptor p55-IgG fusion protein; neutralizes TNF, an inflammatory "
-          "cytokine. Suppressive by mechanism. Backtest target: HARMED (more and "
-          "earlier exacerbations, PMID 10449104) -- a counterexample to the class rule, "
-          "kept BECAUSE the rule gets it wrong.")
+    "lenercept", SUPPRESSIVE, disrupts_regulation=True,
+    notes="TNF receptor p55-IgG fusion protein; neutralizes TNF. Suppressive by "
+          "mechanism, and ALSO regulation-disrupting: TNF-deficient mice develop severe "
+          "MOG-induced EAE and TNF treatment reduces its severity (Liu, Nat Med 1998, "
+          "PMID 9427610), and TNFR2 is required for oligodendrocyte progenitor "
+          "proliferation and remyelination (Arnett, Nat Neurosci 2001, PMID 11600888). "
+          "Both flags come from animal-model mechanism work, not from the trial. "
+          "Backtest target: HARMED (PMID 10449104).")
 
 ATACICEPT = _from_mechanism(
     "atacicept", SUPPRESSIVE,
     notes="TACI-Ig fusion protein; blocks BAFF and APRIL and depletes plasma cells. "
           "Suppressive by mechanism. Backtest target: HARMED (ATAMS halted for a raised "
-          "relapse rate, PMID 24613349) -- the second counterexample.")
+          "relapse rate, PMID 24613349). NOT flagged regulation-disrupting: the nearest "
+          "independent evidence is for anti-CD20 depletion removing IL-10-producing "
+          "regulatory B cells before disease onset (Matsushita, J Clin Invest 2008, "
+          "PMID 18802481), which is a different target and carries a timing dependence "
+          "this model has no way to express. Flagging it on that basis would be reasoning "
+          "backwards from the trial, so it is left unflagged and the gate keeps failing "
+          "it. This is the honest gap, not an oversight.")
 
 IFN_GAMMA = _from_mechanism(
     "IFN-gamma", IMMUNOGENIC,

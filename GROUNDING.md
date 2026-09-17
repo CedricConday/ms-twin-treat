@@ -201,3 +201,45 @@ four-arm gate could not show, and this one does:
 The pattern this file keeps recording holds again: each step moves the error to where
 it actually lives. It has now walked from the ABM, through the intervention strengths,
 to the shape of the mechanism→parameter rule itself.
+
+## 2026-09-17 (later) — a third thing a mechanism can be
+
+The 14-arm gate showed the rule had the wrong *shape*, not the wrong calibration:
+lenercept and atacicept are immunosuppressive and harmed patients, and a rule with
+one suppressive channel cannot express that at any strength.
+
+`mechanism_to_params()` now takes a per-drug `disrupts_regulation` flag: a suppressive
+drug whose target **also** carries a regulatory or reparative function gets both
+channels. Grounding for the one drug flagged, and it is animal-model mechanism work
+rather than a reading of the trial:
+
+- **TNF (lenercept).** TNF-deficient mice develop severe MOG-induced EAE with high
+  mortality, and treating them with TNF reduces severity — TNF "may limit the extent
+  and duration of severe CNS pathology" (Liu et al., *Nat Med* 1998;4(1):78-83,
+  PMID 9427610). TNFR2, not TNFR1, is required for oligodendrocyte progenitor
+  proliferation and remyelination (Arnett et al., *Nat Neurosci* 2001;4(11):1116-22,
+  PMID 11600888). Blocking TNF removes a brake and a repair signal.
+
+**No third constant was introduced.** A flagged drug reuses `IMMUNOGENIC_STRENGTH` on
+the harm channel. A new number tuned until lenercept came out harmful would be fitted
+to the outcome this gate exists to test; `tests/test_grounding.py` now asserts the
+harm channel equals `IMMUNOGENIC_STRENGTH` exactly, as a tripwire.
+
+**Result: lenercept moves from −77% to −35%, and does not cross zero.** The gate is
+unchanged at 9/14 direction, 1/9 magnitude. Suppression at 0.78 outweighs harm at 0.40,
+so the model can now *represent* a suppressive drug that hurts, and still predicts the
+wrong sign for the one it is asked about. That is the honest state: a structural fix
+that the current constants do not carry over the line.
+
+What it does say, usefully, is where the next number has to come from. The ratio
+between the two channels is now load-bearing, and neither side of it can be set from a
+relapse rate. `SUPPRESSIVE_STRENGTH` is Kang-derived; `IMMUNOGENIC_STRENGTH` is still
+the reasoned one, and it is now exercised by three arms instead of one.
+
+**Atacicept stays unflagged.** The nearest independent evidence — anti-CD20 depletion
+before EAE induction removing IL-10-producing regulatory B cells (Matsushita et al.,
+*J Clin Invest* 2008;118(10):3420-30, PMID 18802481) — is a different target and
+carries a timing dependence this model has no way to express (the same paper finds
+depletion during progression *suppresses* disease). Flagging atacicept on that basis
+would be reasoning backwards from ATAMS. It remains a counterexample the rule gets
+wrong, labelled as such.

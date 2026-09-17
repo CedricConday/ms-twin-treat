@@ -289,3 +289,18 @@ sweep spread ~2.9pp because each `MAX_RELAPSE` value puts the per-patient proxy 
 different quantization grid, not because rounding is worth 2.9pp at any one value.
 Either way the conclusion stands — the constant cancels in the ratio, and neither it nor
 the rounding can move a 45pp magnitude gap.
+
+### 2026-09-17 — the rule's shape, not its calibration
+`bricks/grounding.py` gained a per-drug `disrupts_regulation` flag so a suppressive drug
+whose target also carries a regulatory/reparative function gets the harm channel too.
+Lenercept is flagged on TNF biology (Liu 1998 PMID 9427610, Arnett 2001 PMID 11600888);
+atacicept is deliberately NOT flagged (no independent source for BAFF/APRIL; the nearest
+is anti-CD20 Bregs, PMID 18802481, different target and timing-dependent).
+
+**Measured: lenercept −77% → −35%, sign unchanged; gate still 9/14 and 1/9.** No third
+constant was added — a flagged drug reuses `IMMUNOGENIC_STRENGTH`, and a test asserts it,
+because a harm constant tuned until lenercept reads harmful is fitted to the exam.
+
+Consequence for blocker (4): the suppressive/harm *ratio* is now the load-bearing number,
+and both sides of it need independent sources. Per-drug potency from exposure-response
+work remains the next step; `mechanism_to_params(strength=...)` is still unfed.

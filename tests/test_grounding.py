@@ -84,3 +84,30 @@ def test_strengths_stay_class_level_not_per_drug():
     from bricks.intervention import APL_CGP77116, GLATIRAMER, IFN_BETA
     assert IFN_BETA.treat == GLATIRAMER.treat == SUPPRESSIVE_STRENGTH
     assert APL_CGP77116.immunogenic == IMMUNOGENIC_STRENGTH
+
+
+def test_regulation_disrupting_drug_gets_both_channels_and_no_new_constant():
+    """A drug whose target also carries a regulatory function suppresses AND provokes.
+
+    The harm channel must be exactly IMMUNOGENIC_STRENGTH. A third constant, tuned
+    until the known-harmful arms come out harmful, would be fitted to the outcome
+    the clinical gate exists to test — this assertion is the tripwire for that.
+    """
+    assert mechanism_to_params(SUPPRESSIVE, disrupts_regulation=True) == (
+        SUPPRESSIVE_STRENGTH, IMMUNOGENIC_STRENGTH)
+
+    from bricks.intervention import LENERCEPT
+    assert LENERCEPT.treat == SUPPRESSIVE_STRENGTH
+    assert LENERCEPT.immunogenic == IMMUNOGENIC_STRENGTH
+
+
+def test_atacicept_is_left_unflagged_as_the_honest_gap():
+    """No independent source pins BAFF/APRIL blockade to a lost regulatory function.
+
+    The anti-CD20 Breg evidence (PMID 18802481) is a different target with a timing
+    dependence this model cannot express. Flagging atacicept anyway would be
+    reasoning backwards from ATAMS, so it stays unflagged and the gate keeps failing
+    it. Ground it properly and this test is where to update — with the citation.
+    """
+    from bricks.intervention import ATACICEPT
+    assert ATACICEPT.immunogenic == 0.0

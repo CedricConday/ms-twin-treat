@@ -45,7 +45,7 @@ Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separat
 
 **The clinical gate is scored on 14 arms and currently gets 9 of 14 directions and 1 of 9 magnitudes right** (2026-09-17; `python -m backtest.clinical`, anchors in [`docs/TRIAL_ANCHORS.md`](docs/TRIAL_ANCHORS.md)). It used to read 4/4 on four arms. Nothing about the model improved or regressed when that changed — the exam got harder, and the 4/4 version could not show either of the two things now visible:
 
-- **lenercept and atacicept are immunosuppressive by mechanism and harmed patients in trials.** A rule that maps mechanism class to clinical direction predicts benefit for both and is wrong on both.
+- **lenercept and atacicept are immunosuppressive by mechanism and harmed patients in trials.** A rule that maps mechanism class to clinical direction predicts benefit for both and is wrong on both. Lenercept now carries a regulation-disruption flag earned by its TNF biology (TNF-deficient mice get *worse* EAE; TNFR2 is required for remyelination), which moves it from −77% to −35% without crossing zero — the model can represent the case, and the current constants still get the sign wrong.
 - **one strength per class cannot separate two drugs inside a class.** Ocrelizumab vs interferon beta-1a (OPERA), alemtuzumab vs interferon beta-1a (CARE-MS I) and ponesimod vs teriflunomide (OPTIMUM) are all scored against an active comparator, and the simulation returns exactly 0% difference for each.
 
 Both failures are the point of the arm set, not defects in it. Real viability still needs data-grounded parameters, **out-of-sample** arms, and validated magnitudes. **Nothing in this repo is evidence about multiple sclerosis.**

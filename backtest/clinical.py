@@ -175,10 +175,10 @@ def main() -> int:
           f"(magnitude: {g['mag_pass']}/{g['mag_total']} within {MAG_TOLERANCE:.0f}pp)")
     passed = g["dir_pass"] == g["n"]
     print(f"\nDIRECTION GATE: {'PASS' if passed else 'INCOMPLETE'} ({g['dir_pass']}/{g['n']} arms)")
-    print("    (intervention params come from the 2-PARAMETER MECHANISM-CLASS RULE in")
-    print("     bricks/grounding.py, keyed on each drug's independent in-vitro mechanism —")
-    print("     never hand-tuned per arm, never fit to a relapse number. The gate scores")
-    print("     that rule.)")
+    print("    (intervention params come from the MECHANISM-CLASS RULE in bricks/grounding.py:")
+    print("     two class strengths plus a per-drug regulation-disruption flag, each keyed on")
+    print("     independent mechanism evidence — never hand-tuned per arm, never fit to a")
+    print("     relapse number. The gate scores that rule.)")
     if passed:
         print("  Every arm is directed correctly, including the suppressive-but-harmful ones.")
         print("  That is a CAPABILITY MILESTONE, not validation: these outcomes are all known,")
@@ -186,12 +186,14 @@ def main() -> int:
     else:
         fails = [o.arm for o, _, _, d_ok, _ in g["rows"] if not d_ok]
         print(f"  not yet reproduced: {fails}")
-        print("  Expected, and the reason the arm set was grown: a rule that maps mechanism")
-        print("  class to clinical direction cannot get lenercept or atacicept right — both")
-        print("  are immunosuppressive by mechanism and both harmed patients — and one")
-        print("  strength per class cannot separate two drugs inside a class, which is what")
-        print("  the active-comparator arms ask it to do. See BUILD_PLAN.md §8 blockers (3)")
-        print("  and (4); the four-arm version of this gate could not show either failure.")
+        print("  Expected, and the reason the arm set was grown. Lenercept and atacicept are")
+        print("  immunosuppressive by mechanism and both harmed patients; lenercept now carries")
+        print("  the regulation-disruption flag its TNF biology earns (Liu 1998, Arnett 2001),")
+        print("  which moves it from -77% to -35% without crossing zero — suppression at 0.78")
+        print("  outweighs harm at 0.40, and picking a bigger harm number to fix that would be")
+        print("  fitting to this exam. Separately, one strength per class cannot separate two")
+        print("  drugs inside a class, which is what the active-comparator arms ask it to do.")
+        print("  See BUILD_PLAN.md §8 blockers (3) and (4).")
     print("\n  Trial outcomes are REAL and cited (KNOWN_OUTCOMES above, docs/TRIAL_ANCHORS.md).")
     print("  Pipeline numbers are proxies from toy models. Nothing here is evidence about MS.")
     return 0
