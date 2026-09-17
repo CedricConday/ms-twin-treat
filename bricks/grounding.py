@@ -15,15 +15,32 @@ before any trial reads out:
                                      assays) -> treat = 0, immunogenic > 0
   - none                           : untreated control -> (0, 0)
 
-The class strengths below are single, class-level constants set from mechanism
-reasoning — NOT fit per drug. So the whole library is parameterised by just two
-numbers, and the clinical gate becomes a test of THIS RULE + the models, rather
-than a restatement of four hand-tuned values.
+The class strengths below are single, class-level constants — NOT fit per drug.
+So the whole library is parameterised by just two numbers, and the clinical gate
+becomes a test of THIS RULE + the models, rather than a restatement of four
+hand-tuned values.
 
-Honest bound: with only four arms this is a *coarse* rule, and a rigorous
-leave-one-arm-out (fit the strengths on N-1 arms, predict the Nth) needs more
-arms than we have data for. What changed is real but modest: per-arm fitting is
-gone; a two-parameter mechanism rule now stands in its place.
+SUPPRESSIVE_STRENGTH is DATA-GROUNDED (2026-09-06): it is the IFN-beta effect
+magnitude measured in Kang 2018 (GSE96583), expressed as a fraction of the
+distance between two different immune cell identities in the same data — the
+in-data yardstick for the wholesale change of immune cell state that treat=1.0
+is supposed to mean. Arithmetic in `scripts/derive_suppressive_strength.py`,
+guarded by `tests/test_grounding.py`. Kang is an in-vitro PBMC stimulation
+experiment: no relapse rate, no trial arm, no clinical endpoint enters it, so
+the clinical gate remains an out-of-sample test of this number.
+
+IMMUNOGENIC_STRENGTH is still set from mechanism reasoning. Nothing in Kang
+speaks to it — Kang has no encephalitogenic arm — and only one arm in the
+library (APL CGP77116) exercises it. Inventing a derivation for it would be
+worse than leaving it visibly ungrounded, so it is left alone and labelled.
+
+Honest bounds:
+  - one grounded number, one reasoned number. The rule is still coarse.
+  - the derived quantity is the SIZE of IFN-beta's effect on immune cells; the
+    model reads that size as "fraction of the autoreactive attack suppressed".
+    That equation is an assumption, not a measurement.
+  - with only four arms a rigorous leave-one-arm-out (fit the strengths on N-1
+    arms, predict the Nth) still needs more arms than we have data for.
 """
 
 from __future__ import annotations
@@ -32,9 +49,25 @@ SUPPRESSIVE = "immunosuppressive/tolerizing"
 IMMUNOGENIC = "immunogenic"
 NEUTRAL = "none"
 
-# Class-level strengths. Set from mechanism class, identical within a class,
-# never tuned to a drug's own clinical outcome.
-SUPPRESSIVE_STRENGTH = 0.5
+# --- the derivation inputs, recorded so a drift is a test failure, not a story --
+# Kang 2018 (GSE96583) via data/kang.py, log-normalized, 15706 genes, the 7 cell
+# types that clear the harness reliability bar (Megakaryocytes, 63/69 cells,
+# reliability 0.045, dropped from both terms).
+KANG_IFNB_DELTA_NORM = 15.902     # mean over cell types of ||mean_IFNb - mean_ctrl||
+KANG_IDENTITY_DISTANCE = 20.325   # mean over cell-type PAIRS of ||ctrl_i - ctrl_j||
+
+# Class-level strengths. Identical within a class, never tuned to a drug's own
+# clinical outcome.
+#
+# GROUNDED — Kang 2018 IFN-beta magnitude: 15.902 / 20.325 = 0.7824 -> 0.78.
+# IFN-beta moves an immune cell ~78% of the way to a different cell identity, and
+# the model reads that as the fraction of the attack a suppressive drug removes.
+# Cited the way barrier.py cites Pardridge 2019; redo it with
+# `PYTHONPATH=. python scripts/derive_suppressive_strength.py`.
+SUPPRESSIVE_STRENGTH = 0.78
+
+# NOT grounded — mechanism reasoning only. Kang has no encephalitogenic arm, and
+# no independent source for it has been pinned. Left where it was, on purpose.
 IMMUNOGENIC_STRENGTH = 0.4
 
 

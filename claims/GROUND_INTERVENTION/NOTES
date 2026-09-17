@@ -1,0 +1,32 @@
+OUTCOME (2026-09-06) — SUPPRESSIVE_STRENGTH grounded, gap did NOT close.
+
+  0.5 (reasoned) -> 0.78 (Kang 2018 IFN-beta magnitude: 15.902 / 20.325)
+  derivation: scripts/derive_suppressive_strength.py
+  guard:      tests/test_grounding.py  (4 tests, one skips without the Kang cache)
+  write-up:   GROUNDING.md, "Grounding the suppressive class strength (2026-09-06)"
+
+  clinical gate  before -> after
+    direction    4/4    -> 4/4      (acceptance met)
+    magnitude    0/2    -> 0/2
+    IFN-beta     -47%   -> -77%     (trials: -27..-33%)
+    glatiramer   -47%   -> -77%
+    APL          +28%   -> +28%     (untouched; immunogenic class not changed)
+
+  Full suite: 39 passed. Nothing in backtest/ touched. No per-drug fitting.
+  IMMUNOGENIC_STRENGTH left at 0.4 — Kang has no encephalitogenic arm, no
+  independent source pinned, said plainly rather than derived for symmetry.
+
+HANDOFF / open loops:
+
+  1. backtest/clinical.py's success prose still reads "the rule is coarse and
+     reasoned, not data-fit". Half stale now. Not edited — the charge forbids any
+     change under backtest/, and the ruler should not move because a result
+     landed badly. Belongs to whoever owns that file.
+  2. The next grounding target is bricks/readout.py, not the QSP row. Every
+     magnitude reaches the trial comparison through `relapse_proxy = damage * 1.5`
+     with MAX_LESIONS = 40 — invented scales, never grounded, and the only
+     unfitted link left between a doubled simulated effect and a trial number.
+  3. The load-bearing assumption is now explicit and unresolved: Kang measures the
+     SIZE of IFN-beta's transcriptional effect; the model reads it as the FRACTION
+     of the autoreactive attack removed. Grounding that needs a readout of
+     autoreactive activity, not of transcriptional footprint.

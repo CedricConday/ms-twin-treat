@@ -16,7 +16,7 @@ real **out-of-sample** test instead of a restatement of what we already told it.
 | Brick | Parameter(s) | Now | Ground against | Priority |
 |---|---|---|---|---|
 | **Cell** (`cell_scgpt`) | cell-state response | ✅ **DATA-GROUNDED** — Kang IFN-β, beats the null (0.87) | — this is what "grounded" looks like | done |
-| **Intervention** | `treat`, `immunogenic` | ✅ **from a 2-param mechanism-class rule** (`grounding.py`) — not per-arm hand-tuning | next: derive the class strengths from data (IFN-β magnitude from Kang; others need their single-cell data — the honest gap) | partial |
+| **Intervention** | `treat`, `immunogenic` | ✅ `treat` **DATA-GROUNDED** — IFN-β magnitude in Kang 2018 (`scripts/derive_suppressive_strength.py`); `immunogenic` still mechanism-reasoned | `immunogenic`: needs an encephalitogenic single-cell dataset — nothing in Kang speaks to it (the honest gap) | partial |
 | **Barrier** (PBPK) | rate constants → CNS penetration | ✅ **baseline GROUNDED** — `k_pc` calibrated to ~0.15% CNS (Pardridge 2019); other rate constants still illustrative | remaining constants: published PK; small molecules higher | partial |
 | **QSP** | disease / cytokine ODE rates | invented | published immune/cytokine kinetics; no open MS QSP exists (greenfield) | MED–HARD |
 | **ABM** (`abm.py`) | agent rates, myelin/oligo thresholds, BBB permeability | ✅ **GROUNDED** — ported from the **Weatherley MS ABM** ([doi:10.1371/journal.pcbi.1013273](https://doi.org/10.1371/journal.pcbi.1013273), MIT); every rate cited to its source file, `validated=False` until a paper figure is reproduced | remaining: reproduce a published figure at `profile="published"` to earn `validated=True` | partial |
@@ -35,7 +35,7 @@ outcome, so it strengthens the gate rather than circularizing it.
 ## What grounding the ABM immediately exposed (2026-08-19)
 Replacing the toy ABM's invented rates with the Weatherley model's published ones
 **kept the clinical direction gate at 4/4 but dropped the magnitude check from 2/2
-to 0/2**: the stack now predicts ~**-47%** relapse reduction where the trials report
+to 0/2**: the stack now predicts ~**-77%** relapse reduction where the trials report
 **-27..-33%**.
 
 That is the mechanism of this file working as intended, not a regression. The toy's
@@ -61,3 +61,113 @@ Each row is a self-contained task behind the frozen brick interface
 parameters against the cited source, keep `validated=False` until the clinical gate
 passes **out-of-sample**, and never fit to the outcome. (A `CONTRIBUTING.md` with
 good-first-issues lands when the repo goes into active recruitment.)
+
+## Grounding the suppressive class strength (2026-09-06)
+
+`SUPPRESSIVE_STRENGTH` is no longer reasoned. It is now the **IFN-β effect
+magnitude measured in Kang 2018 (GSE96583)**, on the same log-normalized matrix
+the cell brick is scored against.
+
+**The arithmetic** (`scripts/derive_suppressive_strength.py`, guarded by
+`tests/test_grounding.py`):
+
+| term | what it is | value |
+|---|---|---|
+| numerator | mean over cell types of ‖mean_IFN-β − mean_control‖₂ | **15.902** |
+| denominator | mean over cell-type PAIRS of ‖control_i − control_j‖₂ | **20.325** |
+| ratio | 15.902 / 20.325 | **0.7824 → 0.78** |
+
+Euclidean distances between per-cell-type mean expression vectors over all 15,706
+genes. Both terms drop the cell types that fail the harness reliability bar
+(`PerturbationBenchmark.LOW_RELIABILITY = 0.5`) — on Kang that is Megakaryocytes
+(63/69 cells, reliability 0.045), leaving 7 cell types and 21 pairs. The
+denominator is the in-data yardstick: the distance between two *different* immune
+cell identities is what a wholesale change of immune cell state costs in this
+space, which is what `treat = 1.0` is supposed to mean. So: **IFN-β moves an
+immune cell ~78% of the way to being a different cell.**
+
+**Independence.** Kang is an in-vitro PBMC stimulation experiment. No relapse
+rate, no trial arm, no clinical endpoint enters the number. The clinical gate
+stays an out-of-sample test of it. The rule (numerator, denominator, reliability
+filter, rounding) was fixed before the resulting number was compared to anything.
+
+### The gate, before and after
+
+| | direction | magnitude | IFN-β | glatiramer | APL |
+|---|---|---|---|---|---|
+| before (`treat = 0.5`, reasoned) | **4/4** | **0/2** | −77% | −77% | +28% |
+| after (`treat = 0.78`, Kang-derived) | **4/4** | **0/2** | **−77%** | **−77%** | +28% |
+
+Trials report **−27..−33%**. **The gap did not close — it roughly doubled.**
+
+Nothing was tuned to pull it back, and nothing in `backtest/` was touched. Per
+CHARGE.md this *is* the deliverable: a number derived without the answers, plus
+the write-up of where it lands. Reaching for a strength that put the stack back
+near −30% would have fitted the model to the exam it exists to sit.
+
+### What the widened gap actually points at
+
+The direction gate is untouched at 4/4, so nothing about benefit-vs-harm broke.
+What moved is a magnitude, and there are three candidates for where the excess
+lives — in the order I would attack them:
+
+1. **The micro→clinical map (`bricks/readout.py`) — the prime suspect.** It is a
+   straight line with an invented ceiling: `relapse_proxy = damage × 1.5`,
+   `MAX_LESIONS = 40`. Every simulated magnitude reaches the trial comparison
+   through that line, and it is the one scale in the chain that has never been
+   grounded against anything. GROUNDING.md already calls it HARD and open
+   research; this result raises its priority above the QSP row.
+2. **The assumption inside the derivation.** What Kang measures is the *size of
+   IFN-β's transcriptional effect on immune cells*; the model reads that size as
+   *the fraction of the autoreactive attack removed*. A drug can rewrite a large
+   part of a PBMC's transcriptome — IFN-β induces a big ISG program — without
+   suppressing 78% of a relapse. This equation is a modelling assumption, not a
+   measurement, and it is the load-bearing one. Grounding it properly needs a
+   readout of autoreactive activity, not of transcriptional footprint.
+3. **The estimator's own width.** The rule is mean/mean over reliable cell types.
+   Median/median gives 0.56; keeping Megakaryocytes gives 0.58; per-cell-type
+   ratios run 0.52 (CD4 T) to 1.12 (CD14+ monocytes — its IFN-β response is
+   *larger* than the average distance between two cell types). So the honest band
+   is roughly **0.56–0.78**, and even its bottom end is above the old 0.5. The
+   gap is not an artefact of picking the top of the band.
+
+Worth recording: `treat = 0.78` puts the ABM's BBB crossing probability at
+`0.1 × (1 − 0.78) = 0.022`, against the Weatherley paper's own therapeutic value
+of **0.025** (`treat = 0.75`). A transcriptomic derivation and the source ABM's
+hand-set therapy anchor land within 4% of each other. That is a coincidence worth
+noticing, not evidence — but it does say the derived strength is not absurd at
+the population-model layer. The mismatch appears downstream of it.
+
+### What was deliberately NOT done
+
+- **`IMMUNOGENIC_STRENGTH` is unchanged at 0.4.** Kang has no encephalitogenic
+  arm; nothing in it speaks to the immunogenic class, and only one arm
+  (APL CGP77116) exercises the constant. There is no independent source pinned
+  for it, so it stays reasoned and stays labelled as such in `grounding.py`.
+  Inventing a derivation for symmetry would be worse than the visible gap.
+- **No per-drug fitting.** IFN-β and glatiramer still share one class number.
+- **Nothing in `backtest/` changed.** One consequence: the gate's own success
+  prose still says the rule is "coarse and reasoned, not data-fit", which is now
+  half stale — one strength is data-derived, one is not. Left alone on purpose;
+  it belongs to whoever owns that file.
+
+### The pattern, again
+
+The ABM grounding broke the magnitude check (2/2 → 0/2) and the intervention
+grounding widened the break. Both times a toy number was accidentally closer to
+the trials than a grounded one. That is the file working: **each grounding step
+moves the error to where it actually lives**, and it has now walked from the ABM,
+through the intervention strengths, to the readout map — the one brick still made
+entirely of invented scales.
+
+
+## Re-measured 2026-09-06
+
+Direct run of `backtest.clinical`: IFN-beta **-76.70%**, glatiramer **-76.70%**, APL **+28.41%**;
+direction 4/4, magnitude 0/2. The **-47%** quoted above was stale.
+
+`MAX_RELAPSE` (`bricks/readout.py`) is RULED OUT as the source: it is a linear scale inside a
+ratio and cancels. Sweeping it 0.8 / 1.5 / 3.0 moves IFN-beta only -74.47 / -76.70 / -77.40,
+a ~2.9pp spread from `round(..., 2)` quantization. It cannot close a 47pp gap. The remaining
+suspects are `SUPPRESSIVE_STRENGTH` and the ABM damage response — see
+`claims/GROUND_INTERVENTION/CHARGE.md`.
