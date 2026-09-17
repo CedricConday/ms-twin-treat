@@ -21,17 +21,22 @@ The whole spine is built and runs end to end — **and it is honest about being 
 - **GRN** recovers the interferon module (IFIT1/IFIT3–ISG15) + MHC-II from raw data. **QSP / ABM / barrier / readout** are toy models, directionally coherent, every one flagged `validated=False`.
 - **The wedge** (`bricks/vpop.py`) — a first open Python plausible-patient generator (LHS + a rejection filter that actually rejects) pointed at a neuroimmune model. No such implementation exists on GitHub.
 
-**Reproduce it:**
+**Reproduce it** (in a venv — the pins matter, a system Python gives different numbers):
 ```bash
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt   # harness, toy pipeline, tests, lint
+python -m ruff check .           # lint gate
+python -m pytest                 # invariant tests + scorer input guards
 python -m backtest.selftest      # the ruler validates itself
+python spine/run_demo.py         # the full pipeline, end to end, self-labeling
+
+python -m pip install -r requirements-data.txt  # + scanpy, for the real Kang path only
 python -m backtest.run_kang      # real IFN-β backtest — both bars + the reachable ceiling
 python -m bricks.cell_scgpt      # the cell model's full LOCTO scorecard vs every null
-python spine/run_demo.py         # the full pipeline, end to end, self-labeling
 python -m results.experiment     # virtual cohort across real trial arms
 python -m backtest.clinical      # two-directional clinical gate vs REAL trial outcomes (defines "viable")
-python -m pytest                 # invariant tests (needs requirements-dev.txt)
 ```
+Full setup, pins and gates: **[`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md)**. What the
+repo's evidence labels claim, and what they don't: **[`docs/QUALITY.md`](docs/QUALITY.md)**.
 
 See **[`results/RESULTS.md`](results/RESULTS.md)** for every verified number and an explicit real-vs-toy table, and `results/figures/` for the deck figures. Full brick/data map + citations: `../ms-twin/docs/RESEARCH_FINDINGS.md`.
 
