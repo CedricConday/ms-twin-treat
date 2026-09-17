@@ -25,3 +25,6 @@ venv/
 
 # local safety backup of .git (do NOT commit)
 .git.bak/
+
+# run logs
+*.log
