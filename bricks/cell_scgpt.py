@@ -285,9 +285,8 @@ def _scrambled_similarity_control(bench: PerturbationBenchmark, n_rep: int = 20)
 
 
 def _scorecard() -> None:
+    from bricks.baselines import GlobalMeanShiftNull, IdentityNull, LeaveOneOutMeanShiftNull
     from data.kang import to_benchmark
-    from bricks.baselines import (GlobalMeanShiftNull, IdentityNull,
-                                  LeaveOneOutMeanShiftNull)
 
     print("B2-SCGPT — LOCTO scorecard on real Kang IFN-beta data.\n")
     bench = to_benchmark()
@@ -328,7 +327,7 @@ def _scorecard() -> None:
 
     print("\n-- models --")
     best = None
-    for m, lab in zip(models, labels):
+    for m, lab in zip(models, labels, strict=True):
         agg = scores[m.name].mean()
         wins = int((scores[m.name] > r_bar).sum())
         print(f"  {lab:<32} {agg:.4f}   beats bar in {wins}/{len(r_bar)} cell types")
@@ -350,7 +349,7 @@ def _scorecard() -> None:
             print(f"    canonical bar {r_canon.loc[keep].mean():.4f}"
                   f"   leaky bar {r_bar.loc[keep].mean():.4f}"
                   f"   ceiling {sum(bench.ceiling(c) for c in keep)/len(keep):.4f}")
-            for m, lab in zip(models, labels):
+            for m, lab in zip(models, labels, strict=True):
                 print(f"    {lab:<30} {scores[m.name].loc[keep].mean():.4f}")
 
     primary = scores[models[0].name].mean()

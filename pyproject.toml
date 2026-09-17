@@ -1,0 +1,19 @@
+# Tooling config only. This repo is not packaged or published to an index —
+# it is research code run from a checkout, so there is no [project] table and
+# no build backend. Test config lives in pytest.ini, deliberately in ONE place:
+# pytest reads pytest.ini in preference to pyproject.toml, so a duplicate
+# [tool.pytest.ini_options] block here would be silently dead config.
+
+[tool.ruff]
+line-length = 100
+exclude = ["data/cache", "results/figures"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]  # long lines are left to the author's judgement
+
+[tool.ruff.lint.per-file-ignores]
+# These modules prepend the repo root to sys.path so they can be run directly
+# as `python results/experiment.py` as well as `python -m results.experiment`.
+# The path setup has to happen before the first-party imports.
+"results/experiment.py" = ["E402"]

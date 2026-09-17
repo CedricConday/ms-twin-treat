@@ -17,7 +17,6 @@ import pytest
 from backtest.harness import PerturbationBenchmark, score_delta
 from bricks.baselines import GlobalMeanShiftNull, IdentityNull
 
-
 # --------------------------------------------------------------------------- #
 # harness + nulls
 # --------------------------------------------------------------------------- #
@@ -25,11 +24,13 @@ from bricks.baselines import GlobalMeanShiftNull, IdentityNull
 def _toy_bench(seed=0, n_genes=200, n_types=5):
     rng = np.random.default_rng(seed)
     genes = [f"g{i}" for i in range(n_genes)]
-    shared = np.zeros(n_genes); shared[rng.choice(n_genes, 30, replace=False)] = rng.normal(2, .3, 30)
+    shared = np.zeros(n_genes)
+    shared[rng.choice(n_genes, 30, replace=False)] = rng.normal(2, .3, 30)
     ctrl, pert = {}, {}
     for c in range(n_types):
         base = rng.normal(5, 1, n_genes)
-        spec = np.zeros(n_genes); spec[rng.choice(n_genes, 15, replace=False)] = rng.normal(1.5, .3, 15)
+        spec = np.zeros(n_genes)
+        spec[rng.choice(n_genes, 15, replace=False)] = rng.normal(1.5, .3, 15)
         ctrl[f"ct{c}"] = base
         pert[f"ct{c}"] = base + shared + spec
     return PerturbationBenchmark(genes, ctrl, pert)
@@ -84,8 +85,8 @@ def test_intervention_params_from_mechanism_rule():
     """Params come from the mechanism-class rule (grounding.py), not per-arm tuning:
     two suppressive drugs share the class strength, and it is NOT fit to their
     (different) outcomes. This is what lets the clinical gate test the rule."""
-    from bricks.intervention import IFN_BETA, GLATIRAMER, APL_CGP77116
-    from bricks.grounding import SUPPRESSIVE_STRENGTH, IMMUNOGENIC_STRENGTH
+    from bricks.grounding import IMMUNOGENIC_STRENGTH, SUPPRESSIVE_STRENGTH
+    from bricks.intervention import APL_CGP77116, GLATIRAMER, IFN_BETA
     assert IFN_BETA.treat == GLATIRAMER.treat == SUPPRESSIVE_STRENGTH
     assert IFN_BETA.immunogenic == 0.0
     assert APL_CGP77116.treat == 0.0
@@ -96,8 +97,8 @@ def test_immunogenic_intervention_causes_harm():
     """The harm mechanism: an immunogenic therapy makes things WORSE than untreated
     (more demyelination) — the opposite of a suppressive one. Without this the stack
     cannot reproduce a therapy that harmed patients (e.g. APL CGP77116)."""
-    from bricks.qsp import simulate as qsp
     from bricks.abm import simulate as abm
+    from bricks.qsp import simulate as qsp
     assert qsp(treat=0.0, immuno=0.4)["M"][-1] < qsp(treat=0.0, immuno=0.0)["M"][-1]
     assert abm(treat=0.0, immuno=0.4, seed=0)[-1] > abm(treat=0.0, immuno=0.0, seed=0)[-1]
 
@@ -150,7 +151,7 @@ def test_vpop_filter_discriminates():
 def test_vpop_prevalence_weighting_matches_target():
     """MAPEL step: after weighting, the weighted mass per severity bin matches the
     target prevalence -- the correction the raw plausible set does not have."""
-    from bricks.vpop import sample_vpop, weight_to_prevalence, DEFAULT_PREVALENCE
+    from bricks.vpop import DEFAULT_PREVALENCE, sample_vpop, weight_to_prevalence
     cohort = sample_vpop(n=40, seed=2)
     weight_to_prevalence(cohort)
     n = len(cohort)
@@ -174,9 +175,9 @@ def test_vpop_patients_have_pipeline_keys():
 # --------------------------------------------------------------------------- #
 
 def test_pipeline_end_to_end_produces_readout():
+    from bricks.vpop import sample_vpop
     from spine.pipeline import Pipeline
     from spine.run_demo import build_stages
-    from bricks.vpop import sample_vpop
     stages = build_stages(with_data=False, arm="IFN-beta")
     result = Pipeline(stages).run(sample_vpop(n=1, seed=0)[0], verbose=False)
     assert "readout" in result and "lesion_proxy" in result["readout"]

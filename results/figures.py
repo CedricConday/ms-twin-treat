@@ -17,14 +17,22 @@ from __future__ import annotations
 import os
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
 # --- dataviz reference palette (validated) ---------------------------------
-SURFACE = "#fcfcfb"; INK = "#0b0b0b"; SEC = "#52514e"; MUTED = "#898781"
-GRID = "#e1e0d9"; BASE = "#c3c2b7"
-BLUE = "#2a78d6"; ORANGE = "#eb6834"; GOOD = "#0ca30c"; CRIT = "#d03b3b"
+SURFACE = "#fcfcfb"
+INK = "#0b0b0b"
+SEC = "#52514e"
+MUTED = "#898781"
+GRID = "#e1e0d9"
+BASE = "#c3c2b7"
+BLUE = "#2a78d6"
+ORANGE = "#eb6834"
+GOOD = "#0ca30c"
+CRIT = "#d03b3b"
 
 OUT = os.path.join(os.path.dirname(__file__), "figures")
 plt.rcParams.update({
@@ -64,13 +72,15 @@ def fig_backtest():
     fig, ax = plt.subplots(figsize=(10.6, 4.8))
     ax.barh(list(y), vals, height=0.62, color=colors)
     ax.invert_yaxis()
-    ax.set_yticks(list(y)); ax.set_yticklabels(labels)
+    ax.set_yticks(list(y))
+    ax.set_yticklabels(labels)
     ax.set_xlim(0, 1.0)
     ax.set_xlabel("aggregate delta_pearson  (higher = better; 1.0 = perfect)")
     ax.axvline(0.8498, color=MUTED, lw=1, ls=(0, (4, 3)))
-    for i, (v, n) in enumerate(zip(vals, notes)):
+    for i, (v, n) in enumerate(zip(vals, notes, strict=True)):
         ax.text(v + 0.008, i, f"{v:.3f}   {n}", va="center", color=SEC, fontsize=8.5)
-    ax.grid(axis="x", color=GRID, lw=0.8); ax.set_axisbelow(True)
+    ax.grid(axis="x", color=GRID, lw=0.8)
+    ax.set_axisbelow(True)
     _style(ax)
     fig.tight_layout(rect=[0, 0, 1, 0.85])
     fig.text(0.5, 0.965, "The cell model now beats the null — and scGPT didn't earn it",
@@ -78,7 +88,8 @@ def fig_backtest():
     fig.text(0.5, 0.905, "Kang IFN-β · leave-one-cell-type-out · scGPT clears the bar but ties free correlation (p=0.55)",
              ha="center", va="top", fontsize=9, color=SEC)
     p = os.path.join(OUT, "fig1_backtest.png")
-    fig.savefig(p, dpi=200, facecolor=SURFACE); plt.close(fig)
+    fig.savefig(p, dpi=200, facecolor=SURFACE)
+    plt.close(fig)
     return p
 
 
@@ -99,13 +110,15 @@ def fig_arms():
     fig, ax = plt.subplots(figsize=(8.4, 4.4))
     ax.barh(list(y), vals, height=0.6, color=colors)
     ax.invert_yaxis()
-    ax.set_yticks(list(y)); ax.set_yticklabels(labels)
+    ax.set_yticks(list(y))
+    ax.set_yticklabels(labels)
     ax.set_xlim(0, 40)
     ax.set_xlabel("mean lesion proxy across the virtual cohort  (lower = better; proxy, not clinical)")
     ax.axvline(32.7, color=BASE, lw=1, ls=(0, (4, 3)))
-    for i, (v, n) in enumerate(zip(vals, notes)):
+    for i, (v, n) in enumerate(zip(vals, notes, strict=True)):
         ax.text(v + 0.6, i, f"{v:.1f}  {n}".rstrip(), va="center", color=SEC, fontsize=10)
-    ax.grid(axis="x", color=GRID, lw=0.8); ax.set_axisbelow(True)
+    ax.grid(axis="x", color=GRID, lw=0.8)
+    ax.set_axisbelow(True)
     legend = [Patch(color=GOOD, label="worked (approved DMT)"),
               Patch(color=CRIT, label="harmed (Phase II halted)"),
               Patch(color=MUTED, label="untreated control")]
@@ -118,7 +131,8 @@ def fig_arms():
     fig.text(0.5, 0.90, "Separates the therapies that worked — and now flags the harmful arm (mechanism-encoded, not discovered)",
              ha="center", va="top", fontsize=9, color=SEC)
     p = os.path.join(OUT, "fig2_arms.png")
-    fig.savefig(p, dpi=200, facecolor=SURFACE); plt.close(fig)
+    fig.savefig(p, dpi=200, facecolor=SURFACE)
+    plt.close(fig)
     return p
 
 

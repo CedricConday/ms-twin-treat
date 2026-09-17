@@ -22,8 +22,15 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from bricks.abm import (PROFILES, STEPS_PER_DAY, W, ABMBrick, WeatherleyABM,
-                        bbb_permeability, simulate)
+from bricks.abm import (
+    PROFILES,
+    STEPS_PER_DAY,
+    ABMBrick,
+    W,
+    WeatherleyABM,
+    bbb_permeability,
+    simulate,
+)
 
 
 def test_published_constants_are_unchanged():

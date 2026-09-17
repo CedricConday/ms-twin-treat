@@ -34,8 +34,9 @@ VALIDATION STATUS — read this before trusting an output:
     use ONLY the encoder and the gene embeddings, never `decoder`.
 """
 from __future__ import annotations
-import json, math
-import numpy as np
+
+import json
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

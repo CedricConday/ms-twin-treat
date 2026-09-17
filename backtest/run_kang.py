@@ -24,9 +24,8 @@ Run:  python -m backtest.run_kang        (repo root, venv active)
 
 from __future__ import annotations
 
+from bricks.baselines import GlobalMeanShiftNull, IdentityNull, LeaveOneOutMeanShiftNull
 from data.kang import to_benchmark
-from bricks.baselines import (GlobalMeanShiftNull, IdentityNull,
-                              LeaveOneOutMeanShiftNull)
 
 
 def main() -> int:

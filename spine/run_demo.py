@@ -26,23 +26,21 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# real bricks — no dataset required
+from bricks.abm import ABMBrick  # noqa: E402  B5
+from bricks.barrier import BarrierStage  # noqa: E402  B6
+from bricks.intervention import (  # noqa: E402  B7
+    LIBRARY,
+    InterventionStage,
+)
+from bricks.qsp import QSPBrick  # noqa: E402  B4
+from bricks.readout import ReadoutStage  # noqa: E402  B8
+from bricks.vpop import sample_vpop  # noqa: E402  B9
 from spine.pipeline import (  # noqa: E402
     MultiScaleState,
     PassThroughStage,
     Pipeline,
-    is_standin,
 )
-
-# real bricks — no dataset required
-from bricks.abm import ABMBrick            # noqa: E402  B5
-from bricks.barrier import BarrierStage    # noqa: E402  B6
-from bricks.intervention import (          # noqa: E402  B7
-    LIBRARY,
-    InterventionStage,
-)
-from bricks.qsp import QSPBrick            # noqa: E402  B4
-from bricks.readout import ReadoutStage    # noqa: E402  B8
-from bricks.vpop import sample_vpop        # noqa: E402  B9
 
 
 def build_stages(with_data: bool, arm: str) -> list:

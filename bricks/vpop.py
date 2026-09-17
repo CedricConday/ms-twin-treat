@@ -70,7 +70,7 @@ def sample_vpop(n: int = 20, seed: int = 0, arm: str | None = None,
         cand = qmc.scale(raw, l_bounds, u_bounds)
         for row in cand:
             n_tried += 1
-            vals = dict(zip(names, (float(x) for x in row)))
+            vals = dict(zip(names, (float(x) for x in row), strict=True))
             if not _is_plausible(vals["r_CA"], vals["k_dmg"]):
                 continue
             i = len(accepted)
@@ -150,7 +150,7 @@ def weight_to_prevalence(cohort: list[dict],
         observed_frac = counts[b] / n if n else 0.0
         raw.append((target.get(b, 0.0) / observed_frac) if observed_frac > 0 else 0.0)
     scale = (n / sum(raw)) if sum(raw) > 0 else 1.0  # normalise mean weight to 1.0
-    for p, w, b in zip(cohort, raw, bins):
+    for p, w, b in zip(cohort, raw, bins, strict=True):
         p["weight"] = round(w * scale, 4)
         p["severity_bin"] = b
     return cohort

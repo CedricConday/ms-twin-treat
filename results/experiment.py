@@ -27,11 +27,10 @@ import warnings
 
 warnings.filterwarnings("ignore")  # silence mesa's seed-kwarg FutureWarning for clean output
 
+from bricks.intervention import LIBRARY
+from bricks.vpop import sample_vpop
 from spine.pipeline import Pipeline
 from spine.run_demo import build_stages
-from bricks.vpop import sample_vpop
-from bricks.intervention import LIBRARY
-
 
 ARMS = ["untreated", "IFN-beta", "glatiramer acetate", "APL CGP77116"]
 

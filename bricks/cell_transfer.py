@@ -87,8 +87,8 @@ class CellTransferModel:
 
 
 if __name__ == "__main__":
-    from data.kang import to_benchmark
     from bricks.baselines import GlobalMeanShiftNull, IdentityNull
+    from data.kang import to_benchmark
 
     print("B2 cell-transfer — scoring against the bar on real Kang IFN-beta data...")
     bench = to_benchmark()

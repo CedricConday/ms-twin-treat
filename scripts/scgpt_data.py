@@ -2,7 +2,10 @@
 bins), non-zero-gene tokenization with a prepended <cls>, exactly as scGPT's
 Preprocessor + tokenize_and_pad_batch do."""
 from __future__ import annotations
-import numpy as np, scanpy as sc, anndata as ad
+
+import anndata as ad
+import numpy as np
+import scanpy as sc
 
 N_BINS, MAX_LEN, MASK_VALUE, PAD_VALUE, CLS_VALUE = 51, 1200, -1, -2, 0.0
 

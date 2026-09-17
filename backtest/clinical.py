@@ -29,9 +29,9 @@ import copy
 import statistics as stats
 from dataclasses import dataclass
 
+from bricks.vpop import sample_vpop
 from spine.pipeline import Pipeline
 from spine.run_demo import build_stages
-from bricks.vpop import sample_vpop
 
 
 @dataclass(frozen=True)
@@ -99,7 +99,7 @@ def main() -> int:
     print("CLINICAL BACKTEST GATE — does the stack reproduce known trial history?\n")
     print(f"{'arm':<20} {'sim Δrelapse':>12} {'predicted':>10} {'known':>9}  {'DIR':>4}")
     print("-" * 64)
-    for o, change, pred, d_ok, m_ok in g["rows"]:
+    for o, change, pred, d_ok, _m_ok in g["rows"]:
         mark = "PASS" if d_ok else "FAIL"
         print(f"{o.arm:<20} {change:>+11.0f}% {pred:>10} {o.direction:>9}  {mark:>4}")
     print("-" * 64)

@@ -164,7 +164,6 @@ class Pipeline:
             flagged = [k for k in added if is_standin(state[k])]
             self.trace.append({"stage": stage.name, "added": added, "standin": flagged})
             if verbose:
-                marks = "".join(" *" if k in flagged else "  " for k in added)
                 keys = ", ".join(f"{k}{'*' if k in flagged else ''}" for k in added) or "(nothing)"
                 print(f"  [{i}/{len(self.stages)}] {stage.name:<28} -> {keys}")
         return state
