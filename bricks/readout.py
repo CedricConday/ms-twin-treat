@@ -44,9 +44,14 @@ class ReadoutStage:
         undelivered_benefit = (1.0 - effective) * treat
         adjusted_damage = float(np.clip(final_damage + undelivered_benefit, 0.0, 1.0))
 
+        # relapse_proxy is SCORED, not just displayed: backtest/clinical.py averages
+        # it across the cohort and takes a ratio against the untreated arm. Rounding
+        # it here quantized that ratio -- at treated-arm damage ~0.02 the per-patient
+        # value collapsed onto {0.02, 0.03, 0.04, 0.05}, ~25% discretization error on
+        # the gate's only quantitative number. Keep the exact value; round for display.
         state["readout"] = {
             "lesion_proxy": round(adjusted_damage * MAX_LESIONS),
-            "relapse_proxy": round(adjusted_damage * MAX_RELAPSE, 2),
+            "relapse_proxy": adjusted_damage * MAX_RELAPSE,
             "sim_final_damage": round(final_damage, 4),
             "delivery_adjusted_damage": round(adjusted_damage, 4),
             "effective_exposure": round(effective, 4),
@@ -73,8 +78,8 @@ if __name__ == "__main__":
     r_c = ReadoutStage().run(dict(cns_locked))["readout"]
     print("B8 readout — same sim damage (0.30), same drug (treat=0.5), different delivery:")
     print(f"  peripheral (effective=1.00): lesion_proxy={r_p['lesion_proxy']} "
-          f"relapse_proxy={r_p['relapse_proxy']}  adjusted={r_p['delivery_adjusted_damage']}")
+          f"relapse_proxy={r_p['relapse_proxy']:.2f}  adjusted={r_p['delivery_adjusted_damage']}")
     print(f"  CNS-locked (effective=0.08): lesion_proxy={r_c['lesion_proxy']} "
-          f"relapse_proxy={r_c['relapse_proxy']}  adjusted={r_c['delivery_adjusted_damage']}")
+          f"relapse_proxy={r_c['relapse_proxy']:.2f}  adjusted={r_c['delivery_adjusted_damage']}")
     print("  -> barrier matters: the CNS-required drug that can't cross looks worse. "
           "(proxies invented, validated=False)")

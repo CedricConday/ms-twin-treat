@@ -135,6 +135,22 @@ def test_readout_barrier_makes_undelivered_drug_worse():
     assert locked["lesion_proxy"] > peripheral["lesion_proxy"]
 
 
+def test_readout_relapse_proxy_is_not_quantized():
+    """relapse_proxy is scored, not displayed: backtest/clinical.py averages it and
+    takes a ratio against the untreated arm. Rounding it to 2dp quantized that ratio
+    -- at treated-arm damage ~0.02 the per-patient value collapsed onto four distinct
+    steps. The stored value must be exact; display rounding belongs at the print."""
+    from bricks.readout import MAX_RELAPSE, ReadoutStage
+
+    def proxy(damage: float) -> float:
+        state = {"abm_damage": np.array([damage]), "cns_exposure": {"effective": 1.0}}
+        return ReadoutStage().run(state)["readout"]["relapse_proxy"]
+
+    assert proxy(0.0230) == pytest.approx(0.0230 * MAX_RELAPSE)
+    # Two patients a hair apart must not land on the same proxy value.
+    assert proxy(0.0230) != proxy(0.0234)
+
+
 # --------------------------------------------------------------------------- #
 # the wedge: plausibility filter must actually reject
 # --------------------------------------------------------------------------- #
