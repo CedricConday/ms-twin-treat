@@ -127,7 +127,7 @@ arms being byte-identical is half of it.
 **Nothing here is externally blocked.** 1–5 are work. 6 has an external dependency that
 two open routes already clear. Ordered cheapest-first, not most-important-first.
 
-### (5) Readout rounding quantizes the gate — *30 minutes*
+### (5) Readout rounding quantizes the gate — ~~*30 minutes*~~ **DONE 2026-09-17 (3fcfb2c)**
 `bricks/readout.py:49` rounds `relapse_proxy` to 2dp before `backtest/clinical.py:65`
 averages it and `:83` takes a ratio. At treated-arm damage ~0.0225 the per-patient proxy
 takes **four distinct values** — `{0.02, 0.03, 0.04, 0.05}` — around a mean of 0.0342.
@@ -177,7 +177,7 @@ anything else in the class, which is exactly why both arms print −77%. `:71`
 built, nothing feeds it. **Fix:** feed it per-drug potency from an independent source
 (see blocker 6), never from the arm's own relapse number.
 
-### (3) Four arms is too few to test anything — *~2–3 days*
+### (3) Four arms is too few to test anything — *~2–3 days* — **ARMS DONE 2026-09-17, LOO STILL OPEN**
 `backtest/clinical.py:46` — `KNOWN_OUTCOMES` has 4 entries, all of which informed the
 setup. `bricks/grounding.py`'s own docstring names this: a leave-one-arm-out test "needs
 more arms than we have data for". **Fix:** grow to ~10–20 arms with cited trial numbers
@@ -236,3 +236,42 @@ patient-level trajectories fitted per drug, and those live in enclaves that do n
 reproducible open repo exist around them. What is reachable: an open, honestly-labelled
 harness that ranks candidates, kills doomed ones early, and shows its work. Build that.
 **Nothing in this repo is evidence about multiple sclerosis** — that line does not move.
+
+
+## 8.4 Progress log — append dated entries, never rewrite
+
+### 2026-09-17 — blocker (5) closed
+`bricks/readout.py` now stores the exact `relapse_proxy` and rounds only at the display
+(3fcfb2c). Regression test `test_readout_relapse_proxy_is_not_quantized` fails on the old
+code and passes on the new. The clinical gate's direction and magnitude are unmoved by it,
+which is the expected result: the fix makes the measurement trustworthy, it does not close
+a gap.
+
+### 2026-09-17 — blocker (3), first half: 4 arms → 14
+Ten arms added to `bricks/intervention.py`, each classed from its pharmacology and never
+from its outcome; anchors, comparators and PMIDs in `docs/TRIAL_ANCHORS.md`, verified
+against PubMed the same day. `backtest/clinical.py` now scores each arm against **the
+comparator its trial actually used** — OPERA and CARE-MS I against IFN-β, OPTIMUM against
+teriflunomide — instead of converting active-comparator results into invented
+"vs placebo" figures. Arms with identical intervention parameters are simulated once, so
+the 14-arm gate costs three pipeline runs, not fourteen.
+
+**Measured: DIRECTION 9/14, MAGNITUDE 1/9** (was 4/4 and 0/2 on four arms; the model is
+unchanged). Failing arms: ocrelizumab, alemtuzumab, ponesimod (all +0% vs their
+comparator), lenercept and atacicept (−77% where the trials harmed).
+
+What it proves, and this is the reason the arm set was grown:
+- **the rule's shape is wrong, not just its calibration.** Lenercept and atacicept are
+  immunosuppressive by mechanism and harmed patients. No `SUPPRESSIVE_STRENGTH` value
+  fixes a rule that maps class → direction.
+- **blocker (4) is now measurable.** One strength per class returns exactly 0% on every
+  within-class comparison, which is the `strength` hook's absence stated as a number.
+- the single magnitude hit is natalizumab (−77% vs −68% reported); the same −77% misses
+  IFN-β, glatiramer and teriflunomide by 45pp or more.
+
+**Still open in (3):** the leave-one-arm-out test. It needs per-drug strengths to fit, so
+it lands with blocker (4), not before. The arm set is now large enough to hold one out.
+
+**Order from here:** (4) with per-drug potency from independent exposure-response data,
+then the LOO that (3) still owes, then (1) and (2). The MSOAC application remains the only
+step with a queue in front of it and has not been started.

@@ -51,6 +51,13 @@ One plausible virtual population (12 patients), run through every real trial arm
 - **Honest caveat:** APL's harm is **mechanism-encoded, not discovered.** We gave the models the capability to express harm (an immunogenic term that provokes the autoreactive response) and set APL's parameter from its *documented encephalitogenic biology*, not its relapse number. Capability milestone, not validation — see §5.1.
 
 ## 5.1 The clinical backtest gate — what "viable" means
+
+> **SUPERSEDED 2026-09-17 — see §5.2.** Everything in §5.1 is the four-arm gate as it
+> stood when it was written, kept as the record. Both its sim numbers (−28 / −24 / +11)
+> and its 4/4 headline are stale: the ABM and intervention groundings moved the sim
+> numbers to −77 / −77 / +28 (GROUNDING.md, 2026-09-06), and the arm set has since grown
+> to 14.
+
 `python -m backtest.clinical` scores the stack against **known trial outcomes, in both directions** — the gate that must go green before any prediction is trusted. Anchors are real and cited via PubMed:
 
 | arm | sim Δrelapse | known outcome | source | direction |
@@ -66,6 +73,42 @@ One plausible virtual population (12 patients), run through every real trial arm
 - The intervention parameters now come from a **2-parameter mechanism-class rule** (`bricks/grounding.py`), keyed on each drug's independent in-vitro mechanism — **not hand-tuned per arm, and not fit to any relapse number** (APL's harm parameter comes from the *immunogenic* class because MBP 83-99 is encephalitogenic in T-cell assays, an independent property). The gate now tests the rule, not four hand-set values. But the rule is coarse and reasoned (two class strengths), not yet data-fit.
 - With only 4 arms whose outcomes *informed the setup*, getting the directions right is **necessary but not sufficient**. Real viability needs data-grounded parameters, **out-of-sample** arms the setup has never seen, and validated magnitudes.
 - What genuinely changed: the model went from *unable to represent harm at all* to *able to express both benefit and harm and direct all four known arms correctly*. That is real progress; it is not proof. *(via PubMed)*
+
+## 5.2 The gate on 14 arms (measured 2026-09-17)
+`python -m backtest.clinical`, arms and citations in [`docs/TRIAL_ANCHORS.md`](../docs/TRIAL_ANCHORS.md).
+
+| arm | vs | sim Δ | known Δ | direction |
+|---|---|---|---|---|
+| untreated | untreated | +0% | 0% | ✅ |
+| IFN-β | untreated | −77% | −30% | ✅ |
+| glatiramer acetate | untreated | −77% | −29% | ✅ |
+| natalizumab | untreated | −77% | −68% | ✅ |
+| fingolimod | untreated | −77% | −55% | ✅ |
+| teriflunomide | untreated | −77% | −31.5% | ✅ |
+| dimethyl fumarate | untreated | −77% | −53% | ✅ |
+| ocrelizumab | IFN-β | **+0%** | −46% | ❌ |
+| alemtuzumab | IFN-β | **+0%** | −55% | ❌ |
+| ponesimod | teriflunomide | **+0%** | −30.5% | ❌ |
+| lenercept | untreated | **−77%** | harms | ❌ |
+| atacicept | untreated | **−77%** | harms | ❌ |
+| IFN-γ | untreated | +28% | harms | ✅ |
+| APL CGP77116 | untreated | +28% | harms | ✅ |
+
+**DIRECTION 9/14. MAGNITUDE 1/9 within 15pp** — the one magnitude hit is natalizumab
+(−77% sim against −68% reported), which the same −77% misses on every other suppressive
+arm. One number cannot be right for drugs whose real effects run from −29% to −68%.
+
+Two structural failures, both invisible to the four-arm version of this gate:
+
+1. **Mechanism class does not determine clinical direction.** Lenercept (TNF blockade)
+   and atacicept (BAFF/APRIL blockade) are immunosuppressive by mechanism and both
+   *harmed* patients in controlled trials. The class rule predicts benefit for both.
+2. **One strength per class cannot separate two drugs inside a class.** The three
+   active-comparator arms ask exactly that question and the simulation answers 0%
+   difference each time, because every suppressive drug shares `SUPPRESSIVE_STRENGTH`.
+
+Neither is a regression. The model is unchanged; the exam got harder, which is what
+BUILD_PLAN.md §8 blocker (3) asked for.
 
 ## 6. What is real vs. toy (read this before quoting anything)
 | Real / defensible | Toy / illustrative / unvalidated |

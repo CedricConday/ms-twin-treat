@@ -104,7 +104,78 @@ APL_CGP77116 = _from_mechanism(
           "Backtest target: HARMED. Its harm parameter comes from the immunogenic class "
           "rule, NOT from its relapse number.")
 
-LIBRARY = {i.name: i for i in (UNTREATED, IFN_BETA, GLATIRAMER, APL_CGP77116)}
+# --------------------------------------------------------------------------- #
+# Expanded arm set (BUILD_PLAN §8 blocker 3). Every mechanism below is the drug's
+# INDEPENDENT pharmacology -- its target, known before any trial read out -- and
+# never its clinical result. The trial outcomes these arms are scored against
+# live in backtest/clinical.py and docs/TRIAL_ANCHORS.md; nothing here reads them.
+#
+# cns_required is False throughout: each of these acts on peripheral immune cells
+# or at the barrier itself, none needs to reach a lesion to work.
+# --------------------------------------------------------------------------- #
+
+NATALIZUMAB = _from_mechanism(
+    "natalizumab", SUPPRESSIVE,
+    notes="anti-alpha4-integrin monoclonal antibody; blocks leukocyte transit across the "
+          "blood-brain barrier. Suppressive class from its target, not from AFFIRM.")
+
+FINGOLIMOD = _from_mechanism(
+    "fingolimod", SUPPRESSIVE,
+    notes="sphingosine-1-phosphate receptor modulator; sequesters lymphocytes in lymph "
+          "nodes by blocking egress. Suppressive class from its target.")
+
+PONESIMOD = _from_mechanism(
+    "ponesimod", SUPPRESSIVE,
+    notes="selective S1P1 receptor modulator; same egress-blocking mechanism as "
+          "fingolimod, which is why the class rule cannot tell the two apart.")
+
+TERIFLUNOMIDE = _from_mechanism(
+    "teriflunomide", SUPPRESSIVE,
+    notes="dihydroorotate dehydrogenase inhibitor; cytostatic to proliferating "
+          "lymphocytes via pyrimidine synthesis. Suppressive class from its target.")
+
+DIMETHYL_FUMARATE = _from_mechanism(
+    "dimethyl fumarate", SUPPRESSIVE,
+    notes="Nrf2 pathway activator with immunomodulatory and anti-oxidative effects. "
+          "Suppressive class from its mechanism.")
+
+OCRELIZUMAB = _from_mechanism(
+    "ocrelizumab", SUPPRESSIVE,
+    notes="anti-CD20 monoclonal antibody; depletes B cells. Suppressive class from its "
+          "target.")
+
+ALEMTUZUMAB = _from_mechanism(
+    "alemtuzumab", SUPPRESSIVE,
+    notes="anti-CD52 monoclonal antibody; depletes circulating T and B lymphocytes. "
+          "Suppressive class from its target.")
+
+# The two counterexamples. Both are immunosuppressive by mechanism and both HARMED
+# patients in controlled trials. The class rule predicts benefit for each, so both
+# are arms the current rule is expected to get wrong -- that is why they are here.
+LENERCEPT = _from_mechanism(
+    "lenercept", SUPPRESSIVE,
+    notes="TNF receptor p55-IgG fusion protein; neutralizes TNF, an inflammatory "
+          "cytokine. Suppressive by mechanism. Backtest target: HARMED (more and "
+          "earlier exacerbations, PMID 10449104) -- a counterexample to the class rule, "
+          "kept BECAUSE the rule gets it wrong.")
+
+ATACICEPT = _from_mechanism(
+    "atacicept", SUPPRESSIVE,
+    notes="TACI-Ig fusion protein; blocks BAFF and APRIL and depletes plasma cells. "
+          "Suppressive by mechanism. Backtest target: HARMED (ATAMS halted for a raised "
+          "relapse rate, PMID 24613349) -- the second counterexample.")
+
+IFN_GAMMA = _from_mechanism(
+    "IFN-gamma", IMMUNOGENIC,
+    notes="recombinant type II interferon; pro-inflammatory, activates macrophages and "
+          "upregulates MHC class II. IMMUNOGENIC class from its immunology (Panitch "
+          "1987, PMID 2882294). Backtest target: HARMED.")
+
+LIBRARY = {i.name: i for i in (
+    UNTREATED, IFN_BETA, GLATIRAMER, APL_CGP77116,
+    NATALIZUMAB, FINGOLIMOD, PONESIMOD, TERIFLUNOMIDE, DIMETHYL_FUMARATE,
+    OCRELIZUMAB, ALEMTUZUMAB, LENERCEPT, ATACICEPT, IFN_GAMMA,
+)}
 
 
 class InterventionStage:

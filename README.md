@@ -41,9 +41,14 @@ repo's evidence labels claim, and what they don't: **[`docs/QUALITY.md`](docs/QU
 See **[`results/RESULTS.md`](results/RESULTS.md)** for every verified number and an explicit real-vs-toy table, and `results/figures/` for the deck figures. Full brick/data map + citations: `../ms-twin/docs/RESEARCH_FINDINGS.md`.
 
 ## Honest state of the science
-Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separates the therapies that *worked* (IFN-β, glatiramer) from untreated, and now also directs the one that **harmed** patients correctly (APL CGP77116, halted in Phase II) — its harm emerges from an `immunogenic` parameter set from the drug's *documented encephalitogenic mechanism*, not fitted to its relapse number.
+Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separates the therapies that *worked* from untreated, and directs the ones that **harmed** patients correctly (APL CGP77116 and IFN-γ) — that harm emerges from an `immunogenic` parameter set from each drug's *documented mechanism*, not fitted to its relapse number.
 
-**Read that carefully: the clinical gate at 4/4 is a capability milestone, not validation.** All four arms are ones whose outcomes informed the setup, so direction-correctness is *necessary, not sufficient*. Real viability still needs data-grounded parameters, **out-of-sample** arms, and validated magnitudes. **Nothing in this repo is evidence about multiple sclerosis.**
+**The clinical gate is scored on 14 arms and currently gets 9 of 14 directions and 1 of 9 magnitudes right** (2026-09-17; `python -m backtest.clinical`, anchors in [`docs/TRIAL_ANCHORS.md`](docs/TRIAL_ANCHORS.md)). It used to read 4/4 on four arms. Nothing about the model improved or regressed when that changed — the exam got harder, and the 4/4 version could not show either of the two things now visible:
+
+- **lenercept and atacicept are immunosuppressive by mechanism and harmed patients in trials.** A rule that maps mechanism class to clinical direction predicts benefit for both and is wrong on both.
+- **one strength per class cannot separate two drugs inside a class.** Ocrelizumab vs interferon beta-1a (OPERA), alemtuzumab vs interferon beta-1a (CARE-MS I) and ponesimod vs teriflunomide (OPTIMUM) are all scored against an active comparator, and the simulation returns exactly 0% difference for each.
+
+Both failures are the point of the arm set, not defects in it. Real viability still needs data-grounded parameters, **out-of-sample** arms, and validated magnitudes. **Nothing in this repo is evidence about multiple sclerosis.**
 
 ## Layout
 - `spine/` — the multi-scale orchestration layer (ours)

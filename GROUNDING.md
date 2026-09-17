@@ -171,3 +171,33 @@ ratio and cancels. Sweeping it 0.8 / 1.5 / 3.0 moves IFN-beta only -74.47 / -76.
 a ~2.9pp spread from `round(..., 2)` quantization. It cannot close a 47pp gap. The remaining
 suspects are `SUPPRESSIVE_STRENGTH` and the ABM damage response — see
 `claims/GROUND_INTERVENTION/CHARGE.md`.
+
+## Re-measured 2026-09-17 — the gate now has 14 arms
+
+The arm set grew from 4 to 14 (BUILD_PLAN §8 blocker 3; anchors and PMIDs in
+`docs/TRIAL_ANCHORS.md`). Every new arm's mechanism class was assigned from its
+target — anti-α4-integrin, S1P modulation, DHODH inhibition, CD20/CD52 depletion,
+TNF blockade, BAFF/APRIL blockade — and never from its trial result, which is the
+rule at the top of this file applied to the arm set rather than to a parameter.
+
+**DIRECTION 9/14, MAGNITUDE 1/9.** The model did not change; the exam did. What the
+four-arm gate could not show, and this one does:
+
+1. **Mechanism class does not determine clinical direction.** Lenercept and atacicept
+   are immunosuppressive by mechanism and both harmed patients (PMID 10449104,
+   24613349). The two-constant rule predicts benefit for both and is wrong on both.
+   No value of `SUPPRESSIVE_STRENGTH` fixes this — it is the rule's shape, not its
+   calibration.
+2. **One strength per class cannot separate two drugs inside a class.** Ocrelizumab
+   vs IFN-β (OPERA), alemtuzumab vs IFN-β (CARE-MS I) and ponesimod vs teriflunomide
+   (OPTIMUM) are active-comparator trials, and the simulation returns exactly 0%
+   for each because both arms share one strength. This is blocker (4)'s `strength`
+   hook stated as a measurement rather than as an intention.
+3. **The magnitude that hits is the one that should worry us least.** −77% is within
+   15pp of natalizumab's real −68% and nothing else; the same number misses IFN-β
+   (−30%), glatiramer (−29%) and teriflunomide (−31.5%) by more than 45pp. A single
+   class strength cannot be right across drugs whose real effects span −29% to −68%.
+
+The pattern this file keeps recording holds again: each step moves the error to where
+it actually lives. It has now walked from the ABM, through the intervention strengths,
+to the shape of the mechanism→parameter rule itself.
