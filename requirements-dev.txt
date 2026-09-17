@@ -2,3 +2,4 @@
 -r requirements.txt
 pytest==9.1.1
 matplotlib==3.11.1   # results/figures.py (deck assets)
+ruff==0.15.20        # lint gate; see pyproject.toml [tool.ruff]

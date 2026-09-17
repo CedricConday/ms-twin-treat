@@ -1,0 +1,11 @@
+# Real-data path only: the Kang 2018 loader (data/kang.py).
+#
+# Kept OUT of requirements.txt on purpose — scanpy pulls numba, umap-learn,
+# seaborn and statsmodels, and none of the harness, the toy pipeline or the
+# test suite needs any of it. Install this only to run backtest.run_kang,
+# spine/run_demo.py --with-data, or the grounding derivation.
+#
+# scanpy 1.12 is the newest release compatible with the pandas==2.2.3 pin in
+# requirements.txt (1.12.1+ requires pandas>=2.3).
+-r requirements.txt
+scanpy==1.12

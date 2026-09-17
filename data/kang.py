@@ -19,10 +19,29 @@ import json
 import os
 
 import numpy as np
-import scanpy as sc
 from anndata import AnnData
 
 from backtest.harness import PerturbationBenchmark
+
+
+def _scanpy():
+    """Import scanpy on demand.
+
+    scanpy is needed only by this real-data loader, and it drags in numba,
+    umap-learn, seaborn and statsmodels. Keeping it out of requirements.txt
+    means the harness, the toy pipeline and the test suite install and run
+    without it; see requirements-data.txt.
+    """
+    try:
+        import scanpy as sc
+    except ModuleNotFoundError as exc:  # pragma: no cover - env-dependent
+        raise ModuleNotFoundError(
+            "the Kang loader needs scanpy, which is not in requirements.txt "
+            "because it is only used for the real-data path. Install it with:\n"
+            "    python -m pip install -r requirements-data.txt"
+        ) from exc
+    return sc
+
 
 _FIGSHARE_URL = "https://ndownloader.figshare.com/files/34464122"
 _CACHE = os.path.join(os.path.dirname(__file__), "cache")
@@ -50,7 +69,7 @@ def _save_reliability_cache(reliability: dict[str, float]) -> None:
 def fetch_kang() -> AnnData:
     """Download (once, cached) and return the Kang AnnData."""
     os.makedirs(_CACHE, exist_ok=True)
-    adata = sc.read(_H5AD, backup_url=_FIGSHARE_URL)
+    adata = _scanpy().read(_H5AD, backup_url=_FIGSHARE_URL)
     return adata
 
 
@@ -75,6 +94,7 @@ def _normalize(adata: AnnData) -> AnnData:
     looks_like_counts = xmax > 30 and np.allclose(x.data if hasattr(x, "data") else x,
                                                   np.round(x.data if hasattr(x, "data") else x))
     if looks_like_counts:
+        sc = _scanpy()
         sc.pp.normalize_total(adata, target_sum=1e4)
         sc.pp.log1p(adata)
     return adata
@@ -131,7 +151,6 @@ def to_benchmark(adata: AnnData | None = None, min_cells: int = 50,
                            {"ctrl", "stim", "control", "stimulated"})
     ct_col = _detect_col(adata, ["cell_type", "cell", "celltype", "cell_abbr"], set())
 
-    vals = {str(v).lower() for v in adata.obs[cond_col].unique()}
     ctrl_key = next(v for v in adata.obs[cond_col].unique() if str(v).lower() in {"ctrl", "control"})
     stim_key = next(v for v in adata.obs[cond_col].unique()
                     if str(v).lower() in {"stim", "stimulated"})
