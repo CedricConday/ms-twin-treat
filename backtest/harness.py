@@ -31,6 +31,8 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+from backtest.validation import validate_profile_pair, validate_top_k
+
 
 # A model is anything that, given a control mean-expression vector for one cell
 # type, predicts that cell type's perturbed mean-expression vector.
@@ -66,10 +68,10 @@ def score_delta(true_delta: np.ndarray, pred_delta: np.ndarray, top_k: int = 50)
                            model also ranks in its top-K movers (did it find the
                            interferon-stimulated genes, not just the average shift?)
     """
+    validate_top_k(top_k)
     true_delta = np.asarray(true_delta, dtype=float).ravel()
     pred_delta = np.asarray(pred_delta, dtype=float).ravel()
-    if true_delta.shape != pred_delta.shape:
-        raise ValueError(f"shape mismatch: true {true_delta.shape} vs pred {pred_delta.shape}")
+    validate_profile_pair(true_delta, pred_delta, name="delta")
 
     mse = float(np.mean((true_delta - pred_delta) ** 2))
 
