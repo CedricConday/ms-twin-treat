@@ -275,3 +275,17 @@ it lands with blocker (4), not before. The arm set is now large enough to hold o
 **Order from here:** (4) with per-drug potency from independent exposure-response data,
 then the LOO that (3) still owes, then (1) and (2). The MSOAC application remains the only
 step with a queue in front of it and has not been started.
+
+### 2026-09-17 — what the rounding was actually worth, measured
+Blocker (5) quantified, by running the gate twice on the same code with only the 2dp
+rounding switched back on: the suppressive arms move **−77.0623% exact vs −76.7045%
+rounded**, and the immunogenic arms **+28.0902% vs +28.4091%** — about **0.32–0.36pp**
+on the headline. The per-patient discretization is the ~25% the blocker describes, but
+it largely averages out across a cohort of 12, so at a fixed `MAX_RELAPSE` the gate-level
+effect is a third of a percentage point.
+
+That refines, rather than contradicts, the note under blocker (2): the 0.8 / 1.5 / 3.0
+sweep spread ~2.9pp because each `MAX_RELAPSE` value puts the per-patient proxy on a
+different quantization grid, not because rounding is worth 2.9pp at any one value.
+Either way the conclusion stands — the constant cancels in the ratio, and neither it nor
+the rounding can move a 45pp magnitude gap.
