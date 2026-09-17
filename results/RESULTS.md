@@ -110,6 +110,30 @@ Two structural failures, both invisible to the four-arm version of this gate:
 Neither is a regression. The model is unchanged; the exam got harder, which is what
 BUILD_PLAN.md §8 blocker (3) asked for.
 
+## 5.3 Leave-one-arm-out (measured 2026-09-17)
+`PYTHONPATH=. python -m backtest.loo`. Hold out one quantified arm, fit the single class
+strength on the other eight against the tabulated response curve, predict the held-out arm.
+
+| held-out | vs | known | fitted k | predicted | error | null error |
+|---|---|---|---|---|---|---|
+| IFN-β | untreated | −30.0% | 0.50 | −47.6% | 17.6 | 16.0 |
+| glatiramer acetate | untreated | −29.0% | 0.50 | −47.6% | 18.6 | 17.1 |
+| natalizumab | untreated | −68.0% | 0.42 | −39.7% | 28.3 | 26.8 |
+| fingolimod | untreated | −55.0% | 0.45 | −41.8% | 13.2 | 12.1 |
+| teriflunomide | untreated | −31.5% | 0.49 | −46.5% | 15.0 | 14.3 |
+| dimethyl fumarate | untreated | −53.0% | 0.46 | −43.0% | 10.0 | 9.9 |
+| ocrelizumab | IFN-β | −46.0% | 0.47 | **+0.0%** | 46.0 | 2.0 |
+| alemtuzumab | IFN-β | −55.0% | 0.47 | **+0.0%** | 55.0 | 12.1 |
+| ponesimod | teriflunomide | −30.5% | 0.47 | **+0.0%** | 30.5 | 15.4 |
+
+**MAE 26.0pp. Predict-the-mean null: 14.0pp. The rule does not beat the null.**
+Placebo-controlled arms alone: 17.1pp vs 16.0pp — still behind.
+
+The fitted strength sits at 0.42–0.50 on every fold, which is wherever the training arms'
+average lands, and the three active-comparator arms predict exactly 0% at any strength.
+A single class number cannot answer a question about a specific drug. That is the
+scoreboard per-drug potency has to beat.
+
 ## 6. What is real vs. toy (read this before quoting anything)
 | Real / defensible | Toy / illustrative / unvalidated |
 |---|---|

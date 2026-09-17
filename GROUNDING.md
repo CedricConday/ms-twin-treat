@@ -243,3 +243,22 @@ carries a timing dependence this model has no way to express (the same paper fin
 depletion during progression *suppresses* disease). Flagging atacicept on that basis
 would be reasoning backwards from ATAMS. It remains a counterexample the rule gets
 wrong, labelled as such.
+
+## 2026-09-17 (later still) — the out-of-sample number
+
+`backtest/loo.py` now asks the question this file has been building toward: fit the class
+strength on N-1 arms, predict the Nth.
+
+**Out-of-sample MAE 26.0pp; predict-the-mean null 14.0pp.** Placebo-controlled arms only,
+17.1pp against a 16.0pp null. The rule loses to the null on both cuts.
+
+The fitted strength is 0.42–0.50 on every fold — the value that best matches the *average*
+of the training arms, not anything about the held-out drug. Ocrelizumab, alemtuzumab and
+ponesimod predict exactly 0% at every strength, because both arms of their trials take the
+same class number.
+
+So the honest summary of the grounding work so far: `SUPPRESSIVE_STRENGTH = 0.78` is
+derived from Kang and is not fitted to any outcome, which is what this file asked for — and
+a single such number, however well derived, cannot predict a drug it has not seen. The next
+parameter has to be per drug, and it has to come from something other than a relapse rate;
+see BUILD_PLAN §8.4 for the obstacle that makes exposure-response the wrong source.

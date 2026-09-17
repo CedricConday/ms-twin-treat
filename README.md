@@ -48,6 +48,8 @@ Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separat
 - **lenercept and atacicept are immunosuppressive by mechanism and harmed patients in trials.** A rule that maps mechanism class to clinical direction predicts benefit for both and is wrong on both. Lenercept now carries a regulation-disruption flag earned by its TNF biology (TNF-deficient mice get *worse* EAE; TNFR2 is required for remyelination), which moves it from −77% to −35% without crossing zero — the model can represent the case, and the current constants still get the sign wrong.
 - **one strength per class cannot separate two drugs inside a class.** Ocrelizumab vs interferon beta-1a (OPERA), alemtuzumab vs interferon beta-1a (CARE-MS I) and ponesimod vs teriflunomide (OPTIMUM) are all scored against an active comparator, and the simulation returns exactly 0% difference for each.
 
+**The out-of-sample test now runs too** (`PYTHONPATH=. python -m backtest.loo`): hold out an arm, fit the class strength on the other eight, predict the held-out one. **MAE 26.0pp against a predict-the-mean null of 14.0pp — the rule loses to the null.** A single class strength, however well derived, carries no drug-specific information; that is the number the per-drug work has to beat, and it is the honest headline for this build.
+
 Both failures are the point of the arm set, not defects in it. Real viability still needs data-grounded parameters, **out-of-sample** arms, and validated magnitudes. **Nothing in this repo is evidence about multiple sclerosis.**
 
 ## Layout

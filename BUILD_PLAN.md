@@ -304,3 +304,32 @@ because a harm constant tuned until lenercept reads harmful is fitted to the exa
 Consequence for blocker (4): the suppressive/harm *ratio* is now the load-bearing number,
 and both sides of it need independent sources. Per-drug potency from exposure-response
 work remains the next step; `mechanism_to_params(strength=...)` is still unfed.
+
+### 2026-09-17 — blocker (3) closed: leave-one-arm-out is running
+`backtest/response_curve.py` tabulates the pipeline once (treat -> simulated relapse
+change, 0.05 grid, both harm levels, cached in `results/response_curve.json`), so fitting
+is a search over the curve instead of thousands of runs. Interpolation error measured at
+0.8pp in the steepest region and written into the module docstring.
+
+`backtest/loo.py` holds out each quantified arm, fits the class strength on the other
+eight, predicts the held-out one, and scores it against a predict-the-mean null.
+
+**Result: out-of-sample MAE 26.0pp against a null of 14.0pp. The rule does not beat the
+null.** Placebo-controlled arms alone: 17.1pp vs 16.0pp — still behind. The fitted
+strength lands at 0.42–0.50 on every fold, i.e. wherever the training arms' average sits,
+and the three active-comparator arms predict exactly 0% at every strength.
+
+That is the honest headline for the whole build: **a single class strength carries no
+drug-specific information.** The gate at 9/14 direction flattered it; the LOO does not.
+Per-drug potency (blocker 4) now has a scoreboard to beat, and `tests/test_loo.py` pins
+the active-comparator arms at exactly 0 so that when potency lands, the test fails and
+says so.
+
+**Obstacle found while looking for that potency, stated before anyone spends a day on it:**
+the route §8 suggests — published exposure-response models — is CIRCULAR where the
+"response" is the annualized relapse rate, which is the outcome the gate predicts.
+Pharmacodynamic potency avoids that, but no single PD axis spans these mechanisms:
+natalizumab *raises* circulating lymphocyte counts (cells stay in blood), anti-CD20
+depletes B cells specifically, teriflunomide barely moves ALC. A per-drug number needs a
+bridging assumption across biomarkers, and that assumption is the next thing to argue
+about, not to quietly pick.
