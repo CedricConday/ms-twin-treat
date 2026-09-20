@@ -130,6 +130,105 @@ SEVERITY_BINS: list[tuple[float, float, str]] = [
 DEFAULT_PREVALENCE = {"mild": 0.50, "moderate": 0.35, "severe": 0.15}
 
 
+# --------------------------------------------------------------------------- #
+# The same method, against the GROUNDED model (2026-09-20)
+# --------------------------------------------------------------------------- #
+# `sample_vpop` above filters candidates through bricks/qsp.py, the TOY. Once
+# spine/run_demo.py switched to the Velez port, that left the plausibility
+# filter validating patients against a model the pipeline no longer runs -- and
+# VelezQSPBrick drops `r_CA`/`k_dmg` because they do not exist in it. The method
+# was still real and the coupling was gone.
+#
+# This is the same Allen-Rieger procedure against the grounded model. What makes
+# it better grounded than a re-tuning: the sampling bounds are the PAPER'S OWN
+# ranges. Velez de Mendizabal 2011 Table 1 gives alpha_E and alpha_R as
+# intervals rather than points -- `[1:2]` and `[0.25:2]` day^-1 -- because those
+# are the ranges the authors swept. Sampling inside them is using the paper's
+# stated plausible region, not inventing one.
+
+VELEZ_PARAM_BOUNDS: list[tuple[str, float, float]] = [
+    ("alpha_E", 1.0, 2.0),    # Table 1: "Maximum Teff proliferation rate [1:2] day-1"
+    ("alpha_R", 0.25, 2.0),   # Table 1: "Maximum Treg proliferation and activation
+                              #           rate [0.25:2] day-1"
+]
+
+# Plausibility window on untreated total damage at the horizon. A patient must
+# develop disease and must not leave the model's regime. The bounds are on the
+# MEDIAN-scale damage this model produces (see backtest/lomo.py on how wide that
+# distribution is) and are illustrative, not fitted -- but the REJECTION is real:
+# alpha_R near the top of its range gives a healthy configuration that produces
+# almost no damage, which is exactly the implausible region a filter should cut.
+VELEZ_PLAUSIBLE_DAMAGE = (0.05, 1000.0)
+VELEZ_HORIZON_DAYS = 730.0
+
+
+def _is_plausible_velez(alpha_E: float, alpha_R: float, seed: int) -> bool:
+    """Accept a candidate only if it develops disease and stays in regime."""
+    from bricks.qsp_velez import UNTREATED_PROFILE, simulate
+
+    traj = simulate(UNTREATED_PROFILE,
+                    params={"alpha_E": alpha_E, "alpha_R": alpha_R},
+                    t_end=VELEZ_HORIZON_DAYS, seed=seed)
+    if not traj["in_regime"]:
+        return False
+    damage = float(traj["total_damage"][-1])
+    lo, hi = VELEZ_PLAUSIBLE_DAMAGE
+    return bool(np.isfinite(damage) and lo <= damage <= hi)
+
+
+def sample_vpop_velez(n: int = 20, seed: int = 0, arm: str | None = None,
+                      oversample: int = 6, max_rounds: int = 20) -> list[dict]:
+    """Plausible virtual patients for the GROUNDED QSP.
+
+    Same method as `sample_vpop`, different model and different parameters. The
+    returned `qsp_params` use Velez names, so `VelezQSPBrick` honours them
+    instead of dropping them -- which is the whole point.
+
+    Note what this cohort does NOT yet feed: the clinical gate scores
+    `abm_damage`, so these patients vary the QSP and not the number the gate
+    reads. Wiring the readout onto `qsp_damage` is the remaining step
+    (BUILD_PLAN §8.4, "wiring").
+    """
+    names = [b[0] for b in VELEZ_PARAM_BOUNDS]
+    l_bounds = [b[1] for b in VELEZ_PARAM_BOUNDS]
+    u_bounds = [b[2] for b in VELEZ_PARAM_BOUNDS]
+    sampler = qmc.LatinHypercube(d=len(VELEZ_PARAM_BOUNDS), seed=seed)
+
+    accepted: list[dict] = []
+    n_tried = 0
+    for _ in range(max_rounds):
+        raw = sampler.random(max(n * oversample, n))
+        cand = qmc.scale(raw, l_bounds, u_bounds)
+        for row in cand:
+            n_tried += 1
+            vals = dict(zip(names, (float(x) for x in row), strict=True))
+            patient_seed = seed * 100_000 + len(accepted)
+            if not _is_plausible_velez(vals["alpha_E"], vals["alpha_R"], patient_seed):
+                continue
+            i = len(accepted)
+            accepted.append({
+                "patient_id": f"vv{i:03d}",
+                "seed": patient_seed,
+                "qsp_params": {"alpha_E": round(vals["alpha_E"], 3),
+                               "alpha_R": round(vals["alpha_R"], 3)},
+                **({"intervention_name": arm} if arm else {}),
+                "vpop_meta": {
+                    "validated": False,
+                    "method": "LHS + plausibility filter (Allen-Rieger flavour)",
+                    "model": "velez2011",
+                    "bounds": "Velez de Mendizabal 2011 Table 1 sweep ranges",
+                    "n_tried": n_tried,
+                    "note": "method real; bounds are the paper's own ranges; the "
+                            "model is a transcription, not a reproduction.",
+                },
+            })
+            if len(accepted) == n:
+                return accepted
+    raise RuntimeError(
+        f"only {len(accepted)}/{n} plausible patients after {n_tried} candidates; "
+        "widen VELEZ_PLAUSIBLE_DAMAGE or the bounds")
+
+
 def _severity(patient: dict) -> float:
     """Untreated final demyelination for this patient's sampled parameters."""
     traj = qsp_simulate(params=patient.get("qsp_params", {}), treat=0.0)
