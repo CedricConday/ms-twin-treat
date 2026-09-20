@@ -800,8 +800,27 @@ alone, with no trial outcome read.
 Blocked on data, not on the idea: the Human Protein Atlas serves per-immune-cell
 RNA on its website but its `search_download` API returned nothing for every
 immune-cell column tried, and the Kang 2018 dataset already in this repo has no
-Treg label (its CD4 T cells are not subset). Needs a source with Treg-resolved
-expression before it can be built.
+Treg label (its CD4 T cells are not subset).
+
+**Candidate source identified, not yet retrieved** (Europe PMC was returning 503
+at the time):
+
+    "Transcriptomic profiling of human effector and regulatory T cell subsets
+     identifies predictive population signatures." PMC8085975.
+
+It profiles effector AND regulatory subsets in the same experiment, which is the
+contrast the channel needs — a target's Treg:effector expression ratio, not its
+absolute level. Check its GEO accession and supplementary tables first; if they
+carry per-gene values the channel is buildable for the targets in this arm set
+(IL2RA, TNFRSF1B, MS4A1, CD52, ITGA4, S1PR1, TNFRSF13B).
+
+Two further notes for whoever picks this up. The claude.ai PubMed MCP server is
+installed but **not authenticated**, so it exposes only its OAuth tools —
+everything cited in this repo today came through the Europe PMC REST API and
+Firecrawl's research index instead, neither of which needs auth. And the
+prediction to test FIRST is daclizumab: its target is the canonical Treg marker,
+and it was withdrawn for fatal encephalitis while REDUCING relapses 45%. A
+channel that flags it is seeing something neither MRI nor ARR can.
 
 #### Still open
 
