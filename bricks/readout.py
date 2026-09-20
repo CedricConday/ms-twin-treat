@@ -34,6 +34,18 @@ import numpy as np
 from bricks.sormani import RelapsePrediction, lesion_ratio, predict_relapse_ratio
 
 # Invented mapping scales -- NOT clinical calibration.
+# WHY qsp_damage IS NOT WIRED IN HERE, measured 2026-09-20.
+# BUILD_PLAN §8.4 long listed "readout must read qsp_damage" as the remaining
+# wiring step. It cannot, not as a per-patient proxy: this stage clips
+# `adjusted_damage` to [0, 1] and the Velez port's total_damage is unbounded.
+# Over 32 untreated in-regime runs at 730 days the port gives median 1.539,
+# mean 11.0, max 248.0 -- **78% of them sit above the clip**. Feeding it in
+# would peg most of the cohort at MAX_RELAPSE and hide every treatment effect
+# on those patients behind a ceiling.
+# The ratio route is the one that works and it is already built:
+# `relapse_ratio_from_arms` below, via bricks/sormani.py, scored at ARM level,
+# which is what backtest/clinical_velez.py uses. Normalising the port's damage
+# to [0,1] would need a reference value nobody has published.
 MAX_LESIONS = 40      # damage=1.0 -> 40 "lesions" (illustrative ceiling)
 MAX_RELAPSE = 1.5     # damage=1.0 -> annualized relapse rate 1.5 (illustrative)
 
