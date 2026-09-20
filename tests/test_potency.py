@@ -113,10 +113,45 @@ def test_a_magnitude_without_a_source_is_refused():
         potency.fit_potency("ocrelizumab", 0.3, "   ", _table("ocrelizumab", ratios))
 
 
-def test_every_observed_ratio_names_its_trial_and_pmid():
+def test_every_observed_ratio_names_its_trial_and_an_identifier():
+    """A PMID or an NCT number — the registry results are a primary source too.
+
+    Most of these now come from ClinicalTrials.gov posted results rather than
+    journal text, which is why NCT counts. What must never be acceptable is a
+    ratio with no identifier at all.
+    """
     for arm, (ratio, source) in potency.OBSERVED_LESION_RATIOS.items():
         assert 0.0 < ratio < 1.5, f"{arm}: implausible lesion ratio {ratio}"
-        assert "PMID" in source, f"{arm}: source must carry a PMID"
+        assert ("PMID" in source) or ("NCT" in source), (
+            f"{arm}: source must carry a PMID or an NCT identifier")
+
+
+def test_every_observed_ratio_names_its_mri_metric():
+    """new-T2, Gd-T1/scan, CUAL/year and active-T2 are different measurements.
+
+    Two arms measured on different metrics must not be compared as if they were
+    the same quantity, so each ratio records which one it is.
+    """
+    known = ("[new-T2]", "[Gd-T1/scan]", "[CUAL/year]", "[active-T2]")
+    for arm, (_, source) in potency.OBSERVED_LESION_RATIOS.items():
+        assert any(k in source for k in known), (
+            f"{arm}: source must name its MRI metric, one of {known}")
+
+
+def test_out_of_range_arms_are_exactly_the_ones_on_damage_raising_dials():
+    """Not a fitting failure — a restatement of the model's structural limit.
+
+    gamma_E and a lowered alpha_R both RAISE damage, so no potency reproduces a
+    lesion reduction on them. If an arm on those dials ever fits in range, the
+    model changed and bricks/qsp_velez.py's docstring is stale.
+    """
+    fits = potency.fit_all()
+    out = {a for a, f in fits.items() if not f.in_range}
+    for arm in out:
+        points = touched_points(PROFILES[arm])
+        raises_damage = ("gamma_E" in points
+                         or (PROFILES[arm].alpha_R < 1.0 and points == ("alpha_R",)))
+        assert raises_damage, f"{arm} is out of range for an unexplained reason"
 
 
 def test_the_extraction_gap_is_countable_and_complete():

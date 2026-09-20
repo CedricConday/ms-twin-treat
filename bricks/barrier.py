@@ -117,9 +117,57 @@ class BarrierStage:
     name = "B6 barrier/PBPK"
     requires: tuple[str, ...] = ("intervention",)
 
-    def __init__(self, hours: float = 48.0, params: dict[str, float] | None = None) -> None:
+    # Therapeutic-antibody plasma half-life, hours. ~20 days, the right order for
+    # the mAbs in this repo's arm set. A small molecule needs a different value
+    # and the caller must pass one -- the AUC ratio this stage reports depends on
+    # it, because CNS penetration is an exposure ratio under a falling plasma
+    # profile rather than a partition coefficient (see bricks/brain_pbpk.py).
+    ANTIBODY_HALF_LIFE_H = 480.0
+
+    def __init__(self, hours: float = 48.0, params: dict[str, float] | None = None,
+                 engine: str = "verscheijden",
+                 plasma_half_life_h: float | None = None,
+                 cns_serum_ratio: float = 0.0015) -> None:
+        if engine not in ("verscheijden", "toy"):
+            raise ValueError(f"engine must be 'verscheijden' or 'toy', got {engine!r}")
         self.hours = hours
         self.params = params
+        self.engine = engine
+        self.plasma_half_life_h = plasma_half_life_h or self.ANTIBODY_HALF_LIFE_H
+        self.cns_serum_ratio = cns_serum_ratio
+
+    def _run_verscheijden(self, disruption: float) -> dict:
+        """Four-compartment brain PBPK, transcribed from Verscheijden 2019.
+
+        `bbb_disruption` scales both barrier PS products. THAT MAPPING IS THIS
+        REPO'S, not the paper's: the paper does model a disrupted barrier
+        (meningitis), but its scaling factor is not in the S1 R file this port
+        was transcribed from, and inventing a number that looks like a citation
+        is worse than an honest linear map. Disruption 0 leaves the barrier
+        intact; disruption 1 doubles permeability.
+        """
+        from bricks.brain_pbpk import DEFAULT_ADULT, BrainPBPK, antibody_psb
+        from bricks.brain_pbpk import simulate as brain_simulate
+
+        base_psb = antibody_psb(self.cns_serum_ratio, DEFAULT_ADULT.q_bulk)
+        scale = 1.0 + float(np.clip(disruption, 0.0, 1.0))
+        model = BrainPBPK(**{**DEFAULT_ADULT.__dict__,
+                             "ps_b": base_psb * scale,
+                             "ps_c": base_psb * scale / 2.0})
+        traj = brain_simulate(model, hours=4 * self.plasma_half_life_h,
+                              plasma_half_life_h=self.plasma_half_life_h)
+        return {
+            "fraction": float(traj["auc_ratio"]),
+            "t": traj["t"],
+            "plasma": traj["plasma"],
+            "csf": traj["cranial_csf"],
+            "cns": traj["brain_mass"],
+            "auc_plasma": float(np.trapezoid(traj["plasma"], traj["t"])),
+            "auc_cns": float(np.trapezoid(traj["brain_mass"], traj["t"])),
+            "engine_note": ("Verscheijden 2019 four-compartment brain PBPK "
+                            "(PMC6592555); PSb from a CNS:serum ratio, "
+                            "Pardridge 2019 for antibodies"),
+        }
 
     def run(self, state: dict) -> dict:
         interv = state.get("intervention") or {}
@@ -127,8 +175,13 @@ class BarrierStage:
         cns_required = bool(interv.get("cns_required", False))
         disruption = float(state.get("bbb_disruption", 0.3))
 
-        sim = simulate(dose=max(dose, 0.0), hours=self.hours,
-                       bbb_disruption=disruption, params=self.params)
+        if self.engine == "verscheijden":
+            sim = self._run_verscheijden(disruption)
+            note = sim["engine_note"]
+        else:
+            sim = simulate(dose=max(dose, 0.0), hours=self.hours,
+                           bbb_disruption=disruption, params=self.params)
+            note = "toy 3-compartment PBPK; rate constants illustrative, not fitted"
 
         effective = sim["fraction"] if cns_required else 1.0
 
@@ -139,9 +192,9 @@ class BarrierStage:
             "bbb_disruption": disruption,
             "auc_plasma": sim["auc_plasma"],
             "auc_cns": sim["auc_cns"],
-            "engine": "scipy.solve_ivp" if _HAVE_SCIPY else "explicit-euler-fallback",
+            "engine": self.engine,
             "validated": False,
-            "note": "toy 3-compartment PBPK; rate constants illustrative, not fitted",
+            "note": note,
         }
         state["cns_traj"] = {"t": sim["t"], "plasma": sim["plasma"],
                             "csf": sim["csf"], "cns": sim["cns"], "validated": False}

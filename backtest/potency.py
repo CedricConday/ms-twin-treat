@@ -26,11 +26,19 @@ is the MRI lesion ratio. Nothing anywhere in the loop reads the arm's ARR.
 
 WHAT BLOCKS IT TODAY
 --------------------
-`docs/TRIAL_ANCHORS.md` carries MRI lesion outcomes for **one** quantified arm
-(ocrelizumab, OPERA I). The other eight trials are behind paywalls and their MRI
-numbers are not in the abstracts Europe PMC serves, so they have not been
-transcribed. The machinery below is complete and tested; the data is not. This
-is deliberately a loud gap rather than a set of plausible-looking numbers.
+**The paywall was never the real obstacle.** Nine of twelve quantified arms now
+carry a measured lesion ratio, taken from the trials' own POSTED RESULTS on
+ClinicalTrials.gov — structured, public, and free. An earlier version of this
+module recorded the data as "behind paywalls" after trying only journal full
+text. Three arms remain, each for its own reason and none of them paywalls:
+AFFIRM (2006) predates the results-posting requirement, CARE-MS I posted a
+lesion VOLUME change rather than a count, and PRISMS (1998) predates the
+registry.
+
+Four of the nine fitted arms come back OUT OF RANGE, and that is the machinery
+working: `gamma_E` and a lowered `alpha_R` both RAISE damage in this model, so no
+potency reproduces a lesion reduction on those dials. The fitter says so instead
+of returning the nearest grid point.
 
 THE ONE CROSS-CHECK AVAILABLE, AND IT DISAGREES
 ------------------------------------------------
@@ -168,18 +176,71 @@ def fit_potency(arm: str, observed_lesion_ratio: float, source: str,
 # --------------------------------------------------------------------------- #
 # Transcribed from the trial's own report, never a meta-analysis ranking. Adding
 # a row requires the number to be in docs/TRIAL_ANCHORS.md with its PMID.
+# THE METRICS ARE NOT INTERCHANGEABLE, and the third element of each tuple says
+# which one it is. "New or newly enlarging T2", "Gd-enhancing T1 per scan" and
+# "combined unique active lesions per year" measure different things and have
+# different base rates. Sormani & Bruzzi regress on "MRI lesions" across trials
+# that used a mix of these, so a ratio built from any of them is inside what the
+# meta-analysis pooled -- but a ratio is only comparable to ANOTHER ratio of the
+# same metric, and nothing here should rank two arms measured differently.
 OBSERVED_LESION_RATIOS: dict[str, tuple[float, str]] = {
     "ocrelizumab": (
         0.02 / 0.29,
         "OPERA I, NEJM 2017 (PMID 28002679): 0.02 vs 0.29 Gd-enhancing T1 lesions "
-        "per scan on IFN beta-1a, reported as 94% lower",
+        "per scan on IFN beta-1a, reported as 94% lower [Gd-T1/scan]",
+    ),
+    "fingolimod": (
+        2.5 / 9.8,
+        "FREEDOMS, NCT00289978 posted results: 2.5 (0.5 mg) vs 9.8 placebo, new or "
+        "newly enlarged T2 lesions at month 24 [new-T2]",
+    ),
+    "dimethyl fumarate": (
+        2.6 / 17.0,
+        "DEFINE, NCT00420212 posted results: 2.6 (240 mg BID) vs 17.0 placebo, new "
+        "or newly enlarging T2 hyperintense lesions [new-T2]",
+    ),
+    "glatiramer acetate": (
+        8.0 / 17.4,
+        "CONFIRM, NCT00451451 posted results: 8.0 vs 17.4 placebo, new or newly "
+        "enlarging T2 hyperintense lesions [new-T2]",
+    ),
+    "teriflunomide": (
+        0.261 / 1.331,
+        "TEMSO, NCT00134563 posted results: 0.261 (14 mg) vs 1.331 placebo, "
+        "Gd-enhancing T1 lesions per scan, Poisson estimate [Gd-T1/scan]",
+    ),
+    "ponesimod": (
+        1.405 / 3.164,
+        "OPTIMUM, NCT02425644 posted results: 1.405 vs 3.164 on teriflunomide, "
+        "combined unique active lesions per year to week 108 [CUAL/year]",
+    ),
+    "cladribine": (
+        0.38 / 1.43,
+        "CLARITY, NCT00213135 posted results: 0.38 (3.5 mg/kg) vs 1.43 placebo, "
+        "active T2 lesions [active-T2]",
+    ),
+    "daclizumab": (
+        4.31 / 9.44,
+        "DECIDE, NCT01064401 posted results: 4.31 vs 9.44 on IFN beta-1a, adjusted "
+        "mean new or newly enlarging T2 hyperintense lesions to week 96 [new-T2]",
+    ),
+    "ofatumumab": (
+        0.0115 / 0.4555,
+        "ASCLEPIOS I, NCT02792218 posted results: 0.0115 vs 0.4555 on teriflunomide, "
+        "Gd-enhancing T1 lesions per scan [Gd-T1/scan]",
     ),
 }
 
-# Still to extract; see docs/TRIAL_ANCHORS.md. Listed so the gap is countable.
+# Still to extract. Three, and each for a different reason:
+#   natalizumab  AFFIRM (2006) predates the results-posting requirement; the
+#                trial record carries no results section at all.
+#   alemtuzumab  CARE-MS I posted results, but its MRI outcome is a PERCENT
+#                CHANGE IN LESION VOLUME, not a lesion count. A volume change is
+#                not convertible to a count ratio and must not be pretended into
+#                one.
+#   IFN-beta     PRISMS (1998) predates the registry entirely.
 PENDING_EXTRACTION = (
-    "IFN-beta", "glatiramer acetate", "natalizumab", "fingolimod",
-    "teriflunomide", "dimethyl fumarate", "alemtuzumab", "ponesimod",
+    "IFN-beta", "natalizumab", "alemtuzumab",
 )
 
 
@@ -207,8 +268,16 @@ def main() -> int:
     print("-" * 74)
     print(f"{len(fits)} arm(s) fitted, {len(PENDING_EXTRACTION)} pending extraction:")
     print(f"  {', '.join(PENDING_EXTRACTION)}")
-    print("\n  Those eight are behind paywalls and their MRI numbers are not in the")
-    print("  abstracts Europe PMC serves. The machinery is complete; the data is not.")
+    out = [a for a, f in fits.items() if not f.in_range]
+    if out:
+        print(f"\n  {len(out)} arm(s) OUT OF RANGE: {', '.join(out)}")
+        print("  Not a fitting failure — the model cannot produce a lesion REDUCTION on")
+        print("  those dials at any potency. gamma_E and a lowered alpha_R both raise")
+        print("  damage in this model (see bricks/qsp_velez.py), so no magnitude")
+        print("  reproduces their trials. The fitter reports it instead of inventing one.")
+    print("\n  Three arms remain unextracted, each for a different reason: AFFIRM (2006)")
+    print("  predates results-posting; CARE-MS I posted a lesion VOLUME change, which")
+    print("  is not convertible to a count ratio; PRISMS (1998) predates the registry.")
     ocr = fits.get("ocrelizumab")
     if ocr:
         eae = PROFILES["ocrelizumab"].ke
