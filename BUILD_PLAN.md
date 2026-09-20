@@ -890,6 +890,28 @@ still not enough. The test a replacement must pass is:
 
     does increasing effector death reduce DAMAGE, at every potency?
 
+**AND THE DEFECT IS FIXABLE — found by sweeping the capacity rather than testing
+one value of it.** The table above used K=50000 against a baseline effector level
+of ~1000, where the cap only clips excursions. Sweep it down and the sign flips:
+
+    K = 50000   +109%  +198%  +362%      (damage at gamma_E x1.5 / x2 / x3)
+    K = 10000    +30%   +44%   +82%
+    K =  3000     +4%    +0%    -4%
+    K =  2000     -3%    -7%   -14%      <- depletion finally helps
+
+The cap must BIND AT THE OPERATING POINT. That is the precise property: **effector
+growth bounded by something other than the regulatory population, with the bound
+active where the system actually sits.** Vélez bounds effectors only by Tregs, so
+attacking effectors attacks the bound.
+
+Available as `simulate(carrying_capacity=K)`, an EXTENSION, off by default so
+every published-value test still runs on the pure transcription.
+
+**It is not a repair.** At K=2000, three-fold depletion buys 14% less damage
+against trials reporting 55-68% relapse reductions. Right sign, wrong magnitude
+by a factor of four. This identifies what a replacement model needs; it does not
+make this one usable for the depleting class.
+
 **And the repo's own discarded toy passes it.** `bricks/qsp.py` has logistic
 growth `r_CA*C*A*(1-A)`, so effector control does not depend on effectors
 recruiting their own regulators. Damage falls monotonically with `treat`:

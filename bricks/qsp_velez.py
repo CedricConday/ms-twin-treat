@@ -223,11 +223,35 @@ cladribine -- cannot come out beneficial here. That is not a calibration gap and
 not a readout choice. It is the reason the grounded direction gate scores 5/13
 against the ABM path's 9/14 (`backtest/clinical_velez.py`).
 
-**The test any replacement model must pass**, stated so nobody ports another one
-on hope: *does increasing effector death reduce effector burden in it?* In
-Vélez it does not, at any damage exponent and with an additive
-regulation-independent loss term added. A model without that property has this
-defect too, whatever else it offers.
+CARRYING CAPACITY — the property that fixes it, off by default
+---------------------------------------------------------------
+`simulate(carrying_capacity=K)` multiplies effector PROLIFERATION by
+`(1 - E/K)`. **This is an EXTENSION, not transcription**, which is why it
+defaults to None and every published-value test runs without it.
+
+It is here because it is the one structural change that flips the sign, and
+finding that took a sweep rather than a single value. Damage change at
+`gamma_E` x1.5 / x2 / x3, median over 24 histories, baseline E ~1000:
+
+    K = 50000   +109%  +198%  +362%
+    K = 10000    +30%   +44%   +82%
+    K =  3000     +4%    +0%    -4%
+    K =  2000     -3%    -7%   -14%     <- depletion finally helps
+
+The cap must BIND AT THE OPERATING POINT. At K=50000 against a baseline of
+~1000 it only clips excursions and changes nothing structural; at K~2000 the
+effector population is genuinely resource-limited and removing effectors no
+longer removes its own bound.
+
+So the property a replacement model needs, precisely: **effector growth bounded
+by something other than the regulatory population, with that bound active at the
+operating point.** Vélez bounds effectors only by Tregs, so attacking effectors
+attacks the bound -- which is the whole defect.
+
+**It is not a repair.** At K=2000 depletion buys 14% less damage at three-fold
+potency, against trials reporting 55-68% relapse reductions. The sign is right
+and the magnitude is nowhere near. Treat this as the identified requirement for
+a replacement model, not as Vélez fixed.
 
 BUILT != VALIDATED
 ------------------
@@ -364,6 +388,7 @@ def simulate(
     seed: int | None = None,
     damage_form: str = "paper",
     regime_ceiling_mult: float = 100.0,
+    carrying_capacity: float | None = None,
 ) -> dict:
     """Integrate the Vélez de Mendizábal 2011 model under one intervention.
 
@@ -397,6 +422,10 @@ def simulate(
     arm. The value is not clamped to something plausible: silently bounding it
     would hide exactly the thing a screen needs to see.
     """
+    # EXTENSION, off by default -- see CARRYING CAPACITY in the module docstring.
+    if carrying_capacity is not None and carrying_capacity <= 0.0:
+        raise ValueError("carrying_capacity must be positive or None")
+
     p = {**VELEZ_PARAMS, **(params or {})}
     if damage_form not in ("paper", "mdl_literal"):
         raise ValueError(
@@ -453,8 +482,9 @@ def simulate(
         # --- derivatives -------------------------------------------------- #
         dEr = naive_E_in - delta * Er - beta * Er + eta * E
         dRr = naive_R_in - delta * Rr - beta * Rr + eta * R
+        cap = max(0.0, 1.0 - E / carrying_capacity) if carrying_capacity else 1.0
         dE = (delta * Er
-              + alpha_E * treg_inhibits_prolif * E
+              + alpha_E * treg_inhibits_prolif * E * cap   # cap: EXTENSION
               - gamma_E * treg_drives_death * E
               - eta * E)
         dR = (delta * Rr
@@ -500,6 +530,7 @@ def simulate(
         "profile": profile.as_dict(),
         "damage_form": damage_form,
         "seed": seed,
+        "carrying_capacity": carrying_capacity,
         "in_regime": left_regime_at is None,
         "left_regime_at": left_regime_at,
         "validated": False,

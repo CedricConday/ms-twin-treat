@@ -362,3 +362,33 @@ def test_the_repos_own_toy_passes_the_test_the_grounded_model_fails():
     assert damages == sorted(damages, reverse=True), (
         f"the toy should improve monotonically with treatment, got {damages}")
     assert damages[0] > 4 * damages[-1]
+
+
+def test_a_binding_carrying_capacity_flips_the_depletion_sign():
+    """The EXTENSION that fixes the defect, and the reason it must BIND.
+
+    A cap far above the operating point only clips excursions. A cap near it
+    makes effector growth resource-limited, so removing effectors no longer
+    removes its own bound. Sign flips between the two.
+    """
+    seeds = range(16)
+
+    def median_damage(profile, K):
+        vals = []
+        for seed in seeds:
+            traj = simulate(profile, t_end=730.0, seed=seed, carrying_capacity=K)
+            if traj["in_regime"]:
+                vals.append(float(traj["total_damage"][-1]))
+        return float(np.median(vals))
+
+    killing = MechanismProfile(label="killing", gamma_E=3.0)
+    loose, tight = 50000.0, 2000.0
+    assert median_damage(killing, loose) > median_damage(UNTREATED_PROFILE, loose)
+    assert median_damage(killing, tight) < median_damage(UNTREATED_PROFILE, tight)
+
+
+def test_the_carrying_capacity_is_off_by_default():
+    """Every published-value test must run on the transcription, not the extension."""
+    assert simulate(UNTREATED_PROFILE, **SHORT)["carrying_capacity"] is None
+    with pytest.raises(ValueError):
+        simulate(UNTREATED_PROFILE, carrying_capacity=0.0, **SHORT)
