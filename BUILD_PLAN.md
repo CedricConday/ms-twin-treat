@@ -501,6 +501,60 @@ current representation would grade a model that is provably unable to pass.
 **Revised order: Martinez-Pasamar port → (4) magnitudes → (2) Sormani → LOMO →
 screen.**
 
+#### (2) CLOSED (4441b0c) — `bricks/sormani.py`
+
+Sormani & Bruzzi 2013 (*Lancet Neurol* 12(7):669-76, PMID 23743084), 31 trials,
+18,901 RRMS patients, weighted linear regression of **log-transformed relative**
+treatment effects:
+
+    log(RR_relapse) = intercept + 0.52 * log(RR_lesion)      R^2 = 0.71
+
+Scored on ARR, so §8's "decide EDSS vs ARR before starting" catch does not arise.
+
+Two things stated rather than smoothed: the **intercept is not published where
+this repo can read it** (slope is in the abstract, intercept is behind the
+paywall), so it defaults to 0 because the relation's boundary condition forces
+it, and `INTERCEPT_IS_ASSUMED` rides into every prediction. And the map has a
+documented failure — lenercept, which reported no significant MRI difference
+while relapses rose (p=0.006). Fed a null lesion effect the map says "no change",
+confidently and wrongly, so `predict_relapse_ratio` returns an object carrying
+`blind_spot=True` for small lesion effects rather than a bare float.
+
+Sanity check not part of any fit here: AFFIRM reported ~90% fewer Gd-enhancing
+lesions and 68% fewer relapses; the map returns -69.8%.
+
+Applied at the ARM level only (`readout.relapse_ratio_from_arms`). Sormani is a
+between-trial relation; using it per patient would read a trial-level regression
+as an individual one. `MAX_RELAPSE` stays for the per-patient proxy and is
+documented as superseded for ratio scoring — it always cancelled in the ratio,
+which is why it was never the thing to fix.
+
+#### THE VARIANCE FINDING — read before trusting any cohort number in this repo
+
+Building the LOMO response table surfaced something that invalidates any
+small-cohort result on the ported QSP, including the first version of that table.
+
+Untreated damage over 40 five-year runs: **mean 22.7, SD 49.9, range 0.94 to
+251** — a 266-fold spread across stochastic infection histories, with the
+standard error at n=4 LARGER than the mean. The distribution is heavily
+right-tailed: at two years the median is 1.43 against a mean of 17.1.
+
+The first LOMO table used 4 seeds and a mean. It produced a confident headline
+made entirely of its own noise, and it also produced two "findings" that did not
+survive re-measurement — that `gamma_E` has the wrong sign, and that `naive_E`
+does. **Neither is established; both readings came from the noise.** Do not
+quote them.
+
+What this forces:
+- the statistic is the **median of paired per-seed ratios**, never the mean;
+- the cohort is **128 seeds**, where the bootstrapped median has ~10% CV (~16%
+  at n=48). That 10% is the noise floor under every number from this model;
+- the horizon is **730 days**, matching the trials rather than the model's
+  five-year default, and ~10x cheaper per run.
+
+Anything elsewhere in this repo that compares arms on a handful of QSP runs is
+suspect until re-measured this way.
+
 #### Still open
 
 - **(4)** per-drug potency. Two halves: assign each arm its intervention points

@@ -78,3 +78,29 @@ on IFN-beta, glatiramer and one immunogenic peptide could not expose it, which i
 exactly why `BUILD_PLAN.md` §8 blocker (3) calls a four-arm gate "too few to test
 anything". Recording the two counterexamples is what turns the gate from a
 restatement of the setup into a test the current rule can fail.
+
+## MRI lesion anchors — blocker (4)'s non-circular channel
+
+Per-drug potency must not be fitted on the arm's own relapse number; that is the
+circularity recorded in BUILD_PLAN §8.4. The MRI channel avoids it, because the
+gate predicts ARR and this table carries lesion outcomes.
+
+**This table is INCOMPLETE and that is the current blocker on magnitudes.** Only
+outcomes verified against the trial's own report are listed. Most of these trials
+are behind paywalls (NEJM, Lancet) and their MRI numbers are not in the abstracts
+Europe PMC serves, so they could not be transcribed here without access. Nothing
+below was taken from a meta-analysis ranking or a secondary summary.
+
+| arm | trial | comparator | MRI outcome | source |
+|---|---|---|---|---|
+| ocrelizumab | OPERA I | IFN beta-1a | **94% fewer** Gd-enhancing T1 lesions (0.02 vs 0.29 per scan) | NEJM 2017, PMID 28002679 (abstract) |
+| lenercept | Lenercept MS Study Group | placebo | **no significant difference** in MRI outcomes, while relapse rate rose (p=0.006-0.007) and relapses were more severe and longer | Neurology 1999;53:457, PMID 10449104 |
+
+The lenercept row is the important one and it is not an anchor, it is a warning:
+it is the documented case where the MRI channel and the relapse outcome
+disagree, and `bricks/sormani.py` flags that region as `blind_spot=True`. Any
+potency fitted through MRI inherits it.
+
+**Still to extract** (needs full-text access): PRISMS, CONFIRM, AFFIRM, FREEDOMS,
+TEMSO, DEFINE, CARE-MS I, OPTIMUM. For each: new/enlarging T2 lesion count and
+Gd-enhancing lesion count, treated arm and its comparator, as reported.
