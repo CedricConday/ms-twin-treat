@@ -1,6 +1,14 @@
 # ms-twin-treat — Results (v0)
 *Verified numbers from a single build session. Every figure below is reproducible from this repo. Read §6 before quoting anything: most of this is toy, and the honesty is the point.*
 
+> **SUPERSEDED IN PART, 2026-09-20.** This file records the 2026-08-19 and
+> 2026-09-17 sessions. The arm set has since grown to 17 (12 quantified) and every
+> gate number below is one arm-set behind. Current, re-measured: ABM 10/17
+> direction and 1/12 magnitude; grounded stack 5/16 and 2/11; LOO 28.3pp vs an
+> 11.5pp null; LOMO 45.9pp vs 12.3pp; LOMO under the capacity extension 45.6pp vs
+> 12.3pp. **Every out-of-sample test loses to its null.** Kept as the record of
+> what was measured when; see BUILD_PLAN.md §8.0 for the live table.
+
 ## The one honest headline
 From scratch, one session: a **validated backtest harness** + a **full 10-brick multi-scale MS-intervention pipeline** that runs end to end, **recovers real immune biology** in two independent places, and is **scrupulous about what is validated vs. toy**. It de-risks candidate interventions in silico; it does **not** replace a trial, and nothing here is evidence about multiple sclerosis.
 

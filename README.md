@@ -43,12 +43,23 @@ See **[`results/RESULTS.md`](results/RESULTS.md)** for every verified number and
 ## Honest state of the science
 Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separates the therapies that *worked* from untreated, and directs the ones that **harmed** patients correctly (APL CGP77116 and IFN-γ) — that harm emerges from an `immunogenic` parameter set from each drug's *documented mechanism*, not fitted to its relapse number.
 
-**The clinical gate is scored on 14 arms and currently gets 9 of 14 directions and 1 of 9 magnitudes right** (2026-09-17; `python -m backtest.clinical`, anchors in [`docs/TRIAL_ANCHORS.md`](docs/TRIAL_ANCHORS.md)). It used to read 4/4 on four arms. Nothing about the model improved or regressed when that changed — the exam got harder, and the 4/4 version could not show either of the two things now visible:
+**The clinical gate is scored on 17 arms and currently gets 10 of 17 directions and 1 of 12 magnitudes right** (re-measured 2026-09-20; `python -m backtest.clinical`, anchors in [`docs/TRIAL_ANCHORS.md`](docs/TRIAL_ANCHORS.md)). It read 9/14 and 1/9 on 2026-09-17 and 4/4 on four arms before that. Nothing about the model improved or regressed when that changed — the exam got harder, and the 4/4 version could not show either of the two things now visible:
 
 - **lenercept and atacicept are immunosuppressive by mechanism and harmed patients in trials.** A rule that maps mechanism class to clinical direction predicts benefit for both and is wrong on both. Lenercept now carries a regulation-disruption flag earned by its TNF biology (TNF-deficient mice get *worse* EAE; TNFR2 is required for remyelination), which moves it from −77% to −35% without crossing zero — the model can represent the case, and the current constants still get the sign wrong.
 - **one strength per class cannot separate two drugs inside a class.** Ocrelizumab vs interferon beta-1a (OPERA), alemtuzumab vs interferon beta-1a (CARE-MS I) and ponesimod vs teriflunomide (OPTIMUM) are all scored against an active comparator, and the simulation returns exactly 0% difference for each.
 
-**The out-of-sample test now runs too** (`PYTHONPATH=. python -m backtest.loo`): hold out an arm, fit the class strength on the other eight, predict the held-out one. **MAE 26.0pp against a predict-the-mean null of 14.0pp — the rule loses to the null.** A single class strength, however well derived, carries no drug-specific information; that is the number the per-drug work has to beat, and it is the honest headline for this build.
+**The out-of-sample tests run too, and every one of them loses to its null** (re-measured 2026-09-20):
+
+| test | what is held out | result |
+|---|---|---|
+| `backtest.loo` | one arm | **28.3pp MAE vs an 11.5pp predict-the-mean null** |
+| `backtest.lomo` | a whole mechanism | **45.9pp vs 12.3pp** |
+| `backtest.lomo_capacity` | a whole mechanism, under the one structural fix that flips the depletion sign | **45.6pp vs 12.3pp** |
+
+A single class strength carries no drug-specific information, and on an unseen
+mechanism the model answers with roughly the training arms' average whatever it
+is asked. **That is the honest headline for this build**, and it is why
+`screen/` kills candidates but refuses to rank them.
 
 Both failures are the point of the arm set, not defects in it. Real viability still needs data-grounded parameters, **out-of-sample** arms, and validated magnitudes. **Nothing in this repo is evidence about multiple sclerosis.**
 

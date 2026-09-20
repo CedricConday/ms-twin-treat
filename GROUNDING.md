@@ -1,5 +1,11 @@
 # GROUNDING — turning toy parameters into data-grounded ones
 
+> **Figures below are dated entries and several are superseded. Current as of
+> 2026-09-20, re-measured: ABM path 10/17 direction and 1/12 magnitude; grounded
+> stack 5/16 and 2/11; LOO 28.3pp vs an 11.5pp null; LOMO 45.9pp vs 12.3pp. The
+> arm set grew to 17 in `8dc2472`, which moved every gate number written before
+> it. Run the gate rather than quoting a line from this file.**
+
 The clinical gate reaching 4/4 exposed the real work ahead: **every parameter that
 isn't the cell brick is hand-set or illustrative.** This file tracks, per brick,
 how to replace hand-set values with data-grounded ones. It is also the contributor
@@ -29,8 +35,10 @@ real **out-of-sample** test instead of a restatement of what we already told it.
 
 ## What grounding actually bought, measured 2026-09-20
 **It made the direction gate worse.** Scored on the grounded stack
-(`backtest/clinical_velez.py`): **5/13 direction, 2/9 magnitude**, against the ABM
-path's **9/14 and 1/9**. One magnitude hit gained, four direction calls lost.
+(`backtest/clinical_velez.py`): ~~**5/13 direction, 2/9 magnitude**, against the ABM
+path's **9/14 and 1/9**~~ — **re-measured 2026-09-20 on the 17-arm set: 5/16 and
+2/11, against the ABM path's 10/17 and 1/12.** One magnitude hit gained, four
+direction calls lost; the conclusion is unchanged and the numbers are not.
 
 That is the honest return on a day of grounding, and it is recorded here because
 this file exists to track grounding — including when it does not pay. The cause is
