@@ -1065,3 +1065,43 @@ supplies it, and that is the honest state of the mechanism-separation problem.**
 
 One thing the check leaves intact: `profiles.py` takes ocrelizumab's `ke = 0.85`
 from this paper's EAE fit. That is a parameter read, not a port, and it stands.
+
+#### THE CAPACITY EXTENSION DOES NOT LIFT THE GATE (2026-09-20)
+
+`bricks/qsp_velez.py` found that a carrying capacity binding at the operating
+point flips the sign of depletion (db1dd2c). That was measured on the `gamma_E`
+dial in isolation and was never fed into the gate it was supposed to move.
+`backtest/lomo_capacity.py` now does, with **K and potency both fitted inside
+each fold on the training arms only** — choosing K by looking at the headline
+would be fitting the test set, and the uncapped model stays in the search so the
+extension has to earn its place.
+
+    out-of-sample MAE 45.6pp   predict-the-mean null 12.3pp   (uncapped: 45.9pp)
+
+**It does not beat the null, and it does not move.** Fixed-K diagnostics, which
+are NOT out-of-sample in K and must not be quoted as the gate: K=None 45.9,
+K=10000 49.5, K=3000 58.1, K=2000 50.6, K=1500 45.8, K=1000 43.4. The best of
+them is still 3.5x the null.
+
+**What the capacity bought, exactly.** In the `gamma_E` fold the sign is no
+longer wrong — it predicts **-3.6% where the five trials report -30% to -68%**.
+The fold error moves 53.2pp -> 49.6pp. So the defect was never only the sign:
+removing effectors in this model cannot produce a LARGE damage reduction,
+because damage is set by peak excursions and a capacity only damps them. This is
+the factor-of-four gap already recorded in `qsp_velez.py`, now measured at the
+gate instead of on one dial.
+
+Worth naming: the `alpha_R` fold gets worse (108.8pp). With a binding cap,
+lowering `alpha_R` predicts **+63.8% where DECIDE reports -45%** for daclizumab.
+One arm, so read it beside the others.
+
+**Consequence: the screen stays kill-only, and this was the cheapest route to
+ranking.** `screen.rank_candidates()` now cites both numbers in its refusal. The
+remaining routes are all expensive and none is on this repo's shortlist: a model
+whose damage is not peak-driven, or a representation with a compartment the
+lumped mechanisms differ in — and Martinez-Pasamar 2013, the candidate the plan
+named for that, turns out to be the same four ODEs (see above).
+
+Tables are cached per capacity in `results/mechanism_curve_K*.json`; the
+transcription's own curve is never overwritten. Full rows in
+`results/lomo_capacity.json`.

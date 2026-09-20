@@ -32,6 +32,26 @@ buys 14% less damage against trials reporting 55-68% relapse reductions. And the
 capacity is an extension, not transcription — anything scored through it is a
 different model from the published one, and must say so.
 
+THE ANSWER, MEASURED 2026-09-20
+---------------------------------
+**It does not lift the gate.** 45.6pp against the same 12.3pp null, versus
+45.9pp uncapped — inside the noise of no change. Every fixed-K diagnostic loses
+too; the best, K=1000, reaches 43.4pp, still 3.5x the null.
+
+What the capacity actually bought is visible in the gamma_E fold: the sign is no
+longer wrong, and the prediction is -3.6% where the five trials report -30% to
+-68%. So the defect was never only the sign. Removing effectors in this model
+cannot produce a large damage reduction, because damage is set by peak
+excursions and the capacity only damps them. Right direction, wrong order of
+magnitude, and the fold error barely moves (53.2pp -> 49.6pp).
+
+The daclizumab fold is worse under the extension (108.8pp): `alpha_R` down with
+a binding cap predicts +63.8% where DECIDE reports -45%. One arm, so read it
+beside the others, not alone.
+
+**Conclusion: the screen stays kill-only.** This closes the cheapest remaining
+route to ranking, and it closes it with a measurement rather than an argument.
+
 Run:  PYTHONPATH=. python -m backtest.lomo_capacity        (builds caches on first run)
 """
 

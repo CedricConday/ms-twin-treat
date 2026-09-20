@@ -1,0 +1,207 @@
+{
+  "rows": [
+    {
+      "held_mechanism": "alpha_E",
+      "arm": "IFN-beta",
+      "known": -30.0,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "predicted": -3.922826083254627,
+      "error": 26.077173916745373,
+      "null_predicted": -48.455555555555556,
+      "null_error": 18.455555555555556
+    },
+    {
+      "held_mechanism": "alpha_E",
+      "arm": "teriflunomide",
+      "known": -31.5,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "predicted": -3.922826083254627,
+      "error": 27.577173916745373,
+      "null_predicted": -48.455555555555556,
+      "null_error": 16.955555555555556
+    },
+    {
+      "held_mechanism": "alpha_E",
+      "arm": "dimethyl fumarate",
+      "known": -53.0,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "predicted": -3.922826083254627,
+      "error": 49.07717391674537,
+      "null_predicted": -48.455555555555556,
+      "null_error": 4.544444444444444
+    },
+    {
+      "held_mechanism": "alpha_R|delta",
+      "arm": "glatiramer acetate",
+      "known": -29.0,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.6,
+      "predicted": -10.0983239423182,
+      "error": 18.9016760576818,
+      "null_predicted": -47.41818181818182,
+      "null_error": 18.41818181818182
+    },
+    {
+      "held_mechanism": "gamma_E",
+      "arm": "natalizumab",
+      "known": -68.0,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "predicted": -3.609898133118822,
+      "error": 64.39010186688118,
+      "null_predicted": -40.642857142857146,
+      "null_error": 27.357142857142854
+    },
+    {
+      "held_mechanism": "gamma_E",
+      "arm": "fingolimod",
+      "known": -55.0,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "predicted": -3.609898133118822,
+      "error": 51.39010186688118,
+      "null_predicted": -40.642857142857146,
+      "null_error": 14.357142857142854
+    },
+    {
+      "held_mechanism": "gamma_E",
+      "arm": "alemtuzumab",
+      "known": -55.0,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "predicted": -3.609898133118822,
+      "error": 51.39010186688118,
+      "null_predicted": -40.642857142857146,
+      "null_error": 14.357142857142854
+    },
+    {
+      "held_mechanism": "gamma_E",
+      "arm": "ponesimod",
+      "known": -30.5,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "predicted": -3.609898133118822,
+      "error": 26.890101866881178,
+      "null_predicted": -40.642857142857146,
+      "null_error": 10.142857142857146
+    },
+    {
+      "held_mechanism": "gamma_E",
+      "arm": "cladribine",
+      "known": -57.6,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "predicted": -3.609898133118822,
+      "error": 53.990101866881176,
+      "null_predicted": -40.642857142857146,
+      "null_error": 16.957142857142856
+    },
+    {
+      "held_mechanism": "ke",
+      "arm": "ocrelizumab",
+      "known": -46.0,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.95,
+      "predicted": -82.36363855259242,
+      "error": 36.36363855259242,
+      "null_predicted": -45.46,
+      "null_error": 0.5399999999999991
+    },
+    {
+      "held_mechanism": "ke",
+      "arm": "ofatumumab",
+      "known": -50.0,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.95,
+      "predicted": -82.36363855259242,
+      "error": 32.36363855259242,
+      "null_predicted": -45.46,
+      "null_error": 4.539999999999999
+    },
+    {
+      "held_mechanism": "alpha_R",
+      "arm": "daclizumab",
+      "known": -45.0,
+      "fitted_capacity": 1500.0,
+      "fitted_potency": 0.95,
+      "predicted": 63.798203080101835,
+      "error": 108.79820308010184,
+      "null_predicted": -45.96363636363637,
+      "null_error": 0.9636363636363683
+    }
+  ],
+  "folds": [
+    {
+      "mechanism": "alpha_E",
+      "n_arms": 3,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "mae": 34.24384058341204,
+      "null_mae": 13.318518518518518
+    },
+    {
+      "mechanism": "alpha_R|delta",
+      "n_arms": 1,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.6,
+      "mae": 18.9016760576818,
+      "null_mae": 18.41818181818182
+    },
+    {
+      "mechanism": "gamma_E",
+      "n_arms": 5,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.55,
+      "mae": 49.61010186688118,
+      "null_mae": 16.634285714285713
+    },
+    {
+      "mechanism": "ke",
+      "n_arms": 2,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.95,
+      "mae": 34.36363855259242,
+      "null_mae": 2.539999999999999
+    },
+    {
+      "mechanism": "alpha_R",
+      "n_arms": 1,
+      "fitted_capacity": 1500.0,
+      "fitted_potency": 0.95,
+      "mae": 108.79820308010184,
+      "null_mae": 0.9636363636363683
+    }
+  ],
+  "fixed_k_diagnostic": {
+    "None": {
+      "mae": 45.88333333333333,
+      "null_mae": 12.299066859066857
+    },
+    "10000.0": {
+      "mae": 49.487347511206906,
+      "null_mae": 12.299066859066857
+    },
+    "3000.0": {
+      "mae": 58.11465840795851,
+      "null_mae": 12.299066859066857
+    },
+    "2000.0": {
+      "mae": 50.597817272754924,
+      "null_mae": 12.299066859066857
+    },
+    "1500.0": {
+      "mae": 45.75675047271465,
+      "null_mae": 12.299066859066857
+    },
+    "1000.0": {
+      "mae": 43.39203426964664,
+      "null_mae": 12.299066859066857
+    }
+  },
+  "mae": 45.600765610634205,
+  "null_mae": 12.299066859066857,
+  "note": "Capacity is an EXTENSION to Velez de Mendizabal 2011, not transcription. K and potency are fitted per fold on training arms only; the held-out mechanism sees neither. validated=False."
+}

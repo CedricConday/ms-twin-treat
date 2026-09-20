@@ -214,7 +214,10 @@ def rank_candidates(*_args, **_kwargs):
         "this model answers with roughly the training arms' average whatever it "
         "is asked about. A ranking built on that is a sorted list of noise. "
         "Kill filters do not need a magnitude and are implemented; ranking does, "
-        "and is gated on LOMO beating its null."
+        "and is gated on LOMO beating its null. Measured 2026-09-20, the one "
+        "structural fix that flips the depletion sign does NOT lift the gate "
+        "either: backtest/lomo_capacity.py fits a binding carrying capacity "
+        "inside each fold and returns 45.6pp against the same 12.3pp null."
     )
 
 
