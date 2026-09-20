@@ -671,6 +671,53 @@ their own. The filter is told only "must develop disease and stay in regime" and
 it recovers the low-`alpha_R` autoimmune configuration the paper describes —
 a small independent check that the port behaves as documented.
 
+#### The LOO headline SURVIVES the cohort fix (2026-09-20)
+
+`results/response_curve.json` rebuilt under the corrected seeding, LOO re-run:
+
+    out-of-sample MAE 26.0pp   predict-the-mean null 14.0pp
+    placebo-controlled arms only: 17.0pp vs 16.0pp
+
+Unchanged to the decimal (placebo-only moved 17.1 -> 17.0). The number was worth
+distrusting and it holds.
+
+**Why it holds is the point.** The LOO does not fail because of noise, so a
+different cohort cannot rescue it. It fails structurally: one class strength
+carries no drug-specific information, and the three active-comparator arms
+predict exactly 0% at every strength because both arms of those trials get the
+same value. No cohort draw changes either fact.
+
+#### The depleting class cannot come out beneficial (ebbfb57)
+
+`gamma_E`'s wrong sign was blamed on `gamma_E`. It is not `gamma_E`, it is the
+model, and it explains the LOMO failure and the 5/13 direction score at once.
+
+Damage is driven by `(E/a)^2`, so it is set by effector PEAK EXCURSIONS rather
+than effector load. Over 48 histories at 730 days:
+
+    arm                        med E    med PEAK E    damage
+    untreated                   1126         52741     1.457
+    alpha_E x0.5 (damp growth)  1020         30794     0.665
+    gamma_E x1.5 (kill cells)   1077        192455    10.249
+
+Median effector load is nearly identical; the PEAK differs six-fold and damage
+follows the peak. Mechanism: effectors recruit their own regulators via
+`E^h/(ke^h+E^h)`, so killing them lowers recruitment, `R` falls, the
+proliferation brake releases, and the population rebounds into a larger
+excursion than the killing removed.
+
+Tested rather than argued: an additive regulation-independent loss term
+`-depletion_rate * E` was added as an explicit extension whose own comment said
+to REMOVE it rather than tune it if it failed. It failed (median damage
+1.46 -> 4.69 -> 11.3 -> 39.8, in-regime runs 64 -> 26), so it was removed and
+`qsp_velez.py` is pure transcription again.
+
+**This is a boundary, not a bug.** Natalizumab, fingolimod, ponesimod,
+alemtuzumab and atacicept cannot come out beneficial in this model under any
+mapping — five of the nine quantified arms. A screen over it is blind to the
+whole depleting / sequestering / trafficking class, and that has to be decided
+about before the screen is built.
+
 #### Still open
 
 - **MRI extraction for eight arms** — PRISMS, CONFIRM, AFFIRM, FREEDOMS, TEMSO,
@@ -678,9 +725,10 @@ a small independent check that the port behaves as documented.
   arm and comparator, as reported. Needs full-text access this box does not have.
 - **a non-MRI harm channel.** Lenercept fits to potency ~0 through MRI, for a
   drug that harmed people. No amount of extraction fixes that.
-- **`gamma_E` has no correct home.** Five arms sit on a dial that predicts the
-  wrong sign. Fixing it means an additive effector-loss term the published model
-  does not have, i.e. extending the model rather than porting one.
+- **The depleting class has no home at all** — not a mapping problem, a model
+  property (above). Options, none of them cheap: accept the blind spot and scope
+  the screen to proliferation/regulation mechanisms; or find a model whose damage
+  is not peak-driven. An additive loss term has been tried and does not work.
 - **the screen** (`screen/`), a generator over the QSP's intervention points.
   Gated on LOMO beating its null — until then it ranks noise.
 - **wiring.** `qsp_traj` is written but nothing consumes it; the clinical gate
