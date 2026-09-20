@@ -1327,3 +1327,67 @@ banners the extension run so the two cannot be confused.
 The honest summary of the screen as a whole, after tonight: it kills reliably
 (60 of 98 under either model, for reasons that are properties of the model),
 it does not rank, and its remainder moves when the model does.
+
+---
+
+## 2026-09-20 — the accept/reject device, and three failures that are simultaneous
+
+Built on branch `gate/decision-rule`. New package `gate/`, new docs
+`docs/DECISION_GATE.md` (the one page for a reader who will not run the code)
+and `docs/RECOVERABILITY.md` (the table, with its regenerating command).
+
+**The device.** `gate.decide(candidate)` returns KILL, ABSTAIN or PASS. Over the
+14 single-dial candidates: 12 KILL, 2 ABSTAIN, **0 PASS**, and no input can
+return PASS today. Not hard-coded — PASS requires an `EvidenceCertificate` that
+re-measures the out-of-sample scorers and asks whether they beat predict-the-mean.
+Both lose, with paired-bootstrap CIs entirely above zero: LOO 28.3pp vs 11.5pp,
+CI [+5.7, +28.5]; LOMO 45.9pp vs 12.3pp, CI [+20.1, +43.1]. The criterion is
+frozen and dated in `gate/criterion.py` and every clause restates a bar this
+repo already held. `tests/test_gate.py` drives the PASS branch with a synthetic
+passing certificate, so the day a real measurement inverts, the device changes
+its answer with nobody editing it.
+
+**Three failures, and they are simultaneous rather than sequential.** This is
+the part that changes what to do next.
+
+| | measurement | verdict |
+|---|---|---|
+| (1) reachability | 6 of 12 arms fit at the grid edge; oracle 51.9pp vs 12.4pp null | no potency produces the observed direction |
+| (2) recoverability | MRI-fitted potencies score 21.4pp vs 10.6pp null, biased high every time, median 1.55x | the independent channel cannot find the potency needed |
+| (3) expressiveness | shared-potency LOO restricted to the *reachable* arms: 20.3pp vs 11.7pp (13.4 vs 11.4 dropping the single-arm fold) | one global potency cannot separate same-dial drugs |
+
+Fixing any one leaves the gate red. (3) is the one neither of us had tested: we
+had both concluded the model's form was the blocker, and it is not *the* blocker
+— the scorer fails on the arms the model can already reach. So **blockers (4) and
+(6) are closed routes rather than deferred ones**, and the remaining work is a
+model form AND a working potency source, not a choice between them.
+
+**How much is there to win.** A *perfect* dial-level model — predict each arm by
+its dial group, no fitting, no simulation — scores 6.6pp vs a 10.6pp null in
+sample. Scored the way every other scorer here is scored (each arm from the
+other arms in its group) the headroom is **1.0pp**: 10.9pp vs 11.9pp. Against a
+measured 45.9pp. A replacement model does not need to be better; it needs to be
+within about a point of perfect.
+
+That is a property of the **arm set**, not the model. 12 quantified arms in 3
+multi-member dial groups is a thin exam, and widening it — especially more arms
+*per dial* — is far cheaper than any port and is the first thing to do before
+concluding a future model has failed.
+
+**One correction to a number this plan and `backtest/potency.py` both carry.**
+The ocrelizumab cross-check is quoted at 2.1x, which is `ke` 0.85 vs 0.40 in
+*multiplier* space. The model fits *potency*, `s = 1 - ke`, and in that space the
+two independent estimates are **4.0x apart**. The potency that reproduces OPERA's
+ARR (0.30) sits halfway between them on a log scale — 2.00x above the EAE fit,
+2.00x below the MRI fit. Both independent sources miss, in opposite directions.
+Full working in `docs/RECOVERABILITY.md`, which also records why that page counts
+six unreachable arms where `backtest/potency.py` counts five (alemtuzumab has no
+MRI number to be out of range with).
+
+Reproduce all of it:
+
+```
+PYTHONPATH=. python3 -m gate.device      # verdicts and the certificate
+PYTHONPATH=. python3 -m gate.ceiling     # oracle ceiling and recoverability
+PYTHONPATH=. python3 -m gate.headroom    # which failure binds, and the 1.0pp prize
+```
