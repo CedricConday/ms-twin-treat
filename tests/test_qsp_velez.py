@@ -251,3 +251,66 @@ def test_scalar_shim_is_labelled_as_a_shim():
     profile = state["qsp_traj"]["profile"]
     assert profile["alpha_E"] == 0.5
     assert "SHIM" in profile["source"]
+
+
+def test_damage_is_driven_by_peaks_not_by_median_effector_load():
+    """The structural finding that explains the whole gamma_E failure.
+
+    Damage is driven by (E/a)^2, so it is set by effector peak excursions. A
+    treatment can barely move the median effector load and still change damage
+    by an order of magnitude — which is why "it lowers effector numbers" is not
+    a safe proxy for "it helps" in this model.
+
+    Measured over 48 histories at 730 days: median E lands at 1020-1126 for
+    untreated, damped and killing arms alike, while peak E spans 30k-192k.
+    """
+    seeds = range(24)
+    out = {}
+    for label, profile in (
+        ("untreated", UNTREATED_PROFILE),
+        ("damped", MechanismProfile(label="damped", alpha_E=0.5)),
+        ("killing", MechanismProfile(label="killing", gamma_E=1.5)),
+    ):
+        med, peak, dmg = [], [], []
+        for seed in seeds:
+            traj = simulate(profile, t_end=730.0, seed=seed)
+            if not traj["in_regime"]:
+                continue
+            med.append(float(np.median(traj["E"])))
+            peak.append(float(np.max(traj["E"])))
+            dmg.append(float(traj["total_damage"][-1]))
+        out[label] = (float(np.median(med)), float(np.median(peak)), float(np.median(dmg)))
+
+    medians = [v[0] for v in out.values()]
+    peaks = [v[1] for v in out.values()]
+    assert max(medians) / min(medians) < 1.5, (
+        f"median effector load should barely move, got {medians}")
+    assert max(peaks) / min(peaks) > 3.0, (
+        f"peak effector load should be what differs, got {peaks}")
+
+
+def test_killing_effectors_is_self_defeating_in_this_model():
+    """Raising gamma_E raises damage. Structural, not a calibration gap.
+
+    Effectors recruit their own regulators, so removing them releases the
+    proliferation brake and the population rebounds into a larger excursion.
+    An additive regulation-independent depletion term was tested as an
+    extension and did not fix this either; it was removed rather than tuned.
+
+    This is why the depleting/sequestering class cannot come out beneficial
+    here, and why backtest/clinical_velez.py scores 5/13.
+    """
+    seeds = range(24)
+
+    def median_damage(profile):
+        vals = [float(simulate(profile, t_end=730.0, seed=s)["total_damage"][-1])
+                for s in seeds
+                if simulate(profile, t_end=730.0, seed=s)["in_regime"]]
+        return float(np.median(vals))
+
+    untreated = median_damage(UNTREATED_PROFILE)
+    killing = median_damage(MechanismProfile(label="killing", gamma_E=1.5))
+    damping = median_damage(MechanismProfile(label="damping", alpha_E=0.5))
+
+    assert killing > untreated, "raising gamma_E should RAISE damage in this model"
+    assert damping < untreated, "damping proliferation should lower it"

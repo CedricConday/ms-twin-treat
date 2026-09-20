@@ -173,6 +173,40 @@ body text decides it, against the MDL.
   (`[1:2]` and `[0.25:2]`), being sweep ranges. The MDL's chosen operating
   point is `alpha_E = 2`, `alpha_R = 0.25`, and that is what this module uses.
 
+WHAT THIS MODEL CANNOT REPRESENT: A DEPLETING THERAPY AS BENEFICIAL
+--------------------------------------------------------------------
+Measured 2026-09-20, and it is a structural property of the published model
+rather than a defect in this port. Damage is driven by `(E/a)^2`, so it is set
+by effector PEAK EXCURSIONS, not by the effector median. Over 48 histories at
+730 days:
+
+    arm                        med E    med PEAK E    damage
+    untreated                   1126         52741     1.457
+    alpha_E x0.5 (damp growth)  1020         30794     0.665
+    gamma_E x1.5 (kill cells)   1077        192455    10.249
+
+The median effector load is almost identical in all three. The PEAK differs
+six-fold, and damage follows the peak.
+
+The mechanism: effectors recruit their own regulators through `E^h/(ke^h+E^h)`.
+Killing effectors lowers that recruitment, `R` falls, the proliferation brake
+`kr^h/(kr^h+R^h)` releases, and the population rebounds into a LARGER excursion
+than the one the killing removed. Damping proliferation (`alpha_E` down) instead
+quiets the oscillator and does help.
+
+So in this model **removing effector cells is self-defeating**, whatever channel
+does the removing. This was tested directly: an additive,
+regulation-independent loss term `-depletion_rate * E` was added as an explicit
+extension and it did NOT fix the sign (median damage 1.46 -> 4.69 -> 11.3 ->
+39.8 as the term rose, with in-regime runs falling from 64 to 26). The extension
+was removed rather than tuned, which is what its own comment said to do.
+
+Consequence for any screen over this model: the entire depleting / sequestering
+/ trafficking-blocking class -- natalizumab, fingolimod, ponesimod, alemtuzumab,
+atacicept -- cannot come out beneficial here. That is not a calibration gap. It
+is the reason the grounded direction gate scores 5/13 against the ABM path's
+9/14 (`backtest/clinical_velez.py`).
+
 BUILT != VALIDATED
 ------------------
 `validated=False`, deliberately, exactly as bricks/abm.py is after the
