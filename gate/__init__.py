@@ -30,15 +30,24 @@ PASS     the candidate survived AND the predictor that would score it has been
 
 WHY PASS IS UNREACHABLE TODAY, IN ONE NUMBER
 ---------------------------------------------
-Both of this repo's out-of-sample scorers lose to predict-the-mean:
+Both of this repo's out-of-sample scorers lose to predict-the-mean, and not
+narrowly -- the paired bootstrap CI on each lies entirely ABOVE zero, meaning
+the predictor is reliably worse than the null rather than close to it:
 
     backtest/loo.py    hold out an ARM        28.3pp MAE vs 11.5pp null
+                                              95% CI on the paired gap [+5.7, +28.5]
     backtest/lomo.py   hold out a MECHANISM   45.9pp MAE vs 12.3pp null
+                                              95% CI on the paired gap [+20.1, +43.1]
 
-(LOO re-measured 2026-09-20 in this worktree at 519bfe4; LOMO is the live figure
-reported by the session that owns the master checkout on the same date. Both are
-re-measured by `gate.evidence`, never recalled -- if the numbers here disagree
-with what the code computes, the code is right and this docstring is stale.)
+Both re-measured 2026-09-20 at 519bfe4, LOMO via `results/lomo_certificate.json`.
+The carrying-capacity extension to the QSP model (ec4ee5b) was the live candidate
+for lifting this and does not: 45.6pp against the same null, measured by the
+session that owns the master checkout. It fixes the depletion SIGN and not the
+magnitude.
+
+Do not read those numbers from here. `gate.evidence.certify()` recomputes them,
+and every figure in `BUILD_PLAN.md` older than 2026-09-20 predates the arm set
+growing to 17 arms / 12 quantified -- stale by one exam.
 
 A scoring rule built on a predictor that loses to the mean of its training arms
 is a rule about the training arms' average, not about the therapy in front of
