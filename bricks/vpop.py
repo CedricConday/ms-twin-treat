@@ -247,6 +247,148 @@ def sample_vpop_velez(n: int = 20, seed: int = 0, arm: str | None = None,
         "widen VELEZ_PLAUSIBLE_DAMAGE or the bounds")
 
 
+# --------------------------------------------------------------------------- #
+# The sampling half of the wedge (2026-09-20)
+# --------------------------------------------------------------------------- #
+# `sample_vpop_velez` draws a Latin hypercube and hard-rejects. That gives an
+# accepted SET. `ms-twin/docs/RESEARCH_FINDINGS.md:39` asks for the method PLUS
+# modern sampling, and the reason is that a set cannot be prevalence-weighted:
+# MAPEL reweights a population toward a target biomarker prevalence, and
+# reweighting needs a density, not a list.
+#
+# This replaces the hard filter with a soft one and samples the resulting
+# posterior with DREAM(ZS) (bricks/dream.py).
+
+# Width of the soft plausibility shoulder, in NATURAL-LOG DAMAGE UNITS. Inside
+# the window the density is flat; outside it falls off as a Gaussian in log
+# space, so a candidate just past the edge is unlikely rather than impossible.
+#
+# LOG SPACE IS NOT A DETAIL, and getting it wrong is how this was first written.
+# With a shoulder of 0.5 in LINEAR damage units, a healthy configuration sitting
+# at damage 0.0086 against a lower edge of 0.05 is 0.041 away -- a penalty of
+# -0.003, which is no penalty at all, and the posterior happily filled up with
+# configurations the hard filter rejects. Damage in this model spans roughly
+# 0.0086 to 1000 across the parameter box, so any tolerance that is not
+# multiplicative is meaningless over most of the range. 0.5 here means "a factor
+# of about 1.65 outside the window is one sigma".
+#
+# THIS IS A MODELLING CHOICE OF THIS REPO, not something Allen-Rieger specify --
+# they describe a hard feasibility region. Stated because it changes what the
+# posterior means: with tol -> 0 this reduces to the rejection sampler.
+PLAUSIBILITY_TOL = 0.5
+
+# Common random numbers. Every density evaluation uses THESE seeds, always.
+#
+# Note this is the opposite requirement from backtest/lomo.py, and the contrast
+# is worth keeping straight. There, comparing two arms needs enough seeds to
+# estimate a population quantity through a ~90,000-fold spread, so n=128. Here
+# the density must be DETERMINISTIC in theta or the chain is doing
+# pseudo-marginal MCMC with an unstated noise term -- so what matters is that the
+# seeds never change, not how many there are. They still set the absolute damage
+# level the window is compared against, which is why this is 8 and not 2.
+DENSITY_SEEDS = (0, 1, 2, 3, 4, 5, 6, 7)
+DENSITY_HORIZON_DAYS = 365.0
+
+
+def _velez_damage(alpha_E: float, alpha_R: float) -> float:
+    """Median damage over the fixed seed set; inf if every history diverges."""
+    from bricks.qsp_velez import UNTREATED_PROFILE, simulate
+
+    vals = []
+    for seed in DENSITY_SEEDS:
+        traj = simulate(UNTREATED_PROFILE,
+                        params={"alpha_E": alpha_E, "alpha_R": alpha_R},
+                        t_end=DENSITY_HORIZON_DAYS, seed=seed)
+        if traj["in_regime"]:
+            vals.append(float(traj["total_damage"][-1]))
+    return float(np.median(vals)) if vals else float("inf")
+
+
+def plausibility_log_density(theta: np.ndarray) -> float:
+    """Soft version of `_is_plausible_velez`, for MCMC.
+
+    Flat inside the plausible damage window, Gaussian shoulders outside it, and
+    -inf for a parameter set whose every history leaves the model's regime --
+    that last one is a hard constraint because an out-of-regime run has no
+    damage value to be near or far from.
+    """
+    alpha_E, alpha_R = float(theta[0]), float(theta[1])
+    damage = _velez_damage(alpha_E, alpha_R)
+    if not np.isfinite(damage):
+        return -np.inf
+    lo, hi = VELEZ_PLAUSIBLE_DAMAGE
+    if lo <= damage <= hi:
+        return 0.0
+    if damage <= 0.0:
+        return -np.inf
+    edge = lo if damage < lo else hi
+    return float(-0.5 * ((np.log(damage) - np.log(edge)) / PLAUSIBILITY_TOL) ** 2)
+
+
+# Gelman-Rubin threshold. Above this the chains have not mixed and the samples
+# are a walk rather than a population. 1.2 is the conventional loose bound; it is
+# enforced rather than reported because the failure is invisible in the output --
+# an unconverged cohort looks exactly like a converged one.
+R_HAT_MAX = 1.2
+
+
+def sample_vpop_dream(n: int = 20, seed: int = 0, arm: str | None = None,
+                      n_chains: int = 5, n_steps: int = 600,
+                      thin: int = 1, require_convergence: bool = True
+                      ) -> tuple[list[dict], object]:
+    """Plausible virtual patients drawn from a POSTERIOR, not a rejection set.
+
+    Returns `(cohort, dream_result)`. The second value is not decoration: it
+    carries the acceptance rate and R-hat.
+
+    RAISES if any dimension's R-hat exceeds `R_HAT_MAX`. That is deliberate. A
+    cohort drawn from chains that have not mixed is a walk, and it is
+    indistinguishable from a good one by inspection -- the first version of this
+    function returned one at R-hat 1.34 and nothing about the output said so.
+    Pass `require_convergence=False` only to inspect a failing run.
+    """
+    from bricks.dream import sample as dream_sample
+
+    bounds = [(lo, hi) for _, lo, hi in VELEZ_PARAM_BOUNDS]
+    names = tuple(nm for nm, _, _ in VELEZ_PARAM_BOUNDS)
+    result = dream_sample(plausibility_log_density, bounds, n_chains=n_chains,
+                          n_steps=n_steps, seed=seed, param_names=names)
+
+    r_hat = result.gelman_rubin()
+    if require_convergence and np.any(np.asarray(r_hat) > R_HAT_MAX):
+        raise RuntimeError(
+            f"chains have not converged: R-hat {np.round(r_hat, 3).tolist()} "
+            f"exceeds {R_HAT_MAX} for "
+            f"{[nm for nm, v in zip(names, r_hat, strict=True) if v > R_HAT_MAX]}. "
+            "Raise n_steps or n_chains; do not use these samples as a population."
+        )
+
+    post = result.flat(thin=thin)
+    if len(post) < n:
+        raise RuntimeError(f"posterior has {len(post)} samples, need {n}")
+    rng = np.random.default_rng(seed)
+    picks = rng.choice(len(post), size=n, replace=False)
+
+    cohort = []
+    for i, row in enumerate(post[picks]):
+        cohort.append({
+            "patient_id": f"vd{i:03d}",
+            "seed": seed * 100_000 + i,
+            "qsp_params": {nm: round(float(v), 3) for nm, v in zip(names, row, strict=True)},
+            **({"intervention_name": arm} if arm else {}),
+            "vpop_meta": {
+                "validated": False,
+                "method": "DREAM(ZS) posterior over the plausibility density",
+                "model": "velez2011",
+                "sampler": "bricks/dream.py (ter Braak & Vrugt 2008; Vrugt 2009)",
+                "acceptance_rate": round(result.acceptance_rate, 4),
+                "r_hat": [round(float(v), 3) for v in result.gelman_rubin()],
+                "note": "posterior, not a rejection set — check r_hat before use",
+            },
+        })
+    return cohort, result
+
+
 def _severity(patient: dict) -> float:
     """Untreated final demyelination for this patient's sampled parameters."""
     traj = qsp_simulate(params=patient.get("qsp_params", {}), treat=0.0)
