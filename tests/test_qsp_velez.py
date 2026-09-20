@@ -298,7 +298,8 @@ def test_killing_effectors_is_self_defeating_in_this_model():
     extension and did not fix this either; it was removed rather than tuned.
 
     This is why the depleting/sequestering class cannot come out beneficial
-    here, and why backtest/clinical_velez.py scores 5/13.
+    here, and why backtest/clinical_velez.py scores below the ABM path
+    (5/16 against 10/17 on the 17-arm set, measured 2026-09-20).
     """
     seeds = range(24)
 

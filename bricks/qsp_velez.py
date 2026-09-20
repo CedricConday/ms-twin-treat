@@ -220,8 +220,10 @@ damage equation repairs that.
 Consequence for any screen over this model: the entire depleting / sequestering
 / trafficking-blocking class -- natalizumab, fingolimod, ponesimod, alemtuzumab,
 cladribine -- cannot come out beneficial here. That is not a calibration gap and
-not a readout choice. It is the reason the grounded direction gate scores 5/13
-against the ABM path's 9/14 (`backtest/clinical_velez.py`).
+not a readout choice. It is the reason the grounded direction gate scores worse
+than the ABM path (measured 2026-09-20 on 17 arms: 5/16 grounded against 10/17
+ABM; the 5/13-vs-9/14 recorded earlier was the 14-arm set). Re-measure with
+`backtest/clinical_velez.py` rather than quoting either pair.
 
 CARRYING CAPACITY — the property that fixes it, off by default
 ---------------------------------------------------------------

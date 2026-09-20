@@ -1,7 +1,8 @@
 """The direction gate, scored on the GROUNDED stack instead of the ABM path.
 
 `backtest/clinical.py` scores 14 cited trial arms through the ABM
-(`abm_damage`) and reports 9/14 direction, 1/9 magnitude. Everything built for
+(`abm_damage`) and reports 10/17 direction, 1/12 magnitude (measured 2026-09-20;
+re-run it rather than trusting this line). Everything built for
 screening — the ported QSP, the per-arm intervention points, the published
 lesions→relapses map — sits beside that path and is not graded by it. BUILD_PLAN
 §8.4 records the gap as "wiring".
@@ -144,8 +145,10 @@ def main() -> int:
     print(f"  neutral band +/-{NEUTRAL_BAND:.0f}%   * = Sormani blind spot, where the map")
     print("    cannot separate 'no effect' from harm (the lenercept case)")
 
-    print("\n  COMPARE: backtest/clinical.py, the ABM path, reports 9/14 direction")
-    print("  and 1/9 magnitude on the same arms and the same cited outcomes.")
+    print("\n  COMPARE: run `PYTHONPATH=. python -m backtest.clinical` for the ABM")
+    print("  path on the same arms and the same cited outcomes. The number is NOT")
+    print("  printed here: it was hardcoded until 2026-09-20 and went stale the")
+    print("  moment the arm set grew, which is a measured number that lies.")
     print("  So the grounded stack is WORSE on direction and better on magnitude.")
     print("  Grounding the bricks did not buy a better score, and saying otherwise")
     print("  would require ignoring this table.")

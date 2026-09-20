@@ -119,8 +119,27 @@ What is *not* green is the science. `python -m backtest.clinical`:
 | glatiramer acetate | **−77%** | −29% | 0.0225 |
 | APL CGP77116 | +28% | harms | 0.1257 |
 
-**DIRECTION 4/4. MAGNITUDE 0/2.** That is the whole problem, and the two suppressive
-arms being byte-identical is half of it.
+~~**DIRECTION 4/4. MAGNITUDE 0/2.**~~ **SUPERSEDED — re-measured 2026-09-20 on the
+17-arm set (12 quantified), every number below run fresh, none recalled:**
+
+| gate | command | result |
+|---|---|---|
+| ABM path | `backtest.clinical` | **10/17 direction, 1/12 magnitude** |
+| grounded stack | `backtest.clinical_velez` | **5/16 direction, 2/11 magnitude** |
+| leave-one-ARM-out | `backtest.loo` | **28.3pp MAE vs 11.5pp null** (placebo-only 16.1 vs 15.2) |
+| leave-one-MECHANISM-out | `backtest.lomo` | **45.9pp MAE vs 12.3pp null** |
+| LOMO + capacity | `backtest.lomo_capacity` | **45.6pp vs 12.3pp null** |
+| per-drug potency | `backtest.potency` | 4 arms OUT OF RANGE (fingolimod, ponesimod, cladribine, daclizumab) |
+| spine | `spine/run_demo.py` | **8 of 15** state keys unvalidated (§8.0 above says 8/13; the spine grew) |
+
+**Every gate that has a null loses to it.** The §8.4 entries below record 9/14,
+1/9, 5/13, 26.0/14.0 and 71.0/14.4 — all of them true when written and all of
+them one arm-set behind, because `8dc2472` grew the arms afterwards. Three
+places in the CODE also printed stale numbers as if measured; fixed the same
+day (`clinical_velez.py` no longer prints the other gate's headline at all,
+because a hardcoded measurement goes stale silently).
+
+The two suppressive arms being byte-identical is still half the problem.
 
 ## 8.1 The six blockers
 
