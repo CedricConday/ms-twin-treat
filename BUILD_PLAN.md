@@ -1170,3 +1170,60 @@ are wrong and they are wrong in opposite directions. That is the honest size of
 the uncertainty in the potency layer, and it is the same class of defect as the
 hardcoded "9/14, 1/9" in `clinical_velez.py`: not stale, just never restated in
 comparable units.
+
+#### A MODEL WITH THE MISSING COMPARTMENT EXISTS — AND IT STILL WOULD NOT SEPARATE THE ARMS (2026-09-20)
+
+The entry above left the mechanism-separation problem as "nothing on this repo's
+shortlist supplies a compartment the lumped mechanisms differ in". Searched
+properly rather than assumed — Europe PMC's relevance ranking is useless for a
+conceptual query, OpenAlex found it immediately:
+
+    Gazola GM, de Oliveira JVC, de Paula MAM, Quintela BM, Lobosco M.
+    "Fingolimod and Neuroinflammation in MS: Representing CD8+ T-Cell Dynamics
+     Through Mathematical Modeling and Clinical Evidence."
+    Sclerosis 2025;3(4):38. doi:10.3390/sclerosis3040038. Open access, gold.
+
+**It has the compartment.** Twelve state variables in two coupled subsystems:
+six PDEs in brain tissue (microglia, CD8+ T, oligodendrocyte damage, antibody,
+immature and activated dendritic cells) and six ODEs in the lymph node (DC,
+CD8+ T, CD4+ T, B cells, plasma cells, antibody). Trafficking is explicit and
+bidirectional, through `gamma_T`, `gamma_D` and `gamma_At`, scaled by the
+vascular and perivascular interface areas. Equations and structure are all in
+the paper; `epsilon` is fitted per patient group (0.81-0.90) against Song et
+al.'s 23-patient, 360-day CD8+ cohort.
+
+**And it would still not separate natalizumab from fingolimod. Read Equation (4).**
+The tissue influx term is
+
+    (1 - epsilon) * gamma_T * theta_BV * (T_CL(t) - T)
+
+**One transmigration coefficient, one blockade parameter, applied to the flux
+between the two compartments.** Fingolimod sequesters lymphocytes in the lymph
+node by blocking EGRESS; natalizumab blocks ENTRY across the endothelium. Those
+are different ends of the same flux and this model gives them the same dial, so
+porting it buys the repo the same degeneracy it already has, in twelve variables
+instead of four.
+
+Worth noting precisely, because it is a criticism of the paper and not of the
+idea: `epsilon` appears ONLY in the tissue influx (4), not in the lymph node
+efflux (13). So as written it models blockade of entry INTO brain tissue, which
+is mechanistically the natalizumab story, while the paper calls it fingolimod.
+The place where the two drugs could be separated exists in this structure — put
+a second parameter on the lymph node efflux term — but that is a model change,
+not a port, and it would be unsourced the moment it was made.
+
+**Cost, stated so nobody starts it casually.** A 2D PDE system on a vascular
+indicator grid, against this repo's budget of 0.05s per 730-day run and a
+128-seed cohort per cell of a 20-potency grid. The authors themselves could not
+run Monte Carlo UQ on it and fell back to a sparse polynomial chaos surrogate.
+It also has **no Treg population at all**, so the cross-regulation the entire
+harm channel rests on — and the lenercept and daclizumab findings with it — has
+no home in it.
+
+**Conclusion: found, assessed, NOT recommended.** The compartment alone is not
+the missing piece; the missing piece is two SEPARATE trafficking rates, egress
+and entry, each with its own source. No published MS model found tonight has
+that. Second candidate not yet assessed, named here so it is not lost: Pernice
+et al. 2020, BMC Bioinformatics, doi:10.1186/s12859-020-03823-9, the Epimod
+framework — stochastic, models blood-brain barrier integrity explicitly, and
+was run for **daclizumab**, which is this repo's sharpest harm case.
