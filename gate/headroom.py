@@ -84,6 +84,15 @@ def dial_ceiling() -> dict:
     function exists: if a perfect dial-level model barely clears the null out of
     sample, then the arm set, not the model, is what limits how much any
     replacement could win by.
+
+    NULL CONVENTION, because two conventions disagree by 0.2-0.4pp here and the
+    repo must not carry both. The null is drawn from the SAME arms the model is
+    scored on, and scored the same way the model is: in sample against the
+    scored set's own mean, out of sample against the mean of the other scored
+    arms. A null pooled over arms excluded from the model's exam is handed
+    information the model was not, which flatters the headroom -- on the
+    out-of-sample row that convention reads 11.9pp against the honest 11.7pp.
+    Matches `scripts/dial_ceiling.py` in the master checkout.
     """
     known = {o.arm: o.relapse_change_pct for o in KNOWN_OUTCOMES
              if o.relapse_change_pct is not None and o.arm != "untreated"}
@@ -103,15 +112,19 @@ def dial_ceiling() -> dict:
             ins_e.append(abs(known[a] - mu))
             ins_n.append(abs(known[a] - grand))
 
+    # The scored set for the restricted rows, and the null pool that matches it.
+    scored = [a for arms in multi.values() for a in arms]
+    scored_mean = float(np.mean([known[a] for a in scored]))
+
     multi_e, multi_n, oos_e, oos_n = [], [], [], []
     for arms in multi.values():
         mu = float(np.mean([known[a] for a in arms]))
         for a in arms:
             multi_e.append(abs(known[a] - mu))
-            multi_n.append(abs(known[a] - grand))
+            multi_n.append(abs(known[a] - scored_mean))
             others = [known[o] for o in arms if o != a]
             oos_e.append(abs(known[a] - float(np.mean(others))))
-            rest = [v for k, v in known.items() if k != a]
+            rest = [known[o] for o in scored if o != a]
             oos_n.append(abs(known[a] - float(np.mean(rest))))
 
     return {

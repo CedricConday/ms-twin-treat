@@ -1365,8 +1365,8 @@ model form AND a working potency source, not a choice between them.
 **How much is there to win.** A *perfect* dial-level model — predict each arm by
 its dial group, no fitting, no simulation — scores 6.6pp vs a 10.6pp null in
 sample. Scored the way every other scorer here is scored (each arm from the
-other arms in its group) the headroom is **1.0pp**: 10.9pp vs 11.9pp. Against a
-measured 45.9pp. A replacement model does not need to be better; it needs to be
+other arms in its group, with the null drawn from the same ten arms) the
+headroom is **0.8pp**: 10.9pp vs 11.7pp. Against a measured 45.9pp. A replacement model does not need to be better; it needs to be
 within about a point of perfect.
 
 That is a property of the **arm set**, not the model. 12 quantified arms in 3

@@ -74,11 +74,11 @@ def test_singleton_groups_are_fitted_exactly_in_sample():
 
 
 def test_the_headroom_shrinks_when_scored_the_way_everything_else_is():
-    """In sample 4.0pp, out of sample 1.0pp. If this inverts, the exam got wider
+    """In sample 4.0pp, out of sample 0.8pp. If this inverts, the exam got wider
     and the 'growing the arm set is the cheapest move' conclusion needs redoing."""
     d = dial_ceiling()
     assert d["out_of_sample"]["headroom"] < d["in_sample"]["headroom"]
-    assert d["out_of_sample"]["headroom"] < 2.0
+    assert d["out_of_sample"]["headroom"] < 1.0
 
 
 def test_a_perfect_dial_model_still_beats_the_null():
@@ -86,3 +86,13 @@ def test_a_perfect_dial_model_still_beats_the_null():
     is a different claim and the one the plan should carry."""
     d = dial_ceiling()
     assert d["out_of_sample"]["mae"] < d["out_of_sample"]["null_mae"]
+
+
+def test_the_null_pool_matches_the_scored_set():
+    """The restricted rows must not be scored against a null drawn from arms the
+    model was never examined on — that hands the null free information. Scoring
+    the 10 multi-member arms against a 12-arm null reads 11.9pp; the matched
+    convention reads 11.7pp, and the repo carries only the second."""
+    d = dial_ceiling()
+    assert round(d["out_of_sample"]["null_mae"], 1) == 11.7
+    assert round(d["multi_only"]["null_mae"], 1) == 10.5

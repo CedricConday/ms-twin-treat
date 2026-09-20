@@ -91,14 +91,19 @@ dial-level model: no fitting, no simulation, nothing to get wrong.
 | scoring | MAE | null | headroom |
 |---|---|---|---|
 | in sample, all 12 arms | 6.6pp | 10.6pp | 4.0pp |
-| singleton groups dropped | 7.9pp | 10.9pp | 3.0pp |
-| **out of sample, within group** | **10.9pp** | **11.9pp** | **1.0pp** |
+| singleton groups dropped | 7.9pp | 10.5pp | 2.6pp |
+| **out of sample, within group** | **10.9pp** | **11.7pp** | **0.8pp** |
+
+Each row's null is drawn from the same arms the model is scored on, and scored
+the same way. Pooling the null over all twelve arms while scoring the model on
+ten reads 11.9pp instead of 11.7pp — it hands the null arms the model was not
+examined on.
 
 Glatiramer and daclizumab are alone on their dials, so the first row fits them
 exactly by construction. The last row is how every other scorer in this repo is
 graded, and it is the honest bound.
 
-**The entire prize is 1.0pp**, before anything is charged for simulation or
+**The entire prize is 0.8pp**, before anything is charged for simulation or
 fitting. A replacement model does not need to be *better* than this one — it
 needs to land within a percentage point or two of perfect to clear a
 predict-the-mean null here. The measured mechanism-holdout error is 45.9pp, so
