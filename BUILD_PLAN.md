@@ -563,17 +563,65 @@ What this forces:
 Anything elsewhere in this repo that compares arms on a handful of QSP runs is
 suspect until re-measured this way.
 
+#### (4) CLOSED both halves — `bricks/profiles.py` (f5141d3) + `backtest/potency.py` (12d4627)
+
+**Directions**, from pharmacology, never from outcome. 2 classes -> 7 distinct
+intervention patterns. Lenercept is one object that suppresses AND de-regulates.
+
+**Magnitudes**, from the MRI channel, never from ARR. `sormani.invert()` reads a
+lesion ratio back out of the relapse-unit response table (the regression is
+monotone in log space, so it inverts exactly), and the potency that reproduces a
+trial's observed lesion ratio becomes the drug's magnitude. A test monkeypatches
+`KNOWN_OUTCOMES` to raise if a fit touches it, so non-circularity is enforced
+rather than asserted.
+
+**The cross-check disagrees, and that is the most useful number here.**
+Ocrelizumab is the only arm with a magnitude from two independent sources:
+
+    ke = 0.85   Martinez-Pasamar 2013, EAE mouse T-cell dynamics
+    ke = 0.40   OPERA I Gd-enhancing lesion ratio, through this module
+
+**2.1x apart.** Neither is adjusted toward the other; a test pins the gap.
+`profiles.py` keeps the EAE value as default because it measures the parameter
+directly rather than inverting through two models. Treat that factor of two as
+the accuracy of the whole potency layer.
+
+**Not done: eight of nine arms have no MRI number.** Paywalled, and not in the
+abstracts Europe PMC serves. `PENDING_EXTRACTION` lists them and a test asserts
+every quantified arm is either fitted or explicitly pending.
+
+#### LOMO CLOSED (28b3c4c) — `backtest/lomo.py`
+
+Holds out a whole mechanism group and predicts it blind, on the screening stack
+(qsp_velez -> profiles -> sormani), which is also a check that those compose.
+
+**Out-of-sample MAE 71.0pp against a 14.4pp predict-the-mean null.** Per fold:
+alpha_E 38.2, alpha_R|delta 29.0, gamma_E 112.4, ke 46.0. The model does not
+beat the null on an unseen mechanism. **That is the gate on the screen** — until
+it inverts, a generated candidate's score is not information.
+
+`_profile_at` deliberately discards a fitted magnitude where one exists:
+ocrelizumab's ke=0.85 would hand the held-out mechanism a number somebody
+already measured for it.
+
+**gamma_E predicts +60.3% where its four trials report -30 to -68%**, and that
+survived the 128-seed rebuild, so it is the model and not the noise. Reading the
+equations: `gamma_E` is gated by the Treg Hill term, making it the
+regulatory-killing channel rather than a generic death rate, so multiplying it
+misrepresents an antibody that depletes independently of regulation. Recorded,
+not patched — the published model has no additive loss term to move it to. This
+is the single largest contributor to the LOMO failure.
+
 #### Still open
 
-- **(4)** per-drug potency. Two halves: assign each arm its intervention points
-  from pharmacology (not blocked), then feed magnitudes from arm-level MRI
-  lesion outcomes extracted into `docs/TRIAL_ANCHORS.md`. The lenercept hole
-  means the harm channel still needs a non-MRI source.
-- **(2)** the Sormani map in `bricks/readout.py`, replacing `MAX_RELAPSE` /
-  `MAX_LESIONS`. Verify the regression form first.
-- **leave-one-mechanism-out** (`backtest/lomo.py`), beside the existing LOO.
-  Holding out a drug from a class still present in training does not grade a
-  screen; holding out a whole mechanism does. This becomes the headline number.
+- **MRI extraction for eight arms** — PRISMS, CONFIRM, AFFIRM, FREEDOMS, TEMSO,
+  DEFINE, CARE-MS I, OPTIMUM. New/enlarging T2 and Gd-enhancing counts, treated
+  arm and comparator, as reported. Needs full-text access this box does not have.
+- **a non-MRI harm channel.** Lenercept fits to potency ~0 through MRI, for a
+  drug that harmed people. No amount of extraction fixes that.
+- **`gamma_E` has no correct home.** Five arms sit on a dial that predicts the
+  wrong sign. Fixing it means an additive effector-loss term the published model
+  does not have, i.e. extending the model rather than porting one.
 - **the screen** (`screen/`), a generator over the QSP's intervention points.
   Gated on LOMO beating its null — until then it ranks noise.
 - **wiring.** `qsp_traj` is written but nothing consumes it; the clinical gate
