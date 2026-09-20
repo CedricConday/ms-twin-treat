@@ -612,6 +612,65 @@ misrepresents an antibody that depletes independently of regulation. Recorded,
 not patched — the published model has no additive loss term to move it to. This
 is the single largest contributor to the LOMO failure.
 
+#### WIRING CLOSED (2ef3e53) — and the grounded stack scores WORSE
+
+`backtest/clinical_velez.py` scores the same arms against the same cited
+outcomes with the same thresholds, through qsp_velez -> profiles -> sormani.
+
+    ABM path (`clinical.py`)             9/14 direction   1/9 magnitude
+    grounded stack (`clinical_velez.py`) 5/13 direction   2/9 magnitude
+
+Transcribing a published model, assigning intervention points from pharmacology
+and adding a meta-analysis readout bought one magnitude hit and lost four
+direction calls. **Both gates are kept and both are reported.** A new number
+that quietly replaces an old one is not a comparison.
+
+Two rows before anyone quotes the headline:
+- **atacicept passes for the WRONG REASON.** It sits on `gamma_E`, `gamma_E` has
+  the wrong sign, and atacicept harmed patients — a broken dial and a harmful
+  drug cancelling. Fixing the defect should flip it to a miss.
+- **lenercept is UNDEFINED, not wrong.** `alpha_E` down with `alpha_R` down
+  strips regulation until the effectors run away; all 128 histories leave the
+  regime. Counted as a miss, because an unscoreable arm must not leave the
+  denominator.
+
+**`gamma_E` is now the dominant defect in the repo**: five of thirteen arms, the
+largest LOMO fold error (112pp), and the reason this gate went backwards.
+
+#### The virtual population was decorative (28a9cab)
+
+Found while asking whether the LOO's 26.0-vs-14.0 survived a different cohort
+draw. It had never seen one. Three things stacked:
+
+1. `sample_vpop(seed=S)` assigned each patient `"seed": i` — the plain index —
+   so every cohort handed the ABM the same twelve simulation seeds.
+2. The sampled `qsp_params` never reach the scored path; the readout scores
+   `abm_damage`.
+3. `bbb_disruption` is inert because **no arm in the library sets
+   `cns_required`**, so the barrier term is always zero.
+
+Measured before: untreated proxy **0.147137 for every seed 1-8, SD exactly
+0.0000**. After: 0.142712 / 0.157593 / 0.148240, about ±10%. The clinical gate
+is unmoved at 9/14 and 1/9, which is the right outcome — direction scoring
+should not be fragile to the draw.
+
+`results/response_curve.json` was built under the old seeding and is stale;
+rebuilt, and the LOO re-run against it is the first honest reading of that
+number.
+
+#### vpop ported onto the grounded model (15c7765)
+
+Swapping the pipeline to the port left `vpop` filtering candidates through the
+TOY, so "plausible patient" meant plausible under a model nothing runs.
+`sample_vpop_velez` runs the same Allen-Rieger method against the model in use,
+and the bounds are **the paper's own**: Table 1 states `alpha_E` and `alpha_R` as
+intervals (`[1:2]`, `[0.25:2]`) because those are the ranges the authors swept.
+
+It rejects 57 of 65 candidates, and the survivors land at `alpha_R` 0.27-0.37 on
+their own. The filter is told only "must develop disease and stay in regime" and
+it recovers the low-`alpha_R` autoimmune configuration the paper describes —
+a small independent check that the port behaves as documented.
+
 #### Still open
 
 - **MRI extraction for eight arms** — PRISMS, CONFIRM, AFFIRM, FREEDOMS, TEMSO,
