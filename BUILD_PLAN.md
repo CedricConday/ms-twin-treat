@@ -1227,3 +1227,56 @@ that. Second candidate not yet assessed, named here so it is not lost: Pernice
 et al. 2020, BMC Bioinformatics, doi:10.1186/s12859-020-03823-9, the Epimod
 framework — stochastic, models blood-brain barrier integrity explicitly, and
 was run for **daclizumab**, which is this repo's sharpest harm case.
+
+#### THE BEST SUCCESSOR MODEL FOUND SO FAR — PERNICE 2020, AND HOW IT MAY LEGALLY BE USED (2026-09-20)
+
+Named as the second candidate above; assessed now, because it is much closer to
+what this repo needs than either Martinez-Pasamar or Gazola.
+
+    Pernice S, Follia L, Maglione A, Pennisi M, Pappalardo F, Novelli F,
+    Clerico M, Beccuti M, Cordero F, Rolla S.
+    "Computational modeling of the immune response in multiple sclerosis using
+     epimod framework." BMC Bioinformatics 2020;21(Suppl 17):550.
+    doi:10.1186/s12859-020-03823-9. Open access, CC BY.
+
+**What it has that Vélez does not.** 26 places and 55 transitions as an Extended
+Stochastic Symmetric Net, from which **a system of 26 ODEs with 20 calibrated
+parameters is derived** (their words). Two compartments — peripheral lymph
+node/blood vessel, and CNS — interacting **through an explicit BBB place**, with
+transitions suffixed `_out` and `_in` accordingly. Crucially it keeps the
+Teff/Treg cross-regulation this repo's whole harm story rests on
+(`TregKillsTeff_out`, `TregKillsTeff_in`), and adds NK cells, IL-17, IFN-gamma,
+IL-10, and oligodendrocytes with five discrete myelination levels plus
+remyelination.
+
+**What it would actually separate, and what it would not.** Transitions are
+distinct for peripheral killing, duplication, and **BBB passage**
+(`Teff_pass_BBB`, `Treg_pass_BBB`). So:
+
+  - **depletion vs trafficking blockade IS separable** — ocrelizumab and
+    alemtuzumab act on peripheral Teff, natalizumab acts on `Teff_pass_BBB`.
+    That is two of the arms currently collapsed onto `gamma_E`.
+  - **fingolimod is STILL not separable from natalizumab.** Fingolimod's
+    mechanism is retention in the lymph node, and this model lumps lymph node
+    and blood vessel into ONE compartment, so there is no egress step to block.
+  - **daclizumab becomes expressible as the harm case it is.** The paper gives
+    it two independent parameters, `DACkillTeff` and `DACkillTreg`. That is this
+    repo's harm hypothesis — a drug that strips regulation while suppressing
+    effectors — as two dials rather than as one flag.
+
+**THE LICENSING, CHECKED BEFORE ANY PORT IS PLANNED.** The analysis code and the
+net files are at `github.com/qBioTurin/Multiple-Sclerosis`, and that repository
+**has no licence file of any kind**, which means all rights reserved — it cannot
+be vendored, copied, or adapted here. The `epimod` framework
+(`github.com/qBioTurin/epimod`) declares **GPL (>=2)** in its DESCRIPTION, which
+is a copyleft this repo is not going to take on for a brick.
+
+**The route that is open is the one Vélez came in by:** transcribe from the
+PAPER, which is CC BY — the net description in the Results, and the parameter
+table in Additional file 1, Table S1. Cite it, tune nothing, and vendor no code.
+That is a real port with a real licence story, and it is the first candidate all
+night that has one.
+
+**Not started tonight, and not to be started casually:** 26 ODEs with 20
+parameters that were calibrated on 16 subjects' cytokine counts, against this
+repo's 4 states and 6 dials. Scope it before committing to it.
