@@ -103,6 +103,7 @@ simulator that currently loses to an average, and it says so.
 ```
 PYTHONPATH=. python3 -m gate.device      # the verdicts and the certificate
 PYTHONPATH=. python3 -m gate.ceiling     # the ceiling and the recoverability table
+PYTHONPATH=. python3 -m gate.headroom    # which of the three failures binds
 PYTHONPATH=. python3 -m backtest.loo     # arm holdout
 PYTHONPATH=. python3 -m backtest.lomo    # mechanism holdout (minutes)
 ```
