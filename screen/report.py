@@ -90,9 +90,10 @@ def _implausibility(survivors: list[dict]) -> dict:
     }
 
 
-def run(max_points: int = 2, potency: float = 0.5) -> dict:
+def run(max_points: int = 2, potency: float = 0.5,
+        carrying_capacity: float | None = None) -> dict:
     candidates = enumerate_candidates(max_points=max_points, potency=potency)
-    results = screen(candidates)
+    results = screen(candidates, carrying_capacity=carrying_capacity)
 
     by_reason: dict[str, int] = {}
     for r in results:
@@ -121,6 +122,7 @@ def run(max_points: int = 2, potency: float = 0.5) -> dict:
     return {
         "implausibility": imp,
         "generated": date.today().isoformat(),
+        "carrying_capacity": carrying_capacity,
         "n_candidates": len(candidates),
         "max_points": max_points,
         "enumerated_potency": potency,
@@ -138,9 +140,20 @@ def run(max_points: int = 2, potency: float = 0.5) -> dict:
 
 
 def to_markdown(rep: dict) -> str:
+    k = rep.get("carrying_capacity")
+    banner = ([] if k is None else [
+        f"> **RUN UNDER THE CAPACITY EXTENSION (K = {k:g}), NOT THE TRANSCRIPTION.**",
+        "> `bricks/qsp_velez.py`'s carrying capacity is an extension to Vélez de",
+        "> Mendizábal 2011, off by default. These results describe a DIFFERENT MODEL",
+        "> from `SCREEN_RESULTS.md`. The extension does not lift the ranking gate",
+        "> (`backtest/lomo_capacity.py`: 45.6pp against a 12.3pp null); it changes",
+        "> which candidates are screenable at all.",
+        "",
+    ])
     lines = [
         "# Screen results — candidates the model cannot rule out",
         "",
+        *banner,
         f"Generated {rep['generated']} by `PYTHONPATH=. python -m screen.report`. "
         f"{rep['n_candidates']} candidates: every combination of up to "
         f"{rep['max_points']} of the model's {len(rep['intervention_points'])} named "
@@ -191,12 +204,23 @@ def to_markdown(rep: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def main() -> int:
-    rep = run()
-    JSON_OUT.parent.mkdir(parents=True, exist_ok=True)
-    JSON_OUT.write_text(json.dumps(rep, indent=2))
-    MD_OUT.parent.mkdir(parents=True, exist_ok=True)
-    MD_OUT.write_text(to_markdown(rep))
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--carrying-capacity", type=float, default=None,
+                    help="run the screen under the qsp_velez EXTENSION instead of "
+                         "the transcription; writes to a separate, labelled file")
+    args = ap.parse_args(argv)
+    k = args.carrying_capacity
+
+    rep = run(carrying_capacity=k)
+    json_out = JSON_OUT if k is None else JSON_OUT.with_name(f"screen_K{k:g}.json")
+    md_out = MD_OUT if k is None else MD_OUT.with_name(f"SCREEN_RESULTS_K{k:g}.md")
+    json_out.parent.mkdir(parents=True, exist_ok=True)
+    json_out.write_text(json.dumps(rep, indent=2))
+    md_out.parent.mkdir(parents=True, exist_ok=True)
+    md_out.write_text(to_markdown(rep))
 
     print(f"{rep['n_candidates']} candidates screened\n")
     for k, v in sorted(rep["counts"].items()):
@@ -210,7 +234,7 @@ def main() -> int:
               f"bigger effect than natalizumab ({imp['best_real_arm_pct']:.0f}%), "
               f"{imp['beyond_90pct']} claim better than -90%. Not credible; the damage "
               "column measures the model, not the candidate.")
-    print(f"\nwritten: {JSON_OUT}\n         {MD_OUT}")
+    print(f"\nwritten: {json_out}\n         {md_out}")
     for c in CAVEATS:
         print(f"  - {c}")
     return 0

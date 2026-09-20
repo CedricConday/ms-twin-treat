@@ -78,13 +78,13 @@ def test_both_directions_are_enumerated():
 # --------------------------------------------------------------------------- #
 
 def _fake_damage(monkeypatch, mapping, default=1.0):
-    def fake(profile):
+    def fake(profile, carrying_capacity=None):
         return mapping.get(profile.label, default)
     monkeypatch.setattr(kill_filter, "_median_damage", fake)
 
 
 def test_a_diverging_candidate_is_killed_as_out_of_regime(monkeypatch):
-    def fake(profile):
+    def fake(profile, carrying_capacity=None):
         return None if profile.label == "boom" else 1.0
     monkeypatch.setattr(kill_filter, "_median_damage", fake)
     res = screen([MechanismProfile(label="boom", gamma_R=4.0, source="t")])
@@ -131,7 +131,7 @@ def test_the_reported_damage_is_the_one_that_passed_the_filter(monkeypatch):
     """A presentation bug caught in review: the screen probes several potencies
     and passes on the BEST, but first reported the candidate's default-potency
     damage — so some survivors printed worse-than-untreated numbers."""
-    def fake(profile):
+    def fake(profile, carrying_capacity=None):
         if profile.label == "untreated":
             return 1.0
         return 0.05 if profile.source == "probe" else 3.0
@@ -158,7 +158,8 @@ def test_a_kill_always_carries_its_reason(monkeypatch):
 
 
 def test_screen_refuses_when_the_untreated_arm_diverges(monkeypatch):
-    monkeypatch.setattr(kill_filter, "_median_damage", lambda p: None)
+    monkeypatch.setattr(kill_filter, "_median_damage",
+                        lambda p, carrying_capacity=None: None)
     with pytest.raises(RuntimeError, match="nothing to screen against"):
         screen([MechanismProfile(label="x", alpha_E=0.5, source="t")])
 

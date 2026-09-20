@@ -97,10 +97,19 @@ class ScreenResult:
         return False
 
 
-def _median_damage(profile: MechanismProfile) -> float | None:
+def _median_damage(profile: MechanismProfile,
+                   carrying_capacity: float | None = None) -> float | None:
+    """Median damage over the screen cohort, or None if any history diverged.
+
+    `carrying_capacity` is the EXTENSION in bricks/qsp_velez.py, off by default.
+    It does not lift the ranking gate (backtest/lomo_capacity.py: 45.6pp against
+    a 12.3pp null) but it is the one thing that stops the model running away, so
+    it changes which candidates are screenable at all rather than how they score.
+    """
     vals = []
     for seed in SCREEN_SEEDS:
-        traj = simulate(profile, t_end=SCREEN_HORIZON_DAYS, seed=seed)
+        traj = simulate(profile, t_end=SCREEN_HORIZON_DAYS, seed=seed,
+                        carrying_capacity=carrying_capacity)
         if not traj["in_regime"]:
             return None
         vals.append(float(traj["total_damage"][-1]))
@@ -130,10 +139,16 @@ def enumerate_candidates(max_points: int = 2,
 
 
 def screen(candidates: list[MechanismProfile],
-           target_gene: dict[str, str] | None = None) -> list[ScreenResult]:
-    """Run the four filters. Returns a verdict per candidate, in input order."""
+           target_gene: dict[str, str] | None = None,
+           carrying_capacity: float | None = None) -> list[ScreenResult]:
+    """Run the four filters. Returns a verdict per candidate, in input order.
+
+    With `carrying_capacity` set, every simulation runs under the extension
+    rather than the pure transcription, and the results are about a DIFFERENT
+    MODEL. Callers must label them so.
+    """
     target_gene = target_gene or {}
-    untreated = _median_damage(PROFILES["untreated"])
+    untreated = _median_damage(PROFILES["untreated"], carrying_capacity)
     if untreated is None:
         raise RuntimeError("the untreated arm left the model's regime; nothing to "
                            "screen against")
@@ -145,7 +160,7 @@ def screen(candidates: list[MechanismProfile],
     for cand in candidates:
         points = touched_points(cand)
 
-        dmg = _median_damage(cand)
+        dmg = _median_damage(cand, carrying_capacity)
         if dmg is None:
             results.append(ScreenResult(
                 cand, KillReason.OUT_OF_REGIME,
@@ -162,7 +177,7 @@ def screen(candidates: list[MechanismProfile],
             probed = {p: (1.0 - probe) if getattr(cand, p) < 1.0 else (1.0 + probe)
                       for p in points}
             d = _median_damage(MechanismProfile(label=cand.label, source="probe",
-                                                **probed))
+                                                **probed), carrying_capacity)
             if d is not None and d < best:
                 best, best_at = d, probe
         if best > untreated * (1.0 - NOISE_FLOOR):
