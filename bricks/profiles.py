@@ -81,6 +81,10 @@ ENHANCE = 1.0 + STUB_MAGNITUDE    # 1.5 — dial turned up
 # value from an invented one. Adding an entry here requires the citation to be in
 # the arm's `source` string.
 FITTED: dict[tuple[str, str], str] = {
+    ("ofatumumab", "ke"): (
+        "Martinez-Pasamar et al. 2013 (PMC3651362), applied at TARGET level: the same "
+        "anti-CD20 K_eff shift as ocrelizumab, 850/1000 = 0.85. Not a per-drug fit."
+    ),
     ("ocrelizumab", "ke"): (
         "Martinez-Pasamar et al. 2013, BMC Syst Biol 7:34 (PMC3651362): anti-CD20 "
         "dynamics reproduced by reducing K_eff from 1000 to ~850 cells. 850/1000 = 0.85."
@@ -95,6 +99,7 @@ LUMPED: dict[str, str] = {
     "ponesimod": "lymph-node egress block — no lymph-node compartment",
     "alemtuzumab": "pan-lymphocyte depletion — no cell-type resolution",
     "atacicept": "plasma-cell depletion — the model has no B cells",
+    "cladribine": "lymphocyte-depleting purine analogue — no cell-type resolution",
 }
 
 
@@ -237,6 +242,44 @@ ATACICEPT = _p(
     gamma_E=ENHANCE,
 )
 
+OFATUMUMAB = _p(
+    "ofatumumab",
+    "Fully human anti-CD20 monoclonal antibody; depletes B cells. SAME TARGET as "
+    "ocrelizumab, so it inherits the same intervention point and the same fitted "
+    "magnitude: Martinez-Pasamar et al. 2013 (PMC3651362) reproduced post-anti-CD20 "
+    "T-cell dynamics by moving K_eff from 1000 to ~850 cells. The EAE experiment "
+    "behind that number used a specific anti-CD20 antibody, so applying it to a "
+    "second anti-CD20 agent is a TARGET-LEVEL extension, not a per-drug "
+    "measurement -- which is exactly why this arm is valuable: it and ocrelizumab "
+    "now share a dial and a magnitude, so any difference the trials show between "
+    "them is a difference this model provably cannot produce.",
+    ke=0.85,
+)
+
+DACLIZUMAB = _p(
+    "daclizumab",
+    "Anti-CD25 (IL-2 receptor alpha). CD25 blockade cuts regulatory T-cell numbers "
+    "by roughly 50% over 52 weeks (Bielekova and colleagues; see also PMID 25416807 "
+    "on maintained Treg function under CD25 blockade), so alpha_R DOWN. That is a "
+    "pharmacodynamic observation about the drug's target, independent of DECIDE. "
+    "NOT REPRESENTABLE, and it matters here: the same blockade raises IL-2 "
+    "bioavailability and expands CD56bright regulatory NK cells, which this model "
+    "has no cell type for. So the model sees only the Treg loss and none of the "
+    "compensation -- it should predict harm, and the trial reported a 45% relapse "
+    "reduction. This arm is in the set precisely because it is a case the model is "
+    "expected to get wrong for a stateable reason.",
+    alpha_R=SUPPRESS,
+)
+
+CLADRIBINE = _p(
+    "cladribine",
+    "Purine nucleoside analogue; selectively cytotoxic to lymphocytes, giving "
+    "sustained depletion then reconstitution. LUMPED onto gamma_E with the rest of "
+    "the depleting class -- and see the qsp_velez docstring: this model cannot "
+    "produce benefit from removing effector cells at all.",
+    gamma_E=ENHANCE,
+)
+
 IFN_GAMMA = _p(
     "IFN-gamma",
     "Recombinant type II interferon; pro-inflammatory, activates macrophages and "
@@ -259,6 +302,7 @@ PROFILES: dict[str, MechanismProfile] = {p.label: p for p in (
     UNTREATED, IFN_BETA, GLATIRAMER, APL_CGP77116,
     NATALIZUMAB, FINGOLIMOD, PONESIMOD, TERIFLUNOMIDE, DIMETHYL_FUMARATE,
     OCRELIZUMAB, ALEMTUZUMAB, LENERCEPT, ATACICEPT, IFN_GAMMA,
+    OFATUMUMAB, DACLIZUMAB, CLADRIBINE,
 )}
 
 

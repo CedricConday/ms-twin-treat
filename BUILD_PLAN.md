@@ -754,13 +754,63 @@ The last one is the useful warning: a rewrite that improves a document can still
 lose the one line in it that was a citation. Check what a rewrite drops, not
 just what it adds.
 
+#### THE HARM CHANNEL: EAE IS EMPIRICALLY DEAD (2026-09-20)
+
+Searched for an independent, non-MRI source that predicts harm, because the MRI
+channel fits lenercept to "does nothing" for a drug that harmed people. The
+obvious candidate was EAE — it is what `bricks/profiles.py` already cites for
+lenercept, and TNF-deficient mice getting severe EAE is exactly the signal MRI
+missed.
+
+**The best systematic evidence says EAE does not predict.**
+
+    Berg I, Härvelid P, Zürrer WE, Rosso M, Reich DS, Ineichen BV.
+    "Which experimental factors govern successful animal-to-human translation in
+     multiple sclerosis drug development? A systematic review and meta-analysis."
+    eBioMedicine 2024;110:105434. PMID 39515028, PMC11582441, CC BY.
+
+497 animal studies, **15 approved and 11 failed DMTs** — failed on efficacy *or
+safety* — roughly 30,000 animals, 274 in the meta-analysis. 86% used EAE.
+
+    "There was no association between animal study outcomes or testing DMTs
+     under varied conditions (e.g., different laboratories or models) and
+     successful approval."
+
+And the literature is contaminated by hindsight: **91% of the animal studies
+were published after the first-in-MS trial, and 91% after regulatory approval.**
+So a "preclinical signal" for an approved drug is usually not preclinical.
+
+**A distinction the repo must keep, because this does NOT retract its existing
+citations.** Berg et al. measure whether an EAE *efficacy outcome* — did the drug
+lower the EAE score — predicts approval. `profiles.py` cites EAE work for
+something different: *mechanism*, that TNF-deficient mice develop severe EAE
+(Liu 1998) and that TNFR2 is required for remyelination (Arnett 2001). A
+mechanism-level finding about what a target does is not an efficacy screen. The
+lenercept flag stands; what dies is the idea of ranking candidates by their EAE
+effect size.
+
+**Identified but NOT yet sourced — target expression on regulatory cells.** The
+remaining idea with a testable prediction: harm risk tracks whether a drug's
+target is expressed on regulatory or reparative cells rather than only on
+effectors. It would flag daclizumab hardest, because its target IS the canonical
+Treg marker (CD25/IL2RA) — and daclizumab was withdrawn for fatal encephalitis.
+It would also flag lenercept via TNFR2. Two of the harm cases, from expression
+alone, with no trial outcome read.
+
+Blocked on data, not on the idea: the Human Protein Atlas serves per-immune-cell
+RNA on its website but its `search_download` API returned nothing for every
+immune-cell column tried, and the Kang 2018 dataset already in this repo has no
+Treg label (its CD4 T cells are not subset). Needs a source with Treg-resolved
+expression before it can be built.
+
 #### Still open
 
 - **MRI extraction for eight arms** — PRISMS, CONFIRM, AFFIRM, FREEDOMS, TEMSO,
   DEFINE, CARE-MS I, OPTIMUM. New/enlarging T2 and Gd-enhancing counts, treated
   arm and comparator, as reported. Needs full-text access this box does not have.
-- **a non-MRI harm channel.** Lenercept fits to potency ~0 through MRI, for a
-  drug that harmed people. No amount of extraction fixes that.
+- **a non-MRI harm channel.** EAE is ruled out empirically (above). The live
+  candidate is target expression on regulatory cells, blocked on Treg-resolved
+  expression data rather than on the idea.
 - **The depleting class has no home at all** — not a mapping problem, a model
   property (above). Options, none of them cheap: accept the blind spot and scope
   the screen to proliferation/regulation mechanisms; or find a model whose damage
