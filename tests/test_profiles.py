@@ -59,6 +59,33 @@ def test_every_fitted_magnitude_is_cited_on_its_arm():
         assert "Martinez-Pasamar" in PROFILES[name].source or "PMC" in PROFILES[name].source
 
 
+def test_ofatumumab_shares_ocrelizumabs_dial_and_magnitude():
+    """Deliberate: the two anti-CD20 arms are indistinguishable here.
+
+    They share a target, so they share the Martinez-Pasamar K_eff shift. Any
+    difference ASCLEPIOS and OPERA show between them is therefore a difference
+    this model provably cannot produce — which is a stateable limitation rather
+    than a hidden one.
+    """
+    ofa, ocr = PROFILES["ofatumumab"], PROFILES["ocrelizumab"]
+    assert touched_points(ofa) == touched_points(ocr) == ("ke",)
+    assert ofa.ke == ocr.ke == 0.85
+
+
+def test_daclizumab_is_the_arm_the_model_should_get_wrong():
+    """Anti-CD25 cuts Treg numbers ~50%, so the model sees alpha_R down and
+    should predict harm. DECIDE reported a 45% relapse REDUCTION.
+
+    The compensating CD56bright NK expansion has no cell type in this model, so
+    the failure is expected and its reason is stateable. Pinned so nobody
+    "fixes" it by flipping the sign to match the trial — that would be fitting
+    to the outcome, which is the thing this repo exists not to do.
+    """
+    dac = PROFILES["daclizumab"]
+    assert touched_points(dac) == ("alpha_R",)
+    assert dac.alpha_R < 1.0
+
+
 def test_ocrelizumab_escaped_the_gamma_E_lump_via_a_measured_parameter():
     """The one arm pulled out of the ceiling, and the only way that happens.
 
@@ -173,7 +200,7 @@ def test_the_gamma_E_cluster_is_a_model_ceiling_not_a_stub_artifact():
     """
     assert set(LUMPED) == {
         "natalizumab", "fingolimod", "ponesimod",
-        "alemtuzumab", "atacicept",
+        "alemtuzumab", "atacicept", "cladribine",
     }
     for name in LUMPED:
         assert touched_points(PROFILES[name]) == ("gamma_E",)

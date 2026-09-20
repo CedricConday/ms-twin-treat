@@ -83,6 +83,18 @@ KNOWN_OUTCOMES = [
                     "OPTIMUM, JAMA Neurol 2021 (PMID 33779698): ARR 0.202 vs 0.290 on "
                     "teriflunomide",
                     comparator="teriflunomide"),
+    ClinicalOutcome("ofatumumab", "improves", -50.0,
+                    "ASCLEPIOS I, NEJM 2020 (PMID 32757523): ARR 0.11 vs 0.22 on "
+                    "teriflunomide (ASCLEPIOS II 0.10 vs 0.25). ASCLEPIOS I used here",
+                    comparator="teriflunomide"),
+    ClinicalOutcome("daclizumab", "improves", -45.0,
+                    "DECIDE, NEJM 2015 (PMID 26444729): ARR 0.22 vs 0.39 on IFN beta-1a, "
+                    "45% lower. Drug withdrawn 2018 for fatal encephalitis, which is a "
+                    "SAFETY outcome and not the relapse endpoint scored here",
+                    comparator="IFN-beta"),
+    ClinicalOutcome("cladribine", "improves", -57.6,
+                    "CLARITY, NEJM 2010 (PMID 20089950): ARR 0.14 (3.5 mg/kg) vs 0.33 "
+                    "placebo over 96 weeks, 57.6% relative reduction"),
     ClinicalOutcome("lenercept", "harms", None,
                     "Lenercept MS Study Group, Neurology 1999 (PMID 10449104): more patients "
                     "with exacerbations, occurring earlier (p=0.006)"),

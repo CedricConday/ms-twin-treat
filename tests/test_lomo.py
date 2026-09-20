@@ -38,11 +38,13 @@ def test_the_quantified_arms_fall_into_the_expected_mechanisms():
     groups = lomo.mechanism_groups()
     assert set(groups) == {
         ("alpha_E",),            # IFN-beta, teriflunomide, dimethyl fumarate
+        ("alpha_R",),            # daclizumab
         ("alpha_R", "delta"),    # glatiramer acetate
-        ("gamma_E",),            # natalizumab, fingolimod, alemtuzumab, ponesimod
-        ("ke",),                 # ocrelizumab
+        ("gamma_E",),            # natalizumab, fingolimod, alemtuzumab, ponesimod,
+                                 # cladribine
+        ("ke",),                 # ocrelizumab, ofatumumab
     }
-    assert sum(len(a) for a in groups.values()) == 9
+    assert sum(len(a) for a in groups.values()) == 12
 
 
 def test_only_arms_with_a_real_number_are_grouped():
@@ -60,7 +62,7 @@ def test_a_single_arm_group_exists_and_is_a_known_weakness():
     """
     sizes = [len(a) for a in lomo.mechanism_groups().values()]
     assert min(sizes) == 1
-    assert len(sizes) == 4
+    assert len(sizes) == 5
 
 
 # --------------------------------------------------------------------------- #
@@ -169,8 +171,8 @@ def test_run_lomo_scores_every_quantified_arm_exactly_once():
     patterns = {"|".join(k): 1.0 for k in lomo.mechanism_groups()}
     result = lomo.run_lomo(_synthetic_table(patterns))
     arms = [r["arm"] for r in result["rows"]]
-    assert len(arms) == len(set(arms)) == 9
-    assert result["n_groups"] == 4
+    assert len(arms) == len(set(arms)) == 12
+    assert result["n_groups"] == 5
 
 
 def test_a_held_out_mechanism_is_absent_from_its_own_training_set():

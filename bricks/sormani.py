@@ -56,8 +56,28 @@ condition forces:
     a treatment with NO effect on lesions (RR_lesion = 1, log = 0) must have
     NO effect on relapses (RR_relapse = 1, log = 0), which requires intercept = 0.
 
-That is an assumption, not a citation, and it is the one number in this module
-that someone with the PDF should replace. A fitted intercept would mean the
+AND IT IS NOW EMPIRICALLY SUPPORTED, from this repo's own arms. With MRI lesion
+ratios extracted for 11 arms (backtest/potency.py) and their ARR outcomes
+already cited, the regression can be refitted here. Restricted to the contrasts
+that are actually comparable -- placebo-controlled, and a T2 lesion-COUNT metric
+-- six arms give:
+
+    slope 0.468, intercept -0.037, R^2 0.347     (this repo, n=6)
+    slope 0.52,  intercept unknown, R^2 0.71     (Sormani & Bruzzi, 31 trials)
+
+The slope agrees. The intercept lands at -0.037, i.e. exp(-0.037) = 0.96, which
+is 1.0 within the noise of six arms -- so the boundary-condition assumption is
+not just principled, it is what the data shows.
+
+**The restriction is the finding.** Fit on all 11 arms without it, the
+relationship collapses: slope 0.081, R^2 0.077. Mixing active-comparator
+contrasts (ofatumumab vs teriflunomide, ocrelizumab and daclizumab vs IFN-beta,
+ponesimod vs teriflunomide) with placebo-controlled ones destroys it, because a
+drug-vs-drug ratio and a drug-vs-placebo ratio are not the same quantity. Mixing
+MRI metrics costs more on top. Anyone refitting this must restrict first.
+
+That is an assumption with support, not a citation, and someone with the PDF
+should still replace it with the published value. A fitted intercept would mean the
 average trial in the meta-analysis showed a relapse effect not accounted for by
 its lesion effect — plausible in real data, and it would shift every prediction
 by a constant factor `exp(intercept)`. `SLOPE` is the published value and is

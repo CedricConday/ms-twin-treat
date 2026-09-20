@@ -44,6 +44,9 @@ choice dressed as a measurement.
 | ocrelizumab | OPERA I/II 2017 | IFN beta-1a | 0.16 vs 0.29 | −46% | improves | 28002679 |
 | alemtuzumab | CARE-MS I 2012 | IFN beta-1a | rate ratio 0.45 | −55% | improves | 23122652 |
 | ponesimod | OPTIMUM 2021 | teriflunomide | 0.202 vs 0.290 | −30.5% | improves | 33779698 |
+| ofatumumab | ASCLEPIOS I 2020 | teriflunomide | 0.11 vs 0.22 | −50% | improves | 32757523 |
+| daclizumab | DECIDE 2015 | IFN beta-1a | 0.22 vs 0.39 | −45% | improves | 26444729 |
+| cladribine 3.5 mg/kg | CLARITY 2010 | placebo | 0.14 vs 0.33 (96 wk) | −57.6% | improves | 20089950 |
 | lenercept | Lenercept MS Study Group 1999 | placebo | more patients with exacerbations, occurring earlier (p=0.006) | unquantified | **harms** | 10449104 |
 | atacicept | ATAMS 2014 | placebo | 0.86 / 0.79 / 0.98 (25 / 75 / 150 mg) vs 0.38 | **raised** (+126% / +108% / +158%) | **harms** | 24613349 |
 | IFN-gamma | Panitch 1987 | pre/post within-patient | 7 of 18 patients had exacerbations on treatment | unquantified | **harms** | 2882294 |
@@ -63,6 +66,9 @@ choice dressed as a measurement.
 | alemtuzumab | anti-CD52; lymphocyte depletion | suppressive |
 | lenercept | TNF-receptor p55-IgG fusion; TNF blockade | suppressive **+ regulation-disrupting** (TNF-/- mice get severe EAE, PMID 9427610; TNFR2 needed for remyelination, PMID 11600888) |
 | atacicept | TACI-Ig; blocks BAFF and APRIL, depletes plasma cells | suppressive |
+| ofatumumab | anti-CD20; B-cell depletion (same target as ocrelizumab) | suppressive |
+| daclizumab | anti-CD25 (IL-2Rα); cuts Treg numbers ~50%, raises IL-2 availability, expands CD56bright NK | suppressive |
+| cladribine | purine nucleoside analogue; selectively lymphotoxic | suppressive |
 | IFN-gamma | pro-inflammatory type II interferon | immunogenic |
 | APL CGP77116 | altered peptide ligand of MBP 83-99; encephalitogenic in T-cell assays | immunogenic |
 
@@ -78,6 +84,28 @@ on IFN-beta, glatiramer and one immunogenic peptide could not expose it, which i
 exactly why `BUILD_PLAN.md` §8 blocker (3) calls a four-arm gate "too few to test
 anything". Recording the two counterexamples is what turns the gate from a
 restatement of the setup into a test the current rule can fail.
+
+## Why these three were added (2026-09-20)
+
+Growing the arm set only helps the leave-one-MECHANISM-out test if the new arms
+add mechanism COVERAGE. Six more depleting drugs would all land on `gamma_E` and
+the fold count would not move. These three were chosen for what they do to the
+groups, not for how many they add:
+
+- **ofatumumab** shares anti-CD20 with ocrelizumab, turning `ke` from a
+  single-arm fold into a real one. It also creates a deliberate test: the two
+  share a dial AND a magnitude, so any difference their trials show is a
+  difference this model provably cannot produce.
+- **daclizumab** is a NEW mechanism — anti-CD25, cutting Treg numbers ~50% — and
+  it is the most discriminating arm in the set. The model sees only the Treg
+  loss and none of the compensating CD56bright NK expansion it has no cell type
+  for, so it should predict HARM. DECIDE reported a 45% relapse reduction. An
+  arm the model is expected to fail for a stateable reason is worth more than
+  one it is expected to pass.
+- **cladribine** adds a placebo-controlled arm to the depleting class, which was
+  otherwise carried by active-comparator trials.
+
+Arm set: 17 arms, 12 quantified, 5 mechanism groups.
 
 ## MRI lesion anchors — blocker (4)'s non-circular channel
 

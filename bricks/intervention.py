@@ -175,6 +175,27 @@ ATACICEPT = _from_mechanism(
           "backwards from the trial, so it is left unflagged and the gate keeps failing "
           "it. This is the honest gap, not an oversight.")
 
+OFATUMUMAB = _from_mechanism(
+    "ofatumumab", SUPPRESSIVE,
+    notes="fully human anti-CD20 monoclonal antibody, subcutaneous; depletes B cells. "
+          "Same target as ocrelizumab, which is why it shares its intervention point. "
+          "Suppressive class from its target, not from ASCLEPIOS.")
+
+DACLIZUMAB = _from_mechanism(
+    "daclizumab", SUPPRESSIVE,
+    notes="anti-CD25 (IL-2 receptor alpha) monoclonal antibody. Blocking CD25 cuts "
+          "regulatory T-cell numbers by roughly 50% over 52 weeks while raising IL-2 "
+          "bioavailability, which expands CD56bright NK cells. Withdrawn from the market "
+          "in 2018 after 12 cases of severe encephalitis, 3-4 fatal. Suppressive class "
+          "from its target; the Treg reduction is an INDEPENDENT pharmacodynamic "
+          "observation, not a reading of DECIDE.")
+
+CLADRIBINE = _from_mechanism(
+    "cladribine", SUPPRESSIVE,
+    notes="purine nucleoside analogue; selectively cytotoxic to lymphocytes, producing "
+          "sustained depletion followed by reconstitution. Suppressive class from its "
+          "mechanism, not from CLARITY.")
+
 IFN_GAMMA = _from_mechanism(
     "IFN-gamma", IMMUNOGENIC,
     notes="recombinant type II interferon; pro-inflammatory, activates macrophages and "
@@ -185,6 +206,7 @@ LIBRARY = {i.name: i for i in (
     UNTREATED, IFN_BETA, GLATIRAMER, APL_CGP77116,
     NATALIZUMAB, FINGOLIMOD, PONESIMOD, TERIFLUNOMIDE, DIMETHYL_FUMARATE,
     OCRELIZUMAB, ALEMTUZUMAB, LENERCEPT, ATACICEPT, IFN_GAMMA,
+    OFATUMUMAB, DACLIZUMAB, CLADRIBINE,
 )}
 
 

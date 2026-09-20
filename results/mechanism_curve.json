@@ -122,6 +122,128 @@
         "n_out_of_regime": 0
       }
     },
+    "alpha_R": {
+      "0": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "n_ok": 128,
+        "n_out_of_regime": 0
+      },
+      "0.05": {
+        "mean": 77.91683118062204,
+        "sd": 481.26477288312367,
+        "n_ok": 124,
+        "n_out_of_regime": 4
+      },
+      "0.1": {
+        "mean": 293.4551775207812,
+        "sd": 969.227119745673,
+        "n_ok": 103,
+        "n_out_of_regime": 25
+      },
+      "0.15": {
+        "mean": 481.9473076926461,
+        "sd": 1277.9014111438112,
+        "n_ok": 75,
+        "n_out_of_regime": 53
+      },
+      "0.2": {
+        "mean": 736.6699719947685,
+        "sd": 1603.5574628073484,
+        "n_ok": 50,
+        "n_out_of_regime": 78
+      },
+      "0.25": {
+        "mean": 1697.3661768374423,
+        "sd": 2657.774133370367,
+        "n_ok": 27,
+        "n_out_of_regime": 101
+      },
+      "0.3": {
+        "mean": 1403.17230541761,
+        "sd": 479.9542438463525,
+        "n_ok": 7,
+        "n_out_of_regime": 121
+      },
+      "0.35": {
+        "mean": 4162.028859354688,
+        "sd": 1731.826292405576,
+        "n_ok": 3,
+        "n_out_of_regime": 125
+      },
+      "0.4": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.45": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.5": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.55": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.6": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.65": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.7": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.75": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.8": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.85": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.9": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      },
+      "0.95": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 128
+      }
+    },
     "alpha_R|delta": {
       "0": {
         "mean": 0.0,

@@ -822,6 +822,51 @@ prediction to test FIRST is daclizumab: its target is the canonical Treg marker,
 and it was withdrawn for fatal encephalitis while REDUCING relapses 45%. A
 channel that flags it is seeing something neither MRI nor ARR can.
 
+#### CLOSED 2026-09-20 — three of the five "blockers" were not blocked
+
+1. **MRI extraction: 11 of 12 arms.** AFFIRM's table is in the NEJM paper and
+   PRISMS has a companion MRI paper (Li, *Ann Neurol* 1999). "Predates the
+   registry" was a reason to look elsewhere, not to stop. Only alemtuzumab
+   remains, and for a real reason: CARE-MS I reports the PROPORTION of patients
+   lesion-free and a lesion VOLUME change, neither convertible to a count ratio.
+
+2. **The harm channel passes an out-of-sample check.** Of the four drugs the
+   binary test calls negatives, alemtuzumab is the only one with a major
+   secondary-autoimmunity signature (30-48% of patients) and the only one the
+   channel puts above 1.0. Across all six targets the ordering tracks
+   regulatory-failure toxicity monotonically. Natalizumab ranks fifth of six
+   and that is correct — PML is over-suppression, not lost regulation.
+
+3. **The Sormani intercept is empirically supported.** Refitting on this repo's
+   own arms, restricted to comparable contrasts (placebo-controlled, T2
+   lesion-COUNT metric), six arms give **slope 0.468, intercept -0.037, R^2
+   0.347** against Sormani's published slope of 0.52. The slope agrees and the
+   intercept is 1.0 within noise.
+
+   **The restriction is the finding.** Without it, across all 11 arms, the
+   relationship collapses to slope 0.081, R^2 0.077. Mixing drug-vs-drug
+   contrasts with drug-vs-placebo ones destroys it. Anyone refitting must
+   restrict first.
+
+#### What is genuinely left, and it is one thing
+
+**A model whose damage is not peak-driven.** Everything still open reduces to
+this. Vélez makes killing effectors worse (damage goes as `(E/a)^2`, so it is
+set by peak excursions, and removing effectors releases the proliferation brake
+into a larger excursion). That single property produces:
+
+  - five arms unscreenable at any potency, confirmed independently by
+    `backtest/potency.py` returning OUT OF RANGE on real trial MRI data;
+  - the grounded direction gate at 5/13 against the ABM path's 9/14;
+  - LOMO at 45.9pp against a 12.3pp null, dominated by the gamma_E fold;
+  - a screen in which nearly every survivor is `gamma_R-`.
+
+An additive regulation-independent loss term was tried and removed — it does not
+fix the sign. Candidate replacements found but NOT assessed: QSP models of
+B-cell depletion and reconstitution for rituximab-type agents (e.g. PMC13171755).
+The question to ask of any of them is narrow: **does removing effector cells
+reduce damage in it?** If not, it has the same defect and is not worth porting.
+
 #### Still open
 
 - **MRI extraction for eight arms** — PRISMS, CONFIRM, AFFIRM, FREEDOMS, TEMSO,

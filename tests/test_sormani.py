@@ -169,3 +169,37 @@ def test_lesion_ratio_refuses_a_zero_treated_arm():
 
 def test_lesion_ratio_is_a_plain_ratio():
     assert lesion_ratio(3.0, 12.0) == pytest.approx(0.25)
+
+
+def test_the_assumed_intercept_is_supported_by_our_own_arms():
+    """Refit on this repo's extracted MRI ratios, restricted to comparable
+    contrasts: placebo-controlled, T2 lesion-COUNT metric.
+
+    Six arms give slope 0.468 and intercept -0.037 against Sormani's published
+    slope of 0.52. The slope agrees and the intercept is 1.0 within noise, so
+    INTERCEPT = 0 is empirically supported rather than only principled.
+
+    Fit WITHOUT the restriction and the relationship collapses to slope 0.081,
+    R^2 0.077 — mixing drug-vs-drug and drug-vs-placebo ratios destroys it.
+    """
+    import numpy as np
+
+    from backtest.clinical import KNOWN_OUTCOMES
+    from backtest.potency import OBSERVED_LESION_RATIOS
+
+    out = {o.arm: o for o in KNOWN_OUTCOMES if o.relapse_change_pct is not None}
+    rows = [(a, r, 1 + out[a].relapse_change_pct / 100)
+            for a, (r, src) in OBSERVED_LESION_RATIOS.items()
+            if a in out and out[a].comparator == "untreated"
+            and ("[new-T2]" in src or "[active-T2]" in src)]
+    assert len(rows) >= 5, "too few comparable arms to refit"
+
+    x = np.log([r for _, r, _ in rows])
+    y = np.log([rr for _, _, rr in rows])
+    slope, intercept = np.linalg.lstsq(
+        np.vstack([x, np.ones_like(x)]).T, y, rcond=None)[0]
+
+    assert abs(slope - SLOPE) < 0.15, (
+        f"refitted slope {slope:.3f} should agree with Sormani's {SLOPE}")
+    assert abs(intercept) < 0.25, (
+        f"refitted intercept {intercept:.3f} should be near the assumed 0")
