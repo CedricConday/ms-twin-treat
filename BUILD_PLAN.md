@@ -459,6 +459,48 @@ damage→EDSS mismatch does not arise. **Read the paper for the exact regression
 form and scale before implementing** — log relative-rate against log
 relative-rate is the likely form but has NOT been verified.
 
+#### (4) first half DONE (ac04821) — `bricks/profiles.py`, and the ceiling it measures
+
+Each of the 14 arms now carries a `MechanismProfile` over the Vélez model's own
+rates, assigned from pharmacology and never from the trial. **Sourced: which
+points each drug touches and in which direction. Stubbed: how much** — every
+non-unit multiplier is one shared constant, because a hand-picked number per
+drug is indistinguishable from fitting. `with_magnitudes()` is the migration
+path off the stub and refuses to add or remove a point, since that is a
+mechanism claim.
+
+Two of three checked assignments came back against the obvious answer:
+- **alemtuzumab gets NO Treg-depleting axis.** CD52 is on Tregs, so "it depletes
+  Tregs too" is tempting and has the sign backwards — repopulation is
+  Treg-BIASED, regulatory cells return faster than effectors with increased
+  suppressive capacity (PMC4519957, PMC8581537).
+- **teriflunomide's Treg axis is left unset**, evidence contested: Klotz 2019
+  (doi:10.1126/scitranslmed.aao5563) reports no change, PMID 40879143 reports
+  impaired FOXP3+ function.
+- glatiramer acts at antigen presentation (MHC II competition, Arnon & Aharoni
+  PNAS 2004) plus Treg restoration → `delta` + `alpha_R`; the only arm whose
+  primary mechanism is at the APC step.
+
+2 classes → **6 distinct intervention patterns**. Lenercept is one object that
+suppresses *and* de-regulates, so its harm is now a prediction.
+
+**THE FINDING, and it re-orders what is left.** `degeneracy_report()` measures
+the ceiling: **six of the thirteen treated arms collapse onto `gamma_E`** —
+natalizumab, fingolimod, ponesimod, ocrelizumab, alemtuzumab, atacicept. 15
+indistinguishable pairs, all model ceiling, versus 4 stub-only pairs that
+dissolve when magnitudes land. A test pins the sharpest case: **natalizumab
+(−68%, AFFIRM) and atacicept (raised relapses, ATAMS halted) are byte-identical
+in this model.** No potency number and no leave-one-out can make one right
+without making the other wrong.
+
+So the Martinez-Pasamar 2013 port is **not optional and not later** — it is on
+the critical path, because the arms it would separate are the high-efficacy
+drugs and one of the two harm cases. Building LOMO and the screen on the
+current representation would grade a model that is provably unable to pass.
+
+**Revised order: Martinez-Pasamar port → (4) magnitudes → (2) Sormani → LOMO →
+screen.**
+
 #### Still open
 
 - **(4)** per-drug potency. Two halves: assign each arm its intervention points
