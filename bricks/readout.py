@@ -9,6 +9,15 @@ invented scales, NOT clinical endpoints. This is the single easiest place in the
 whole pipeline to accidentally claim a clinical result, so everything is flagged
 validated=False and named a "proxy".
 
+**Partly superseded for ARM-LEVEL scoring (blocker 2).** `MAX_RELAPSE` is still
+an invented per-patient scale, but the per-patient number is not what the gate
+needs: `bricks/sormani.py` supplies a PUBLISHED trial-level map from a lesion
+rate ratio to a relapse rate ratio (Sormani & Bruzzi 2013, 31 trials, 18,901
+patients, slope 0.52). Use `relapse_ratio_from_arms()` below to compare two arms.
+`MAX_RELAPSE` cancels in any such ratio (BUILD_PLAN §8 blocker 2), so it was
+never the thing to fix — the fix was to stop scoring an invented absolute and
+start scoring a ratio through a map somebody fitted to real trials.
+
 Barrier coupling (the reason B6 exists): the ABM applied the intervention at full
 strength. In reality a therapy only helps to the extent it reaches its site of
 action. So the benefit the ABM assumed -- proportional to the intervention's
@@ -22,9 +31,28 @@ from __future__ import annotations
 
 import numpy as np
 
+from bricks.sormani import RelapsePrediction, lesion_ratio, predict_relapse_ratio
+
 # Invented mapping scales -- NOT clinical calibration.
 MAX_LESIONS = 40      # damage=1.0 -> 40 "lesions" (illustrative ceiling)
 MAX_RELAPSE = 1.5     # damage=1.0 -> annualized relapse rate 1.5 (illustrative)
+
+
+def relapse_ratio_from_arms(treated_lesions, comparator_lesions) -> RelapsePrediction:
+    """Arm-level predicted relapse ratio, via the published Sormani map.
+
+    `treated_lesions` and `comparator_lesions` are per-patient `lesion_proxy`
+    values for the two arms — arrays or scalars. They are averaged here, because
+    Sormani is a TRIAL-level relation between two arms and has no per-patient
+    reading; applying it inside a single patient's readout would be using a
+    between-trial regression as a within-person one.
+
+    Returns the prediction object, not a float, so that its blind spot and its
+    assumed intercept travel with the number. See bricks/sormani.py.
+    """
+    treated = float(np.mean(np.asarray(treated_lesions, dtype=float)))
+    comparator = float(np.mean(np.asarray(comparator_lesions, dtype=float)))
+    return predict_relapse_ratio(lesion_ratio(treated, comparator))
 
 
 class ReadoutStage:
