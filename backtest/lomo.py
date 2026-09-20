@@ -77,19 +77,27 @@ POTENCY_GRID = [round(x, 2) for x in np.arange(0.0, 0.96, 0.05)]
 # difference in luck.
 #
 # THE COHORT SIZE IS NOT A TASTE DECISION HERE, it is forced by the model's
-# variance, and a first attempt at this file got it badly wrong. Measured over
-# 40 five-year untreated runs: mean damage 22.7, SD 49.9, range 0.94 to 251 --
-# a 266-fold spread, with the standard error at n=4 LARGER than the mean. The
-# first version of this table used four seeds and was measuring nothing but its
-# own noise. Only the alpha_R effect, which is about 100-fold, survived it.
+# variance, and a first attempt at this file got it badly wrong by using four
+# seeds and a mean -- reporting a headline made entirely of its own noise.
 #
-# Two changes fix it:
-#   * the statistic is the MEDIAN of per-seed ratios, not the mean. The damage
-#     distribution is heavily right-tailed (at two years, median 1.43 against a
-#     mean of 17.1), so the mean is dominated by a handful of runaway histories.
-#   * 128 seeds. Bootstrapped, the median's coefficient of variation is ~16% at
-#     n=48 and ~10% at n=128, which is the residual noise floor under every
-#     number this file reports.
+# Re-derive with `scripts/measure_qsp_variance.py --n 200`. Measured 2026-09-20
+# at this horizon: untreated damage has median 2.14 against a MEAN of 74.9, SD
+# 612, range 0.089 to 8118 -- a ~90,000-fold spread. The top decile of runs
+# holds 96% of all damage. The standard error at n=4 is four times the mean.
+#
+# Two changes follow:
+#   * the statistic is the MEDIAN of per-seed ratios. mean/median is 35x here,
+#     so the mean is not an estimate of anything stable.
+#   * 128 seeds. Bootstrapped CV of the median: 628% at n=4, 41.8% at n=16,
+#     21.2% at n=48, 13.7% at n=128. THAT ~14% IS THE NOISE FLOOR under every
+#     number this file reports; a smaller difference between two arms is not a
+#     result.
+#
+# Note what pairing does NOT buy. Seeds are shared between the treated and
+# untreated arms, and the intuition is that this cancels the infection history.
+# Measured, it narrows the ratio's IQR by only about 1.1x. Pairing is kept
+# because it is free and cannot hurt, but it is not what makes the comparison
+# valid -- the cohort size is.
 SEEDS = tuple(range(128))
 
 # Two years, not the model's five-year FINAL TIME. The trials this is scored

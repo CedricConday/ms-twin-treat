@@ -44,13 +44,22 @@ and both say so in their own output rather than in a footnote.
 
 ## Cohort size is not a taste decision
 
-The QSP model's untreated damage is heavily right-tailed — over 40 five-year
-runs, mean 22.7, SD 49.9, range 0.94 to 251. At n=4 the standard error exceeds
-the mean, and an early version of `lomo.py` reported a headline made entirely of
-its own noise. Anything comparing arms on a handful of runs is wrong by
-construction. `lomo.py` uses the **median of paired per-seed ratios over 128
-seeds**, where the bootstrapped noise floor is about 10%. Read that floor as the
-resolution limit on every number this directory produces.
+The QSP model's untreated damage is extraordinarily right-tailed. Measured over
+200 runs at a 730-day horizon (`scripts/measure_qsp_variance.py --n 200`):
+median 2.14, **mean 74.9**, SD 612, range 0.089 to 8118 — a ~90,000-fold spread,
+with the top decile of runs holding 96% of all damage. The standard error at n=4
+is four times the mean, and an early version of `lomo.py` reported a headline
+made entirely of that noise.
+
+So `lomo.py` uses the **median over 128 seeds**. Bootstrapped CV of the median:
+628% at n=4, 41.8% at n=16, 21.2% at n=48, **13.7% at n=128**. Read that ~14% as
+the resolution limit on every number this directory produces — a smaller
+difference between two arms is not a result.
+
+One intuition that did NOT survive measurement: sharing a seed between the
+treated and untreated arms looks like it should cancel the infection history,
+but it narrows the ratio's IQR by only ~1.1x. Pairing is kept because it is free.
+It is not what makes the comparison valid; the cohort size is.
 
 `results/mechanism_curve.json` and `results/response_curve.json` are the cached
 response tables. Both are committed so these tests are reproducible without a

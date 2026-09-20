@@ -534,10 +534,12 @@ which is why it was never the thing to fix.
 Building the LOMO response table surfaced something that invalidates any
 small-cohort result on the ported QSP, including the first version of that table.
 
-Untreated damage over 40 five-year runs: **mean 22.7, SD 49.9, range 0.94 to
-251** — a 266-fold spread across stochastic infection histories, with the
-standard error at n=4 LARGER than the mean. The distribution is heavily
-right-tailed: at two years the median is 1.43 against a mean of 17.1.
+Re-derive with `scripts/measure_qsp_variance.py --n 200`. Measured 2026-09-20 at
+a 730-day horizon: **median 2.14, mean 74.9, SD 612, range 0.089 to 8118** — a
+~90,000-fold spread across stochastic infection histories, with the top decile
+of runs holding 96% of all damage and the standard error at n=4 four times the
+mean. (An earlier 40-run sample suggested "266-fold"; it undersampled the tail.
+Quote the script, not that.)
 
 The first LOMO table used 4 seeds and a mean. It produced a confident headline
 made entirely of its own noise, and it also produced two "findings" that did not
@@ -547,8 +549,14 @@ quote them.
 
 What this forces:
 - the statistic is the **median of paired per-seed ratios**, never the mean;
-- the cohort is **128 seeds**, where the bootstrapped median has ~10% CV (~16%
-  at n=48). That 10% is the noise floor under every number from this model;
+- the cohort is **128 seeds**. Bootstrapped CV of the median: 628% at n=4,
+  41.8% at n=16, 21.2% at n=48, **13.7% at n=128**. That ~14% is the noise floor
+  under every number from this model;
+- **pairing does not rescue a small cohort.** Sharing a seed between the treated
+  and untreated arms looks like it should cancel the infection history; measured,
+  it narrows the ratio's IQR by ~1.1x. Three docstrings claimed otherwise before
+  it was measured. Kept because it is free, but the cohort size is what makes a
+  comparison valid;
 - the horizon is **730 days**, matching the trials rather than the model's
   five-year default, and ~10x cheaper per run.
 

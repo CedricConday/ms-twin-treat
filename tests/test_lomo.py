@@ -107,18 +107,23 @@ def test_untouched_dials_stay_untouched_at_every_potency():
 # --------------------------------------------------------------------------- #
 
 def test_cohort_is_large_enough_for_the_models_variance():
-    """128 paired seeds. See the SEEDS comment in backtest/lomo.py.
+    """128 seeds. See the SEEDS comment in backtest/lomo.py.
 
-    Untreated damage over 40 five-year runs: mean 22.7, SD 49.9, range
-    0.94-251. At n=4 the standard error exceeds the mean, and the first version
-    of this file reported a headline made entirely of that noise.
+    Re-derive with scripts/measure_qsp_variance.py. At a 730-day horizon over
+    200 runs: median 2.14, mean 74.9, SD 612, range 0.089-8118. The bootstrapped
+    CV of the median is 628% at n=4 and 13.7% at n=128. The first version of
+    this file used 4 seeds and reported a headline made entirely of that noise.
     """
     assert len(lomo.SEEDS) >= 100
     assert len(set(lomo.SEEDS)) == len(lomo.SEEDS), "seeds must be distinct"
 
 
 def test_the_statistic_is_a_median():
-    """The damage distribution is heavily right-tailed; the mean is not usable."""
+    """Right-tailed to the point that the mean is not an estimate of anything.
+
+    Measured: mean/median = 35x, and the top decile of runs holds 96% of all
+    damage.
+    """
     skewed = [1.0, 1.1, 0.9, 1.0, 500.0]
     assert lomo._median_ratio(skewed) == 1.0
     assert lomo._median_ratio(skewed) != np.mean(skewed)

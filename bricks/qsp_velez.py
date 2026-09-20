@@ -320,9 +320,14 @@ def simulate(
     defines. `"mdl_literal"` uses `E^n/a`, the authors' Vensim equation as
     written. See DISCREPANCIES 3.
 
-    `seed` controls the stochastic immune events only. Two arms compared on the
-    same seed see the SAME infection history, which is what makes an arm-vs-arm
-    damage ratio mean anything.
+    `seed` controls the stochastic immune events only. Two arms run on the same
+    seed see the same infection history. That sounds like it should be what
+    makes an arm-vs-arm ratio meaningful, and it is NOT: measured, pairing
+    narrows the ratio's IQR by only ~1.1x
+    (`scripts/measure_qsp_variance.py`). What makes a comparison valid here is
+    cohort size -- this model's damage spans ~90,000-fold across histories, so
+    anything comparing arms on a handful of runs is wrong by construction. See
+    the SEEDS comment in backtest/lomo.py.
 
     `regime_ceiling_mult` guards the model's one structural weakness. There is
     no carrying capacity on E — the *only* thing bounding the effector
