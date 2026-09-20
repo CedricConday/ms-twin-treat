@@ -90,6 +90,37 @@ ODC carries five discrete myelination levels with an irreversible floor, so the
 damage readout is a level count, not a continuous scalar — which is a **better**
 fit for a lesion-count readout than the port currently in use.
 
+## The bound that should be read before the expectations
+
+Added 2026-09-20, after the parallel session measured a third failure mode and
+`scripts/dial_ceiling.py` bounded the representation itself.
+
+A drug in this repo is a set of multipliers on named dials, so **every arm
+sharing a dial pattern gets the same prediction**. Real outcomes inside a dial
+group are not the same:
+
+    alpha_E   IFN-beta -30.0%, teriflunomide -31.5%, dimethyl fumarate -53.0%   spread 23.0pp
+    gamma_E   natalizumab -68.0%, fingolimod -55.0%, alemtuzumab -55.0%,
+              ponesimod -30.5%, cladribine -57.6%                               spread 37.5pp
+    ke        ocrelizumab -46.0%, ofatumumab -50.0%                             spread  4.0pp
+
+Predict each group its own mean — in-sample, cheating, no simulation and no
+fitting error — and **6.6pp of MAE remains against a 10.6pp null**. So:
+
+- the representation is **not incapable**: a perfect dial-level model beats the
+  null. That is worth stating, because the obvious reading of the three failure
+  modes is that it cannot, and that reading is wrong;
+- but the **entire headroom is 4.0pp**, on 12 arms, before any simulation or
+  fitting error is charged against it. The measured LOMO is 45.9pp, i.e. ~39pp
+  from its own ceiling.
+
+**What that means for this port specifically.** A richer model does not need to
+be better, it needs to land within a few percentage points of perfect to clear
+a predict-the-mean null on this arm set. Pernice's extra compartments address
+reachability — one of the three failures — and buy nothing against the other
+two. Budget accordingly, and consider whether growing the arm set is the
+cheaper lever, since the headroom is a property of the arms, not of the model.
+
 ## Honest expectations, stated before anyone starts
 
 1. **A bigger model is not evidence it will score better.** The last time this
