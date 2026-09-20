@@ -1,0 +1,1149 @@
+{
+  "implausibility": {
+    "n": 31,
+    "min_pct": -99.22832015250326,
+    "max_pct": -15.134501076745144,
+    "beating_best_real_arm": 20,
+    "beyond_90pct": 15,
+    "best_real_arm_pct": -68.0
+  },
+  "generated": "2026-09-20",
+  "carrying_capacity": 2000.0,
+  "n_candidates": 98,
+  "max_points": 2,
+  "enumerated_potency": 0.5,
+  "intervention_points": [
+    "alpha_E",
+    "gamma_E",
+    "alpha_R",
+    "gamma_R",
+    "delta",
+    "naive_E",
+    "ke"
+  ],
+  "screen_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "reachability_probes": [
+    0.2,
+    0.5,
+    0.8
+  ],
+  "noise_floor": 0.14,
+  "counts": {
+    "UNREACHABLE": 60,
+    "DEGENERATE": 7,
+    "SURVIVED": 31
+  },
+  "survivors": [
+    {
+      "label": "alpha_E+,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.01907109566548817,
+      "best_damage": 0.001832824058020372,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.019376504823533668,
+      "best_damage": 0.008840616863345455,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.048640959273958895,
+      "best_damage": 0.03896753943083968,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,gamma_E+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.04944622066283131,
+      "best_damage": 0.03913806998960234,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.015141577735285617,
+      "best_damage": 0.0013777729092900623,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.02017182571652871,
+      "best_damage": 0.00519213975149839,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,naive_E-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.05110231225497688,
+      "best_damage": 0.04249213520276583,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.014065528363611073,
+      "best_damage": 0.001455590346735329,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.010710037306745954,
+      "best_damage": 0.002185782481412815,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,naive_E+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.03721978974216979,
+      "best_damage": 0.032510050365224426,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,naive_E-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.03758129491686096,
+      "best_damage": 0.03239598206557252,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.029276943171568932,
+      "best_damage": 0.0025073771978060154,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.02045277244678609,
+      "best_damage": 0.0080916430216556,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.050948133173500866,
+      "best_damage": 0.04588590439208334,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.01659047570905,
+      "best_damage": 0.0032719402219399223,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,alpha_R+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.03742346791845563,
+      "best_damage": 0.031230943532269583,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.04910654862526586,
+      "best_damage": 0.04216886347225586,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.014470828278990894,
+      "best_damage": 0.0006814373775103797,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.019316853536870206,
+      "best_damage": 0.005483486717261343,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,alpha_R+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.03932421370350315,
+      "best_damage": 0.03932421370350315,
+      "best_potency": null,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.02490283288276436,
+      "best_damage": 0.022531531373772097,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.024403852985979094,
+      "best_damage": 0.02369079535283058,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.017937303154220322,
+      "best_damage": 0.0016101716535732837,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,delta+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.018061346363055585,
+      "best_damage": 0.001637675586752378,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.01762960090109169,
+      "best_damage": 0.0014999736636470092,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,ke+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.034019546623169444,
+      "best_damage": 0.002307316873078923,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.0061078625010233,
+      "best_damage": 0.0013343175853755113,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,naive_E+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.019828910657767127,
+      "best_damage": 0.0040190217015721895,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,naive_E-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.01604276207570465,
+      "best_damage": 0.0004172393746904612,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.020727508219671936,
+      "best_damage": 0.0066443588418313515,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.0187534358069206,
+      "best_damage": 0.006066060800664446,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    }
+  ],
+  "killed": [
+    {
+      "label": "alpha_E+,alpha_R+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as lenercept",
+      "median_damage": 0.03838378767747231,
+      "best_damage": 0.0337379550253715,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": [
+        "lenercept"
+      ]
+    },
+    {
+      "label": "alpha_E-,alpha_R+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as lenercept",
+      "median_damage": 0.035107757558621125,
+      "best_damage": 0.02839676790574538,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": [
+        "lenercept"
+      ]
+    },
+    {
+      "label": "alpha_R+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as daclizumab",
+      "median_damage": 0.03766769757923037,
+      "best_damage": 0.03232080467984068,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": [
+        "daclizumab"
+      ]
+    },
+    {
+      "label": "alpha_R+,delta+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as glatiramer acetate",
+      "median_damage": 0.03819725238117473,
+      "best_damage": 0.03285047224533391,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": [
+        "glatiramer acetate"
+      ]
+    },
+    {
+      "label": "alpha_R+,delta-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as glatiramer acetate",
+      "median_damage": 0.03603482272622707,
+      "best_damage": 0.030387439797415067,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": [
+        "glatiramer acetate"
+      ]
+    },
+    {
+      "label": "delta-,naive_E-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as IFN-gamma",
+      "median_damage": 0.05076690945293734,
+      "best_damage": 0.04484395481823106,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": [
+        "IFN-gamma"
+      ]
+    },
+    {
+      "label": "ke-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as ofatumumab",
+      "median_damage": 0.019584182013254063,
+      "best_damage": 0.00826127014199073,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": [
+        "ofatumumab"
+      ]
+    },
+    {
+      "label": "alpha_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0552 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.055932255365391,
+      "best_damage": 0.05515030489476416,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,alpha_R-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0697 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11959624711369139,
+      "best_damage": 0.06969517618931512,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0556 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05692164697942226,
+      "best_damage": 0.05561812655152815,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,delta-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0485 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05297888273823567,
+      "best_damage": 0.048467249283643016,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,gamma_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0549 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05521377455655395,
+      "best_damage": 0.054931359171635344,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,gamma_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0548 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05977973444992071,
+      "best_damage": 0.05480277593520052,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,gamma_R+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0744 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11486394631848075,
+      "best_damage": 0.07440842257388813,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0723 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.10252470059081695,
+      "best_damage": 0.0722712385240036,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0550 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05591087558727072,
+      "best_damage": 0.05501743199348307,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0553 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05632436789069574,
+      "best_damage": 0.055345924962370036,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0471 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.050971681319169806,
+      "best_damage": 0.04713826688432232,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,alpha_R-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0677 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.10218604733208025,
+      "best_damage": 0.06769899973467046,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0476 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.051553960807692464,
+      "best_damage": 0.04761449650409789,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,gamma_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0530 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.058288655643439186,
+      "best_damage": 0.05301429329206052,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,gamma_R+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0720 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.10345250919099908,
+      "best_damage": 0.07197694647444411,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0693 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.092741033382214,
+      "best_damage": 0.06932901212070386,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0499 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.051752863506728,
+      "best_damage": 0.04989522692633564,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,gamma_R+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0589 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.06403315921337002,
+      "best_damage": 0.05894036628670244,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0613 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.07562205403205624,
+      "best_damage": 0.061340306965701405,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0687 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.1131442371185653,
+      "best_damage": 0.06871902222179657,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0691 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11386766093444237,
+      "best_damage": 0.06913615078453648,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,delta-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0681 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11116373517167696,
+      "best_damage": 0.06805710768606721,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,gamma_R+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0964 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.1865816355915206,
+      "best_damage": 0.09640395381172995,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0872 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.14180112395358435,
+      "best_damage": 0.08723337477596212,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,ke-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0527 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.0811176785093534,
+      "best_damage": 0.0526563210185086,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0691 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11517539242577912,
+      "best_damage": 0.06906824064767492,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0685 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11154521461284889,
+      "best_damage": 0.06846225268889561,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0545 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05492846316577532,
+      "best_damage": 0.05452511261010072,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta+,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0715 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.0997471889310006,
+      "best_damage": 0.07151502398754919,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta+,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0544 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05480139834133485,
+      "best_damage": 0.05442803770579056,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta+,naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0547 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.055210983992594005,
+      "best_damage": 0.05469081528613101,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta-,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0702 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.09666508173868804,
+      "best_damage": 0.07023461071673363,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "delta-,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0473 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05121141466017547,
+      "best_damage": 0.04728099634295903,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0522 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05305303557205164,
+      "best_damage": 0.052158210963322724,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,alpha_R-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0677 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.10626800136043985,
+      "best_damage": 0.06771193156387564,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0537 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05419608454519964,
+      "best_damage": 0.05370908095365778,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,gamma_R+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0728 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.10686120022719228,
+      "best_damage": 0.07279619695579538,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0698 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.09391709067677587,
+      "best_damage": 0.06981553978911031,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0528 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.0534404862998972,
+      "best_damage": 0.05283547145960521,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0515 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05269095267056743,
+      "best_damage": 0.05151346779405437,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0539 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.059064032441255014,
+      "best_damage": 0.05392373715708303,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,alpha_R-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0709 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.1251663571872791,
+      "best_damage": 0.0709255841028128,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0543 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.059614042775411366,
+      "best_damage": 0.05426247677868296,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,delta-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0533 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.056834415143998465,
+      "best_damage": 0.0533401175092363,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,gamma_R+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0734 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.1186344137624555,
+      "best_damage": 0.07342706482552865,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0718 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.1077897516518719,
+      "best_damage": 0.0717959294064556,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0542 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.0623180137397536,
+      "best_damage": 0.05420526581123197,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0538 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.05666212152714081,
+      "best_damage": 0.05381415836580161,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0734 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11069920549522805,
+      "best_damage": 0.07338460079803238,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0740 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11178969888717873,
+      "best_damage": 0.0739599211864919,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,delta-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0724 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.10737998375434635,
+      "best_damage": 0.07241087746955482,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0923 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.1542660024277146,
+      "best_damage": 0.09232183125607783,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,ke-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0553 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.06355855881067418,
+      "best_damage": 0.05529408391632382,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0736 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.11216321010615811,
+      "best_damage": 0.07357170516432678,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0732 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.10948622287371693,
+      "best_damage": 0.07321277103619225,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0710 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.09889332650770982,
+      "best_damage": 0.07102698737657787,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0540 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.054068958348825635,
+      "best_damage": 0.05399817219464307,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E+,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0712 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.09996250376539789,
+      "best_damage": 0.07124351730695283,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0541 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.054258374290443404,
+      "best_damage": 0.054063563078901866,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E-,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 0.0707 vs untreated 0.0541 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 0.0978565909092656,
+      "best_damage": 0.07074471621971334,
+      "best_potency": 0.2,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": []
+    }
+  ],
+  "ordering": "survivors alphabetical by label; NOT by predicted benefit",
+  "caveats": [
+    "Nothing here is evidence about multiple sclerosis. validated=False throughout.",
+    "Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.9pp vs 12.3pp).",
+    "The model is blind to the depleting / sequestering / trafficking class \u2014 natalizumab, fingolimod, ponesimod, alemtuzumab and atacicept cannot come out beneficial in it at any potency (BUILD_PLAN \u00a78.4). A candidate whose novelty is in trafficking is invisible to this screen.",
+    "A surviving candidate has only avoided the failures this model can see."
+  ],
+  "validated": false
+}

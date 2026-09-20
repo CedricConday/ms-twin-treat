@@ -1280,3 +1280,50 @@ night that has one.
 **Not started tonight, and not to be started casually:** 26 ODEs with 20
 parameters that were calibrated on 16 subjects' cytokine counts, against this
 repo's 4 states and 6 dials. Scope it before committing to it.
+
+#### THE SCREEN UNDER THE CAPACITY EXTENSION — THE VERDICTS ARE NOT STABLE (2026-09-20)
+
+The capacity extension bought the ranking gate nothing (45.6pp against 45.9pp,
+above). But a third of the candidate space was dying on OUT_OF_REGIME, which is
+the model admitting failure rather than judging a candidate, and stopping
+divergence is exactly what a binding capacity does. So the screen was re-run
+under it. `results/screen_K2000.json`, `docs/SCREEN_RESULTS_K2000.md`, written
+to separate files because it is a different model.
+
+| verdict | transcription | K = 2000 |
+|---|---|---|
+| OUT_OF_REGIME | 32 | **0** |
+| UNREACHABLE | 17 | **60** |
+| DEGENERATE | 11 | 7 |
+| SURVIVED | 38 | **31** |
+
+**Every one of the 32 divergent candidates became UNREACHABLE. Not one of them
+became a survivor.** That is worth having: "the model ran away" is an admission,
+"no potency on this dial helps" is a verdict, and the extension converts the
+whole of the former into the latter without turning up a single hidden
+candidate. It also makes the survivor list less silly — the count claiming a
+bigger effect than natalizumab drops from 32 of 38 to 20 of 31.
+
+**And here is the finding, which is about the screen and not about the capacity.**
+
+    survivors agreeing across the two models:   29 of 40
+    survivors only under the transcription:      9
+    survivors only under K = 2000:               2
+
+**Two models that the gate cannot tell apart — 45.9pp versus 45.6pp, inside the
+noise floor — disagree about 11 of 40 candidates, roughly 28%.** Nine patterns
+that survive the published model are killed by the extension, including five of
+the `gamma_E-` pairs, and two that the published model never scored at all now
+survive.
+
+So the survivor list is not a stable object. It carries model-selection
+uncertainty that **no measurement in this repo constrains**, because the one
+measurement that could discriminate the two models scores them as equal. A
+candidate's survival is contingent on a modelling choice made for numerical
+reasons, and anyone quoting the survivor list must quote which model produced
+it. Both files ship, neither replaces the other, and `screen/report.py`
+banners the extension run so the two cannot be confused.
+
+The honest summary of the screen as a whole, after tonight: it kills reliably
+(60 of 98 under either model, for reasons that are properties of the model),
+it does not rank, and its remainder moves when the model does.
