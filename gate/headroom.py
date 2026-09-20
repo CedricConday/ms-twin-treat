@@ -56,6 +56,73 @@ from backtest.lomo import _predicted, load, mechanism_groups
 from gate.ceiling import run_ceiling
 
 
+def dial_ceiling() -> dict:
+    """How much is there to win at all? Bound the ARM SET, not the model.
+
+    Origin: `scripts/dial_ceiling.py` in the master checkout, which asks what a
+    PERFECT dial-level model could score -- predict every arm with the mean of
+    its own dial group, in sample, with no fitting and no simulation. Reproduced
+    here independently because the number is about to be quoted in a plan.
+
+    Three variants, because the in-sample one flatters itself in a way worth
+    naming:
+
+    in_sample          every arm predicted by its own group's mean. Two of the
+                       five groups have a single member (glatiramer, daclizumab),
+                       so those arms are fitted EXACTLY by construction and
+                       contribute zero error. Same objection that applies to a
+                       single-arm fold anywhere else in this repo.
+
+    multi_only         singleton groups dropped. The remaining ten arms are the
+                       ones where a dial-level predictor has anything to do.
+
+    out_of_sample      each arm predicted by the mean of the OTHER arms in its
+                       group -- which is what a model actually has to do, and
+                       how every other scorer in this repo is graded.
+
+    The last one is the honest bound on the exam, and it is the reason this
+    function exists: if a perfect dial-level model barely clears the null out of
+    sample, then the arm set, not the model, is what limits how much any
+    replacement could win by.
+    """
+    known = {o.arm: o.relapse_change_pct for o in KNOWN_OUTCOMES
+             if o.relapse_change_pct is not None and o.arm != "untreated"}
+    groups = mechanism_groups()
+    grand = float(np.mean(list(known.values())))
+    multi = {k: v for k, v in groups.items() if len(v) > 1}
+    singletons = sorted(v[0] for v in groups.values() if len(v) == 1)
+
+    def _pack(errs, nulls):
+        return {"mae": float(np.mean(errs)), "null_mae": float(np.mean(nulls)),
+                "headroom": float(np.mean(nulls) - np.mean(errs)), "n": len(errs)}
+
+    ins_e, ins_n = [], []
+    for arms in groups.values():
+        mu = float(np.mean([known[a] for a in arms]))
+        for a in arms:
+            ins_e.append(abs(known[a] - mu))
+            ins_n.append(abs(known[a] - grand))
+
+    multi_e, multi_n, oos_e, oos_n = [], [], [], []
+    for arms in multi.values():
+        mu = float(np.mean([known[a] for a in arms]))
+        for a in arms:
+            multi_e.append(abs(known[a] - mu))
+            multi_n.append(abs(known[a] - grand))
+            others = [known[o] for o in arms if o != a]
+            oos_e.append(abs(known[a] - float(np.mean(others))))
+            rest = [v for k, v in known.items() if k != a]
+            oos_n.append(abs(known[a] - float(np.mean(rest))))
+
+    return {
+        "in_sample": _pack(ins_e, ins_n),
+        "multi_only": _pack(multi_e, multi_n),
+        "out_of_sample": _pack(oos_e, oos_n),
+        "singletons": singletons,
+        "groups": {"|".join(k): v for k, v in groups.items()},
+    }
+
+
 def _shared_potency(training: list[str], known: dict[str, float], table: dict) -> float:
     """The one potency that best explains every training arm (least squares).
 
@@ -187,6 +254,29 @@ def main() -> int:
         print("  would express it is not recoverable from the independent channel.")
         print("  Both routes out of this are therefore measured shut, which is a stronger")
         print("  statement than either measurement alone.")
+    d = dial_ceiling()
+    print("\n\nHOW MUCH IS THERE TO WIN AT ALL? — bounding the ARM SET, not the model\n")
+    print("  A PERFECT dial-level model: predict every arm by its own dial group's")
+    print("  outcome. No fitting, no simulation, nothing to get wrong.\n")
+    for label, key in (("in sample (all 12 arms)", "in_sample"),
+                       ("singleton groups dropped", "multi_only"),
+                       ("out of sample, within group", "out_of_sample")):
+        v = d[key]
+        print(f"    {label:<30} {v['mae']:>5.1f}pp vs null {v['null_mae']:>5.1f}pp   "
+              f"headroom {v['headroom']:>4.1f}pp   n={v['n']}")
+    print(f"\n  {' and '.join(d['singletons'])} are alone on their dials, so the first")
+    print("  row fits them exactly by construction. The last row is the honest one: it")
+    print("  is how every other scorer here is graded.")
+    print(f"\n  So the entire prize is {d['out_of_sample']['headroom']:.1f}pp, out of sample, "
+          "before anything is")
+    print("  charged for simulation or fitting. A replacement model does not need to be")
+    print("  better than this one — it needs to land within a percentage point or two of")
+    print("  PERFECT to clear a predict-the-mean null on this arm set.")
+    print("\n  That is a property of the ARMS, not of the model. 12 quantified arms in 3")
+    print("  multi-member dial groups is a thin exam, and widening it is far cheaper than")
+    print("  any model port. It is the single change that would most increase what a good")
+    print("  model could demonstrate here.")
+
     print("\n  Trial numbers are real and cited (docs/TRIAL_ANCHORS.md). Simulation")
     print("  numbers are proxies from a ported toy model. Nothing here is evidence")
     print("  about multiple sclerosis.")

@@ -82,6 +82,39 @@ and transit blockade are one lumped dial (`bricks/profiles.py` documents this
 and names the only way the lump has ever broken: someone measured what the drug
 does to a parameter the model already has).
 
+## What would change the verdict — and how little is on offer
+
+Before budgeting a model port, it is worth knowing how much there is to win.
+Predict every arm by the mean of its own dial group. That is a *perfect*
+dial-level model: no fitting, no simulation, nothing to get wrong.
+
+| scoring | MAE | null | headroom |
+|---|---|---|---|
+| in sample, all 12 arms | 6.6pp | 10.6pp | 4.0pp |
+| singleton groups dropped | 7.9pp | 10.9pp | 3.0pp |
+| **out of sample, within group** | **10.9pp** | **11.9pp** | **1.0pp** |
+
+Glatiramer and daclizumab are alone on their dials, so the first row fits them
+exactly by construction. The last row is how every other scorer in this repo is
+graded, and it is the honest bound.
+
+**The entire prize is 1.0pp**, before anything is charged for simulation or
+fitting. A replacement model does not need to be *better* than this one — it
+needs to land within a percentage point or two of perfect to clear a
+predict-the-mean null here. The measured mechanism-holdout error is 45.9pp, so
+the model sits about 39pp from a ceiling that is itself almost level with the
+floor.
+
+That is a property of the **arms**, not of the model. Twelve quantified arms in
+three multi-member dial groups is a thin exam. Widening it — more arms, and
+especially more arms *per dial* — is far cheaper than any model port and is the
+single change that would most increase what a good model could demonstrate. It
+would also be the first thing to do before concluding that any future model has
+failed.
+
+(The dial-level bound originates in `scripts/dial_ceiling.py`; the out-of-sample
+variant and the singleton caveat are `gate/headroom.py`'s.)
+
 ## What can honestly be said to a third party today
 
 - The harness runs end to end, is tested, and is reproducible from open data.
