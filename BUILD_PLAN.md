@@ -450,3 +450,32 @@ worsening (PMC12488035). **Do not start the MSOAC application.**
 - **wiring**: `qsp_traj` is written but nothing consumes it. The clinical gate
   runs through `abm_damage`, so the port does not move the gate on its own.
   Readout must start reading `qsp_damage` for any of this to reach the score.
+
+#### Limit of the ported model, found 2026-09-20 before mapping the arms
+
+**Vélez de Mendizábal has no CNS compartment and no trafficking.** Checked
+against the full text: zero occurrences of "trafficking", one incidental
+"blood-brain" (a reference title), and "migration" appears only inside the
+parameter names `gamma_E` / `gamma_R` ("Teff death, anergy and migration
+Rate"). Loss from the active pool is a single lumped term; there is no
+lymph-node compartment, no periphery/CNS transition, and tissue damage is an
+output variable with no feedback on the T-cell dynamics.
+
+Consequence for the arm set, and it is not small: **depletion, sequestration
+and transit blockade all collapse onto `gamma_E`.** Alemtuzumab (anti-CD52
+lymphocyte depletion), ocrelizumab (anti-CD20 B-cell depletion), fingolimod and
+ponesimod (S1P modulators, egress block from lymph nodes) and natalizumab
+(anti-alpha4-integrin, BBB transit block) are mechanistically distinct drugs
+that this model cannot tell apart. Mapping them all to `gamma_E` is defensible
+— each removes effectors from the pool that does damage — but it is a LUMP, and
+it must be recorded as one on each arm rather than discovered later.
+
+Two things follow:
+- The mapping can proceed. Flag the lumped arms explicitly; do not pretend the
+  model distinguishes them.
+- **It caps the screen.** A candidate whose novelty is purely in trafficking is
+  invisible here. If that is the design space worth searching, the successor
+  model — Martinez-Pasamar et al. 2013, *BMC Syst Biol* 7:34, PMC3651362, which
+  adds antigen-specific subpopulations and microglia — is the next port, and
+  that decision should be made before the screen is built, not after it returns
+  candidates it cannot rank.
