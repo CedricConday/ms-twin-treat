@@ -104,22 +104,41 @@ group are not the same:
               ponesimod -30.5%, cladribine -57.6%                               spread 37.5pp
     ke        ocrelizumab -46.0%, ofatumumab -50.0%                             spread  4.0pp
 
-Predict each group its own mean — in-sample, cheating, no simulation and no
-fitting error — and **6.6pp of MAE remains against a 10.6pp null**. So:
+Predict each arm from its own dial group and see what error survives
+(`scripts/dial_ceiling.py`, no simulation). **Which variant you use changes the
+answer by a factor of five, so all three ship:**
 
-- the representation is **not incapable**: a perfect dial-level model beats the
-  null. That is worth stating, because the obvious reading of the three failure
-  modes is that it cannot, and that reading is wrong;
-- but the **entire headroom is 4.0pp**, on 12 arms, before any simulation or
-  fitting error is charged against it. The measured LOMO is 45.9pp, i.e. ~39pp
-  from its own ceiling.
+| variant | MAE | null | headroom |
+|---|---|---|---|
+| in sample, all 12 arms | 6.6pp | 10.6pp | 4.0pp |
+| singleton groups dropped (glatiramer and daclizumab are alone on their dials and fitted exactly for free) | 7.9pp | 10.5pp | 2.6pp |
+| **out of sample, within group** — predict each arm from the OTHER arms in its group, which is what a model must do | **10.9pp** | **11.7pp** | **0.8pp** |
+
+The last row is the one that counts, and it is scored the way every other
+scorer in this repo is scored, null included. So:
+
+- the representation is **not incapable**: a perfect dial-level model still
+  beats the null. That is worth stating, because the obvious reading of the
+  three failure modes is that it cannot, and that reading is wrong;
+- but the prize is **0.8pp**, before any simulation or fitting error is charged
+  against it. The measured LOMO is 45.9pp.
+
+The in-sample 4.0pp was this repo's first estimate and it flattered the
+representation twice over — by fitting each group's mean including the arm
+being predicted, and by carrying two arms that are alone on their dials. The
+parallel session caught both; it reproduced the model side exactly and the two
+runs differed only on the null protocol, which is now stated in the script (an
+out-of-sample model must be compared against an out-of-sample null, or it is
+charged for information the null gets free).
 
 **What that means for this port specifically.** A richer model does not need to
-be better, it needs to land within a few percentage points of perfect to clear
-a predict-the-mean null on this arm set. Pernice's extra compartments address
+be better, it needs to land within about **one percentage point of perfect** to
+clear a predict-the-mean null on this arm set. Pernice's extra compartments address
 reachability — one of the three failures — and buy nothing against the other
 two. Budget accordingly, and consider whether growing the arm set is the
 cheaper lever, since the headroom is a property of the arms, not of the model.
+Specifically **more arms per dial** — that is what the out-of-sample variant is
+starved of, with ten arms across three multi-member groups.
 
 ## Honest expectations, stated before anyone starts
 

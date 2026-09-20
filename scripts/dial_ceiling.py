@@ -2,19 +2,30 @@
 
 A drug here is a set of multipliers on the Vélez model's named dials
 (`bricks/profiles.py`), and every arm sharing a dial pattern gets the same
-prediction at a given potency. So there is a hard ceiling on the whole approach,
-and it can be computed from the trial numbers alone:
+prediction at a given potency. So there is a ceiling on the whole approach, and
+it can be computed from the trial numbers alone — predict each arm from its own
+dial group and see what error survives.
 
-    predict each mechanism group its OWN MEAN — in-sample, cheating, no
-    simulation, no fitting error — and measure the MAE that remains.
+THREE VARIANTS, BECAUSE THE FIRST ONE FLATTERS
+-----------------------------------------------
+The obvious version fits each group its own mean INCLUDING the arm being
+predicted, and two arms (glatiramer, daclizumab) are alone on their dials, so
+they are reproduced exactly by construction and contribute zero error. Both
+effects make the ceiling look better than any model could achieve:
 
-No model of this shape can beat that, because the residual is exactly the
-spread of real outcomes WITHIN a dial group, which the representation has no
-way to express. Compare it against the predict-the-mean null on the same arms.
+  1. in sample, all arms          every group predicts its own mean
+  2. singleton groups dropped     removes the two arms fitted exactly for free
+  3. out of sample, within group  predict each arm from the OTHER arms in its
+                                  group — what a model actually has to do
 
-This exists because "the blocker is the model form" and "the blocker is the
-potency source" were both argued tonight without anyone bounding the
-representation itself. Run it before budgeting a port.
+THE NULL PROTOCOL, STATED BECAUSE IT MOVED THE ANSWER
+-------------------------------------------------------
+The parallel session computed these independently and matched the model side
+exactly (7.9pp and 10.9pp) while differing on the null by 0.2-0.4pp. The cause
+is whether the null is also scored leave-one-out. It must be: comparing an
+out-of-sample model against an in-sample null charges the model for information
+the null is handed free. Both are printed so the difference stays visible
+instead of being split.
 
 Run:  PYTHONPATH=. python scripts/dial_ceiling.py
 """
@@ -27,58 +38,83 @@ from backtest.clinical import KNOWN_OUTCOMES
 from bricks.profiles import PROFILES, touched_points
 
 
-def ceiling() -> dict:
+def _groups() -> dict[tuple[str, ...], list[tuple[str, float]]]:
     known = {o.arm: o.relapse_change_pct for o in KNOWN_OUTCOMES
              if o.relapse_change_pct is not None and o.arm != "untreated"}
     groups: dict[tuple[str, ...], list[tuple[str, float]]] = {}
     for arm, pct in known.items():
         groups.setdefault(touched_points(PROFILES[arm]), []).append((arm, pct))
+    return groups
 
-    errs, rows = [], []
-    for key, members in sorted(groups.items()):
-        vals = [p for _, p in members]
-        mean = float(np.mean(vals))
-        group_errs = [abs(p - mean) for p in vals]
-        errs += group_errs
-        rows.append({
-            "dials": "|".join(key),
-            "n": len(members),
-            "arms": [a for a, _ in members],
-            "spread_pp": (max(vals) - min(vals)) if len(vals) > 1 else 0.0,
-            "in_group_mae": float(np.mean(group_errs)),
-        })
 
-    overall = float(np.mean(list(known.values())))
+def variant(keep_singletons: bool, out_of_sample: bool) -> dict:
+    """One row of the table. `out_of_sample` scores BOTH model and null that way."""
+    groups = _groups()
+    arms = [(a, p, g) for g, members in groups.items() for a, p in members
+            if keep_singletons or len(members) > 1]
+    errs, nulls_loo, nulls_in = [], [], []
+    overall = float(np.mean([p for _, p, _ in arms]))
+
+    for arm, pct, key in arms:
+        others = [q for b, q in groups[key] if b != arm]
+        if out_of_sample and not others:
+            continue
+        pred = float(np.mean(others if out_of_sample
+                             else [q for _, q in groups[key]]))
+        errs.append(abs(pred - pct))
+        rest = [q for b, q, _ in arms if b != arm]
+        nulls_loo.append(abs(float(np.mean(rest)) - pct))
+        nulls_in.append(abs(overall - pct))
+
+    null = float(np.mean(nulls_loo if out_of_sample else nulls_in))
+    mae = float(np.mean(errs))
+    return {"n": len(errs), "mae": mae, "null": null, "headroom": null - mae,
+            "null_in_sample": float(np.mean(nulls_in)),
+            "null_leave_one_out": float(np.mean(nulls_loo))}
+
+
+def dial_ceiling() -> dict:
     return {
-        "rows": rows,
-        "n_arms": len(known),
-        "dial_ceiling_pp": float(np.mean(errs)),
-        "null_pp": float(np.mean([abs(p - overall) for p in known.values()])),
+        "in_sample": variant(True, False),
+        "singletons_dropped": variant(False, False),
+        "out_of_sample": variant(False, True),
     }
 
 
 def main() -> int:
-    r = ceiling()
+    r = dial_ceiling()
     print("THE DIAL-LEVEL CEILING — the best any model of this shape can score\n")
-    print(f"{'dials':<18} {'n':>2}  {'spread':>8}  {'in-group MAE':>12}  arms")
-    print("-" * 92)
-    for row in r["rows"]:
-        print(f"{row['dials']:<18} {row['n']:>2}  {row['spread_pp']:>7.1f}pp  "
-              f"{row['in_group_mae']:>11.1f}pp  {', '.join(row['arms'])}")
-    print("-" * 92)
-    print(f"\n  ceiling (each group predicts its own mean, in-sample): "
-          f"{r['dial_ceiling_pp']:.1f}pp over {r['n_arms']} arms")
-    print(f"  predict-the-mean null, same arms, in-sample:           {r['null_pp']:.1f}pp")
-    head = r["null_pp"] - r["dial_ceiling_pp"]
-    print(f"\n  HEADROOM: {head:.1f}pp.")
-    print("  Read it carefully in both directions. The representation is NOT")
-    print("  incapable — a perfect dial-level model does beat the null in-sample.")
-    print("  But it beats it by a hair, on 12 arms, with no fitting error and no")
-    print("  simulation error included. The measured out-of-sample LOMO is 45.9pp,")
-    print("  so the model is ~39pp away from its own representation's ceiling, and")
-    print("  the ceiling itself leaves almost nothing to win by.")
-    print("\n  Consequence for any port: a richer model must not merely improve, it")
-    print("  must land inside a few pp of perfect to clear a null. Budget on that.")
+    print(f"{'variant':<30} {'MAE':>8} {'null':>8} {'headroom':>10} {'n':>4}")
+    print("-" * 64)
+    for label, key in (("in sample, all arms", "in_sample"),
+                       ("singleton groups dropped", "singletons_dropped"),
+                       ("out of sample, within group", "out_of_sample")):
+        v = r[key]
+        print(f"{label:<30} {v['mae']:>6.1f}pp {v['null']:>6.1f}pp "
+              f"{v['headroom']:>8.1f}pp {v['n']:>4}")
+    print("-" * 64)
+
+    oos = r["out_of_sample"]
+    print(f"\n  THE REAL PRIZE IS {oos['headroom']:.1f}pp.")
+    print("  Read it in both directions. The representation is NOT incapable — a")
+    print("  perfect dial-level model still beats the null. But out of sample,")
+    print(f"  scored the way every other scorer here is scored, it wins by "
+          f"{oos['headroom']:.1f}pp,")
+    print("  with no simulation or fitting error charged against it. The measured")
+    print("  LOMO is 45.9pp.")
+    print("\n  So a replacement model does not need to be better. It needs to land")
+    print(f"  within about {oos['headroom']:.0f}pp of PERFECT to clear a "
+          "predict-the-mean null here.")
+    print("\n  AND THE HEADROOM IS A PROPERTY OF THE ARMS, NOT THE MODEL. Twelve")
+    print("  quantified arms in three multi-member dial groups is a thin exam.")
+    print("  More arms PER DIAL is what the out-of-sample variant is starved of,")
+    print("  and it is far cheaper than porting a richer model.")
+    print(f"\n  Null protocol: out-of-sample rows score the null leave-one-out too "
+          f"({oos['null_leave_one_out']:.1f}pp);")
+    print(f"  the in-sample null on the same arms is {oos['null_in_sample']:.1f}pp. "
+          "Comparing an")
+    print("  out-of-sample model against an in-sample null would charge the model")
+    print("  for information the null gets free.")
     print("\n  Trial numbers are real and cited (docs/TRIAL_ANCHORS.md). Nothing here")
     print("  is evidence about multiple sclerosis.")
     return 0
