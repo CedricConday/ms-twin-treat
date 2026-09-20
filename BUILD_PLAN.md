@@ -124,6 +124,14 @@ arms being byte-identical is half of it.
 
 ## 8.1 The six blockers
 
+> **STATUS 2026-09-20 — ALL SIX ARE CLOSED OR RETIRED. Read this section as the
+> record of what they were, not as a worklist.** (1) closed c525930, (2) closed
+> 4441b0c, (3) closed f9b0c88 (LOO) + 28b3c4c (LOMO), (4) closed f5141d3 +
+> 12d4627, (5) closed 3fcfb2c, (6) **retired** — do not start the MSOAC
+> application, see §8.4. Closing them did not make the build work: what remains
+> is in "Still open" at the end of §8.4, and it is a model property, not a
+> backlog. Verified against the tree on 2026-09-20, not recalled.
+
 **Nothing here is externally blocked.** 1–5 are work. 6 has an external dependency that
 two open routes already clear. Ordered cheapest-first, not most-important-first.
 
@@ -224,7 +232,12 @@ contract. **MSOAC is the only source that can be wired into `data/`.**
 
 ## 8.2 Suggested order
 
-`(5)` → apply for MSOAC → `(3)` → `(1)` → `(2)` → `(4)`.
+> **STRUCK 2026-09-20 — every step below has been taken or retired, and the one
+> instruction in it is now WRONG: do NOT apply for MSOAC (§8.4 retires it; the
+> CLARITY and ADVANCE synthetic placebo arms on Figshare, PMC12488035, carry ARR
+> and lesion counts with zero queue). Kept for the record.**
+
+~~`(5)` → apply for MSOAC → `(3)` → `(1)` → `(2)` → `(4)`.~~
 
 (5) is half an hour and makes every later measurement trustworthy. The MSOAC application
 goes in next because it is the only step with a queue in front of it. (3) comes before
@@ -936,18 +949,29 @@ tissue-damage readout, so it cannot answer the test and is not a replacement.
 
 #### Still open
 
-- **MRI extraction for eight arms** — PRISMS, CONFIRM, AFFIRM, FREEDOMS, TEMSO,
-  DEFINE, CARE-MS I, OPTIMUM. New/enlarging T2 and Gd-enhancing counts, treated
-  arm and comparator, as reported. Needs full-text access this box does not have.
-- **a non-MRI harm channel.** EAE is ruled out empirically (above). The live
+- ~~**MRI extraction for eight arms** — PRISMS, CONFIRM, AFFIRM, FREEDOMS, TEMSO,
+  DEFINE, CARE-MS I, OPTIMUM.~~ **STRUCK 2026-09-20: `backtest/potency.py`'s
+  `PENDING_EXTRACTION` is now a one-tuple — alemtuzumab — and for a stated
+  reason (CARE-MS I reports a lesion-free PROPORTION and a volume change,
+  neither convertible to a count ratio). Eleven of twelve were in the journals.**
+- ~~**a non-MRI harm channel.** EAE is ruled out empirically (above). The live
   candidate is target expression on regulatory cells, blocked on Treg-resolved
-  expression data rather than on the idea.
+  expression data rather than on the idea.~~ **STRUCK 2026-09-20: built
+  (`bricks/harm_channel.py`, 53f640d) on Human Protein Atlas immune-cell nTPM,
+  and then BOUNDED — a pre-registered enlargement (docs/HARM_CHANNEL_PREREG.md)
+  found 8 of 9 candidate targets unscoreable by a Treg:effector-T ratio. It
+  explains daclizumab and lenercept and will not become a general filter.**
 - **The depleting class has no home at all** — not a mapping problem, a model
   property (above). Options, none of them cheap: accept the blind spot and scope
   the screen to proliferation/regulation mechanisms; or find a model whose damage
   is not peak-driven. An additive loss term has been tried and does not work.
-- **the screen** (`screen/`), a generator over the QSP's intervention points.
-  Gated on LOMO beating its null — until then it ranks noise.
+- **the screen** (`screen/`) — **half built 2026-09-20 (d7a5643).**
+  `screen/kill_filter.py` runs four filters that can only ever say "doomed", and
+  `rank_candidates()` raises rather than returning a sorted list. Still open is
+  the generate-and-report half: enumerate the intervention-point space, screen
+  it, and publish the survivors WITH their kill reasons. Ranking stays gated on
+  LOMO beating its null (live: 45.9pp vs a 12.3pp null, re-measured 2026-09-20 —
+  NOT the 71.0/14.4 recorded above, which was a four-fold table).
 - **wiring.** `qsp_traj` is written but nothing consumes it; the clinical gate
   runs through `abm_damage`. **The port does not move the gate on its own** —
   readout must read `qsp_damage` before any of this reaches the score.
