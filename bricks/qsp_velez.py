@@ -102,9 +102,33 @@ the dials the model already has.
     gamma_R              gamma_R      Treg clearance (>1 = removes regulation)
     delta                delta        antigen presentation / activation rate
     naive_E              naive influx of effectors (immunogenic agents raise it)
+    ke                   ke           the Teff level at which Treg recruitment is
+                                      half-maximal -- LOWER means effectors call in
+                                      regulation sooner. This is the one point whose
+                                      use is not just plausible but FITTED: see below.
 
 `mult=1.0` is untreated, everywhere. A pure suppressive drug is
 `{"alpha_E": 0.5}`; a depleting one is `{"gamma_E": 2.0}`.
+
+**`ke` comes from the successor paper, with a number attached.**
+Martinez-Pasamar et al. 2013 (*BMC Syst Biol* 7:34, PMC3651362) reuse these
+exact equations ("the equations of the T-cell cross-regulation model as
+described in [10]") and add no compartments and no B cells -- so there is
+nothing structural to port from it. What it does add is a sensitivity analysis
+against EAE flow-cytometry data, and one result is directly usable:
+
+    "the dynamics of the antigen-specific T-cell subpopulation after anti-CD20
+     therapy was reproduced by reducing the K_eff threshold below the healthy
+     standard (<1,000 cells; e.g. 850 cells), independently of the alpha_reg
+     parameter"
+
+    "B-cell depletion therapy may influence the autoimmune process by preventing
+     uncontrolled activation of T_eff without strengthening T_reg activation"
+
+That is a mechanism for a B-cell-depleting drug in a model with no B cells,
+fitted to mouse T-cell dynamics and not to any human relapse rate. It is why
+`ke` exists as a dial here. Note what it is NOT: a licence to route every
+B-lineage agent through `ke`. The result is specific to anti-CD20.
 
 **This is what makes harm expressible mechanistically for the first time.** The
 old two-constant scheme could only say "suppressive" or "immunogenic", so
@@ -212,7 +236,7 @@ VELEZ_T_END = 1825.0    # FINAL TIME = 1825 Day (5 years)
 # act anywhere else needs a model that represents that place — which is the
 # honest failure mode, and the reason this list is explicit and short.
 INTERVENTION_POINTS: tuple[str, ...] = (
-    "alpha_E", "gamma_E", "alpha_R", "gamma_R", "delta", "naive_E",
+    "alpha_E", "gamma_E", "alpha_R", "gamma_R", "delta", "naive_E", "ke",
 )
 
 
@@ -236,6 +260,7 @@ class MechanismProfile:
     gamma_R: float = 1.0
     delta: float = 1.0
     naive_E: float = 1.0
+    ke: float = 1.0
     source: str = ""
     meta: dict = field(default_factory=dict)
 
@@ -325,7 +350,7 @@ def simulate(
     gamma_R = p["gamma_R"] * profile.gamma_R
 
     beta, eta, h = p["beta"], p["eta"], p["h"]
-    ke, kr = p["ke"], p["kr"]
+    ke, kr = p["ke"] * profile.ke, p["kr"]
     d1, d2, r, A, n = p["d1"], p["d2"], p["r"], p["A"], p["n"]
 
     y = {**VELEZ_Y0, **(y0 or {})}

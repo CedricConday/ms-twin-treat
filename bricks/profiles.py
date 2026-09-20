@@ -16,11 +16,16 @@ WHAT IS REAL HERE AND WHAT IS STUBBED
 REAL: **which** parameters each drug touches, and in **which direction**. Every
 assignment below is sourced.
 
-STUBBED: **how much**. Every non-unit multiplier is built from one shared
-constant, `STUB_MAGNITUDE`. No drug has a potency number yet, and inventing one
-per drug is exactly the failure this repo keeps testing for. Magnitudes arrive
-from arm-level MRI lesion outcomes (BUILD_PLAN §8.4, "the MRI channel"); until
-then the sizes are placeholders and only the *pattern* is claimed.
+STUBBED: **how much** — with one exception. Every non-unit multiplier is built
+from one shared constant, `STUB_MAGNITUDE`, because inventing a number per drug
+is exactly the failure this repo keeps testing for. Magnitudes arrive from
+arm-level MRI lesion outcomes (BUILD_PLAN §8.4, "the MRI channel").
+
+The exception is `ocrelizumab.ke = 0.85`, which is FITTED — Martinez-Pasamar et
+al. 2013 reproduced post-anti-CD20 T-cell dynamics by moving K_eff from 1000 to
+~850 cells against EAE flow-cytometry data. Fitted magnitudes live in `FITTED`
+with their citation, and the test suite allows a non-stub value only for pairs
+listed there.
 
 That split is deliberate and it is diagnosable: `degeneracy_report()` separates
 arm pairs that are identical because the MODEL cannot tell them apart from ones
@@ -37,15 +42,20 @@ collapse onto the same dial**, and the model cannot distinguish:
     natalizumab   anti-alpha4-integrin, blocks BBB transit
     fingolimod    S1P modulator, blocks lymph-node egress
     ponesimod     selective S1P1 modulator, same egress block
-    ocrelizumab   anti-CD20, depletes B cells
     alemtuzumab   anti-CD52, depletes T and B lymphocytes
+    atacicept     TACI-Ig, blocks BAFF/APRIL and depletes plasma cells
 
 Each of those removes effectors from the pool that does damage, so `gamma_E` is
 a defensible home for all five — but it is a LUMP, it is marked as one on every
-affected arm, and it caps what a screen over this model can ever say. There is
-a further stretch in there: the model has **no B cells at all**, so ocrelizumab
-and atacicept are represented by their downstream effect on effector T-cell
-load rather than by their actual target.
+affected arm, and it caps what a screen over this model can ever say.
+
+**Ocrelizumab escaped that lump**, and how it escaped is the template for the
+rest. Not by a better guess about depletion, but because the successor paper
+measured what removing B cells does to T-cell dynamics and expressed it as a
+parameter this model already has (`ke`). The lump breaks where someone has done
+that experiment; it does not break by reasoning harder about the mechanism.
+Atacicept is the counter-example held deliberately: also B-lineage, no such
+measurement, so it stays lumped.
 """
 
 from __future__ import annotations
@@ -66,13 +76,23 @@ STUB_MAGNITUDE = 0.5
 SUPPRESS = 1.0 - STUB_MAGNITUDE   # 0.5 — dial turned down
 ENHANCE = 1.0 + STUB_MAGNITUDE    # 1.5 — dial turned up
 
+# Magnitudes that are NOT the stub because a source supplies the number. Keyed by
+# (arm, point) so the test that forbids hand-picked magnitudes can tell a cited
+# value from an invented one. Adding an entry here requires the citation to be in
+# the arm's `source` string.
+FITTED: dict[tuple[str, str], str] = {
+    ("ocrelizumab", "ke"): (
+        "Martinez-Pasamar et al. 2013, BMC Syst Biol 7:34 (PMC3651362): anti-CD20 "
+        "dynamics reproduced by reducing K_eff from 1000 to ~850 cells. 850/1000 = 0.85."
+    ),
+}
+
 # Arms whose real mechanism the model cannot represent, collapsed onto gamma_E.
 # Keyed by arm name so a report can name them without re-deriving the reason.
 LUMPED: dict[str, str] = {
     "natalizumab": "BBB transit block — no CNS compartment in the model",
     "fingolimod": "lymph-node egress block — no lymph-node compartment",
     "ponesimod": "lymph-node egress block — no lymph-node compartment",
-    "ocrelizumab": "B-cell depletion — the model has no B cells",
     "alemtuzumab": "pan-lymphocyte depletion — no cell-type resolution",
     "atacicept": "plasma-cell depletion — the model has no B cells",
 }
@@ -158,11 +178,19 @@ DIMETHYL_FUMARATE = _p(
 
 OCRELIZUMAB = _p(
     "ocrelizumab",
-    "Anti-CD20 monoclonal antibody; depletes B cells. LUMPED onto gamma_E, and "
-    "this is the weakest mapping in the set: the model has NO B cells, so the "
-    "drug is represented by its downstream effect on effector T-cell load rather "
-    "than by its target. Flagged rather than dressed up.",
-    gamma_E=ENHANCE,
+    "Anti-CD20 monoclonal antibody; depletes B cells. NOT lumped onto gamma_E — "
+    "this arm has a mechanism and a magnitude from the successor paper. "
+    "Martinez-Pasamar et al. 2013 (BMC Syst Biol 7:34, PMC3651362) ran a "
+    "sensitivity analysis of these same equations against EAE flow-cytometry data "
+    "and found the post-anti-CD20 T-cell dynamics were reproduced by reducing the "
+    "K_eff threshold below the healthy standard, 1000 -> ~850 cells, "
+    "'independently of the alpha_reg parameter'; their reading is that B-cell "
+    "depletion 'prevents uncontrolled activation of T_eff without strengthening "
+    "T_reg activation'. So: ke = 850/1000 = 0.85, alpha_R left at 1.0, and the "
+    "magnitude is FITTED to mouse T-cell dynamics — never to a human relapse rate. "
+    "The model still has no B cells; what it has is a sourced surrogate for what "
+    "removing them does to T-cell activation.",
+    ke=0.85,
 )
 
 ALEMTUZUMAB = _p(
@@ -195,7 +223,11 @@ LENERCEPT = _p(
 ATACICEPT = _p(
     "atacicept",
     "TACI-Ig; blocks BAFF and APRIL and depletes plasma cells. LUMPED onto "
-    "gamma_E — no B cells in the model. Deliberately NOT given a "
+    "gamma_E — no B cells in the model. **Deliberately NOT routed through `ke` "
+    "the way ocrelizumab is**, even though both are B-lineage agents: the "
+    "Martinez-Pasamar result is specific to anti-CD20 B-cell depletion, and "
+    "extending it to a BAFF/APRIL blocker would be reasoning by analogy, which "
+    "is how a sourced map turns into a fitted one. Deliberately NOT given a "
     "regulation-stripping axis: the nearest independent evidence is anti-CD20 "
     "depletion removing IL-10-producing regulatory B cells before disease onset "
     "(Matsushita, J Clin Invest 2008, PMID 18802481), a different target with a "

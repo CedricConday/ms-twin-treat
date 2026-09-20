@@ -15,6 +15,7 @@ from __future__ import annotations
 import pytest
 
 from bricks.profiles import (
+    FITTED,
     LUMPED,
     PROFILES,
     STUB_MAGNITUDE,
@@ -30,19 +31,61 @@ def test_every_arm_carries_a_source():
         assert prof.source.strip(), f"{name} has no source — mechanism claims must be cited"
 
 
-def test_every_multiplier_is_the_shared_stub():
-    """No per-drug magnitude may appear without going through `with_magnitudes`.
+def test_every_multiplier_is_the_shared_stub_or_a_cited_fit():
+    """No per-drug magnitude may appear without a citation.
 
     A hand-picked number per drug is indistinguishable from fitting, which is
-    the failure the leave-one-arm-out test exists to catch.
+    the failure the leave-one-arm-out test exists to catch. The only escape is
+    an entry in FITTED, which carries the source that supplied the number.
     """
     allowed = {1.0, 1.0 - STUB_MAGNITUDE, 1.0 + STUB_MAGNITUDE}
     for name, prof in PROFILES.items():
         for point in INTERVENTION_POINTS:
-            assert getattr(prof, point) in allowed, (
-                f"{name}.{point} is not the shared stub. Per-drug magnitudes come "
-                "from MRI-derived potency via with_magnitudes(), not from this file."
+            value = getattr(prof, point)
+            if value in allowed:
+                continue
+            assert (name, point) in FITTED, (
+                f"{name}.{point}={value} is neither the shared stub nor listed in "
+                "FITTED. Per-drug magnitudes need a source."
             )
+
+
+def test_every_fitted_magnitude_is_cited_on_its_arm():
+    """FITTED is a registry, not a bypass: the citation must be on the profile too."""
+    for (name, point), note in FITTED.items():
+        assert getattr(PROFILES[name], point) != 1.0, (
+            f"{name}.{point} is registered as fitted but does not move the dial")
+        assert note.strip()
+        assert "Martinez-Pasamar" in PROFILES[name].source or "PMC" in PROFILES[name].source
+
+
+def test_ocrelizumab_escaped_the_gamma_E_lump_via_a_measured_parameter():
+    """The one arm pulled out of the ceiling, and the only way that happens.
+
+    Martinez-Pasamar 2013 reproduced post-anti-CD20 T-cell dynamics by moving
+    K_eff from 1000 to ~850 cells against EAE data, "independently of the
+    alpha_reg parameter". So ocrelizumab acts on ke, not gamma_E, and its
+    alpha_R stays at 1.0 because the same paper says B-cell depletion works
+    "without strengthening T_reg activation".
+    """
+    ocr = PROFILES["ocrelizumab"]
+    assert touched_points(ocr) == ("ke",)
+    assert ocr.ke == 0.85
+    assert ocr.gamma_E == 1.0
+    assert ocr.alpha_R == 1.0
+    assert "ocrelizumab" not in LUMPED
+
+
+def test_atacicept_was_not_routed_through_ke_by_analogy():
+    """Both are B-lineage agents; only one has the measurement.
+
+    Extending the anti-CD20 result to a BAFF/APRIL blocker would be exactly the
+    reasoning-by-analogy that turns a sourced map into a fitted one.
+    """
+    ata = PROFILES["atacicept"]
+    assert ata.ke == 1.0
+    assert touched_points(ata) == ("gamma_E",)
+    assert "atacicept" in LUMPED
 
 
 def test_untreated_touches_nothing():
@@ -121,15 +164,16 @@ def test_harm_arms_do_not_share_a_single_harm_constant():
 # --------------------------------------------------------------------------- #
 
 def test_the_gamma_E_cluster_is_a_model_ceiling_not_a_stub_artifact():
-    """Six arms collapse onto one dial and this is NOT fixable with potency.
+    """Five arms still collapse onto one dial, and potency will not fix it.
 
-    natalizumab, fingolimod, ponesimod, ocrelizumab, alemtuzumab and atacicept
-    all reduce the active effector pool by mechanisms the model has no structure
-    for — no CNS compartment, no lymph node, no B cells.
+    natalizumab, fingolimod, ponesimod, alemtuzumab and atacicept all reduce the
+    active effector pool by mechanisms the model has no structure for — no CNS
+    compartment, no lymph node, no B cells. Ocrelizumab used to be the sixth;
+    it left because someone measured its effect on T-cell dynamics.
     """
     assert set(LUMPED) == {
         "natalizumab", "fingolimod", "ponesimod",
-        "ocrelizumab", "alemtuzumab", "atacicept",
+        "alemtuzumab", "atacicept",
     }
     for name in LUMPED:
         assert touched_points(PROFILES[name]) == ("gamma_E",)
