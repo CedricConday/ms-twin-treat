@@ -151,6 +151,30 @@ def predict_relapse_ratio(rr_lesion: float, *, slope: float = SLOPE,
     )
 
 
+def invert(rr_relapse: float, *, slope: float = SLOPE,
+           intercept: float = INTERCEPT) -> float:
+    """The lesion rate ratio that would predict this relapse rate ratio.
+
+    The regression is monotone in log space, so it inverts exactly:
+
+        RR_lesion = exp((log(RR_relapse) - intercept) / slope)
+
+    Needed because the cached response tables store POST-map relapse changes,
+    while fitting a drug's potency against its trial's MRI outcome needs the
+    PRE-map lesion ratio. Inverting the stored value is exact and avoids keeping
+    two tables that could drift apart.
+
+    Inverting does not make the map any more valid in the blind-spot region --
+    a relapse ratio near 1 inverts to a lesion ratio near 1, which is precisely
+    where lenercept shows the two can disagree.
+    """
+    if not rr_relapse > 0.0:
+        raise ValueError(f"rr_relapse must be positive, got {rr_relapse}")
+    if slope == 0.0:
+        raise ValueError("slope of 0 is not invertible")
+    return math.exp((math.log(rr_relapse) - intercept) / slope)
+
+
 def lesion_ratio(treated_lesions: float, comparator_lesions: float) -> float:
     """Arm-level lesion rate ratio, guarded at zero.
 
