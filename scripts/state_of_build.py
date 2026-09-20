@@ -68,6 +68,11 @@ GATES: list[tuple[str, str, list[tuple[str, str]]]] = [
         ("fitted", r"(\d+) arm\(s\) fitted"),
         ("out of range", r"(\d+) arm\(s\) OUT OF RANGE"),
     ]),
+    ("dial-level ceiling (out of sample)", "scripts.dial_ceiling", [
+        ("MAE", r"out of sample, within group\s+([\d.]+pp)"),
+        ("null", r"out of sample, within group\s+[\d.]+pp\s+([\d.]+pp)"),
+        ("headroom", r"out of sample, within group\s+[\d.]+pp\s+[\d.]+pp\s+([\d.]+pp)"),
+    ]),
     ("harm channel", "bricks.harm_channel", [
         ("enlarged ranking", r"N=(\d+), both harm cases still top-2"),
         ("p", r"top-2:\s*1/\d+ = ([\d.]+?)\.?\s*$"),
