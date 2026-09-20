@@ -27,6 +27,14 @@ from gate.evidence import (
     _paired_bootstrap,
     certify,
 )
+from gate.provenance import (
+    PUBLISHED,
+    ModelMismatch,
+    ModelProvenance,
+    combined,
+    from_simulator,
+    from_table,
+)
 
 
 def _passing_scorer(name: str) -> ScorerEvidence:
@@ -201,10 +209,62 @@ def test_the_device_exposes_no_score_or_rank():
     for banned in ("score", "rank", "effect_size", "predicted_change"):
         assert not hasattr(v, banned), f"Verdict exposes {banned}"
     assert set(Verdict.__dataclass_fields__) == {
-        "kind", "candidate", "reasons", "screen_result", "certificate", "criterion"}
+        "kind", "candidate", "model", "reasons", "screen_result", "certificate",
+        "criterion"}
 
 
 def test_verdict_explains_itself_without_a_certificate():
     doomed = MechanismProfile(label="alpha_R-", source="test", alpha_R=0.5)
     text = decide(doomed, certificate=None).explain()
     assert "validated=False" in text
+
+
+# --- model provenance ----------------------------------------------------
+
+
+def test_every_verdict_names_its_model():
+    """Survival is model-relative: two models the gate cannot tell apart
+    disagree on 11 of 40 survivors, so an unlabelled verdict is unreproducible."""
+    survivor = MechanismProfile(label="delta-", source="test", delta=0.5)
+    v = decide(survivor)
+    assert v.model.model == PUBLISHED
+    assert v.model.label() == "velez2011"
+    assert "velez2011" in v.explain()
+
+
+def test_model_is_required_and_has_no_default():
+    """A default would let a verdict be built without naming its model, which is
+    the whole failure this field exists to prevent."""
+    assert Verdict.__dataclass_fields__["model"].default is dataclasses.MISSING
+
+
+def test_the_label_carries_the_parameter_not_just_the_family():
+    """K=50000 and K=2000 are both 'the extension' and behave oppositely."""
+    ext = from_table({"carrying_capacity": 2000.0})
+    assert ext.label() == "velez2011+K=2000"
+    assert from_table({"carrying_capacity": 50000.0}).label() == "velez2011+K=50000"
+    assert ext.is_extension
+
+
+def test_a_table_without_a_capacity_key_is_the_published_model():
+    assert from_table({}).model == PUBLISHED
+    assert from_table({}).label() == "velez2011"
+
+
+def test_an_unnamed_parameter_is_printed_rather_than_dropped():
+    p = ModelProvenance(model="x", parameters={"some_new_dial": 3.0})
+    assert "some_new_dial=3" in p.label()
+
+
+def test_mixing_two_models_raises_rather_than_picking_one():
+    """A verdict assembled from two models is about neither."""
+    with pytest.raises(ModelMismatch):
+        combined(from_simulator(), from_table({"carrying_capacity": 2000.0}))
+
+
+def test_the_live_device_halves_agree_today():
+    """If this fails, the cached table was rebuilt under a different model than
+    the kill filters run, and every verdict was about to be incoherent."""
+    from backtest.lomo import load
+
+    assert combined(from_simulator(), from_table(load())).label() == "velez2011"

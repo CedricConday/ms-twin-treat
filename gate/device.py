@@ -45,9 +45,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 
+from backtest.lomo import load as load_table
 from bricks.qsp_velez import MechanismProfile
 from gate.criterion import CRITERION, AcceptanceCriterion
 from gate.evidence import EvidenceCertificate, certify
+from gate.provenance import ModelProvenance, combined, from_simulator, from_table
 from screen.kill_filter import ScreenResult, screen
 
 
@@ -59,10 +61,18 @@ class VerdictKind(Enum):
 
 @dataclass(frozen=True)
 class Verdict:
-    """One candidate's answer, with everything needed to disagree with it."""
+    """One candidate's answer, with everything needed to disagree with it.
+
+    `model` is REQUIRED and has no default. Two models this repo cannot tell
+    apart -- the transcription and the K = 2000 extension, 45.9pp and 45.6pp --
+    disagree about 11 of 40 survivors, so a verdict that does not name its model
+    is not reproducible. It is a field rather than a docstring warning because
+    this repo has spent a night discovering that docstring warnings do not hold.
+    """
 
     kind: VerdictKind
     candidate: str
+    model: ModelProvenance
     reasons: list[str] = field(default_factory=list)
     screen_result: ScreenResult | None = None
     certificate: EvidenceCertificate | None = None
@@ -84,11 +94,23 @@ class Verdict:
         return head
 
     def explain(self) -> str:
-        lines = [f"{self.candidate}: {self.kind.name}", f"  {self.kind.value}"]
+        lines = [f"{self.candidate}: {self.kind.name} under {self.model.label()}",
+                 f"  {self.kind.value}",
+                 f"  model: {self.model.model}"]
         for r in self.reasons:
             lines.append(f"  - {r}")
         lines.append(f"  validated={self.validated} (a verdict about a simulation)")
         return "\n".join(lines)
+
+
+def _provenance() -> ModelProvenance:
+    """The one model this verdict is about, or a refusal if the halves disagree.
+
+    Read from the artifacts that did the work: the simulator's own signature for
+    the kill filters, and the cached table's recorded parameters for the
+    certificate. Raises `ModelMismatch` rather than picking one.
+    """
+    return combined(from_simulator(), from_table(load_table()))
 
 
 def decide(profile: MechanismProfile,
@@ -97,12 +119,13 @@ def decide(profile: MechanismProfile,
            target_gene: dict[str, str] | None = None) -> Verdict:
     """The device. Pass a certificate to avoid re-measuring it per candidate."""
     result = screen([profile], target_gene=target_gene)[0]
-    return _verdict(result, certificate, criterion)
+    return _verdict(result, certificate, criterion, _provenance())
 
 
 def _verdict(result: ScreenResult,
              certificate: EvidenceCertificate | None,
-             criterion: AcceptanceCriterion) -> Verdict:
+             criterion: AcceptanceCriterion,
+             model: ModelProvenance) -> Verdict:
     """Turn one screen result into a verdict. Shared by `decide` and `decide_all`."""
     profile = result.profile
 
@@ -112,7 +135,7 @@ def _verdict(result: ScreenResult,
             reasons.append(result.detail)
         if result.like_existing:
             reasons.append("indistinguishable from: " + ", ".join(result.like_existing))
-        return Verdict(kind=VerdictKind.KILL, candidate=profile.label,
+        return Verdict(kind=VerdictKind.KILL, candidate=profile.label, model=model,
                        reasons=reasons, screen_result=result, criterion=criterion)
 
     cert = certificate if certificate is not None else certify(criterion)
@@ -120,7 +143,7 @@ def _verdict(result: ScreenResult,
     if not cert.unlocks_pass:
         reasons = ["survived every kill filter, which is not the same as working"]
         reasons += [f"PASS unavailable — {r}" for r in cert.blocking_reasons()]
-        return Verdict(kind=VerdictKind.ABSTAIN, candidate=profile.label,
+        return Verdict(kind=VerdictKind.ABSTAIN, candidate=profile.label, model=model,
                        reasons=reasons, screen_result=result, certificate=cert,
                        criterion=criterion)
 
@@ -130,8 +153,9 @@ def _verdict(result: ScreenResult,
     if result.regulatory_liability is not None:
         reasons.append(f"regulatory liability flag (soft, not a veto): "
                        f"Treg:effector = {result.regulatory_liability:.2f}")
-    return Verdict(kind=VerdictKind.PASS, candidate=profile.label, reasons=reasons,
-                   screen_result=result, certificate=cert, criterion=criterion)
+    return Verdict(kind=VerdictKind.PASS, candidate=profile.label, model=model,
+                   reasons=reasons, screen_result=result, certificate=cert,
+                   criterion=criterion)
 
 
 def decide_all(profiles: list[MechanismProfile],
@@ -143,9 +167,10 @@ def decide_all(profiles: list[MechanismProfile],
     candidate. Deliberately returns the verdicts in the order given -- sorting
     them would be ranking by the back door.
     """
+    model = _provenance()
     cert = certify(criterion)
     results = screen(profiles, target_gene=target_gene)
-    return [_verdict(r, cert, criterion) for r in results]
+    return [_verdict(r, cert, criterion, model) for r in results]
 
 
 def main() -> int:
@@ -155,12 +180,16 @@ def main() -> int:
     verdicts = decide_all(candidates)
 
     print("THE ACCEPT/REJECT DEVICE — one verdict per candidate, in input order\n")
+    print(f"  model: {verdicts[0].model.line()}\n")
     for v in verdicts:
         print("  " + v.line())
 
     counts = {k.name: sum(1 for v in verdicts if v.kind is k) for k in VerdictKind}
-    print(f"\n  {len(verdicts)} candidates: "
+    print(f"\n  {len(verdicts)} candidates under {verdicts[0].model.label()}: "
           + ", ".join(f"{n} {k}" for k, n in counts.items() if n))
+    print("  Survival is model-relative: the transcription and the K=2000 extension")
+    print("  score 45.9pp and 45.6pp — indistinguishable — and disagree on 11 of 40")
+    print("  survivors. Quote the label above with any verdict from this run.")
 
     cert = verdicts[0].certificate if verdicts and verdicts[0].certificate else certify()
     print()

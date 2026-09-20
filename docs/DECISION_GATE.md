@@ -21,6 +21,16 @@ to claim. Everything below is produced by `python3 -m gate.device` and
 Run over the 14 single-dial candidates the model admits: **12 KILL, 2 ABSTAIN,
 0 PASS.** No input can currently return PASS.
 
+Every verdict names the model that produced it — `velez2011` today — and that is
+a required field, not a note. Survival is not a model-independent fact: the
+published transcription and the K = 2000 carrying-capacity extension score
+45.9pp and 45.6pp, which this repo has no measurement capable of telling apart,
+and they disagree about 11 of 40 survivors. The label carries the *parameter*
+too, because K = 50000 and K = 2000 are both "the extension" and behave
+oppositely (+109% and −3% on the same dial). The device also refuses to issue a
+verdict at all if its kill filters and its certificate turn out to describe
+different models.
+
 ## Why PASS is unavailable
 
 PASS requires an `EvidenceCertificate` — a live measurement that the predictor
