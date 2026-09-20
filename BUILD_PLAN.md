@@ -143,8 +143,10 @@ models with equations and parameter tables in the papers:
 - **Vélez de Mendizábal et al. 2011**, *BMC Syst Biol* 5:114 — effector/regulatory T-cell
   cross-regulation in RRMS; relapses **emerge from the dynamics** rather than being
   scheduled. doi:10.1186/1752-0509-5-114
-- **Martinez-Pasamar et al. 2013**, *BMC Syst Biol* 7:34 — the successor, adding
-  antigen-specific subpopulations and microglia. PMC3651362
+- **Martinez-Pasamar et al. 2013**, *BMC Syst Biol* 7:34 — ~~the successor, adding
+  antigen-specific subpopulations and microglia~~ **WRONG, STRUCK 2026-09-20: it is
+  the SAME four-ODE system, re-parameterised for mouse EAE. No B-cell and no
+  microglia state variable. See §8.4.** PMC3651362
 
 **Fix:** port one, the same way `bricks/abm.py` ports Weatherley — transcribe, annotate
 every rate with its source, tune nothing. Re-verified 2026-09-17 that no open MS QSP
@@ -493,13 +495,18 @@ dissolve when magnitudes land. A test pins the sharpest case: **natalizumab
 in this model.** No potency number and no leave-one-out can make one right
 without making the other wrong.
 
-So the Martinez-Pasamar 2013 port is **not optional and not later** — it is on
+~~So the Martinez-Pasamar 2013 port is **not optional and not later** — it is on
 the critical path, because the arms it would separate are the high-efficacy
-drugs and one of the two harm cases. Building LOMO and the screen on the
-current representation would grade a model that is provably unable to pass.
+drugs and one of the two harm cases.~~ **STRUCK 2026-09-20 (see §8.4, "the
+critical path was a mirage"): MP2013 has the same four state variables and the
+same six dials, so it separates nothing.** The rest stands: building LOMO and
+the screen on the current representation grades a model that is provably unable
+to pass.
 
-**Revised order: Martinez-Pasamar port → (4) magnitudes → (2) Sormani → LOMO →
-screen.**
+~~**Revised order: Martinez-Pasamar port → (4) magnitudes → (2) Sormani → LOMO →
+screen.**~~ **STRUCK 2026-09-20 — the port is worthless, see §8.4. (4), (2) and
+LOMO all landed anyway; what the order was reaching for, mechanism separation,
+has no published model behind it yet.**
 
 #### (2) CLOSED (4441b0c) — `bricks/sormani.py`
 
@@ -980,3 +987,57 @@ general safety filter around it.
 
 All 136 transcribed HPA values, the 64 old and the 72 new, verify against the
 live download: `PYTHONPATH=. python scripts/derive_harm_channel.py --check`.
+
+#### THE CRITICAL PATH WAS A MIRAGE — MARTINEZ-PASAMAR 2013 IS THE SAME MODEL (2026-09-20)
+
+The entry above put the Martinez-Pasamar port on the critical path, "not optional
+and not later", because six of thirteen arms collapse onto `gamma_E` and the port
+was believed to add antigen-specific subpopulations and microglia. **It does not.
+Checked at the source before spending the days.**
+
+Full text via the Europe PMC REST API (`PMC3651362/fullTextXML`) and the
+supplement via `PMC3651362/supplementaryFiles` (13 files, 647 KB; the model
+material is `1752-0509-7-34-S1.docx`). From the Methods, verbatim:
+
+    "The model is based in 4 differential equations describing the dynamics of
+     antigen specific resting Teff (1), resting Treg (2), activated Teff (3),
+     and activated Treg (4)."
+
+    (1) dEr/dt = I_E - Er*delta - Er*beta + E*eta
+    (2) dRr/dt = I_R - Rr*delta - Rr*beta + R*eta
+    (3) dE/dt  = Er*delta - E*eta + E*alpha_E*(kR^h/(kR^h+R^h)) - E*gamma_E*(R^h/(kR^h+R^h))
+    (4) dR/dt  = Rr*delta - R*eta + R*alpha_R*(E^h/(kE^h+E^h)) - R*gamma_E
+
+Compare `bricks/qsp_velez.py:58-61`. **Identical in form, variable for variable.**
+Table S1 lists the same parameter set — delta, beta, eta, alpha_E, alpha_R,
+gamma_E, gamma_R, k_E, k_R, h — in two columns, mouse and human, and the human
+column is Vélez. The paper says so itself: "a model of active Teff-Treg
+cross-regulation developed previously to describe the dynamics of T-cells in
+humans [10], updating here the model parameters to reproduce experimental data
+from EAE studies in mice."
+
+**There is no B-cell state variable and no microglia state variable.** "Microglia"
+occurs 53 times and "B-cell" 47, all of it flow cytometry in the experimental
+sections. The anti-CD20 result is an EAE experiment; the modelling contribution
+is that B-cell depletion can be *represented* as a change to existing T-cell
+parameters, not as a compartment. What the port would add over what is already
+in the repo: mouse parameter values, and a noise-driven pulse-train input for
+naive cells in place of the deterministic influx.
+
+**So it separates nothing.** Anti-CD20, S1P modulation and alpha-4 blockade
+still land on the same dials, because there is no state in this model that
+distinguishes them. A port would have delivered a second copy of a model the
+repo already has, after two or three days.
+
+**What the separation actually needs, stated so the next attempt starts from
+here:** a model with a compartment the lumped mechanisms differ in — periphery
+vs CNS with an explicit transition (natalizumab blocks the transition,
+fingolimod and ponesimod block egress from lymph node, depleters remove cells
+from the pool), or an explicit B-cell population (anti-CD20). Neither Vélez 2011
+nor Martinez-Pasamar 2013 has one. `bricks/brain_pbpk.py` (Verscheijden 2019)
+has compartments but carries drug concentration, not cell populations, so it is
+not the missing piece either. **Nothing in this repo's shortlist currently
+supplies it, and that is the honest state of the mechanism-separation problem.**
+
+One thing the check leaves intact: `profiles.py` takes ocrelizumab's `ke = 0.85`
+from this paper's EAE fit. That is a parameter read, not a port, and it stands.
