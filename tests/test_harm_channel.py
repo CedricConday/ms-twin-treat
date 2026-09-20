@@ -17,7 +17,10 @@ from bricks.harm_channel import (
     EFFECTOR_SUBSETS,
     HPA_NTPM,
     MIN_EFFECTOR_NTPM,
+    PREREG_LABEL,
+    PREREG_TARGET,
     ranking,
+    ranking_enlarged,
     score,
     top_k_probability,
 )
@@ -189,3 +192,58 @@ def test_natalizumab_ranks_low_and_that_is_correct():
     order = [s.arm for s in ranking()]
     assert order.index("natalizumab") >= 4
     assert ranking()[order.index("natalizumab")].treg_ratio < 1.0
+
+
+# --------------------------------------------------------------------------- #
+# the pre-registered enlargement (docs/HARM_CHANNEL_PREREG.md, 2026-09-20)
+# --------------------------------------------------------------------------- #
+
+def test_every_preregistered_target_has_expression_data():
+    """A target named in the prereg must be scored, including the ones that fail.
+
+    Silently dropping a pre-registered candidate because its number was
+    inconvenient is the exact failure the prereg exists to prevent.
+    """
+    for drug, target in PREREG_TARGET.items():
+        assert target in HPA_NTPM, f"{drug} -> {target} was pre-registered and never fetched"
+        assert drug in PREREG_LABEL
+
+
+def test_the_enlargement_is_almost_entirely_floored():
+    """Eight of nine added targets are below the effector floor. That IS the result.
+
+    B-cell genes (CD19, BTK, CD80/86), secreted ligands (IL17A, IL12B) and
+    non-immune genes (LINGO1, HCAR2) cannot be spoken to by a Treg:effector-T
+    ratio. Pinned because it bounds the channel's applicability domain.
+    """
+    clears = [d for d in PREREG_TARGET if score(d).classifiable]
+    assert clears == ["teriflunomide"]
+    assert score("teriflunomide").target == "DHODH"
+
+
+def test_the_enlarged_ranking_is_seven_and_keeps_the_harm_cases_on_top():
+    """1/21 = 0.048 here is NOT the 1/21 an earlier draft got by miscounting six
+    targets as seven. That one was arithmetic on the arm set and is pinned at
+    1/15 by test_the_probability_is_the_unimpressive_one above. This one is a
+    pre-registered enlargement that added exactly one classifiable target."""
+    rows = ranking_enlarged()
+    assert len(rows) == 7
+    assert [r.target for r in rows[:2]] == ["IL2RA", "TNFRSF1B"]
+    assert top_k_probability(len(rows), 2) == pytest.approx(1 / 21)
+    assert len(ranking()) == 6, "the arm-set ranking must not grow"
+
+
+def test_the_predeclared_falsifier_did_not_fire():
+    """Any NO-HARM target above TNFRSF1B (2.83x) would break the top-2 claim."""
+    lenercept = score("lenercept").treg_ratio
+    for drug in PREREG_TARGET:
+        s = score(drug)
+        if s.classifiable:
+            assert s.treg_ratio < lenercept, f"{drug} displaces lenercept"
+
+
+def test_the_outcome_labels_never_reach_the_score(monkeypatch):
+    """The ratio must be computable with every label deleted."""
+    before = {d: score(d).treg_ratio for d in PREREG_TARGET}
+    monkeypatch.setattr("bricks.harm_channel.PREREG_LABEL", {})
+    assert {d: score(d).treg_ratio for d in PREREG_TARGET} == before

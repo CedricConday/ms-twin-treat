@@ -944,3 +944,39 @@ tissue-damage readout, so it cannot answer the test and is not a replacement.
 - **wiring.** `qsp_traj` is written but nothing consumes it; the clinical gate
   runs through `abm_damage`. **The port does not move the gate on its own** —
   readout must read `qsp_damage` before any of this reaches the score.
+
+#### THE HARM CHANNEL WAS ENLARGED UNDER PRE-REGISTRATION (2026-09-20)
+
+The channel's whole statistical claim was 1/C(6,2) = 0.067 on six targets, on a
+hypothesis formed after knowing which drugs harmed. Enlarging the scored set is
+the only cheap way to make that test mean anything, and it is worthless unless
+the set is fixed first — so `docs/HARM_CHANNEL_PREREG.md` was written and
+committed (308a56f) with the inclusion rule, the outcome labels, the statistic
+and its falsifier, **before any nTPM for the new genes was fetched**. Nine
+targets from published MS randomized trials, every citation verified against
+Europe PMC that day rather than recalled.
+
+**Eight of the nine fell under the effector floor.** Only DHODH clears it, at
+0.76x, below TNFRSF1B — so the pre-declared falsifier did not fire and the two
+harm cases stay 1st and 2nd. N goes 6 -> 7 and the exact test goes to
+1/21 = 0.048.
+
+**That number needs its provenance attached every time it is quoted.** An
+earlier draft of `bricks/harm_channel.py` claimed 1/21 = 0.048 by miscounting
+the arm set as seven when it is six, and a test pins the arm-set ranking at six
+so it cannot recur. That test is untouched; `ranking()` still returns six and
+`ranking_enlarged()` returns seven. Same arithmetic, different provenance.
+Nominally crossing 0.05 by adding one target to the denominator licenses
+nothing: the kill filter's REGULATORY LIABILITY flag stays soft, no veto.
+
+**The result is the exclusion, not the p-value.** Nearly every MS drug target
+not already scored is a B-cell gene (CD19, BTK, CD80/86, TACI), a secreted
+ligand (IL17A, IL12B), or not an immune gene at all (LINGO1, HCAR2). A
+Treg:effector-T ratio cannot speak to any of them. The channel's applicability
+domain is small and cannot be grown by looking harder — and on the harm side
+the MS record has exactly two regulatory-failure cases with an independent
+immune target. That is the ceiling on this idea, stated so nobody plans a
+general safety filter around it.
+
+All 136 transcribed HPA values, the 64 old and the 72 new, verify against the
+live download: `PYTHONPATH=. python scripts/derive_harm_channel.py --check`.

@@ -15,8 +15,11 @@ can only ever say "this is doomed", never "this is good".
                           even if it worked nothing would have been learned
   4. REGULATORY LIABILITY its target is Treg-biased (bricks/harm_channel.py). A
                           SOFT flag, not a kill — the channel's own statistic is
-                          p = 0.067 on six targets and it does not get to
-                          veto anything on that evidence.
+                          p = 0.067 on the six arm-set targets, or 0.048 after a
+                          pre-registered enlargement to seven, and it does not
+                          get to veto anything on that evidence. Nominally
+                          crossing 0.05 by adding one target does not make a
+                          post-hoc hypothesis a filter.
 
 WHAT THIS CANNOT DO, AND WHY THAT IS ENFORCED IN CODE
 ------------------------------------------------------

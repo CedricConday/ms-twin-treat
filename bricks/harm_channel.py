@@ -130,6 +130,52 @@ And the separation is not driven by the drugs working better or worse: CD52 sits
 at 1.81 and alemtuzumab is one of the most effective DMTs there is. The claim is
 about a regulatory-cell liability, not about efficacy.
 
+THE PRE-REGISTERED ENLARGEMENT, AND WHAT IT ACTUALLY BOUGHT (2026-09-20)
+-------------------------------------------------------------------------
+Six targets is a weak test, so the set was enlarged — with the candidate list,
+the outcome labels, the statistic and its falsifier all committed first, in
+`docs/HARM_CHANNEL_PREREG.md`, before a single nTPM for the new genes was
+fetched. Nine targets from MS randomized trials were added: IL12B, CD80, CD86,
+CD19, IL17A, LINGO1, BTK, DHODH, HCAR2.
+
+**Eight of the nine fell under the effector floor.** Only DHODH (teriflunomide)
+has real effector-T expression, and it lands at 0.76x — below TNFRSF1B, so the
+pre-declared falsifier did not fire:
+
+    IL2RA     daclizumab     31.42x   REGULATORY-FAILURE HARM
+    TNFRSF1B  lenercept       2.83x   REGULATORY-FAILURE HARM
+    CD52      alemtuzumab     1.81x
+    DHODH     teriflunomide   0.76x   <- the only new target that clears the floor
+    S1PR1     fingolimod      0.74x
+    ITGA4     natalizumab     0.34x
+    MS4A1     anti-CD20       0.29x
+
+So N goes 6 -> 7 and the exact test goes 1/15 = 0.067 -> **1/21 = 0.048**.
+
+**READ THAT NUMBER WITH CARE, FOR TWO REASONS.**
+
+*First, an identical-looking number was wrong once already.* An earlier draft of
+this docstring claimed 1/21 = 0.048 by miscounting the arm set as seven targets
+when it was six, and `tests/test_harm_channel.py` pins the arm-set ranking at
+six precisely so that cannot recur. The 0.048 here is a different quantity: a
+pre-registered enlargement that legitimately added one classifiable target. Same
+arithmetic, different provenance, and the provenance is the entire difference.
+`ranking()` still returns six; `ranking_enlarged()` returns seven.
+
+*Second, crossing 0.05 on a designed-after-the-fact test changes nothing.* It
+moved because one target was added. The channel still has two events, the
+hypothesis was still formed after knowing which drugs harmed, and there is no
+multiplicity correction anywhere in it. The kill filter's REGULATORY LIABILITY
+stays a soft flag with no veto.
+
+**The real finding is the 8-of-9 exclusion, and it is a boundary.** Nearly every
+MS drug target that is not already scored is a B-cell gene (CD19, BTK, CD80/86,
+TACI), a secreted ligand (IL17A, IL12B), or not an immune gene at all (LINGO1,
+HCAR2). A Treg:effector-**T** ratio cannot speak to any of them. This channel's
+applicability domain is small and cannot be grown by looking harder — combined
+with the fact that no new regulatory-failure harm case with an independent
+immune target exists in the MS record, that caps how strong it can ever get.
+
 `validated=False`. This is RNA in healthy blood, not protein, not function, not
 MS tissue.
 """
@@ -178,6 +224,37 @@ HPA_NTPM: dict[str, dict[str, float]] = {
     "TNFRSF13B": {"T-reg": 2.2, "memory CD4 T-cell": 0.0, "naive CD4 T-cell": 0.0,
                   "memory CD8 T-cell": 0.0, "naive CD8 T-cell": 0.1,
                   "naive B-cell": 52.1, "memory B-cell": 131.4, "NK-cell": 0.0},
+
+    # Pre-registered enlargement, fetched 2026-09-20 AFTER docs/HARM_CHANNEL_PREREG.md
+    # was committed. Same source and same script. Eight of the nine fall under the
+    # effector floor, which is the result, not a failure to find data.
+    "IL12B": {"T-reg": 0.0, "memory CD4 T-cell": 0.0, "naive CD4 T-cell": 0.0,
+              "memory CD8 T-cell": 0.0, "naive CD8 T-cell": 0.0,
+              "naive B-cell": 0.0, "memory B-cell": 0.2, "NK-cell": 0.1},
+    "CD80": {"T-reg": 1.3, "memory CD4 T-cell": 0.1, "naive CD4 T-cell": 0.0,
+             "memory CD8 T-cell": 0.1, "naive CD8 T-cell": 0.0,
+             "naive B-cell": 0.2, "memory B-cell": 1.4, "NK-cell": 0.0},
+    "CD86": {"T-reg": 1.6, "memory CD4 T-cell": 0.3, "naive CD4 T-cell": 0.2,
+             "memory CD8 T-cell": 0.3, "naive CD8 T-cell": 0.1,
+             "naive B-cell": 28.7, "memory B-cell": 41.1, "NK-cell": 3.8},
+    "CD19": {"T-reg": 0.0, "memory CD4 T-cell": 0.0, "naive CD4 T-cell": 0.4,
+             "memory CD8 T-cell": 0.0, "naive CD8 T-cell": 0.1,
+             "naive B-cell": 172.5, "memory B-cell": 138.6, "NK-cell": 0.3},
+    "IL17A": {"T-reg": 0.0, "memory CD4 T-cell": 0.0, "naive CD4 T-cell": 0.0,
+              "memory CD8 T-cell": 0.0, "naive CD8 T-cell": 0.0,
+              "naive B-cell": 0.0, "memory B-cell": 0.0, "NK-cell": 0.0},
+    "LINGO1": {"T-reg": 0.0, "memory CD4 T-cell": 0.0, "naive CD4 T-cell": 0.0,
+               "memory CD8 T-cell": 0.0, "naive CD8 T-cell": 0.0,
+               "naive B-cell": 0.0, "memory B-cell": 0.0, "NK-cell": 0.0},
+    "BTK": {"T-reg": 0.0, "memory CD4 T-cell": 0.1, "naive CD4 T-cell": 0.3,
+            "memory CD8 T-cell": 0.1, "naive CD8 T-cell": 0.1,
+            "naive B-cell": 68.6, "memory B-cell": 67.3, "NK-cell": 0.1},
+    "DHODH": {"T-reg": 8.0, "memory CD4 T-cell": 8.5, "naive CD4 T-cell": 11.8,
+              "memory CD8 T-cell": 9.3, "naive CD8 T-cell": 12.6,
+              "naive B-cell": 11.8, "memory B-cell": 12.1, "NK-cell": 10.1},
+    "HCAR2": {"T-reg": 0.0, "memory CD4 T-cell": 0.0, "naive CD4 T-cell": 0.0,
+              "memory CD8 T-cell": 0.0, "naive CD8 T-cell": 0.0,
+              "naive B-cell": 0.0, "memory B-cell": 0.1, "NK-cell": 0.0},
 }
 
 # Arm -> the target this channel scores it on. An arm whose drug hits several
@@ -192,6 +269,34 @@ ARM_TARGET: dict[str, str] = {
     "ocrelizumab": "MS4A1",
     "ofatumumab": "MS4A1",
     "atacicept": "TNFRSF13B",      # excluded by the floor; see the docstring
+}
+
+# The pre-registered enlargement: drug -> target, fixed in
+# docs/HARM_CHANNEL_PREREG.md before any of these genes' nTPM was fetched. These
+# drugs are NOT arms in the clinical gate; they are here only to enlarge the set
+# the ranking statistic is computed over. Their labels live in PREREG_LABEL and
+# are read by NOTHING that computes a ratio.
+PREREG_TARGET: dict[str, str] = {
+    "ustekinumab": "IL12B",        # phase II RRMS, PMID 18703004
+    "abatacept (CD80)": "CD80",    # ACCLAIM, PMID 27481207
+    "abatacept (CD86)": "CD86",    # ACCLAIM, PMID 27481207
+    "inebilizumab": "CD19",        # phase 1 RRMS, PMID 29143550
+    "secukinumab": "IL17A",        # randomized PoC RRMS, PMID 27142710
+    "opicinumab": "LINGO1",        # AFFINITY part 1, PMID 41454463
+    "evobrutinib/tolebrutinib": "BTK",   # PMID 39307151, 40202623, 40202696
+    "teriflunomide": "DHODH",      # TEMSO, PMID 21991951
+    "dimethyl fumarate": "HCAR2",  # DEFINE, PMID 22992073
+}
+
+# Outcome labels, fixed before scoring. OTHER HARM counts as a NEGATIVE here on
+# purpose: this channel claims to predict lost regulation, and one that flagged
+# every dangerous drug would be claiming nothing.
+PREREG_LABEL: dict[str, str] = {
+    "ustekinumab": "NO HARM", "abatacept (CD80)": "NO HARM",
+    "abatacept (CD86)": "NO HARM", "inebilizumab": "NO HARM",
+    "secukinumab": "NO HARM", "opicinumab": "NO HARM",
+    "evobrutinib/tolebrutinib": "OTHER HARM (hepatic)",
+    "teriflunomide": "NO HARM", "dimethyl fumarate": "NO HARM",
 }
 
 
@@ -214,7 +319,7 @@ class HarmScore:
 
 def score(arm: str) -> HarmScore:
     """Regulatory-cell liability for one arm. Reads no trial outcome."""
-    target = ARM_TARGET.get(arm)
+    target = ARM_TARGET.get(arm) or PREREG_TARGET.get(arm)
     if target is None:
         raise KeyError(f"no target mapped for {arm!r}")
     v = HPA_NTPM[target]
@@ -245,6 +350,21 @@ def ranking() -> list[HarmScore]:
             seen.add(s.target)
             out.append(s)
     return sorted(out, key=lambda s: s.treg_ratio, reverse=True)
+
+
+def ranking_enlarged() -> list[HarmScore]:
+    """The arm set PLUS the pre-registered enlargement, one row per target.
+
+    Measured 2026-09-20: eight of the nine added targets fall under the effector
+    floor, so this returns SEVEN rows, not fifteen. See the module docstring.
+    """
+    seen, out = set(), []
+    for drug in list(ARM_TARGET) + list(PREREG_TARGET):
+        sc = score(drug)
+        if sc.classifiable and sc.target not in seen:
+            seen.add(sc.target)
+            out.append(sc)
+    return sorted(out, key=lambda sc: sc.treg_ratio, reverse=True)
 
 
 def top_k_probability(n_items: int, n_harm: int) -> float:
@@ -288,3 +408,18 @@ if __name__ == "__main__":
     print("\n  What it sees that nothing else here does: lenercept, which the MRI")
     print("  channel scores as inert, and daclizumab, which every outcome-based")
     print("  channel scores as a success because it cut relapses 45%.")
+
+    print("\n\nPRE-REGISTERED ENLARGEMENT (docs/HARM_CHANNEL_PREREG.md, 2026-09-20)")
+    enlarged = ranking_enlarged()
+    floored = [d for d in PREREG_TARGET if not score(d).classifiable]
+    print(f"  {len(PREREG_TARGET)} targets added, {len(floored)} under the effector "
+          f"floor, {len(enlarged) - len(rows)} new row(s).\n")
+    for sc in enlarged:
+        mark = "  <- added" if sc.arm in PREREG_TARGET else ""
+        print(f"  {sc.target:<11} {sc.arm:<26} {sc.treg_ratio:>7.2f}{mark}")
+    pe = top_k_probability(len(enlarged), 2)
+    print(f"\n  N={len(enlarged)}, both harm cases still top-2: "
+          f"1/{len(enlarged) * (len(enlarged) - 1) // 2} = {pe:.3f}.")
+    print("  This 1/21 is NOT the 1/21 an earlier draft got by miscounting the arm")
+    print("  set — see the docstring. Crossing 0.05 by adding one target does not")
+    print("  turn a post-hoc hypothesis into a filter. The flag stays soft.")

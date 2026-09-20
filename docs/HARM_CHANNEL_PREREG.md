@@ -111,4 +111,63 @@ hypothesis more worth testing prospectively. It does not make it validated.
 
 ## Result
 
-*(appended after scoring — nothing above this line changes)*
+*(appended after scoring — nothing above this line changed)*
+
+Fetched 2026-09-20 with `PYTHONPATH=. python scripts/derive_harm_channel.py`,
+same source and script as the original six. All 136 transcribed values —
+including the 72 new ones — verify against the live download (`--check`).
+
+**Eight of the nine pre-registered targets fall under the effector floor.**
+
+| gene | drug | T-reg nTPM | effector-T nTPM | ratio |
+|---|---|---|---|---|
+| DHODH | teriflunomide | 8.0 | 10.55 | **0.76** |
+| CD86 | abatacept | 1.6 | 0.225 | floored |
+| BTK | evobrutinib/tolebrutinib | 0.0 | 0.150 | floored |
+| CD19 | inebilizumab | 0.0 | 0.125 | floored |
+| CD80 | abatacept | 1.3 | 0.050 | floored |
+| IL12B | ustekinumab | 0.0 | 0.000 | floored |
+| IL17A | secukinumab | 0.0 | 0.000 | floored |
+| LINGO1 | opicinumab | 0.0 | 0.000 | floored |
+| HCAR2 | dimethyl fumarate | 0.0 | 0.000 | floored |
+
+The enlarged ranking, seven targets:
+
+    IL2RA     daclizumab     31.42x   REGULATORY-FAILURE HARM
+    TNFRSF1B  lenercept       2.83x   REGULATORY-FAILURE HARM
+    CD52      alemtuzumab     1.81x
+    DHODH     teriflunomide   0.76x   <- the one new target that clears the floor
+    S1PR1     fingolimod      0.74x
+    ITGA4     natalizumab     0.34x
+    MS4A1     anti-CD20       0.29x
+
+**The pre-declared falsifier did not fire.** DHODH lands below TNFRSF1B, so both
+harm cases remain 1st and 2nd. By the statistic fixed above, N = 7 and
+
+    p = 1 / C(7,2) = 1/21 = 0.048
+
+### Two things that must be said about that number
+
+**It looks exactly like an error this repo already made.** An earlier draft of
+`bricks/harm_channel.py` claimed 1/21 = 0.048 by counting the arm set as seven
+targets when it is six; `tests/test_harm_channel.py` pins the arm-set ranking at
+six so it cannot recur, and that test is untouched. This 0.048 comes from a
+pre-registered enlargement that legitimately added one classifiable target.
+Same arithmetic, different provenance — and the provenance is the whole
+difference. `ranking()` returns six, `ranking_enlarged()` returns seven.
+
+**Nominally crossing 0.05 licenses nothing.** It moved because one target was
+added to the denominator. Two events, a hypothesis formed after knowing which
+drugs harmed, no multiplicity correction. The kill filter's REGULATORY LIABILITY
+flag stays soft with no veto, and `validated=False` stands.
+
+### The finding is the exclusion, not the p-value
+
+Nearly every MS drug target not already scored is a B-cell gene (CD19, BTK,
+CD80/86, TACI), a secreted ligand (IL17A, IL12B), or not an immune gene at all
+(LINGO1, HCAR2). A Treg:effector-**T** ratio cannot speak to any of them. This
+channel's applicability domain is small, and it cannot be grown by looking
+harder — the MS pharmacopoeia simply does not have many more effector-T surface
+targets to score. Together with the two-drug ceiling on the harm side, that is
+the honest limit of the idea: it explains two specific failures that nothing
+else in this repo can see, and it will not become a general filter.
