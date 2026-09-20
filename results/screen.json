@@ -1,0 +1,1149 @@
+{
+  "generated": "2026-09-20",
+  "n_candidates": 98,
+  "max_points": 2,
+  "enumerated_potency": 0.5,
+  "intervention_points": [
+    "alpha_E",
+    "gamma_E",
+    "alpha_R",
+    "gamma_R",
+    "delta",
+    "naive_E",
+    "ke"
+  ],
+  "screen_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "reachability_probes": [
+    0.2,
+    0.5,
+    0.8
+  ],
+  "noise_floor": 0.14,
+  "counts": {
+    "UNREACHABLE": 17,
+    "DEGENERATE": 11,
+    "OUT_OF_REGIME": 32,
+    "SURVIVED": 38
+  },
+  "survivors": [
+    {
+      "label": "alpha_E+,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.03835055628090524,
+      "best_damage": 0.010244969788467898,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,delta+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.8001899902030418,
+      "best_damage": 0.295062525036359,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.23511924362453787,
+      "best_damage": 0.05727619981555357,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,gamma_E+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 2.9618951223203815,
+      "best_damage": 0.291685911257086,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,gamma_E-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.1706885224441324,
+      "best_damage": 0.06940512081897468,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.021450857770627788,
+      "best_damage": 0.0013641297701863693,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.07549188981485642,
+      "best_damage": 0.007598657502661723,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,naive_E+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.3502837181880507,
+      "best_damage": 0.23325241084504172,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,naive_E-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 2.6514436893294375,
+      "best_damage": 0.5195095881634194,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,gamma_R+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 1.9094245338007263,
+      "best_damage": 1.221401474923743,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.015927375529501717,
+      "best_damage": 0.0017496793381188683,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,ke+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.18481233013111742,
+      "best_damage": 0.16358435433783028,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.01651787637445106,
+      "best_damage": 0.002762190571767154,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,naive_E+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.07524646941675106,
+      "best_damage": 0.04073972827343398,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R+,naive_E-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.07918335856170328,
+      "best_damage": 0.059068986807951626,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "delta+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.38063570103217154,
+      "best_damage": 0.3056143210037908,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 1.0395039639838946,
+      "best_damage": 0.4053223746489021,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "delta-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.13139467402795127,
+      "best_damage": 0.10372437252095777,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,alpha_R+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.09368614687084043,
+      "best_damage": 0.06160848043506566,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.9470176177541643,
+      "best_damage": 0.15416236211996903,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.027174483646995123,
+      "best_damage": 0.0010892781745997422,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.7944824545790095,
+      "best_damage": 0.36768935718415774,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,alpha_R+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.056562250291818564,
+      "best_damage": 0.049127064609709566,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,delta+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.4900648843789883,
+      "best_damage": 0.4900648843789883,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.6548040667541204,
+      "best_damage": 0.6548040667541204,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.03701744391954221,
+      "best_damage": 0.03140953803519754,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.24726519997738283,
+      "best_damage": 0.24726519997738283,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,naive_E+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.569192295511089,
+      "best_damage": 0.569192295511089,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,naive_E-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 2.0775866758792736,
+      "best_damage": 0.6388088012579768,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.027297049693720918,
+      "best_damage": 0.002700447041852255,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,delta+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.02792883101002444,
+      "best_damage": 0.002698677861520095,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,delta-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.024180527196576942,
+      "best_damage": 0.0025664909623485293,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,ke+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.06663692421447501,
+      "best_damage": 0.005310220909173555,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.008336036018229815,
+      "best_damage": 0.0020871066854927208,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,naive_E+",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.0272719640830567,
+      "best_damage": 0.005223685493939458,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R-,naive_E-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.027448449882942663,
+      "best_damage": 0.0014490733893391544,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E+,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 0.2746996902892338,
+      "best_damage": 0.0596558789978974,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E-,ke-",
+      "verdict": "SURVIVED",
+      "reason": "survived all four filters",
+      "detail": "survived all four filters",
+      "median_damage": 1.1736065395946382,
+      "best_damage": 0.28120540498504215,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    }
+  ],
+  "killed": [
+    {
+      "label": "alpha_E+,alpha_R+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as lenercept",
+      "median_damage": 0.08510005891903044,
+      "best_damage": 0.052859991029296366,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "lenercept"
+      ]
+    },
+    {
+      "label": "alpha_E-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as dimethyl fumarate",
+      "median_damage": 0.479919423327236,
+      "best_damage": 0.28026674155505904,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "dimethyl fumarate"
+      ]
+    },
+    {
+      "label": "alpha_E-,alpha_R+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as lenercept",
+      "median_damage": 0.06407605532714242,
+      "best_damage": 0.04052642362299942,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "lenercept"
+      ]
+    },
+    {
+      "label": "alpha_R+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as daclizumab",
+      "median_damage": 0.07021373564747493,
+      "best_damage": 0.0490308950338864,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "daclizumab"
+      ]
+    },
+    {
+      "label": "alpha_R+,delta+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as glatiramer acetate",
+      "median_damage": 0.07895655440359839,
+      "best_damage": 0.046645088949890105,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "glatiramer acetate"
+      ]
+    },
+    {
+      "label": "alpha_R+,delta-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as glatiramer acetate",
+      "median_damage": 0.04896753826836055,
+      "best_damage": 0.03272133227948614,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "glatiramer acetate"
+      ]
+    },
+    {
+      "label": "delta+,naive_E+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as IFN-gamma",
+      "median_damage": 2.478749281054448,
+      "best_damage": 1.2326738728632325,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "IFN-gamma"
+      ]
+    },
+    {
+      "label": "delta-,naive_E+",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as IFN-gamma",
+      "median_damage": 0.5936507601747526,
+      "best_damage": 0.40235586041017074,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "IFN-gamma"
+      ]
+    },
+    {
+      "label": "delta-,naive_E-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as IFN-gamma",
+      "median_damage": 1.8092166234477984,
+      "best_damage": 0.42382341494526193,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "IFN-gamma"
+      ]
+    },
+    {
+      "label": "gamma_E-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as cladribine",
+      "median_damage": 0.6234195577186399,
+      "best_damage": 0.6234195577186399,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "cladribine"
+      ]
+    },
+    {
+      "label": "ke-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as ofatumumab",
+      "median_damage": 0.3714104051036956,
+      "best_damage": 0.21100980728386176,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": [
+        "ofatumumab"
+      ]
+    },
+    {
+      "label": "alpha_E+,alpha_R-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,gamma_E+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,gamma_R+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,ke+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,alpha_R-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,gamma_R+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,delta+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,delta-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,gamma_R+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,ke+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,ke-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,naive_E+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,naive_E-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "delta+,ke+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,alpha_R-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,delta+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,gamma_R+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,ke+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,naive_E+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+,naive_E-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,alpha_R-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,gamma_R+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,delta+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,delta-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,ke+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,ke-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,naive_E+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_R+,naive_E-",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "ke+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E-,ke+",
+      "verdict": "OUT_OF_REGIME",
+      "reason": "the model runs away on this candidate",
+      "detail": "at least one infection history diverged; damage is undefined",
+      "median_damage": null,
+      "best_damage": null,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 4.4073 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 11.97898452789386,
+      "best_damage": 4.407283692296718,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 8.7195 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 50.08305485157229,
+      "best_damage": 8.719450706530827,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,delta-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 6.9485 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 8.502940444169484,
+      "best_damage": 6.948475672973692,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,gamma_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 5.9400 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 12.428869725417698,
+      "best_damage": 5.939962581911692,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,ke-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 1.6474 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 1.6474343517597896,
+      "best_damage": 1.6474343517597896,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 4.7360 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 4.735970122462118,
+      "best_damage": 4.735970122462118,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E+,naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 51.4810 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 51.48103911086393,
+      "best_damage": 51.48103911086393,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_E-,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 1.4137 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 4.699401356618993,
+      "best_damage": 1.4137421475985097,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "alpha_R-,gamma_R-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 3.5176 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 17.96970236984007,
+      "best_damage": 3.5175543508422518,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "delta+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 3.4541 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 3.6433462294436527,
+      "best_damage": 3.454097858836686,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "delta+,naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 11.7083 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 80.01777429613244,
+      "best_damage": 11.708342688858853,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "delta-,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 5.9057 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 10.858895823099013,
+      "best_damage": 5.9056811423879445,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 7.4894 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 7.489390183755097,
+      "best_damage": 7.489390183755097,
+      "best_potency": null,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "gamma_E-,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 3.2395 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 7.720303818613891,
+      "best_damage": 3.2395196101712296,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 1.5360 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 1.8299041489802597,
+      "best_damage": 1.535981770754606,
+      "best_potency": 0.8,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E+,ke+",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 4.6095 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 27.83244327271782,
+      "best_damage": 4.6095479045385455,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    },
+    {
+      "label": "naive_E-",
+      "verdict": "UNREACHABLE",
+      "reason": "this dial cannot produce a benefit at any potency",
+      "detail": "best probed damage 3.1844 vs untreated 1.4575 \u2014 no improvement beyond the 14% noise floor at any potency",
+      "median_damage": 4.393283667590753,
+      "best_damage": 3.184372296554659,
+      "best_potency": 0.2,
+      "untreated_damage": 1.4574612441261863,
+      "like_existing": []
+    }
+  ],
+  "ordering": "survivors alphabetical by label; NOT by predicted benefit",
+  "caveats": [
+    "Nothing here is evidence about multiple sclerosis. validated=False throughout.",
+    "Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.9pp vs 12.3pp).",
+    "The model is blind to the depleting / sequestering / trafficking class \u2014 natalizumab, fingolimod, ponesimod, alemtuzumab and atacicept cannot come out beneficial in it at any potency (BUILD_PLAN \u00a78.4). A candidate whose novelty is in trafficking is invisible to this screen.",
+    "A surviving candidate has only avoided the failures this model can see."
+  ],
+  "validated": false
+}

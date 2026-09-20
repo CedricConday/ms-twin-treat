@@ -215,3 +215,18 @@ def test_sormani_round_trips():
 def test_invert_rejects_a_non_positive_ratio():
     with pytest.raises(ValueError):
         invert(0.0)
+
+
+def test_the_cross_check_is_quoted_in_scored_units_not_as_a_ratio():
+    """ke and s are different parameterisations; a ratio between them is an artifact.
+
+    The docstring said "a factor of two apart" (0.85/0.40 in MULTIPLIER space)
+    while the model fits potency s = 1 - ke, where the same two points are 4.0x
+    apart. Corrected 2026-09-20 to quote the gap in predicted relapse change,
+    which does not depend on which parameterisation is printed. This pins the
+    arithmetic so the two spaces cannot be silently compared again.
+    """
+    ke_eae, ke_mri = 0.85, 0.40
+    s_eae, s_mri = 1.0 - ke_eae, 1.0 - ke_mri
+    assert round(ke_eae / ke_mri, 2) == 2.12
+    assert round(s_mri / s_eae, 2) == 4.00, "the two spaces disagree; say which one"

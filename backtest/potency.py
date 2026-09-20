@@ -46,10 +46,28 @@ Ocrelizumab is the only arm with a magnitude from two independent sources, and
 they do not agree:
 
     ke = 0.85   Martinez-Pasamar 2013, fitted to EAE mouse T-cell dynamics
-                (K_eff 1000 -> ~850 cells)
+                (K_eff 1000 -> ~850 cells)                 -> potency s = 0.15
     ke = 0.40   this module, fitted to OPERA I's Gd-enhancing lesion ratio
+                                                           -> potency s = 0.60
 
-A factor of two apart, from mouse flow cytometry versus human MRI. Neither is
+**STATE THE UNITS OR THE GAP LOOKS HALF ITS SIZE (corrected 2026-09-20).** This
+paragraph said "a factor of two apart" and that is the ratio of the MULTIPLIERS,
+0.85/0.40 = 2.1x. The quantity the model fits and sweeps is the potency
+`s = 1 - ke`, and in potency space the same two estimates are 0.60/0.15 = **4.0x**
+apart. Neither ratio is privileged — a ratio between two parameterisations of the
+same pair of points is an artifact of which one you print.
+
+**So quote the disagreement in the units the gate scores, where it is
+parameterisation-free.** Through the cached response table, the two estimates
+predict ocrelizumab's relapse change as:
+
+    EAE fit  (s = 0.15)   -28.5%
+    MRI fit  (s = 0.60)   -73.8%          OPERA I reported -46.0%
+
+**45.3 percentage points apart, straddling the trial's own number.** That is the
+honest measure of how far this potency layer can be trusted: not a factor, a
+45pp spread on the only arm where two independent sources exist, with the truth
+between them and both of them wrong. Neither is
 adjusted toward the other. Possible readings, none of them settled here: the
 mouse and human systems genuinely differ; a two-year human MRI ratio and a
 30-day EAE experiment are not the same measurement; or the model absorbs the

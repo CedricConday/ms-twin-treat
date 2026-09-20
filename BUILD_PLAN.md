@@ -1124,3 +1124,49 @@ named for that, turns out to be the same four ODEs (see above).
 Tables are cached per capacity in `results/mechanism_curve_K*.json`; the
 transcription's own curve is never overwritten. Full rows in
 `results/lomo_capacity.json`.
+
+#### THE SCREEN RAN — 98 CANDIDATES, 38 SURVIVORS, NO RANKING (2026-09-20)
+
+`screen/report.py` enumerates every combination of up to two of the model's seven
+named intervention points, both directions, at potency 0.5, and runs the four
+kill filters over all 98. Artifacts: `results/screen.json`, `docs/SCREEN_RESULTS.md`.
+
+    OUT_OF_REGIME   32      the model runs away; damage undefined
+    UNREACHABLE     17      no benefit at any probed potency
+    DEGENERATE      11      same dials as a drug that already exists
+    SURVIVED        38
+
+**Survivors are listed alphabetically and that is enforced in a test**, with a
+fixture whose alphabetical order deliberately disagrees with its damage order.
+Every survivor is by construction a mechanism pattern no existing drug occupies,
+which is exactly the case `backtest/lomo.py` scores at 45.9pp against a 12.3pp
+null — so an ordered list here would be a sorted list of noise.
+
+**One earlier claim corrected by the run.** §8.4 above says "a screen in which
+nearly every survivor is `gamma_R-`". Measured: **12 of 38**, about a third. The
+dial is over-represented, not dominant.
+
+Half the candidate space (49 of 98) dies on OUT_OF_REGIME or UNREACHABLE, both
+of which are properties of the model rather than of the candidates — a screen
+whose kill reasons are mostly "my simulator broke" is describing itself. That is
+the honest reading and it is why surviving is not passing.
+
+#### THE POTENCY CROSS-CHECK WAS QUOTED IN THE WRONG UNITS (2026-09-20)
+
+`backtest/potency.py` called ocrelizumab's two independent magnitude estimates
+"a factor of two apart". That is `ke` 0.85/0.40 = 2.1x in MULTIPLIER space. The
+model fits **potency `s = 1 - ke`**, where the same two points are 0.60/0.15 =
+**4.0x** apart. Neither ratio is privileged; a ratio between parameterisations is
+an artifact of which one gets printed. Found by the parallel session working the
+decision-rule lane, verified here before changing anything.
+
+Quoted in the units the gate actually scores, through the cached response table:
+
+    EAE fit  (s = 0.15)   -28.5%
+    MRI fit  (s = 0.60)   -73.8%          OPERA I reported -46.0%
+
+**45.3pp apart, straddling the trial's own number.** Both independent sources
+are wrong and they are wrong in opposite directions. That is the honest size of
+the uncertainty in the potency layer, and it is the same class of defect as the
+hardcoded "9/14, 1/9" in `clinical_velez.py`: not stale, just never restated in
+comparable units.
