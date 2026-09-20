@@ -224,6 +224,18 @@ OBSERVED_LESION_RATIOS: dict[str, tuple[float, str]] = {
         "DECIDE, NCT01064401 posted results: 4.31 vs 9.44 on IFN beta-1a, adjusted "
         "mean new or newly enlarging T2 hyperintense lesions to week 96 [new-T2]",
     ),
+    "natalizumab": (
+        1.9 / 11.0,
+        "AFFIRM, NEJM 2006 (PMID 16510744): 1.9 vs 11.0 placebo, mean new or "
+        "enlarging hyperintense T2 lesions over two years, reported as 83% lower "
+        "[new-T2]",
+    ),
+    "IFN-beta": (
+        0.5 / 2.25,
+        "PRISMS MRI results, Li et al., Ann Neurol 1999;46(2):197 (trial PMID "
+        "9820297): median 0.5 (44 mcg) vs 2.25 placebo T2-active lesions per "
+        "patient per scan [active-T2]",
+    ),
     "ofatumumab": (
         0.0115 / 0.4555,
         "ASCLEPIOS I, NCT02792218 posted results: 0.0115 vs 0.4555 on teriflunomide, "
@@ -231,16 +243,19 @@ OBSERVED_LESION_RATIOS: dict[str, tuple[float, str]] = {
     ),
 }
 
-# Still to extract. Three, and each for a different reason:
-#   natalizumab  AFFIRM (2006) predates the results-posting requirement; the
-#                trial record carries no results section at all.
-#   alemtuzumab  CARE-MS I posted results, but its MRI outcome is a PERCENT
-#                CHANGE IN LESION VOLUME, not a lesion count. A volume change is
-#                not convertible to a count ratio and must not be pretended into
-#                one.
-#   IFN-beta     PRISMS (1998) predates the registry entirely.
+# Still to extract. ONE, and the reason is not access:
+#   alemtuzumab  CARE-MS I reports the PROPORTION OF PATIENTS free of new or
+#                enlarging T2 lesions (48% vs 58%), and its posted results give a
+#                percent change in lesion VOLUME. Neither is convertible to a
+#                lesion-count ratio, and pretending otherwise would put a number
+#                here that no trial measured.
+#
+# The two that WERE listed here as blocked are now extracted, and both were in
+# the journals all along -- AFFIRM's MRI table in the NEJM paper, PRISMS's in its
+# companion MRI paper (Li 1999). "Predates the registry" was a reason to look
+# somewhere else, not a reason to stop.
 PENDING_EXTRACTION = (
-    "IFN-beta", "natalizumab", "alemtuzumab",
+    "alemtuzumab",
 )
 
 

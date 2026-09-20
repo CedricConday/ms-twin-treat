@@ -80,6 +80,42 @@ lenercept is scored on TNFRSF1B because TNFR2 is the receptor Tregs depend on.
 That choice is a mechanism claim and it favours the hypothesis, so it is named
 here rather than buried.)
 
+AN OUT-OF-SAMPLE CHECK THE CHANNEL PASSES
+------------------------------------------
+The 0.067 above is a binary test — harm case or not — on the two drugs whose
+MS trials showed harm. There is a stronger check available that was NOT used to
+build the channel, and it uses the four drugs the binary test calls negatives.
+
+The channel predicts **regulatory failure**, not harm in general. So look at what
+each drug's actual toxicity IS:
+
+    CD52    alemtuzumab  1.81x   SECONDARY AUTOIMMUNITY in 30-48% of patients.
+                                 Thyroid autoimmunity alone reached 42% over six
+                                 years in the pooled CARE-MS studies, plus ITP
+                                 (~2.2%) and autoimmune nephropathy (~0.34%).
+    S1PR1   fingolimod   0.74x   no secondary-autoimmunity signal
+    ITGA4   natalizumab  0.34x   PML — an opportunistic INFECTION from
+                                 immunosuppression, not autoimmunity
+    MS4A1   anti-CD20    0.29x   no secondary-autoimmunity signal
+
+Alemtuzumab is the only one of the four with a major autoimmunity signature, and
+it is the only one of the four the channel puts above 1.0. Across all six
+targets the ordering tracks regulatory-failure toxicity monotonically: fatal
+encephalitis, relapse worsening, 30-48% secondary autoimmunity, then three drugs
+with none of it.
+
+Natalizumab is the case that sharpens the claim rather than weakening it. It is
+a dangerous drug — PML kills — and the channel ranks it fifth of six. That is
+correct behaviour: PML is infection from over-suppression, which is a different
+failure mode, and a channel keyed on Treg expression should not and does not
+flag it.
+
+Also at target level, not counted in the statistic because it is the SAME target
+as lenercept: TNF blockade as a class causes CNS demyelination. 122 published
+cases between 1990 and 2016 across etanercept (34%), infliximab (29%),
+adalimumab (29%) and certolizumab (8%). Four more drugs, one more confirmation
+of TNFRSF1B, zero additional independent targets.
+
 WHY IT IS WORTH HAVING ANYWAY
 ------------------------------
 It sees two things nothing else in this repo can:

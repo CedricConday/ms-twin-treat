@@ -162,3 +162,30 @@ def test_the_transcribed_values_are_reproducible():
     script = Path(harm_channel.__file__).resolve().parent.parent / "scripts" / \
         "derive_harm_channel.py"
     assert script.is_file()
+
+
+def test_alemtuzumab_is_the_only_negative_the_channel_puts_above_one():
+    """The out-of-sample check, and it was not used to build the channel.
+
+    The channel predicts REGULATORY FAILURE, not harm in general. Of the four
+    drugs the binary test calls negatives, alemtuzumab is the only one with a
+    major secondary-autoimmunity signature — 30-48% of patients, thyroid
+    autoimmunity alone 42% over six years in pooled CARE-MS — and it is the only
+    one the channel scores above 1.0.
+    """
+    by_arm = {s.arm: s.treg_ratio for s in ranking()}
+    negatives = {"alemtuzumab", "fingolimod", "natalizumab", "ocrelizumab"}
+    above = {a for a in negatives if by_arm[a] > 1.0}
+    assert above == {"alemtuzumab"}
+
+
+def test_natalizumab_ranks_low_and_that_is_correct():
+    """PML is an opportunistic INFECTION from over-suppression, not autoimmunity.
+
+    Natalizumab is a dangerous drug the channel deliberately does not flag. A
+    channel keyed on Treg expression predicting a different failure mode would
+    be the channel not meaning what it says.
+    """
+    order = [s.arm for s in ranking()]
+    assert order.index("natalizumab") >= 4
+    assert ranking()[order.index("natalizumab")].treg_ratio < 1.0
