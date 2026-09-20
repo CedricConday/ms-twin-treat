@@ -63,9 +63,15 @@ trial's answer somewhere. Scoring the same arms at the MRI-fitted potencies from
 a 10.6pp null.** It loses, and it is biased high every single time — median
 1.55x the oracle potency, range 1.08x to 2.46x.
 
-That bias reproduces, by a second route, the one cross-check the repo already
-had: ocrelizumab's potency is 0.85 from a mouse EAE fit and 0.40 from OPERA's
-MRI ratio, a factor of 2.1. The recoverability table puts it at 2.00.
+The repo's existing cross-check on ocrelizumab looks like it agrees, and on
+inspection does not: its 2.1x is in multiplier space and this table's 2.00 is in
+potency space, and the two ratios share the MRI estimate as a term. Read in one
+consistent parameterisation the two independent estimates are **4.0x apart**,
+and the potency that reproduces the trial sits halfway between them on a log
+scale — 2.00x above the EAE fit, 2.00x below the MRI fit. Neither independent
+source finds it, and they miss in opposite directions.
+See [RECOVERABILITY.md](RECOVERABILITY.md) for the full table and the two
+distinct senses of "unreachable".
 
 **Conclusion: blockers (4) and (6) are closed routes on this model, not deferred
 ones.** More MRI-channel potency data cannot lift a gate whose independent
