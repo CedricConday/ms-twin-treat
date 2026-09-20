@@ -4,7 +4,11 @@ Per ms-twin/docs/RESEARCH_FINDINGS.md: no open Python implementation of the
 rigorous plausible-patient method exists on GitHub, and nobody has run it on a
 neuroinflammation model. This is a first, honest v1 of exactly that.
 
-Method (Allen-Rieger flavour of plausible-patient generation):
+Method (Allen-Rieger-Musante plausible-patient generation,
+**Allen RJ, Rieger TR, Musante CJ, CPT Pharmacometrics Syst Pharmacol 2016,
+doi:10.1002/psp4.12063** — the citation belongs here because this brick's whole
+claim is "first open implementation of that method", and a claim to implement a
+published method has to name it):
   1. Latin-hypercube sample physiological parameter sets over plausibility bounds.
   2. PLAUSIBILITY FILTER: simulate each candidate (untreated) through the toy QSP
      and ACCEPT only patients whose outcome falls in a physiologically plausible
@@ -21,6 +25,20 @@ full MAPEL optimizes multiple axes).
 What makes this NOT the make_cohort() stand-in it replaces: that only jittered a
 seed. This samples a parameter space and rejects the implausible region, which
 is the entire point of plausible-patient generation.
+
+STILL MISSING FROM THE STATED WEDGE (recovered from the research repo 2026-09-20)
+---------------------------------------------------------------------------------
+`ms-twin/docs/RESEARCH_FINDINGS.md:39` defines the differentiator as a Python
+port of the prevalence/plausible-patient method **plus modern sampling —
+DREAM(ZS) or simulation-based inference**. Only the first half was ever built.
+Sampling here is plain Latin hypercube with a rejection filter; there is no
+DREAM(ZS), no SBI, and no posterior over the parameter space at all. The
+reference implementation named there, `BMSQSP/QSPToolbox`, is MATLAB +
+SimBiology and has not been consulted.
+
+That gap is not cosmetic: rejection sampling gives an accepted SET, while the
+method's value is a prevalence-WEIGHTED population. `weight_to_prevalence()`
+below is a simplified single-axis stand-in for MAPEL, not MAPEL.
 """
 
 from __future__ import annotations

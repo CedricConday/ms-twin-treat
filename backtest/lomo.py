@@ -348,7 +348,12 @@ def main() -> int:
         print("  mechanism is a dial with no training data on it: one global potency")
         print("  fitted elsewhere says nothing about a place it was never measured.")
         print("  Until this inverts, a generated candidate's score is not information.")
-    print("\n  Four groups means four folds, and one group is a single arm — read the")
+    singles = [f["mechanism"] for f in r["folds"] if f["n_arms"] == 1]
+    print(f"\n  {r['n_groups']} groups means {r['n_groups']} folds"
+          + (f", and {len(singles)} of them "
+             f"{'is a single arm' if len(singles) == 1 else 'are single arms'} "
+             f"({', '.join(singles)})" if singles else "")
+          + " — read the")
     print("  per-group rows, not the headline alone.")
     print(f"  Cohort is {len(SEEDS)} paired seeds at {T_END:.0f} days, scored on the MEDIAN")
     print("  per-seed ratio: untreated damage is heavily right-tailed (see SEEDS) and")

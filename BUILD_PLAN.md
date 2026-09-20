@@ -718,6 +718,42 @@ mapping — five of the nine quantified arms. A screen over it is blind to the
 whole depleting / sequestering / trafficking class, and that has to be decided
 about before the screen is built.
 
+#### IDEAS RECOVERED FROM THE RESEARCH REPO (2026-09-20)
+
+`~/repos/ms-twin/docs/RESEARCH_FINDINGS.md` is named on line 10 of this file as
+the brain repo, and it had not been read in any recent session. Checked against
+the build repo, several named, concrete resources were never carried across.
+Listed so they stop being lost:
+
+- **DREAM(ZS) / simulation-based inference.** `RESEARCH_FINDINGS.md:39` defines
+  the differentiator as the plausible-patient method **plus modern sampling**.
+  Only the first half exists. `bricks/vpop.py` samples by Latin hypercube with a
+  rejection filter — no posterior, no DREAM(ZS), no SBI. The gap matters because
+  rejection sampling yields an accepted SET while the method's value is a
+  prevalence-WEIGHTED population; `weight_to_prevalence()` is a single-axis
+  stand-in for MAPEL, not MAPEL.
+- **Verscheijden 2019**, a 14-compartment brain PBPK **with runnable R in the
+  supplement** — `RESEARCH_FINDINGS.md:17` calls it "the most immediately
+  runnable open CNS model". §6 of this file deliberately deferred it ("don't
+  install R for Verscheijden now") and the barrier brick has been a stand-in
+  ever since. That is the same shape as blocker (1), which closed by porting a
+  published model, and the barrier is currently inert anyway because no arm sets
+  `cns_required`.
+- **ADMET-AI** (pip, MIT) — a BBB permeability gate. Directly relevant to the
+  mechanism-to-molecule gap, never installed or referenced.
+- **`BMSQSP/QSPToolbox`** — the MATLAB + SimBiology reference implementation of
+  the very method `vpop.py` claims to be the first open port of. Never consulted.
+- **Allen-Rieger-Musante 2016, doi:10.1002/psp4.12063** — the method's citation.
+  `vpop.py` named the method for a month without citing it, while claiming to be
+  its first open implementation. Added.
+- **scArchon** — the perturbation-prediction benchmark the harness is modelled
+  on. It was cited in `backtest/README.md` and **I deleted it in this session**
+  while rewriting that file. Restored.
+
+The last one is the useful warning: a rewrite that improves a document can still
+lose the one line in it that was a citation. Check what a rewrite drops, not
+just what it adds.
+
 #### Still open
 
 - **MRI extraction for eight arms** — PRISMS, CONFIRM, AFFIRM, FREEDOMS, TEMSO,
