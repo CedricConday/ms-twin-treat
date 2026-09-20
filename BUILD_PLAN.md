@@ -333,3 +333,120 @@ natalizumab *raises* circulating lymphocyte counts (cells stay in blood), anti-C
 depletes B cells specifically, teriflunomide barely moves ALC. A per-drug number needs a
 bridging assumption across biomarkers, and that assumption is the next thing to argue
 about, not to quietly pick.
+
+### 2026-09-20 — the goal changed, and the order with it
+
+Stated this session: the point of this repo is **candidate generation**, not a
+ranking harness. Score existing drugs well enough to propose new ones, hand a
+target package to someone with a lab. §8.3's boundary is unchanged and still
+holds — this does not become a predictor of a new drug's effect size, and
+nothing here is evidence about MS — but the build order §8.2 gives was written
+for ranking and is wrong for screening.
+
+**Blocker (1) moves from fourth to first.** Not because it got more urgent but
+because it is the *vocabulary*. `mechanism_to_params(mechanism, strength,
+disrupts_regulation)` was the entire representation of a drug: one of two
+classes, a float, a bool. You cannot propose a novel mechanism in that; a
+"new candidate" could only differ from an existing one by a number. Screening
+needs a model with named intervention points, which is what the port provides.
+
+New order: **(1) -> (4) -> (2) -> leave-one-mechanism-out -> screen.**
+
+#### (1) DONE 2026-09-20 (c525930) — `bricks/qsp_velez.py`
+
+Vélez de Mendizábal 2011 transcribed from the paper *and* the authors' Vensim
+model file (Additional file 2, via the Europe PMC supplementary package for
+PMC3155504). Nothing tuned. Three Table-1-vs-model-file discrepancies are
+recorded in the docstring; one is resolved *against* the model file, because
+the paper's body text says `E' = (E/a)^2` while the MDL's equation computes
+`E^n/a` — the authors' own inline comment was right and their equation is a
+transcription error. Both readings remain selectable.
+
+Reproduces the paper's Figure 3 result, not just its numbers: `alpha_R` is the
+health/autoimmunity axis, and raising it moves the system from autoimmune to
+homeostatic monotonically with a >10x damage swing. That is a test against a
+published *result*, which nothing in this repo had before.
+
+A drug is now a `MechanismProfile` — multipliers on the model's own named
+rates (`alpha_E`, `gamma_E`, `alpha_R`, `gamma_R`, `delta`, `naive_E`). Harm is
+expressible mechanistically for the first time: suppress effectors *and* strip
+regulation is one object, and whether it nets to harm is a prediction of the
+dynamics rather than a constant anyone picked.
+
+Runtime 0.43s for a 5-year run, ~20x faster than the grounded ABM.
+
+**Two traps, both now tested, both would have cost a day each to rediscover:**
+- The relapse detector must be scored on the **untreated arm's** baseline. Against
+  its own median, a treated arm's threshold slides down with the treatment and
+  reports an unchanged relapse count for a cohort whose effector load collapsed.
+  Before the fix every arm read 31-37 relapses; after it, Treg support reads 11
+  against untreated's 31, and the healthy configurations read 0.
+- **The published model has no carrying capacity on E.** The only thing bounding
+  the effector population is the Treg feedback, so `gamma_R` above ~2 gives
+  `dE/dt -> (alpha_E - eta)*E` and unbounded growth. That is the model's property,
+  not a porting bug — but the damage number is then meaningless and a screen
+  would rank it as spectacular harm. Runs halt at the regime ceiling and report
+  `in_regime=False`; consumers must branch on that flag, never on the number.
+
+`validated=False`. Transcribing a model is not reproducing it.
+
+#### The circularity wall from 2026-09-17 has a way around it
+
+§8's suggested route for blocker (4) — published exposure-response models — was
+found circular where the response is ARR. It is not circular on the **MRI
+channel**, and that channel is fully public:
+
+- Every quantified arm in `docs/TRIAL_ANCHORS.md` comes from a trial that also
+  reports arm-level new/enlarging T2 and Gd-enhancing lesion outcomes.
+- Per-drug exposure-response models on that endpoint already exist for
+  **natalizumab** (log-linear on Gd-enhancing lesion count, J Pharmacokinet
+  Pharmacodyn 2017, doi:10.1007/s10928-017-9514-4) and **ponesimod** (CUALs,
+  Valenzuela et al. 2022, PMC9574745).
+
+Fit `strength` on lesion effect, predict ARR. The gate never sees the arm's own
+relapse number, so the circularity is gone.
+
+**Known hole, state it before building on it:** lenercept. That trial reported
+**no significant MRI difference** while relapse rate rose significantly
+(p=0.007) and relapses were more severe and longer (Neurology 1999;53:457,
+PMID 10449104). The MRI channel is blind to the one harm case the model most
+needs to get right, so MRI-fitted potency cannot be the only input.
+
+#### Blocker (2) has a published map on the right endpoint
+
+**Sormani & Bruzzi 2013**, *Lancet Neurol* 12(7):669-76, PMID 23743084 — 31
+trials, 18,901 RRMS patients, trial-level regression of treatment effect on MRI
+lesions against treatment effect on relapses: **slope 0.52, R^2 = 0.71**.
+
+That is a fitted micro->clinical map scored on **ARR**, which retires §8's
+"decide before starting" catch entirely: no EDSS endpoint is needed, and the
+Kotelnikova damage->EDSS mismatch does not arise. Before implementing, read the
+paper for the exact regression form and scale (log relative-rate vs log
+relative-rate is the likely form but has NOT been verified — do not assume it).
+
+#### Blocker (6) is retired
+
+MSOAC re-verified 2026-09-20: still v1.0, 2,465 records, 9 trials, **placebo
+arms only**, no 2026 expansion. It was only ever needed for EDSS calibration
+and `bricks/vpop.py` plausibility bounds. On the ARR route the EDSS half does
+not arise, and the bounds half is partly covered with **zero queue** — the
+CLARITY and ADVANCE synthetic placebo arms are on Figshare as open data with
+Merck and Biogen approval, carrying ARR, T2/Gd lesions and confirmed disability
+worsening (PMC12488035). **Do not start the MSOAC application.**
+
+#### Still open
+
+- **(4)** per-drug potency from the MRI channel. Needs arm-level lesion
+  outcomes extracted from the 9 quantified trials into `docs/TRIAL_ANCHORS.md`,
+  then `mechanism_to_params(strength=)` fed from them. The lenercept hole above
+  means the harm channel still needs a non-MRI source.
+- **(2)** the Sormani map in `bricks/readout.py`, replacing `MAX_RELAPSE` /
+  `MAX_LESIONS`. Verify the regression form first.
+- **leave-one-mechanism-out** (`backtest/lomo.py`), beside the existing LOO.
+  Holding out a drug from a class still present in training does not grade a
+  screen; holding out a whole mechanism does. This becomes the headline number.
+- **the screen** (`screen/`), a generator over the QSP's intervention points.
+  Gated on LOMO beating its null — until then it would rank noise.
+- **wiring**: `qsp_traj` is written but nothing consumes it. The clinical gate
+  runs through `abm_damage`, so the port does not move the gate on its own.
+  Readout must start reading `qsp_damage` for any of this to reach the score.
