@@ -510,6 +510,15 @@ class VelezQSPBrick:
     the run report are unchanged) plus `state["qsp_damage"]`, the total-damage
     trajectory, which is the quantity a readout should consume.
 
+    **Per-patient variation is currently the infection history only.**
+    `bricks/vpop.py` samples per-patient values for the TOY model's parameters
+    (`r_CA`, `k_dmg`), which do not exist in this model. They are dropped and
+    listed in `qsp_traj["ignored_params"]` rather than silently absorbed. So a
+    cohort run through this brick varies by `seed` and by nothing else, and
+    vpop's Allen-Rieger plausibility filter — built on toy parameters — does not
+    constrain it. Porting that filter onto Vélez parameters is open work; until
+    then "virtual patient" means "one stochastic infection history".
+
     Reads `state["mechanism_profile"]` (a MechanismProfile or a plain dict of
     multipliers) if present. Falls back to `state["intervention"]`'s scalar
     `treat`/`immunogenic` so the existing pipeline keeps running during the
@@ -554,14 +563,25 @@ class VelezQSPBrick:
 
     def run(self, state: dict) -> dict:
         profile = self._profile_from_state(state)
+
+        # state["qsp_params"] is per-patient variation from bricks/vpop.py, and
+        # vpop still speaks the TOY model's parameter names (r_CA, k_dmg). Merging
+        # those into VELEZ_PARAMS would add dead keys that change nothing, so a
+        # cohort would silently collapse to one identical patient with no error
+        # anywhere. Unknown names are dropped and REPORTED instead.
+        incoming = {**(self.params or {}), **(state.get("qsp_params") or {})}
+        known = {k: v for k, v in incoming.items() if k in VELEZ_PARAMS}
+        ignored = sorted(set(incoming) - set(known))
+
         traj = simulate(
             profile,
-            params={**(self.params or {}), **(state.get("qsp_params") or {})},
+            params=known,
             t_end=self.t_end,
             dt=self.dt,
             seed=state.get("seed"),
             damage_form=self.damage_form,
         )
+        traj["ignored_params"] = ignored
         state["qsp_traj"] = traj
         state["qsp_damage"] = traj["total_damage"]
         state["qsp_relapses"] = relapse_events(traj)

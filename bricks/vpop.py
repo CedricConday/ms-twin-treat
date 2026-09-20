@@ -76,7 +76,17 @@ def sample_vpop(n: int = 20, seed: int = 0, arm: str | None = None,
             i = len(accepted)
             accepted.append({
                 "patient_id": f"vp{i:03d}",
-                "seed": i,
+                # Per-patient SIMULATION seed, and it must depend on the cohort
+                # seed. It used to be plain `i`, so every cohort handed the ABM
+                # the same 12 seeds no matter what `seed=` was passed. Combined
+                # with two other facts -- the sampled qsp_params never reach the
+                # scored path (the readout scores abm_damage), and
+                # bbb_disruption is inert while no arm sets cns_required -- that
+                # made the entire virtual population decorative: changing
+                # `seed=` moved the clinical gate by exactly zero. Measured
+                # 2026-09-20: untreated proxy 0.147137 for seed=1 and seed=2
+                # alike, versus 0.152334 once the patient seeds actually differ.
+                "seed": seed * 100_000 + i,
                 "bbb_disruption": round(vals["bbb_disruption"], 3),
                 "qsp_params": {"r_CA": round(vals["r_CA"], 3),
                                "k_dmg": round(vals["k_dmg"], 3)},

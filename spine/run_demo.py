@@ -33,7 +33,7 @@ from bricks.intervention import (  # noqa: E402  B7
     LIBRARY,
     InterventionStage,
 )
-from bricks.qsp import QSPBrick  # noqa: E402  B4
+from bricks.qsp_velez import VelezQSPBrick  # noqa: E402  B4
 from bricks.readout import ReadoutStage  # noqa: E402  B8
 from bricks.vpop import sample_vpop  # noqa: E402  B9
 from spine.pipeline import (  # noqa: E402
@@ -71,7 +71,10 @@ def build_stages(with_data: bool, arm: str) -> list:
             reason="skipped: needs the Kang matrix, run with --with-data"))
 
     stages += [
-        QSPBrick(),                                               # B4  REAL (toy)
+        # B4 is the Velez de Mendizabal 2011 port, not the toy in bricks/qsp.py.
+        # Two years rather than the model's 5-year FINAL TIME so a demo run stays
+        # quick; backtest/lomo.py uses the same horizon for the same reason.
+        VelezQSPBrick(t_end=730.0),                               # B4  GROUNDED
         ABMBrick(),                                               # B5  REAL (toy)
         BarrierStage(),                                           # B6  REAL (toy)
         ReadoutStage(),                                           # B8  REAL (toy, barrier-gated)
