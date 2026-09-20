@@ -201,11 +201,33 @@ extension and it did NOT fix the sign (median damage 1.46 -> 4.69 -> 11.3 ->
 39.8 as the term rose, with in-regime runs falling from 64 to 26). The extension
 was removed rather than tuned, which is what its own comment said to do.
 
+AND IT IS NOT THE DAMAGE EQUATION. The obvious cheap fix is the exponent: damage
+goes as `(E/a)^2`, so make it linear and it should track the mean instead of the
+peak. Tested over 48 histories at 730 days:
+
+    n=2 (published)   untreated 1.457   gamma_E x1.5 -> 10.249   (+603%)
+                                        gamma_E x2.0 -> 56.324   (+3765%)
+    n=1 (linear)      untreated 2.780   gamma_E x1.5 ->  4.566   (+64%)
+                                        gamma_E x2.0 ->  8.130   (+192%)
+
+**Killing effectors still raises damage with a linear readout.** The squaring
+amplifies the effect roughly tenfold; it does not cause it. So the defect is in
+the T-CELL DYNAMICS, not in the micro->clinical map: in this cross-regulation
+loop, raising effector death raises effector burden, because effectors recruit
+their own regulators and removing them releases the brake. No change to the
+damage equation repairs that.
+
 Consequence for any screen over this model: the entire depleting / sequestering
 / trafficking-blocking class -- natalizumab, fingolimod, ponesimod, alemtuzumab,
-atacicept -- cannot come out beneficial here. That is not a calibration gap. It
-is the reason the grounded direction gate scores 5/13 against the ABM path's
-9/14 (`backtest/clinical_velez.py`).
+cladribine -- cannot come out beneficial here. That is not a calibration gap and
+not a readout choice. It is the reason the grounded direction gate scores 5/13
+against the ABM path's 9/14 (`backtest/clinical_velez.py`).
+
+**The test any replacement model must pass**, stated so nobody ports another one
+on hope: *does increasing effector death reduce effector burden in it?* In
+Vélez it does not, at any damage exponent and with an additive
+regulation-independent loss term added. A model without that property has this
+defect too, whatever else it offers.
 
 BUILT != VALIDATED
 ------------------

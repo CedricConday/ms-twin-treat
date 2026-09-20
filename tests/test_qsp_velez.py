@@ -314,3 +314,32 @@ def test_killing_effectors_is_self_defeating_in_this_model():
 
     assert killing > untreated, "raising gamma_E should RAISE damage in this model"
     assert damping < untreated, "damping proliferation should lower it"
+
+
+def test_the_damage_exponent_is_not_what_makes_depletion_self_defeating():
+    """Rules out the cheap fix, so nobody spends a day on it.
+
+    Damage goes as (E/a)^2, so making it linear looks like it should stop the
+    peak dominating. Measured over 24 histories: killing effectors still raises
+    damage at n=1 (+64% at gamma_E x1.5), it is just amplified at n=2 (+603%).
+
+    The defect is in the T-cell dynamics — effectors recruit their own
+    regulators, so removing them releases the proliferation brake — and no
+    change to the micro->clinical map repairs it.
+    """
+    seeds = range(24)
+
+    def median_damage(profile, n):
+        vals = []
+        for seed in seeds:
+            traj = simulate(profile, params={"n": n}, t_end=730.0, seed=seed)
+            if traj["in_regime"]:
+                vals.append(float(traj["total_damage"][-1]))
+        return float(np.median(vals))
+
+    killing = MechanismProfile(label="killing", gamma_E=1.5)
+    for n in (2.0, 1.0):
+        base = median_damage(UNTREATED_PROFILE, n)
+        assert median_damage(killing, n) > base, (
+            f"at n={n}, killing effectors should still RAISE damage — if this "
+            "fails the model changed and the docstring is stale")

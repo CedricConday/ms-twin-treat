@@ -861,11 +861,28 @@ into a larger excursion). That single property produces:
   - LOMO at 45.9pp against a 12.3pp null, dominated by the gamma_E fold;
   - a screen in which nearly every survivor is `gamma_R-`.
 
-An additive regulation-independent loss term was tried and removed — it does not
-fix the sign. Candidate replacements found but NOT assessed: QSP models of
-B-cell depletion and reconstitution for rituximab-type agents (e.g. PMC13171755).
-The question to ask of any of them is narrow: **does removing effector cells
-reduce damage in it?** If not, it has the same defect and is not worth porting.
+**Two candidate fixes have now been tried and both fail, so nobody need repeat
+them:**
+
+1. An additive regulation-independent loss term `-depletion_rate * E`. Damage
+   rose 1.46 -> 4.69 -> 11.3 -> 39.8 as the term grew. Removed.
+2. The damage exponent. `(E/a)^2` makes damage peak-driven, so linear damage
+   should track the mean instead. Measured at n=1: killing effectors STILL
+   raises damage (+64% at `gamma_E` x1.5, +192% at x2.0). The squaring amplifies
+   roughly tenfold; it does not cause the problem.
+
+So **the defect is in the T-cell dynamics, not the micro->clinical map.** In
+this cross-regulation loop, raising effector death raises effector burden,
+because effectors recruit their own regulators and removing them releases the
+proliferation brake. No readout change repairs that.
+
+**The test any replacement model must pass:** *does increasing effector death
+reduce effector burden in it?* Ask that first, before porting anything. A model
+without that property inherits this defect whatever else it offers.
+
+Candidate checked and rejected: PMC13171755 (QSP of B-cell immune response in
+mouse) — 247 ODE mentions and one "damage". It models B-cell dynamics with no
+tissue-damage readout, so it cannot answer the test and is not a replacement.
 
 #### Still open
 
