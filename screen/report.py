@@ -50,6 +50,11 @@ ROOT = Path(__file__).resolve().parent.parent
 JSON_OUT = ROOT / "results" / "screen.json"
 MD_OUT = ROOT / "docs" / "SCREEN_RESULTS.md"
 
+# The largest relapse reduction any real arm in docs/TRIAL_ANCHORS.md reports.
+# Survivors claiming to beat it are the report's most misleading number, so the
+# comparison is COMPUTED into the output rather than left to the reader.
+BEST_REAL_ARM_PCT = -68.0        # natalizumab, AFFIRM, PMID 16510744
+
 CAVEATS = [
     "Nothing here is evidence about multiple sclerosis. validated=False throughout.",
     "Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is "
@@ -60,6 +65,29 @@ CAVEATS = [
     "novelty is in trafficking is invisible to this screen.",
     "A surviving candidate has only avoided the failures this model can see.",
 ]
+
+
+def _implausibility(survivors: list[dict]) -> dict:
+    """How many survivors claim to beat the best drug ever tested in MS.
+
+    This is the number most likely to be misread off the survivor table, so it
+    is computed and stated rather than left implicit. A model that cannot
+    reproduce a -30% trial effect (see backtest/clinical.py) reporting -99% for
+    an invented dial pair is telling you about itself, not about the candidate.
+    """
+    rel = sorted((s["best_damage"] / s["untreated_damage"] - 1) * 100
+                 for s in survivors
+                 if s.get("best_damage") and s.get("untreated_damage"))
+    if not rel:
+        return {}
+    return {
+        "n": len(rel),
+        "min_pct": rel[0],
+        "max_pct": rel[-1],
+        "beating_best_real_arm": sum(x < BEST_REAL_ARM_PCT for x in rel),
+        "beyond_90pct": sum(x < -90.0 for x in rel),
+        "best_real_arm_pct": BEST_REAL_ARM_PCT,
+    }
 
 
 def run(max_points: int = 2, potency: float = 0.5) -> dict:
@@ -89,7 +117,9 @@ def run(max_points: int = 2, potency: float = 0.5) -> dict:
     killed = sorted((r for r in results if not r.survived),
                     key=lambda r: (r.killed_by.name, r.profile.label))
 
+    imp = _implausibility([row(r) for r in survivors])
     return {
+        "implausibility": imp,
         "generated": date.today().isoformat(),
         "n_candidates": len(candidates),
         "max_points": max_points,
@@ -145,6 +175,18 @@ def to_markdown(rep: dict) -> str:
         lines.append(f"| `{k['label']}` | {k['verdict']} | {k['detail']} |")
 
     lines += ["", "## Read this before quoting any line above", ""]
+    imp = rep.get("implausibility") or {}
+    if imp:
+        lines += [
+            f"- **{imp['beating_best_real_arm']} of {imp['n']} survivors claim a larger "
+            f"effect than the best drug ever tested in MS** (natalizumab, "
+            f"{imp['best_real_arm_pct']:.0f}% relapse reduction in AFFIRM), and "
+            f"{imp['beyond_90pct']} of them claim better than -90%. Survivor effects "
+            f"here run {imp['min_pct']:.0f}% to {imp['max_pct']:.0f}%. **This is not "
+            "credible and it is not meant to be read as a prediction.** The same model "
+            "cannot reproduce a -30% effect for interferon beta on a real arm. The "
+            "damage column measures the model, not the candidate.",
+        ]
     lines += [f"- {c}" for c in CAVEATS]
     return "\n".join(lines) + "\n"
 
@@ -162,6 +204,12 @@ def main() -> int:
     print(f"\n  survivors, alphabetical (NOT ranked — {CAVEATS[1]}):")
     for s in rep["survivors"]:
         print(f"    {s['label']}")
+    imp = rep.get("implausibility") or {}
+    if imp:
+        print(f"\n  {imp['beating_best_real_arm']} of {imp['n']} survivors claim a "
+              f"bigger effect than natalizumab ({imp['best_real_arm_pct']:.0f}%), "
+              f"{imp['beyond_90pct']} claim better than -90%. Not credible; the damage "
+              "column measures the model, not the candidate.")
     print(f"\nwritten: {JSON_OUT}\n         {MD_OUT}")
     for c in CAVEATS:
         print(f"  - {c}")

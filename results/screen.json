@@ -1145,5 +1145,13 @@
     "The model is blind to the depleting / sequestering / trafficking class \u2014 natalizumab, fingolimod, ponesimod, alemtuzumab and atacicept cannot come out beneficial in it at any potency (BUILD_PLAN \u00a78.4). A candidate whose novelty is in trafficking is invisible to this screen.",
     "A surviving candidate has only avoided the failures this model can see."
   ],
-  "validated": false
+  "validated": false,
+  "implausibility": {
+    "n": 38,
+    "min_pct": -99.92526194579858,
+    "max_pct": -16.19664125916238,
+    "beating_best_real_arm": 32,
+    "beyond_90pct": 22,
+    "best_real_arm_pct": -68.0
+  }
 }

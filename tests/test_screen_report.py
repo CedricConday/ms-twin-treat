@@ -78,3 +78,20 @@ def test_the_report_never_claims_validation(fake):
     rep = report.run()
     assert rep["validated"] is False
     assert "validated=False" in report.to_markdown(rep)
+
+
+def test_the_report_states_how_many_survivors_beat_the_best_real_drug(fake):
+    """The survivor table's most misleading number, computed rather than implied.
+
+    32 of 38 real survivors claim a bigger effect than natalizumab's -68% in
+    AFFIRM, and 22 claim better than -90%, from a model that cannot reproduce
+    interferon beta's -30%. If that comparison is not in the artifact, the
+    artifact invites the misreading.
+    """
+    rep = report.run()
+    imp = rep["implausibility"]
+    assert imp["n"] == 3
+    assert imp["beating_best_real_arm"] == 1   # only zeta+ at -90% clears -68%
+    md = report.to_markdown(rep)
+    assert "not credible" in md.lower()
+    assert "natalizumab" in md.lower()

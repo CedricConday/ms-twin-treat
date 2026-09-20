@@ -125,6 +125,7 @@ Alphabetical. The damage column is a simulated median over 8 infection histories
 
 ## Read this before quoting any line above
 
+- **32 of 38 survivors claim a larger effect than the best drug ever tested in MS** (natalizumab, -68% relapse reduction in AFFIRM), and 22 of them claim better than -90%. Survivor effects here run -100% to -16%. **This is not credible and it is not meant to be read as a prediction.** The same model cannot reproduce a -30% effect for interferon beta on a real arm. The damage column measures the model, not the candidate.
 - Nothing here is evidence about multiple sclerosis. validated=False throughout.
 - Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.9pp vs 12.3pp).
 - The model is blind to the depleting / sequestering / trafficking class — natalizumab, fingolimod, ponesimod, alemtuzumab and atacicept cannot come out beneficial in it at any potency (BUILD_PLAN §8.4). A candidate whose novelty is in trafficking is invisible to this screen.
