@@ -343,3 +343,22 @@ def test_the_damage_exponent_is_not_what_makes_depletion_self_defeating():
         assert median_damage(killing, n) > base, (
             f"at n={n}, killing effectors should still RAISE damage — if this "
             "fails the model changed and the docstring is stale")
+
+
+def test_the_repos_own_toy_passes_the_test_the_grounded_model_fails():
+    """Recorded rather than buried, because it is uncomfortable.
+
+    bricks/qsp.py has logistic effector growth, so effector control does not
+    depend on effectors recruiting their own regulators. Damage falls
+    monotonically with treatment there. In Velez it rises. On this one axis the
+    invented toy is right where the transcribed published model is wrong — which
+    is why a replacement model must be screened on DAMAGE direction, not on
+    whether it is published.
+    """
+    from bricks.qsp import simulate as toy_simulate
+
+    damages = [1.0 - float(toy_simulate(treat=t)["M"][-1])
+               for t in (0.0, 0.2, 0.4, 0.6, 0.8)]
+    assert damages == sorted(damages, reverse=True), (
+        f"the toy should improve monotonically with treatment, got {damages}")
+    assert damages[0] > 4 * damages[-1]

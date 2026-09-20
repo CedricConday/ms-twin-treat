@@ -861,24 +861,45 @@ into a larger excursion). That single property produces:
   - LOMO at 45.9pp against a 12.3pp null, dominated by the gamma_E fold;
   - a screen in which nearly every survivor is `gamma_R-`.
 
-**Two candidate fixes have now been tried and both fail, so nobody need repeat
-them:**
+**THE FIX GRID IS EXHAUSTED. Six structural variants, every one fails.** Damage
+change at depletion, median over 24 infection histories at 730 days:
 
-1. An additive regulation-independent loss term `-depletion_rate * E`. Damage
-   rose 1.46 -> 4.69 -> 11.3 -> 39.8 as the term grew. Removed.
-2. The damage exponent. `(E/a)^2` makes damage peak-driven, so linear damage
-   should track the mean instead. Measured at n=1: killing effectors STILL
-   raises damage (+64% at `gamma_E` x1.5, +192% at x2.0). The squaring amplifies
-   roughly tenfold; it does not cause the problem.
+| variant | at 1.5x | at 2x | at 3x |
+|---|---|---|---|
+| published (`gamma_E`, n=2, no cap) | +1564% | +5635% | +275382% |
+| `gamma_E`, linear damage (n=1) | +107% | +332% | +1719% |
+| `gamma_E`, carrying capacity K=50k | +109% | +198% | +362% |
+| `gamma_E`, linear + capacity | **+18%** | +36% | +64% |
+| additive `-dep*E`, no cap | +281% (dep 0.05) | +1444% | +4020% |
+| additive `-dep*E` + capacity | +33% (dep 0.05) | +90% | +148% |
 
-So **the defect is in the T-cell dynamics, not the micro->clinical map.** In
-this cross-regulation loop, raising effector death raises effector burden,
-because effectors recruit their own regulators and removing them releases the
-proliferation brake. No readout change repairs that.
+The best case still has the wrong sign. A carrying capacity does two real things
+— it stops divergence, and it makes median effector burden FALL with depletion
+(1088 -> 982) — and damage still rises, because the stochastic excursions get
+worse as the damping weakens.
 
-**The test any replacement model must pass:** *does increasing effector death
-reduce effector burden in it?* Ask that first, before porting anything. A model
-without that property inherits this defect whatever else it offers.
+**Why, and why it is not patchable.** Effectors recruit their own regulators
+through `E^h/(ke^h+E^h)`. Remove effectors and `R` falls, the proliferation
+brake releases, and the system re-equilibrates with weaker damping and larger
+excursions. That loop is not an implementation detail — it is the paper's entire
+contribution. You cannot remove it and still have the model.
+
+**So the criterion stated earlier was not sharp enough.** "Does increasing
+effector death reduce effector BURDEN" is passed by the capacity variant and is
+still not enough. The test a replacement must pass is:
+
+    does increasing effector death reduce DAMAGE, at every potency?
+
+**And the repo's own discarded toy passes it.** `bricks/qsp.py` has logistic
+growth `r_CA*C*A*(1-A)`, so effector control does not depend on effectors
+recruiting their own regulators. Damage falls monotonically with `treat`:
+0.906 -> 0.383 -> 0.276 -> 0.218 -> 0.181. That is an uncomfortable result and
+it is recorded rather than buried: on this one axis the invented toy is right
+where the transcribed published model is wrong.
+
+What a replacement needs, precisely: **effector growth bounded by something
+OTHER than the regulatory population.** Vélez bounds it only by Tregs, so
+attacking effectors attacks the bound.
 
 Candidate checked and rejected: PMC13171755 (QSP of B-cell immune response in
 mouse) — 247 ODE mentions and one "damage". It models B-cell dynamics with no
