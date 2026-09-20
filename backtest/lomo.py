@@ -65,7 +65,19 @@ from bricks.profiles import PROFILES, touched_points
 from bricks.qsp_velez import MechanismProfile, simulate
 from bricks.sormani import predict_relapse_ratio
 
-CACHE = Path(__file__).resolve().parent.parent / "results" / "mechanism_curve.json"
+RESULTS = Path(__file__).resolve().parent.parent / "results"
+CACHE = RESULTS / "mechanism_curve.json"
+
+
+def cache_path(carrying_capacity: float | None = None) -> Path:
+    """One cache per capacity. The published model (None) keeps its own name.
+
+    A capacity table is a DIFFERENT model, not a refinement of this one (see
+    bricks/qsp_velez.py), so it must never overwrite the transcription's curve.
+    """
+    if carrying_capacity is None:
+        return CACHE
+    return RESULTS / f"mechanism_curve_K{carrying_capacity:g}.json"
 
 # Potency grid. 0 is untreated, and 1.0 is excluded: a dial multiplied by 0
 # removes a rate entirely, which is outside anything the published model was
@@ -142,9 +154,11 @@ def _profile_at(arm: str, s: float) -> MechanismProfile:
     return MechanismProfile(label=f"{arm}@{s:g}", source="LOMO potency sweep", **points)
 
 
-def _damage(profile: MechanismProfile, seed: int) -> float | None:
+def _damage(profile: MechanismProfile, seed: int,
+            carrying_capacity: float | None = None) -> float | None:
     """Total damage at the horizon, or None if the run left the model's regime."""
-    traj = simulate(profile, t_end=T_END, seed=seed)
+    traj = simulate(profile, t_end=T_END, seed=seed,
+                    carrying_capacity=carrying_capacity)
     if not traj["in_regime"]:
         return None
     return float(traj["total_damage"][-1])
@@ -155,7 +169,8 @@ def _median_ratio(changes: list[float]) -> float:
     return float(np.median(changes))
 
 
-def _cell(job: tuple[str, float, dict[int, float]]) -> tuple[str, float, list[float]]:
+def _cell(job: tuple[str, float, dict[int, float], float | None]
+          ) -> tuple[str, float, list[float]]:
     """One (arm, potency) cell: every seed, returned as percent changes.
 
     Module-level and picklable so `build_table` can fan cells across processes.
@@ -163,17 +178,18 @@ def _cell(job: tuple[str, float, dict[int, float]]) -> tuple[str, float, list[fl
     passed in, because they are shared by every cell and re-running them per
     cell would quadruple the work.
     """
-    arm, s, untreated = job
+    arm, s, untreated, cap = job
     changes = []
     for seed, base in untreated.items():
-        treated = _damage(_profile_at(arm, s), seed)
+        treated = _damage(_profile_at(arm, s), seed, carrying_capacity=cap)
         if treated is None or treated <= 0.0:
             continue
         changes.append(predict_relapse_ratio(treated / base).percent_change)
     return arm, s, changes
 
 
-def build_table(verbose: bool = True, workers: int | None = None) -> dict:
+def build_table(verbose: bool = True, workers: int | None = None,
+                carrying_capacity: float | None = None) -> dict:
     """Tabulate predicted relapse change per (mechanism pattern, potency).
 
     Cached, because arms sharing a pattern share a curve: the five gamma_E arms
@@ -190,7 +206,7 @@ def build_table(verbose: bool = True, workers: int | None = None) -> dict:
 
     untreated = {}
     for seed in SEEDS:
-        d = _damage(PROFILES["untreated"], seed)
+        d = _damage(PROFILES["untreated"], seed, carrying_capacity=carrying_capacity)
         if d is None or d <= 0.0:
             raise RuntimeError(
                 f"untreated arm produced no damage at seed {seed}; the lesion ratio "
@@ -200,7 +216,8 @@ def build_table(verbose: bool = True, workers: int | None = None) -> dict:
 
     patterns = sorted(mechanism_groups())
     groups = mechanism_groups()
-    jobs = [(groups[pattern][0], s, untreated) for pattern in patterns for s in POTENCY_GRID]
+    jobs = [(groups[pattern][0], s, untreated, carrying_capacity)
+            for pattern in patterns for s in POTENCY_GRID]
 
     if verbose:
         print(f"  {len(jobs)} cells x {len(SEEDS)} seeds on {workers} workers ...")
@@ -234,21 +251,24 @@ def build_table(verbose: bool = True, workers: int | None = None) -> dict:
         "potency_grid": POTENCY_GRID,
         "seeds": list(SEEDS),
         "t_end": T_END,
+        "carrying_capacity": carrying_capacity,
         "note": ("Predicted relapse-rate change per mechanism pattern and potency. "
                  "Damage from bricks/qsp_velez (Velez de Mendizabal 2011), lesion "
                  "ratio vs the untreated arm on the SAME seed, converted by the "
                  "Sormani & Bruzzi 2013 trial-level map. validated=False."),
     }
-    CACHE.parent.mkdir(parents=True, exist_ok=True)
-    CACHE.write_text(json.dumps(out, indent=2))
+    path = cache_path(carrying_capacity)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(out, indent=2))
     return out
 
 
-def load(rebuild: bool = False) -> dict:
-    if rebuild or not CACHE.exists():
-        print(f"building {CACHE.name} (a few minutes) ...")
-        return build_table()
-    return json.loads(CACHE.read_text())
+def load(rebuild: bool = False, carrying_capacity: float | None = None) -> dict:
+    path = cache_path(carrying_capacity)
+    if rebuild or not path.exists():
+        print(f"building {path.name} (a few minutes) ...")
+        return build_table(carrying_capacity=carrying_capacity)
+    return json.loads(path.read_text())
 
 
 def _predicted(arm: str, s: float, table: dict) -> float:
