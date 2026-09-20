@@ -18,9 +18,28 @@ real **out-of-sample** test instead of a restatement of what we already told it.
 | **Cell** (`cell_scgpt`) | cell-state response | ✅ **DATA-GROUNDED** — Kang IFN-β, beats the null (0.87) | — this is what "grounded" looks like | done |
 | **Intervention** | `treat`, `immunogenic` | ✅ `treat` **DATA-GROUNDED** — IFN-β magnitude in Kang 2018 (`scripts/derive_suppressive_strength.py`); `immunogenic` still mechanism-reasoned | `immunogenic`: needs an encephalitogenic single-cell dataset — nothing in Kang speaks to it (the honest gap) | partial |
 | **Barrier** (PBPK) | rate constants → CNS penetration | ✅ **baseline GROUNDED** — `k_pc` calibrated to ~0.15% CNS (Pardridge 2019); other rate constants still illustrative | remaining constants: published PK; small molecules higher | partial |
-| **QSP** | disease / cytokine ODE rates | invented | published immune/cytokine kinetics; no open MS QSP exists (greenfield) | MED–HARD |
+| **QSP** (`qsp.py`) | disease / cytokine ODE rates | ⚠️ **SUPERSEDED** — the 3-species toy; no longer in the pipeline | replaced by `qsp_velez.py`; still imported by `vpop.sample_vpop` | retire |
+| **QSP** (`qsp_velez.py`) | Teff/Treg cross-regulation ODE | ✅ **GROUNDED** — transcribed from **Vélez de Mendizábal 2011** ([PMC3155504](https://pmc.ncbi.nlm.nih.gov/articles/PMC3155504/)) *and* the authors' Vensim model (Additional file 2); nothing tuned, `validated=False` | reproduce a published figure to earn `validated=True`; Figure 3's alpha_R axis already reproduces qualitatively | partial |
+| **Profiles** (`profiles.py`) | which dials each drug moves | ✅ **directions GROUNDED** from pharmacology, never from outcome | magnitudes: MRI channel (see below); 1 of 9 arms has a number | partial |
+| **Potency** (`backtest/potency.py`) | per-drug magnitude | ⚠️ **1 of 9 arms** — fitted on MRI lesion ratios, never on ARR | extract MRI outcomes for the other eight; all paywalled | blocked |
 | **ABM** (`abm.py`) | agent rates, myelin/oligo thresholds, BBB permeability | ✅ **GROUNDED** — ported from the **Weatherley MS ABM** ([doi:10.1371/journal.pcbi.1013273](https://doi.org/10.1371/journal.pcbi.1013273), MIT); every rate cited to its source file, `validated=False` until a paper figure is reproduced | remaining: reproduce a published figure at `profile="published"` to earn `validated=True` | partial |
-| **Readout** | micro → clinical map | invented proxy scales | MSOAC / trial relapse data, held-out validated. **Hardest — open research.** | HARD |
+| **Readout** (`readout.py`) | micro → clinical map, per patient | invented proxy scales (`MAX_RELAPSE`) | superseded for RATIO scoring by `sormani.py`; the per-patient scale remains illustrative | partial |
+| **Readout** (`sormani.py`) | lesion ratio → relapse ratio | ✅ **GROUNDED** — **Sormani & Bruzzi 2013** (PMID 23743084), 31 trials / 18,901 patients, slope 0.52, R²=0.71 | the INTERCEPT is not published where this repo can read it and is assumed 0; someone with the PDF should replace it | partial |
+| **VPop** (`vpop.py`) | plausibility bounds | ✅ `sample_vpop_velez` bounds are **the paper's own** Table 1 sweep ranges; `sample_vpop` still filters against the toy | retire the toy filter once nothing reads it | partial |
+
+## What grounding actually bought, measured 2026-09-20
+**It made the direction gate worse.** Scored on the grounded stack
+(`backtest/clinical_velez.py`): **5/13 direction, 2/9 magnitude**, against the ABM
+path's **9/14 and 1/9**. One magnitude hit gained, four direction calls lost.
+
+That is the honest return on a day of grounding, and it is recorded here because
+this file exists to track grounding — including when it does not pay. The cause is
+identified and not patched: **`gamma_E` has the wrong sign.** In the published
+equations it is gated by the Treg Hill term, so it is the *regulatory killing*
+channel rather than a generic death rate, and multiplying it misrepresents an
+antibody that depletes independently of regulation. Five of thirteen arms sit on
+it. Giving it a correct home means an additive effector-loss term the published
+model does not have — i.e. extending the model rather than porting one.
 
 ## First concrete grounding target (identified this session)
 **Barrier CNS penetration.** The current toy outputs ~8% CNS-effective exposure for
