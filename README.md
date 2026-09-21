@@ -50,13 +50,13 @@ Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separat
 - **lenercept and atacicept are immunosuppressive by mechanism and harmed patients in trials.** A rule that maps mechanism class to clinical direction predicts benefit for both and is wrong on both. Lenercept now carries a regulation-disruption flag earned by its TNF biology (TNF-deficient mice get *worse* EAE; TNFR2 is required for remyelination), which moves it from −77% to −35% without crossing zero — the model can represent the case, and the current constants still get the sign wrong.
 - **one strength per class cannot separate two drugs inside a class.** Ocrelizumab vs interferon beta-1a (OPERA), alemtuzumab vs interferon beta-1a (CARE-MS I) and ponesimod vs teriflunomide (OPTIMUM) are all scored against an active comparator, and the simulation returns exactly 0% difference for each.
 
-**The out-of-sample tests run too, and every one of them loses to its null** (re-measured 2026-09-20):
+**The out-of-sample tests run too, and every one of them loses to its null** (re-measured 2026-09-21 on the 15-arm exam; live values in [`results/STATE.md`](results/STATE.md)):
 
 | test | what is held out | result |
 |---|---|---|
-| `backtest.loo` | one arm | **28.3pp MAE vs an 11.5pp predict-the-mean null** |
-| `backtest.lomo` | a whole mechanism | **45.9pp vs 12.3pp** |
-| `backtest.lomo_capacity` | a whole mechanism, under the one structural fix that flips the depletion sign | **45.6pp vs 12.3pp** |
+| `backtest.loo` | one arm | **30.0pp MAE vs an 11.3pp predict-the-mean null** |
+| `backtest.lomo` | a whole mechanism | **45.4pp vs 11.8pp** |
+| `backtest.lomo_capacity` | a whole mechanism, under the one structural fix that flips the depletion sign | **42.2pp vs 11.8pp** with K fitted per fold; **48.0pp at the fixed K=2000 the screen runs at** — *worse* than the transcription |
 
 A single class strength carries no drug-specific information, and on an unseen
 mechanism the model answers with roughly the training arms' average whatever it

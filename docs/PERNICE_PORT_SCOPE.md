@@ -130,7 +130,7 @@ Three arms were added and two of them landed in groups that were already the
 largest. The lever is real but it needs more than six arms, and specifically
 more arms in the SMALL groups.
 
-The in-sample 4.0pp was this repo's first estimate and it flattered the
+The in-sample figure (4.0pp on the 12-arm exam, 3.3pp now) was this repo's first estimate and it flattered the
 representation twice over — by fitting each group's mean including the arm
 being predicted, and by carrying two arms that are alone on their dials. The
 parallel session caught both; it reproduced the model side exactly and the two
@@ -139,7 +139,7 @@ out-of-sample model must be compared against an out-of-sample null, or it is
 charged for information the null gets free).
 
 **What that means for this port specifically.** A richer model does not need to
-be better, it needs to land within about **one percentage point of perfect** to
+be better, it needs to land within about **one percentage point of perfect** (0.9pp on the current exam) to
 clear a predict-the-mean null on this arm set. Pernice's extra compartments address
 reachability — one of the three failures — and buy nothing against the other
 two. Budget accordingly, and consider whether growing the arm set is the

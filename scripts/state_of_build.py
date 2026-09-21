@@ -60,9 +60,14 @@ GATES: list[tuple[str, str, list[tuple[str, str]]]] = [
         ("MAE", r"out-of-sample MAE:\s*([\d.]+pp)"),
         ("null", r"predict-the-mean null:\s*([\d.]+pp)"),
     ]),
-    ("LOMO under the capacity extension", "backtest.lomo_capacity", [
+    # Name the variant. Quoting this row without saying which one produced a
+    # wrong claim in BUILD_PLAN on 2026-09-21: the headline is K fitted PER FOLD,
+    # an extra free parameter fitted inside each fold, while the screen runs at a
+    # FIXED K and scores WORSE than the transcription there. Both are reported.
+    ("LOMO + capacity (K per fold, then fixed K=2000)", "backtest.lomo_capacity", [
         ("MAE", r"out-of-sample MAE:\s*([\d.]+pp)"),
         ("null", r"predict-the-mean null:\s*([\d.]+pp)"),
+        ("fixed K=2000", r"K=2000\.0\s+MAE\s+([\d.]+pp)"),
     ]),
     ("per-drug potency (MRI channel)", "backtest.potency", [
         ("fitted", r"(\d+) arm\(s\) fitted"),
