@@ -12,6 +12,7 @@ import dataclasses
 
 import pytest
 
+from backtest.clinical import KNOWN_OUTCOMES
 from gate.ceiling import GRID_HI, GRID_LO, OracleFit, recoverability, run_ceiling
 
 
@@ -21,9 +22,14 @@ def ceiling():
 
 
 def test_every_quantified_arm_is_classified(ceiling):
-    """12 quantified arms, each either reachable or not. No arm silently dropped."""
-    assert len(ceiling["fits"]) == 12
-    assert ceiling["n_reachable"] + ceiling["n_unreachable"] == 12
+    """Each quantified arm is either reachable or not, and none is silently
+    dropped. The count is derived: arms get wired regularly, and a literal here
+    would fail for the wrong reason every time one does."""
+    quantified = [o for o in KNOWN_OUTCOMES
+                  if o.relapse_change_pct is not None and o.arm != "untreated"]
+    assert len(ceiling["fits"]) == len(quantified)
+    assert ceiling["n_reachable"] + ceiling["n_unreachable"] == len(quantified)
+    assert {f.arm for f in ceiling["fits"]} == {o.arm for o in quantified}
 
 
 def test_grid_edge_is_never_counted_as_a_fit(ceiling):

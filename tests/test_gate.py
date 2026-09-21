@@ -35,6 +35,36 @@ from gate.provenance import (
     from_simulator,
     from_table,
 )
+from screen.kill_filter import screen
+
+
+@pytest.fixture(scope="module")
+def survivor() -> MechanismProfile:
+    """A candidate pattern nothing currently occupies, found at test time.
+
+    Hardcoding one breaks whenever an arm is wired onto that dial -- `delta-`
+    was free until abatacept landed on `delta`, at which point the device
+    correctly began returning DEGENERATE and three tests failed for the right
+    reason. Asking the screen which patterns survive today keeps the fixture
+    valid across arm-set changes instead of deferring the same break.
+    """
+    from screen.kill_filter import enumerate_candidates
+
+    for result in screen(enumerate_candidates(max_points=2)):
+        if result.survived:
+            return result.profile
+    pytest.skip("no surviving candidate on this model; the device has nothing to abstain on")
+
+
+@pytest.fixture(scope="module")
+def doomed() -> MechanismProfile:
+    """A candidate the model kills, found the same way and for the same reason."""
+    from screen.kill_filter import enumerate_candidates
+
+    for result in screen(enumerate_candidates(max_points=1)):
+        if not result.survived:
+            return result.profile
+    pytest.skip("nothing is killed on this model; the kill filters have stopped working")
 
 
 def _passing_scorer(name: str) -> ScorerEvidence:
@@ -154,39 +184,34 @@ def test_arm_holdout_alone_does_not_unlock_pass():
 # --- the device ----------------------------------------------------------
 
 
-def test_a_doomed_candidate_is_killed_without_consulting_the_certificate():
-    """gamma_E+ is UNREACHABLE; a KILL must not need a certificate at all."""
-    doomed = MechanismProfile(label="gamma_E+", source="test", gamma_E=1.5)
+def test_a_doomed_candidate_is_killed_without_consulting_the_certificate(doomed):
+    """A KILL must not need a certificate at all."""
     v = decide(doomed, certificate=None)
     assert v.kind is VerdictKind.KILL
     assert v.certificate is None, "a kill computed the certificate it did not need"
 
 
-def test_survivors_abstain_on_the_live_certificate():
-    survivor = MechanismProfile(label="delta-", source="test", delta=0.5)
+def test_survivors_abstain_on_the_live_certificate(survivor):
     v = decide(survivor)
     assert v.kind is VerdictKind.ABSTAIN
     assert any("PASS unavailable" in r for r in v.reasons)
 
 
-def test_the_pass_path_is_live_code():
+def test_the_pass_path_is_live_code(survivor):
     """With an unlocking certificate the same survivor passes. If this test
     fails, PASS has become unreachable by construction and the device is a
     hard-coded refusal wearing a criterion."""
-    survivor = MechanismProfile(label="delta-", source="test", delta=0.5)
     v = decide(survivor, certificate=_passing_certificate())
     assert v.kind is VerdictKind.PASS
     assert v.is_pass
 
 
-def test_an_unlocking_certificate_still_cannot_revive_a_killed_candidate():
-    doomed = MechanismProfile(label="gamma_E+", source="test", gamma_E=1.5)
+def test_an_unlocking_certificate_still_cannot_revive_a_killed_candidate(doomed):
     v = decide(doomed, certificate=_passing_certificate())
     assert v.kind is VerdictKind.KILL
 
 
-def test_no_verdict_claims_validation():
-    survivor = MechanismProfile(label="delta-", source="test", delta=0.5)
+def test_no_verdict_claims_validation(survivor):
     for cert in (None, _passing_certificate()):
         assert decide(survivor, certificate=cert).validated is False
 
@@ -202,9 +227,8 @@ def test_decide_all_preserves_input_order():
     assert [v.candidate for v in verdicts] == [p.label for p in profiles]
 
 
-def test_the_device_exposes_no_score_or_rank():
+def test_the_device_exposes_no_score_or_rank(survivor):
     """The refusal `screen.rank_candidates` already makes, kept at this layer."""
-    survivor = MechanismProfile(label="delta-", source="test", delta=0.5)
     v = decide(survivor, certificate=_passing_certificate())
     for banned in ("score", "rank", "effect_size", "predicted_change"):
         assert not hasattr(v, banned), f"Verdict exposes {banned}"
@@ -213,8 +237,7 @@ def test_the_device_exposes_no_score_or_rank():
         "criterion"}
 
 
-def test_verdict_explains_itself_without_a_certificate():
-    doomed = MechanismProfile(label="alpha_R-", source="test", alpha_R=0.5)
+def test_verdict_explains_itself_without_a_certificate(doomed):
     text = decide(doomed, certificate=None).explain()
     assert "validated=False" in text
 
@@ -222,10 +245,9 @@ def test_verdict_explains_itself_without_a_certificate():
 # --- model provenance ----------------------------------------------------
 
 
-def test_every_verdict_names_its_model():
+def test_every_verdict_names_its_model(survivor):
     """Survival is model-relative: two models the gate cannot tell apart
     disagree on 11 of 40 survivors, so an unlabelled verdict is unreproducible."""
-    survivor = MechanismProfile(label="delta-", source="test", delta=0.5)
     v = decide(survivor)
     assert v.model.model == PUBLISHED
     assert v.model.label() == "velez2011"

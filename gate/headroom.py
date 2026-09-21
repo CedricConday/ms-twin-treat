@@ -271,7 +271,7 @@ def main() -> int:
     print("\n\nHOW MUCH IS THERE TO WIN AT ALL? — bounding the ARM SET, not the model\n")
     print("  A PERFECT dial-level model: predict every arm by its own dial group's")
     print("  outcome. No fitting, no simulation, nothing to get wrong.\n")
-    for label, key in (("in sample (all 12 arms)", "in_sample"),
+    for label, key in ((f"in sample (all {d['in_sample']['n']} arms)", "in_sample"),
                        ("singleton groups dropped", "multi_only"),
                        ("out of sample, within group", "out_of_sample")):
         v = d[key]
