@@ -85,6 +85,16 @@ FITTED: dict[tuple[str, str], str] = {
         "Martinez-Pasamar et al. 2013 (PMC3651362), applied at TARGET level: the same "
         "anti-CD20 K_eff shift as ocrelizumab, 850/1000 = 0.85. Not a per-drug fit."
     ),
+    ("ublituximab", "ke"): (
+        "Martinez-Pasamar et al. 2013 (PMC3651362), applied at TARGET level, exactly "
+        "as for ofatumumab: the same anti-CD20 K_eff shift, 850/1000 = 0.85. Not a "
+        "per-drug fit, and the point of the arm is that it CANNOT differ from the "
+        "other anti-CD20 arms in this model."
+    ),
+    ("rituximab", "ke"): (
+        "Martinez-Pasamar et al. 2013 (PMC3651362), applied at TARGET level as for "
+        "the other anti-CD20 arms: 850/1000 = 0.85. Not a per-drug fit."
+    ),
     ("ocrelizumab", "ke"): (
         "Martinez-Pasamar et al. 2013, BMC Syst Biol 7:34 (PMC3651362): anti-CD20 "
         "dynamics reproduced by reducing K_eff from 1000 to ~850 cells. 850/1000 = 0.85."
@@ -298,11 +308,95 @@ APL_CGP77116 = _p(
     delta=ENHANCE, naive_E=ENHANCE,
 )
 
+# --------------------------------------------------------------------------- #
+# Added 2026-09-21. Anchors researched by the parallel session
+# (docs/TRIAL_ANCHORS.md, f2ca0d4); the dial assignments below are this file's
+# own call, from pharmacology, never from the trial number. Two arms the anchor
+# table offers are deliberately NOT here — see UNASSIGNED at the bottom.
+
+UBLITUXIMAB = _p(
+    "ublituximab",
+    "Glycoengineered anti-CD20 monoclonal antibody; depletes B cells. THIRD arm on "
+    "the same target as ocrelizumab and ofatumumab, and it inherits the same "
+    "target-level magnitude for the same reason they share one: Martinez-Pasamar "
+    "et al. 2013 (PMC3651362) moved K_eff 1000 -> ~850 for anti-CD20. It is added "
+    "because `ke` was the most starved multi-member group in the out-of-sample "
+    "ceiling (scripts/dial_ceiling.py), not because a third anti-CD20 teaches the "
+    "model anything new about B cells.",
+    ke=0.85,
+)
+
+IFN_BETA_1B = _p(
+    "IFN-beta-1b",
+    "Type I interferon, same molecular class as IFN-beta-1a; reduces T-cell "
+    "activation and proliferation. Mapped to alpha_E only, for the same reason and "
+    "with the same omission as IFN-beta: no Treg axis is asserted without an "
+    "independent source.",
+    alpha_E=SUPPRESS,
+)
+
+OZANIMOD = _p(
+    "ozanimod",
+    "S1P1/S1P5 receptor modulator; sequesters lymphocytes in lymph nodes by "
+    "blocking egress. LUMPED onto gamma_E with fingolimod and ponesimod — no "
+    "lymph-node compartment. Added with low expectations: gamma_E is already the "
+    "largest group and the one no potency reaches (backtest/potency.py returns "
+    "OUT OF RANGE for every arm on it).",
+    gamma_E=ENHANCE,
+)
+
+RITUXIMAB = _p(
+    "rituximab",
+    "Chimeric anti-CD20 monoclonal antibody; depletes B cells. Same target and "
+    "same target-level magnitude as the other anti-CD20 arms: Martinez-Pasamar "
+    "et al. 2013 (PMC3651362), K_eff 1000 -> ~850. Its RIFUND-MS "
+    "outcome is a PROPORTION of patients relapsing, not an annualised rate, so it "
+    "enters the gate as direction-only — converting a proportion to an ARR would "
+    "invent precision, the same rule that keeps active-comparator arms unchained.",
+    ke=0.85,
+)
+
+USTEKINUMAB = _p(
+    "ustekinumab",
+    "Anti-IL-12/23 p40 monoclonal antibody; blocks the cytokine signals driving "
+    "Th1 and Th17 effector differentiation, so it is mapped to alpha_E. **Its "
+    "phase II found no significant lesion reduction at any of four doses** "
+    "(PMID 18703004), which is exactly why it is valuable: alpha_E previously held "
+    "three arms that all worked, and a dial whose training data is all successes "
+    "cannot teach a model that the dial sometimes does nothing.",
+    alpha_E=SUPPRESS,
+)
+
+ABATACEPT = _p(
+    "abatacept",
+    "CTLA4-Ig; binds CD80/CD86 on antigen-presenting cells and blocks the CD28 "
+    "costimulation that T-cell activation requires. Mapped to `delta`, the "
+    "activation step, NOT to alpha_E — it does not slow proliferation of already "
+    "activated cells, it prevents activation. **No alpha_R axis is asserted.** "
+    "CTLA4-Ig plausibly impairs regulatory T cells, which depend on CD28, and if "
+    "it did this arm would join glatiramer's group and turn a singleton into a "
+    "scored pair — which is precisely the incentive to be careful. A search on "
+    "2026-09-21 found abatacept/Treg evidence only in LRBA deficiency, "
+    "transplantation and haemolytic anaemia, nothing in MS, so the axis stays off.",
+    delta=SUPPRESS,
+)
+
+# NOT ASSIGNED, and the reasons matter more than the arms.
+#
+# laquinimod (ALLEGRO, PMID 22417253, -23.1%): aryl hydrocarbon receptor agonism
+#   shifting myeloid cells toward an anti-inflammatory phenotype. No named Vélez
+#   rate corresponds. It is the weakest quantified effect available and therefore
+#   exactly the spread the arm set needs, which is the whole reason forcing it
+#   onto a dial would be fitting the representation to the outcome.
+# secukinumab (PoC, PMID 27142710, primary endpoint missed): anti-IL-17A. IL-17
+#   is not a species in this model and effector function is not one of its rates.
+
 PROFILES: dict[str, MechanismProfile] = {p.label: p for p in (
     UNTREATED, IFN_BETA, GLATIRAMER, APL_CGP77116,
     NATALIZUMAB, FINGOLIMOD, PONESIMOD, TERIFLUNOMIDE, DIMETHYL_FUMARATE,
     OCRELIZUMAB, ALEMTUZUMAB, LENERCEPT, ATACICEPT, IFN_GAMMA,
     OFATUMUMAB, DACLIZUMAB, CLADRIBINE,
+    UBLITUXIMAB, IFN_BETA_1B, OZANIMOD, RITUXIMAB, USTEKINUMAB, ABATACEPT,
 )}
 
 

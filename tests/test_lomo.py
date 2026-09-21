@@ -37,14 +37,15 @@ def test_groups_are_keyed_by_intervention_points_not_by_a_label():
 def test_the_quantified_arms_fall_into_the_expected_mechanisms():
     groups = lomo.mechanism_groups()
     assert set(groups) == {
-        ("alpha_E",),            # IFN-beta, teriflunomide, dimethyl fumarate
+        ("alpha_E",),            # IFN-beta, teriflunomide, dimethyl fumarate,
+                                 # IFN-beta-1b
         ("alpha_R",),            # daclizumab
         ("alpha_R", "delta"),    # glatiramer acetate
         ("gamma_E",),            # natalizumab, fingolimod, alemtuzumab, ponesimod,
-                                 # cladribine
-        ("ke",),                 # ocrelizumab, ofatumumab
+                                 # cladribine, ozanimod
+        ("ke",),                 # ocrelizumab, ofatumumab, ublituximab
     }
-    assert sum(len(a) for a in groups.values()) == 12
+    assert sum(len(a) for a in groups.values()) == 15
 
 
 def test_only_arms_with_a_real_number_are_grouped():
@@ -171,7 +172,7 @@ def test_run_lomo_scores_every_quantified_arm_exactly_once():
     patterns = {"|".join(k): 1.0 for k in lomo.mechanism_groups()}
     result = lomo.run_lomo(_synthetic_table(patterns))
     arms = [r["arm"] for r in result["rows"]]
-    assert len(arms) == len(set(arms)) == 12
+    assert len(arms) == len(set(arms)) == 15
     assert result["n_groups"] == 5
 
 

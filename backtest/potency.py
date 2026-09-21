@@ -274,6 +274,13 @@ OBSERVED_LESION_RATIOS: dict[str, tuple[float, str]] = {
 # somewhere else, not a reason to stop.
 PENDING_EXTRACTION = (
     "alemtuzumab",
+    # Added 2026-09-21 with the arm-set widening. None of these three has had its
+    # trial MRI outcome extracted yet, and the guard in tests/test_potency.py
+    # requires every quantified arm to be either fitted or explicitly pending --
+    # a gap nobody can see is a gap nobody closes.
+    "ublituximab",
+    "IFN-beta-1b",
+    "ozanimod",
 )
 
 

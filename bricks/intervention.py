@@ -202,11 +202,52 @@ IFN_GAMMA = _from_mechanism(
           "upregulates MHC class II. IMMUNOGENIC class from its immunology (Panitch "
           "1987, PMID 2882294). Backtest target: HARMED.")
 
+# Added 2026-09-21 alongside bricks/profiles.py. Class comes from the target,
+# never from the trial -- ustekinumab and abatacept are SUPPRESSIVE by mechanism
+# and both failed their trials, which is the point of including them.
+UBLITUXIMAB = _from_mechanism(
+    "ublituximab", SUPPRESSIVE,
+    notes="glycoengineered anti-CD20 monoclonal antibody; depletes B cells. Third "
+          "arm on the same target as ocrelizumab and ofatumumab, sharing their "
+          "intervention point and target-level magnitude.")
+
+IFN_BETA_1B = _from_mechanism(
+    "IFN-beta-1b", SUPPRESSIVE,
+    notes="type I interferon, same molecular class as IFN-beta-1a. Suppressive from "
+          "the class, not from the 1993 trial.")
+
+OZANIMOD = _from_mechanism(
+    "ozanimod", SUPPRESSIVE,
+    notes="S1P1/S1P5 receptor modulator; blocks lymphocyte egress from lymph nodes. "
+          "Lumped onto gamma_E with fingolimod and ponesimod.")
+
+RITUXIMAB = _from_mechanism(
+    "rituximab", SUPPRESSIVE,
+    notes="chimeric anti-CD20 monoclonal antibody; depletes B cells. Enters the gate "
+          "direction-only: RIFUND-MS reports the proportion of patients relapsing, "
+          "not an annualised rate.")
+
+USTEKINUMAB = _from_mechanism(
+    "ustekinumab", SUPPRESSIVE,
+    notes="anti-IL-12/23 p40; blocks the cytokine signals driving Th1 and Th17 "
+          "effector differentiation. Suppressive by mechanism and its phase II found "
+          "NO significant lesion reduction at any dose -- the class rule predicts "
+          "benefit and the trial says otherwise, which is why the arm is here.")
+
+ABATACEPT = _from_mechanism(
+    "abatacept", SUPPRESSIVE,
+    notes="CTLA4-Ig; blocks the CD28 costimulation T-cell activation requires. "
+          "Suppressive by mechanism; ACCLAIM closed early for futility. No "
+          "regulation-disrupting flag: CTLA4-Ig plausibly impairs Tregs but no MS "
+          "source was found for it, and flagging it to explain the outcome would be "
+          "reasoning backwards from the trial.")
+
 LIBRARY = {i.name: i for i in (
     UNTREATED, IFN_BETA, GLATIRAMER, APL_CGP77116,
     NATALIZUMAB, FINGOLIMOD, PONESIMOD, TERIFLUNOMIDE, DIMETHYL_FUMARATE,
     OCRELIZUMAB, ALEMTUZUMAB, LENERCEPT, ATACICEPT, IFN_GAMMA,
     OFATUMUMAB, DACLIZUMAB, CLADRIBINE,
+    UBLITUXIMAB, IFN_BETA_1B, OZANIMOD, RITUXIMAB, USTEKINUMAB, ABATACEPT,
 )}
 
 

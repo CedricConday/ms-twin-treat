@@ -107,6 +107,35 @@ KNOWN_OUTCOMES = [
                     "treatment, above both the pre- and post-treatment rate"),
     ClinicalOutcome("APL CGP77116", "harms", None,
                     "Bielekova, Nat Med 2000 (PMID 11017150, doi:10.1038/80516): halted; exacerbations"),
+    # Added 2026-09-21. Anchors from docs/TRIAL_ANCHORS.md (f2ca0d4), every PMID
+    # resolved live; dial assignments in bricks/profiles.py. Three carry an ARR,
+    # three are direction-only because their trials do not report one.
+    ClinicalOutcome("ublituximab", "improves", -57.9,
+                    "ULTIMATE I, NEJM 2022 (PMID 36001711): ARR 0.08 vs 0.19 on "
+                    "teriflunomide",
+                    comparator="teriflunomide"),
+    ClinicalOutcome("IFN-beta-1b", "improves", -33.9,
+                    "IFNB MS Study Group, Neurology 1993 (PMID 8469318): ARR 0.84 vs "
+                    "1.27 on placebo"),
+    ClinicalOutcome("ozanimod", "improves", -39.3,
+                    "RADIANCE part B, Lancet Neurol 2019 (PMID 31492652): ARR 0.17 vs "
+                    "0.28 on interferon beta-1a",
+                    comparator="IFN-beta"),
+    ClinicalOutcome("rituximab", "improves", None,
+                    "RIFUND-MS, Lancet Neurol 2022 (PMID 35841908): 3% vs 16% of "
+                    "patients relapsed, RR 0.19, against dimethyl fumarate. A "
+                    "PROPORTION, not an annualised rate, so it scores direction only "
+                    "-- converting it would invent precision",
+                    comparator="dimethyl fumarate"),
+    ClinicalOutcome("ustekinumab", "neutral", None,
+                    "Phase II, Lancet Neurol 2008 (PMID 18703004): no significant "
+                    "reduction in Gd-enhancing lesions at any of four doses. A "
+                    "SUPPRESSIVE drug by mechanism that did nothing -- alpha_E's "
+                    "first negative arm"),
+    ClinicalOutcome("abatacept", "neutral", None,
+                    "ACCLAIM, Mult Scler 2017 (PMID 27481207): no significant "
+                    "difference, stopped early for futility at 65 of 123 planned "
+                    "patients"),
 ]
 
 NEUTRAL_BAND = 5.0   # |change| < 5% reads as "no effect"

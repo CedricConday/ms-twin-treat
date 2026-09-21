@@ -46,7 +46,7 @@ choice dressed as a measurement.
 | ponesimod | OPTIMUM 2021 | teriflunomide | 0.202 vs 0.290 | −30.5% | improves | 33779698 |
 | ofatumumab | ASCLEPIOS I 2020 | teriflunomide | 0.11 vs 0.22 | −50% | improves | 32757523 |
 | daclizumab | DECIDE 2015 | IFN beta-1a | 0.22 vs 0.39 | −45% | improves | 26444729 |
-| cladribine 3.5 mg/kg | CLARITY 2010 | placebo | 0.14 vs 0.33 (96 wk) | −57.6% | improves | 20089950 |
+| cladribine 3.5 mg/kg | CLARITY 2010 | placebo | 0.14 vs 0.33 (96 wk) | −57.6% | improves | 20089960 |
 | lenercept | Lenercept MS Study Group 1999 | placebo | more patients with exacerbations, occurring earlier (p=0.006) | unquantified | **harms** | 10449104 |
 | atacicept | ATAMS 2014 | placebo | 0.86 / 0.79 / 0.98 (25 / 75 / 150 mg) vs 0.38 | **raised** (+126% / +108% / +158%) | **harms** | 24613349 |
 | IFN-gamma | Panitch 1987 | pre/post within-patient | 7 of 18 patients had exacerbations on treatment | unquantified | **harms** | 2882294 |
@@ -240,3 +240,39 @@ Every identifier in the tables above was resolved by live query against Europe P
 and NCBI E-utilities, and every ARR was read out of the retrieved abstract rather
 than recalled. A recalled PMID is not a citation; it is a plausible-looking number
 that happens to index something else.
+
+## Negative results from dial assignment (2026-09-21)
+
+Recorded so nobody re-derives the tempting version. Each of these is an
+assignment that WOULD have improved a measurement and was not made, because the
+evidence for it was not there.
+
+- **abatacept gets `delta` alone, not `delta` + `alpha_R`.** CTLA4-Ig blocks the
+  CD28 costimulation T-cell activation requires, which is the activation step.
+  It is also plausible that it impairs regulatory T cells, since Tregs depend on
+  CD28 — and if that axis were asserted, abatacept would join glatiramer on
+  `alpha_R|delta` and turn a singleton group into a scored pair, which is
+  directly worth headroom in `scripts/dial_ceiling.py`. **Searched Europe PMC
+  2026-09-21: abatacept/Treg evidence exists in LRBA deficiency, transplantation
+  and autoimmune haemolytic anaemia, and not in MS.** No MS source, so no axis.
+  The assignment that would have helped the measurement was the one with no
+  evidence behind it, which is exactly when to stop.
+- **laquinimod is not assigned a dial.** Aryl hydrocarbon receptor agonism
+  shifting myeloid cells anti-inflammatory has no corresponding Vélez rate. It
+  is the weakest quantified effect available (ALLEGRO, −23.1%) and therefore
+  exactly the spread the arm set needs, which is precisely why forcing it onto a
+  dial would be fitting the representation to the outcome.
+- **secukinumab is not assigned a dial.** IL-17 is not a species in this model
+  and effector function is not one of its rates.
+
+## Citation integrity (2026-09-21)
+
+`scripts/verify_anchors.py` resolves every identifier in this file against
+Europe PMC and flags any whose title is off topic. Its first run found one:
+**cladribine's CLARITY anchor was cited as PMID 20089950**, which resolves to
+*"Signaling by the high-affinity HDL receptor scavenger receptor B type I."* The
+real CLARITY paper is **20089960**, one digit away. The row's own numbers were
+checked against that abstract and are correct — ARR 0.14 vs 0.33 at 96 weeks —
+so the data was right and the citation pointed somewhere else entirely. That is
+worse than a wrong number, because it survives every sanity check a reader
+applies to the number itself.

@@ -110,9 +110,9 @@ answer by a factor of five, so all three ship:**
 
 | variant | MAE | null | headroom |
 |---|---|---|---|
-| in sample, all 12 arms | 6.6pp | 10.6pp | 4.0pp |
-| singleton groups dropped (glatiramer and daclizumab are alone on their dials and fitted exactly for free) | 7.9pp | 10.5pp | 2.6pp |
-| **out of sample, within group** — predict each arm from the OTHER arms in its group, which is what a model must do | **10.9pp** | **11.7pp** | **0.8pp** |
+| in sample, all 15 quantified arms | 7.3pp | 10.5pp | 3.3pp |
+| singleton groups dropped (arms alone on their dials are fitted exactly for free) | 8.4pp | 10.7pp | 2.3pp |
+| **out of sample, within group** — predict each arm from the OTHER arms in its group, which is what a model must do | **10.7pp** | **11.5pp** | **0.9pp** |
 
 The last row is the one that counts, and it is scored the way every other
 scorer in this repo is scored, null included. So:
@@ -120,8 +120,15 @@ scorer in this repo is scored, null included. So:
 - the representation is **not incapable**: a perfect dial-level model still
   beats the null. That is worth stating, because the obvious reading of the
   three failure modes is that it cannot, and that reading is wrong;
-- but the prize is **0.8pp**, before any simulation or fitting error is charged
+- but the prize is **0.9pp**, before any simulation or fitting error is charged
   against it. The measured LOMO is 45.9pp.
+
+**Re-measured 2026-09-21 after the arm set grew to 15 quantified arms** (six
+arms wired from docs/TRIAL_ANCHORS.md). Widening the exam was supposed to widen
+the prize; it moved it from 0.8pp to 0.9pp, which is within noise of nothing.
+Three arms were added and two of them landed in groups that were already the
+largest. The lever is real but it needs more than six arms, and specifically
+more arms in the SMALL groups.
 
 The in-sample 4.0pp was this repo's first estimate and it flattered the
 representation twice over — by fitting each group's mean including the arm
