@@ -38,11 +38,35 @@ ROOT = Path(__file__).resolve().parent.parent
 TOLERANCE = 0.051          # figures are quoted to one decimal
 FIGURE = re.compile(r"(\d+\.\d)pp")
 
-SCANNED = [
+# The gate lane's own files. The test suite enforces this scope, because these
+# are the files this lane can fix.
+GATE_SCOPE = [
     "gate/__init__.py", "gate/ceiling.py", "gate/headroom.py", "gate/device.py",
     "gate/evidence.py", "gate/criterion.py", "gate/provenance.py",
     "docs/DECISION_GATE.md", "docs/RECOVERABILITY.md",
 ]
+
+# Other live documents that quote these figures. Scanned under `--scope all`,
+# not by the test, so that a stale figure in another lane's file is reported
+# loudly without turning this lane's suite red for something it must not edit.
+REPO_SCOPE = GATE_SCOPE + [
+    "docs/PERNICE_PORT_SCOPE.md", "README.md", "GROUNDING.md", "docs/QUALITY.md",
+    "docs/TRIAL_ANCHORS.md",
+]
+
+# Deliberately NOT scanned, and why:
+#   BUILD_PLAN.md §8.4     a dated, append-only log. Its entries are claims about
+#                          what was measured ON A DATE, several of which are now
+#                          wrong on purpose. A drift checker pointed at it would
+#                          demand history be rewritten to silence it, and the
+#                          repo's rule is that history is struck in place, never
+#                          edited.
+#   results/RESULTS.md     body is dated record; only its header is live.
+#   docs/SCREEN_RESULTS*   generated. These need regeneration, not editing, and a
+#                          screen result is only valid for the arm set it ran
+#                          against.
+DATED_HEADING = re.compile(r"^#{1,6}\s.*\b(19|20)\d{2}[-/]\d{2}[-/]\d{2}\b")
+STRIKETHROUGH = re.compile(r"~~")
 
 # Figures that must NOT track the live measurement, each with the reason.
 # A figure here is a claim that something was true at a stated time, not a claim
@@ -137,11 +161,26 @@ def main() -> int:
     pinned_seen: set[str] = set()
     live_count = 0
 
-    for rel in SCANNED:
+    scope = REPO_SCOPE if "--scope=all" in sys.argv or "--all" in sys.argv else GATE_SCOPE
+    skipped_history = 0
+
+    for rel in scope:
         path = ROOT / rel
         if not path.exists():
             continue
+        under_dated_heading = False
         for lineno, line in enumerate(path.read_text().splitlines(), 1):
+            if line.startswith("#"):
+                under_dated_heading = bool(DATED_HEADING.match(line))
+            # A figure under a dated heading, or inside a strikethrough, is a
+            # claim about what was measured then -- not about the present. The
+            # rule is mechanical and therefore imperfect: it misses prose that
+            # quotes an old number without dating it, which is exactly how a
+            # stale front page happens. It filters the scan; it does not excuse
+            # reading.
+            if under_dated_heading or STRIKETHROUGH.search(line):
+                skipped_history += len(FIGURE.findall(line))
+                continue
             for match in FIGURE.finditer(line):
                 figure = match.group(1)
                 if figure in PINNED_FIGURES:
@@ -152,7 +191,11 @@ def main() -> int:
                     continue
                 drift.append((rel, lineno, line.strip()[:96]))
 
-    print(f"\n  {live_count} figure(s) match a live measurement.")
+    print(f"\n  scope: {'all live docs' if scope is REPO_SCOPE else 'the gate lane'} "
+          f"({len(scope)} file(s))")
+    print(f"  {live_count} figure(s) match a live measurement.")
+    if skipped_history:
+        print(f"  {skipped_history} figure(s) skipped as history (dated heading or struck).")
     print(f"  {len(pinned_seen)} pinned figure(s) seen, of {len(PINNED_FIGURES)} declared.")
 
     stale_pins = set(PINNED_FIGURES) - pinned_seen
