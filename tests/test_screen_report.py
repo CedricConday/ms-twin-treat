@@ -57,9 +57,29 @@ def test_survivors_are_not_ordered_by_benefit(fake):
 
 
 def test_the_caveats_name_the_number_that_gates_ranking(fake):
-    joined = " ".join(rep_c for rep_c in report.run()["caveats"])
+    """The caveat must carry the LIVE gate figures, not literals it outgrows.
+
+    This test pinned "45.9" and "12.3" until 2026-09-21, when the arm set grew
+    and the caveat that exists to stop people over-reading the survivor list
+    became wrong itself. The figures are now computed in screen/report.py, so
+    what is asserted here is that they match the scorer — the invariant — rather
+    than any particular pair of numbers.
+    """
+    joined = " ".join(report.run()["caveats"])
     assert "lomo" in joined.lower()
-    assert "45.9" in joined and "12.3" in joined
+    assert "null" in joined.lower()
+
+    from backtest.lomo import load, run_lomo
+
+    r = run_lomo(load())
+    assert f"{r['mae']:.1f}pp vs {r['null_mae']:.1f}pp" in joined, (
+        "the screen's ranking-gate caveat disagrees with backtest.lomo; "
+        "it must be computed, never typed"
+    )
+    assert r["mae"] > r["null_mae"], (
+        "LOMO now BEATS its null — the refusal in screen/kill_filter.py and this "
+        "caveat both need revisiting, which is the good problem"
+    )
 
 
 def test_the_blind_spot_is_stated_not_implied(fake):

@@ -1,19 +1,19 @@
 # Screen results — candidates the model cannot rule out
 
-Generated 2026-09-20 by `PYTHONPATH=. python -m screen.report`. 98 candidates: every combination of up to 2 of the model's 7 named intervention points, each turned both ways at potency 0.5.
+Generated 2026-09-21 by `PYTHONPATH=. python -m screen.report`. 98 candidates: every combination of up to 2 of the model's 7 named intervention points, each turned both ways at potency 0.5.
 
-**This is a kill list with a remainder, not a ranking.** Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.9pp vs 12.3pp).
+**This is a kill list with a remainder, not a ranking.** Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.4pp vs 11.8pp).
 
 ## Counts
 
 | verdict | n |
 |---|---|
-| DEGENERATE | 11 |
+| DEGENERATE | 12 |
 | OUT_OF_REGIME | 32 |
-| SURVIVED | 38 |
+| SURVIVED | 37 |
 | UNREACHABLE | 17 |
 
-## Survivors (38)
+## Survivors (37)
 
 Alphabetical. The damage column is a simulated median over 8 infection histories, shown so a reader can challenge the verdict — not as a score.
 
@@ -35,7 +35,6 @@ Alphabetical. The damage column is a simulated median over 8 infection histories
 | `alpha_R+,naive_E+` | 0.0407 | -97% | 0.8 |
 | `alpha_R+,naive_E-` | 0.0591 | -96% | 0.8 |
 | `delta+,ke-` | 0.3056 | -79% | 0.8 |
-| `delta-` | 0.4053 | -72% | 0.8 |
 | `delta-,ke-` | 0.1037 | -93% | 0.8 |
 | `gamma_E+,alpha_R+` | 0.0616 | -96% | 0.8 |
 | `gamma_E+,delta-` | 0.1542 | -89% | 0.8 |
@@ -63,16 +62,17 @@ Alphabetical. The damage column is a simulated median over 8 infection histories
 | candidate | verdict | why |
 |---|---|---|
 | `alpha_E+,alpha_R+` | DEGENERATE | same intervention points as lenercept |
-| `alpha_E-` | DEGENERATE | same intervention points as dimethyl fumarate |
+| `alpha_E-` | DEGENERATE | same intervention points as ustekinumab |
 | `alpha_E-,alpha_R+` | DEGENERATE | same intervention points as lenercept |
 | `alpha_R+` | DEGENERATE | same intervention points as daclizumab |
 | `alpha_R+,delta+` | DEGENERATE | same intervention points as glatiramer acetate |
 | `alpha_R+,delta-` | DEGENERATE | same intervention points as glatiramer acetate |
 | `delta+,naive_E+` | DEGENERATE | same intervention points as IFN-gamma |
+| `delta-` | DEGENERATE | same intervention points as abatacept |
 | `delta-,naive_E+` | DEGENERATE | same intervention points as IFN-gamma |
 | `delta-,naive_E-` | DEGENERATE | same intervention points as IFN-gamma |
-| `gamma_E-` | DEGENERATE | same intervention points as cladribine |
-| `ke-` | DEGENERATE | same intervention points as ofatumumab |
+| `gamma_E-` | DEGENERATE | same intervention points as Tovaxin |
+| `ke-` | DEGENERATE | same intervention points as rituximab |
 | `alpha_E+,alpha_R-` | OUT_OF_REGIME | at least one infection history diverged; damage is undefined |
 | `alpha_E+,gamma_E+` | OUT_OF_REGIME | at least one infection history diverged; damage is undefined |
 | `alpha_E+,gamma_R+` | OUT_OF_REGIME | at least one infection history diverged; damage is undefined |
@@ -125,8 +125,8 @@ Alphabetical. The damage column is a simulated median over 8 infection histories
 
 ## Read this before quoting any line above
 
-- **32 of 38 survivors claim a larger effect than the best drug ever tested in MS** (natalizumab, -68% relapse reduction in AFFIRM), and 22 of them claim better than -90%. Survivor effects here run -100% to -16%. **This is not credible and it is not meant to be read as a prediction.** The same model cannot reproduce a -30% effect for interferon beta on a real arm. The damage column measures the model, not the candidate.
+- **31 of 37 survivors claim a larger effect than the best drug ever tested in MS** (natalizumab, -68% relapse reduction in AFFIRM), and 22 of them claim better than -90%. Survivor effects here run -100% to -16%. **This is not credible and it is not meant to be read as a prediction.** The same model cannot reproduce a -30% effect for interferon beta on a real arm. The damage column measures the model, not the candidate.
 - Nothing here is evidence about multiple sclerosis. validated=False throughout.
-- Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.9pp vs 12.3pp).
+- Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.4pp vs 11.8pp).
 - The model is blind to the depleting / sequestering / trafficking class — natalizumab, fingolimod, ponesimod, alemtuzumab and atacicept cannot come out beneficial in it at any potency (BUILD_PLAN §8.4). A candidate whose novelty is in trafficking is invisible to this screen.
 - A surviving candidate has only avoided the failures this model can see.

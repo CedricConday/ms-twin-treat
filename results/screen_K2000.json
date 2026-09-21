@@ -1,13 +1,24 @@
 {
+  "occupied_patterns": [
+    "alpha_E",
+    "alpha_E|alpha_R",
+    "alpha_R",
+    "alpha_R|delta",
+    "delta",
+    "delta|naive_E",
+    "gamma_E",
+    "ke"
+  ],
+  "n_arms_in_library": 23,
   "implausibility": {
-    "n": 31,
+    "n": 30,
     "min_pct": -99.22832015250326,
-    "max_pct": -15.134501076745144,
+    "max_pct": -21.411241598644757,
     "beating_best_real_arm": 20,
     "beyond_90pct": 15,
     "best_real_arm_pct": -68.0
   },
-  "generated": "2026-09-20",
+  "generated": "2026-09-21",
   "carrying_capacity": 2000.0,
   "n_candidates": 98,
   "max_points": 2,
@@ -39,8 +50,8 @@
   "noise_floor": 0.14,
   "counts": {
     "UNREACHABLE": 60,
-    "DEGENERATE": 7,
-    "SURVIVED": 31
+    "DEGENERATE": 8,
+    "SURVIVED": 30
   },
   "survivors": [
     {
@@ -182,17 +193,6 @@
       "detail": "survived all four filters",
       "median_damage": 0.02045277244678609,
       "best_damage": 0.0080916430216556,
-      "best_potency": 0.8,
-      "untreated_damage": 0.05406897381653133,
-      "like_existing": []
-    },
-    {
-      "label": "delta-",
-      "verdict": "SURVIVED",
-      "reason": "survived all four filters",
-      "detail": "survived all four filters",
-      "median_damage": 0.050948133173500866,
-      "best_damage": 0.04588590439208334,
       "best_potency": 0.8,
       "untreated_damage": 0.05406897381653133,
       "like_existing": []
@@ -452,6 +452,19 @@
       ]
     },
     {
+      "label": "delta-",
+      "verdict": "DEGENERATE",
+      "reason": "indistinguishable from a drug that already exists",
+      "detail": "same intervention points as abatacept",
+      "median_damage": 0.050948133173500866,
+      "best_damage": 0.04588590439208334,
+      "best_potency": 0.8,
+      "untreated_damage": 0.05406897381653133,
+      "like_existing": [
+        "abatacept"
+      ]
+    },
+    {
       "label": "delta-,naive_E-",
       "verdict": "DEGENERATE",
       "reason": "indistinguishable from a drug that already exists",
@@ -468,13 +481,13 @@
       "label": "ke-",
       "verdict": "DEGENERATE",
       "reason": "indistinguishable from a drug that already exists",
-      "detail": "same intervention points as ofatumumab",
+      "detail": "same intervention points as rituximab",
       "median_damage": 0.019584182013254063,
       "best_damage": 0.00826127014199073,
       "best_potency": 0.8,
       "untreated_damage": 0.05406897381653133,
       "like_existing": [
-        "ofatumumab"
+        "rituximab"
       ]
     },
     {
@@ -1141,7 +1154,7 @@
   "ordering": "survivors alphabetical by label; NOT by predicted benefit",
   "caveats": [
     "Nothing here is evidence about multiple sclerosis. validated=False throughout.",
-    "Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.9pp vs 12.3pp).",
+    "Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.4pp vs 11.8pp).",
     "The model is blind to the depleting / sequestering / trafficking class \u2014 natalizumab, fingolimod, ponesimod, alemtuzumab and atacicept cannot come out beneficial in it at any potency (BUILD_PLAN \u00a78.4). A candidate whose novelty is in trafficking is invisible to this screen.",
     "A surviving candidate has only avoided the failures this model can see."
   ],

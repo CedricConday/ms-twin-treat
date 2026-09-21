@@ -56,10 +56,26 @@ MD_OUT = ROOT / "docs" / "SCREEN_RESULTS.md"
 # comparison is COMPUTED into the output rather than left to the reader.
 BEST_REAL_ARM_PCT = -68.0        # natalizumab, AFFIRM, PMID 16510744
 
+def _ranking_gate() -> str:
+    """The live LOMO figures, COMPUTED, never typed.
+
+    This sentence used to carry "45.9pp vs 12.3pp" as a literal. The arm set
+    grew and it became wrong inside an artifact whose whole purpose is to stop
+    people over-reading it. Reading it off the cached response table costs
+    milliseconds and cannot go stale.
+    """
+    try:
+        from backtest.lomo import load, run_lomo
+        r = run_lomo(load())
+        return f"{r['mae']:.1f}pp vs {r['null_mae']:.1f}pp"
+    except Exception:                      # no cached table in this checkout
+        return "see results/STATE.md"
+
+
 CAVEATS = [
     "Nothing here is evidence about multiple sclerosis. validated=False throughout.",
     "Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is "
-    "gated on backtest/lomo.py beating its null; it does not (45.9pp vs 12.3pp).",
+    f"gated on backtest/lomo.py beating its null; it does not ({_ranking_gate()}).",
     "The model is blind to the depleting / sequestering / trafficking class — "
     "natalizumab, fingolimod, ponesimod, alemtuzumab and atacicept cannot come "
     "out beneficial in it at any potency (BUILD_PLAN §8.4). A candidate whose "

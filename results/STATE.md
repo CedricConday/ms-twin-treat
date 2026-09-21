@@ -1,19 +1,20 @@
 # STATE OF THE BUILD
 
-Generated 2026-09-20 23:22 UTC at `87393d3 (dirty)` by `python scripts/state_of_build.py`.
+Generated 2026-09-21 02:05 UTC at `f9a13a8 (dirty)` by `python scripts/state_of_build.py`.
 **Every number here was produced by the command beside it, in this run.**
 Nothing on this page is transcribed, and nothing on it is interpreted —
 for what the numbers mean, read BUILD_PLAN.md §8.4, where a human signs it.
 
 | gate | command | result |
 |---|---|---|
-| clinical gate (ABM path) | `python -m backtest.clinical` | direction 10/17, magnitude 1/12 |
-| clinical gate (grounded stack) | `python -m backtest.clinical_velez` | direction 5/16, magnitude 2/11 |
-| leave-one-ARM-out | `python -m backtest.loo` | MAE 28.3pp, null 11.5pp |
-| leave-one-MECHANISM-out | `python -m backtest.lomo` | MAE 45.9pp, null 12.3pp |
-| LOMO under the capacity extension | `python -m backtest.lomo_capacity` | MAE 45.6pp, null 12.3pp |
+| clinical gate (ABM path) | `python -m backtest.clinical` | direction 11/24, magnitude 1/15 |
+| clinical gate (grounded stack) | `python -m backtest.clinical_velez` | direction 6/23, magnitude 3/14 |
+| leave-one-ARM-out | `python -m backtest.loo` | MAE 30.0pp, null 11.3pp |
+| leave-one-MECHANISM-out | `python -m backtest.lomo` | MAE 45.4pp, null 11.8pp |
+| LOMO + capacity (K per fold, then fixed K=2000) | `python -m backtest.lomo_capacity` | MAE 42.2pp, null 11.8pp, fixed K=2000 48.0pp |
 | per-drug potency (MRI channel) | `python -m backtest.potency` | fitted 11, out of range 5 |
-| harm channel | `python -m bricks.harm_channel` | enlarged ranking 7, p 0.048. |
+| dial-level ceiling (out of sample) | `python -m scripts.dial_ceiling` | MAE 10.7pp, null 11.5pp, headroom 0.9pp |
+| harm channel | `python -m bricks.harm_channel` | enlarged ranking 7, p 0.048 |
 
 ## How to read this
 
