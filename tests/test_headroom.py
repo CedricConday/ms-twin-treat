@@ -141,3 +141,21 @@ def test_the_null_pool_matches_the_scored_set():
     assert round(d["multi_only"]["null_mae"], 6) == round(statistics.fmean(matched_ins), 6)
     # And the two conventions must actually differ, or this test proves nothing.
     assert round(statistics.fmean(matched_oos), 3) != round(statistics.fmean(wide_oos), 3)
+
+
+def test_the_gate_docs_quote_no_stale_figures():
+    """Every `N.Npp` in the gate's modules and docs is a live measurement or a
+    declared pin. This is the check that would have caught tonight's two
+    staleness bugs -- a cached 12-arm LOMO surviving into a 15-arm repo, and the
+    reader-facing page quoting 12-arm figures after six arms were wired."""
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parent.parent
+    proc = subprocess.run(
+        [sys.executable, "scripts/verify_gate_docs.py"],
+        cwd=root, capture_output=True, text=True,
+        env={"PYTHONPATH": str(root), "PATH": "/usr/bin:/bin"},
+    )
+    assert proc.returncode == 0, f"stale figures in the gate docs:\n{proc.stdout[-2500:]}"

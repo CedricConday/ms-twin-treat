@@ -34,12 +34,14 @@ Both of this repo's out-of-sample scorers lose to predict-the-mean, and not
 narrowly -- the paired bootstrap CI on each lies entirely ABOVE zero, meaning
 the predictor is reliably worse than the null rather than close to it:
 
-    backtest/loo.py    hold out an ARM        28.3pp MAE vs 11.5pp null
-                                              95% CI on the paired gap [+5.7, +28.5]
-    backtest/lomo.py   hold out a MECHANISM   45.9pp MAE vs 12.3pp null
-                                              95% CI on the paired gap [+20.1, +43.1]
+    backtest/loo.py    hold out an ARM        30.0pp MAE vs 11.3pp null
+                                              95% CI on the paired gap [+8.9, +29.3]
+    backtest/lomo.py   hold out a MECHANISM   45.4pp MAE vs 11.8pp null
+                                              95% CI on the paired gap [+20.3, +42.8]
 
-Both re-measured 2026-09-20 at 519bfe4, LOMO via `results/lomo_certificate.json`.
+Both re-measured 2026-09-21 on the 15-quantified-arm exam, LOMO via
+`results/lomo_certificate.json`, which now records the arm set it was taken on
+and is refused if that set has changed.
 The carrying-capacity extension to the QSP model (ec4ee5b) was the live candidate
 for lifting this and does not: 45.6pp against the same null, measured by the
 session that owns the master checkout. It fixes the depletion SIGN and not the

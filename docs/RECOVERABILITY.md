@@ -6,8 +6,9 @@ Regenerate with:
 PYTHONPATH=. python3 -m gate.ceiling
 ```
 
-Measured 2026-09-20 at `519bfe4`. If a number here disagrees with what that
-command prints, the command is right and this page is stale.
+Measured 2026-09-21 on the 15-quantified-arm exam. If a number here disagrees
+with what that command prints, the command is right and this page is stale.
+`scripts/verify_gate_docs.py` checks that mechanically.
 
 ## The question
 
@@ -30,14 +31,14 @@ supply, so it is the right yardstick for one that is not cheating.
 
 | arm | oracle *s* | MRI-fitted *s* | ratio | predicted at MRI *s* | error | null error |
 |---|---|---|---|---|---|---|
-| ocrelizumab | 0.30 | 0.60 | 2.00 | −73.8% | 27.8pp | 0.1pp |
-| dimethyl fumarate | 0.74 | 0.80 | 1.08 | −62.1% | 9.1pp | 7.8pp |
-| glatiramer acetate | 0.04 | 0.05 | 1.25 | −38.4% | 9.4pp | 18.4pp |
-| teriflunomide | 0.48 | 0.75 | 1.55 | −54.2% | 22.7pp | 15.7pp |
-| IFN-beta | 0.48 | 0.75 | 1.56 | −54.2% | 24.2pp | 17.3pp |
-| ofatumumab | 0.33 | 0.80 | 2.46 | −84.9% | 34.9pp | 4.5pp |
+| ocrelizumab | 0.30 | 0.60 | 2.00 | −73.8% | 27.8pp | 0.6pp |
+| dimethyl fumarate | 0.74 | 0.80 | 1.08 | −62.1% | 9.1pp | 8.1pp |
+| glatiramer acetate | 0.04 | 0.05 | 1.25 | −38.4% | 9.4pp | 17.6pp |
+| teriflunomide | 0.48 | 0.75 | 1.55 | −54.2% | 22.7pp | 14.9pp |
+| IFN-beta | 0.48 | 0.75 | 1.56 | −54.2% | 24.2pp | 16.5pp |
+| ofatumumab | 0.33 | 0.80 | 2.46 | −84.9% | 34.9pp | 4.9pp |
 
-**21.4pp against a 10.6pp predict-the-mean null.** The independent channel
+**21.4pp against a 10.4pp predict-the-mean null.** The independent channel
 loses, on the only six arms where it can be scored at all.
 
 It is also biased, not merely noisy: every ratio is above 1, median 1.55. The
@@ -46,11 +47,12 @@ reproduces its relapse outcome.
 
 ## Two different kinds of "unreachable"
 
-Six of the twelve quantified arms have no oracle potency, and they fail for two
-distinct reasons that should not be pooled:
+Seven of the fifteen quantified arms have no oracle potency, and they fail for
+two distinct reasons that should not be pooled:
 
-**No dial can produce the effect (five arms)** — natalizumab, fingolimod,
-ponesimod, daclizumab, cladribine. `gamma_E` and a lowered `alpha_R` both *raise*
+**No dial can produce the effect (six arms)** — natalizumab, fingolimod,
+ponesimod, daclizumab, cladribine and, since it was wired on 2026-09-21,
+ozanimod. `gamma_E` and a lowered `alpha_R` both *raise*
 damage in this model, so no potency produces a benefit at any strength. These
 are the same five `backtest/potency.py` reports OUT OF RANGE. A direction
 failure; no data source of any quality touches it.
@@ -63,8 +65,8 @@ because it is reachable. The oracle fits on the arm's own relapse number, which
 alemtuzumab does have, and finds the grid edge — so it is **unreachable on both
 routes at once**, for two unrelated reasons.
 
-That is why this page counts six and `backtest/potency.py` counts five. Both are
-correct about different things.
+That is why this page counts one more unreachable arm than `backtest/potency.py`
+reports OUT OF RANGE. Both are correct about different things.
 
 ## The ocrelizumab cross-check, corrected
 

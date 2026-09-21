@@ -11,10 +11,10 @@ scorers should work on the arms that ARE reachable. This module checks that, and
 separates three failures that a single headline MAE pools together:
 
   (1) REACHABILITY     the model cannot produce the observed direction at any
-                       potency, on 6 of 12 arms
+                       potency, on 7 of the 15 quantified arms
   (2) RECOVERABILITY   an independent source cannot find the potency the model
                        would need -- measured in gate/ceiling.py: 21.4pp against
-                       a 10.6pp null, biased high every time
+                       a 10.4pp null, biased high every time
   (3) EXPRESSIVENESS   ONE shared potency cannot distinguish two drugs on the
                        same dial, whatever its value
 
@@ -90,9 +90,10 @@ def dial_ceiling() -> dict:
     scored on, and scored the same way the model is: in sample against the
     scored set's own mean, out of sample against the mean of the other scored
     arms. A null pooled over arms excluded from the model's exam is handed
-    information the model was not, which flatters the headroom -- on the
-    out-of-sample row that convention reads 11.9pp against the honest 11.7pp.
-    Matches `scripts/dial_ceiling.py` in the master checkout.
+    information the model was not, which flatters the headroom. Matches
+    `scripts/dial_ceiling.py` in the master checkout. Both conventions are
+    computed in `tests/test_headroom.py` and asserted to differ, so the check
+    cannot pass vacuously and neither number needs quoting here.
     """
     known = {o.arm: o.relapse_change_pct for o in KNOWN_OUTCOMES
              if o.relapse_change_pct is not None and o.arm != "untreated"}

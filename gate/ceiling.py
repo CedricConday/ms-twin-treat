@@ -1,7 +1,7 @@
 """The oracle ceiling: the best this model form could EVER do on these arms.
 
 `backtest/lomo.py` fits ONE potency across all arms and asks whether it
-transfers to a mechanism it never saw. It does not (45.9pp vs a 12.3pp null).
+transfers to a mechanism it never saw. It does not (45.4pp vs an 11.8pp null).
 The obvious next move is to get per-drug potency from independent data, which is
 what `backtest/potency.py` does through the MRI channel and what BUILD_PLAN
 blockers (4) and (6) are about.
@@ -26,8 +26,8 @@ a potency fitted directly to the answer. So:
 
 REACHABLE AND UNREACHABLE ARMS ARE REPORTED SEPARATELY, AND THAT IS NOT OPTIONAL
 ---------------------------------------------------------------------------------
-For five of the twelve quantified arms the model cannot produce a benefit at ANY
-potency -- `gamma_E` and a lowered `alpha_R` both RAISE damage here, so the whole
+For seven of the fifteen quantified arms the model cannot produce a benefit at
+ANY potency -- `gamma_E` and a lowered `alpha_R` both RAISE damage here, so the whole
 depleting/sequestering class is structurally unable to come out beneficial
 (`bricks/qsp_velez.py`, and `backtest/potency.py` reports them OUT OF RANGE).
 On those arms the oracle's "best fit" is a boundary value, not a fit, and its
