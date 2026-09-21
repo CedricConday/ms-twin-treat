@@ -146,7 +146,16 @@ def run(tables: dict[float | None, dict] | None = None) -> dict:
         r = run_lomo(table=table)
         fixed[str(k)] = {"mae": r["mae"], "null_mae": r["null_mae"]}
 
+    # The arm NAMES this was measured on, not a count: swapping one arm for
+    # another leaves a count unchanged and changes the exam completely. Without
+    # this, results/lomo_capacity.json can be read against an exam it was never
+    # measured on and nothing says so -- the same defect the parallel session
+    # found in its own cached certificate on 2026-09-21.
+    measured_on = sorted(known)
+
     return {
+        "measured_on_arms": measured_on,
+        "n_quantified_arms": len(measured_on),
         "rows": rows,
         "folds": folds,
         "fixed_k_diagnostic": fixed,

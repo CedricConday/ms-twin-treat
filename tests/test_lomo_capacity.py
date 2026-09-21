@@ -10,6 +10,7 @@ its place.
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from backtest import lomo, lomo_capacity
 from bricks.profiles import PROFILES, touched_points
@@ -80,3 +81,33 @@ def test_predictions_come_from_the_fitted_capacitys_own_table():
     tables = {None: _flat_table({key: -10.0}), 2000.0: _flat_table({key: -30.0})}
     assert np.isclose(lomo._predicted(arm, 0.4, tables[2000.0]), -30.0)
     assert np.isclose(lomo._predicted(arm, 0.4, tables[None]), -10.0)
+
+
+def test_the_cached_result_records_the_exam_it_was_measured_on():
+    """A cached measurement of a different arm set is not a measurement.
+
+    results/lomo_capacity.json is read by other modules. Without the arm names
+    written into it, it can be quoted against an exam it was never measured on
+    and nothing will say so — a stale cache looks exactly like a fresh one. The
+    parallel session hit this in its own certificate on 2026-09-21; this is the
+    same guard on this file. Names rather than a count, because swapping one arm
+    for another leaves the count unchanged and changes the exam completely.
+    """
+    import json
+
+    from backtest.clinical import KNOWN_OUTCOMES
+    from backtest.lomo_capacity import OUT
+
+    if not OUT.exists():
+        pytest.skip("results/lomo_capacity.json not generated in this checkout")
+    rep = json.loads(OUT.read_text())
+    assert "measured_on_arms" in rep, (
+        "regenerate with `python -m backtest.lomo_capacity`; this cache predates "
+        "the arm-set fingerprint and cannot be shown to match the live exam"
+    )
+    live = sorted(o.arm for o in KNOWN_OUTCOMES
+                  if o.relapse_change_pct is not None and o.arm != "untreated")
+    assert rep["measured_on_arms"] == live, (
+        "results/lomo_capacity.json was measured on a different arm set than "
+        "bricks/profiles.py now defines; regenerate it"
+    )

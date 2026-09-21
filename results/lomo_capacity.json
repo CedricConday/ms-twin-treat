@@ -1,4 +1,22 @@
 {
+  "measured_on_arms": [
+    "IFN-beta",
+    "IFN-beta-1b",
+    "alemtuzumab",
+    "cladribine",
+    "daclizumab",
+    "dimethyl fumarate",
+    "fingolimod",
+    "glatiramer acetate",
+    "natalizumab",
+    "ocrelizumab",
+    "ofatumumab",
+    "ozanimod",
+    "ponesimod",
+    "teriflunomide",
+    "ublituximab"
+  ],
+  "n_quantified_arms": 15,
   "rows": [
     {
       "held_mechanism": "alpha_E",
