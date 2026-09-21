@@ -99,10 +99,17 @@ A drug in this repo is a set of multipliers on named dials, so **every arm
 sharing a dial pattern gets the same prediction**. Real outcomes inside a dial
 group are not the same:
 
-    alpha_E   IFN-beta -30.0%, teriflunomide -31.5%, dimethyl fumarate -53.0%   spread 23.0pp
+    alpha_E   IFN-beta -30.0%, teriflunomide -31.5%, dimethyl fumarate -53.0%,
+              IFN-beta-1b -33.9%                                        n=4  spread 23.0pp
     gamma_E   natalizumab -68.0%, fingolimod -55.0%, alemtuzumab -55.0%,
-              ponesimod -30.5%, cladribine -57.6%                               spread 37.5pp
-    ke        ocrelizumab -46.0%, ofatumumab -50.0%                             spread  4.0pp
+              ponesimod -30.5%, cladribine -57.6%, ozanimod -39.3%      n=6  spread 37.5pp
+    ke        ocrelizumab -46.0%, ofatumumab -50.0%, ublituximab -57.9% n=3  spread 11.9pp
+
+(Re-measured 2026-09-21 at the 15-arm exam. **`ke`'s spread nearly TRIPLED, 4.0pp
+to 11.9pp**, because ublituximab at -57.9% sits well outside the bracket
+ocrelizumab and ofatumumab formed. Any argument of the form "the anti-CD20 arms
+agree to within 4pp, so a model only has to get that dial roughly right" is
+measuring against a group that no longer agrees that tightly.)
 
 Predict each arm from its own dial group and see what error survives
 (`scripts/dial_ceiling.py`, no simulation). **Which variant you use changes the
@@ -121,7 +128,7 @@ scorer in this repo is scored, null included. So:
   beats the null. That is worth stating, because the obvious reading of the
   three failure modes is that it cannot, and that reading is wrong;
 - but the prize is **0.9pp**, before any simulation or fitting error is charged
-  against it. The measured LOMO is 45.9pp.
+  against it. The measured LOMO is 45.4pp on this exam (45.9pp on the 12-arm one).
 
 **Re-measured 2026-09-21 after the arm set grew to 15 quantified arms** (six
 arms wired from docs/TRIAL_ANCHORS.md). Widening the exam was supposed to widen
