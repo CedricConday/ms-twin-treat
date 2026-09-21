@@ -75,7 +75,7 @@ GATES: list[tuple[str, str, list[tuple[str, str]]]] = [
     ]),
     ("harm channel", "bricks.harm_channel", [
         ("enlarged ranking", r"N=(\d+), both harm cases still top-2"),
-        ("p", r"top-2:\s*1/\d+ = ([\d.]+?)\.?\s*$"),
+        ("p", r"top-2:\s*1/\d+ = ([0-9]+\.[0-9]+)"),
     ]),
 ]
 

@@ -242,12 +242,20 @@ ABATACEPT = _from_mechanism(
           "source was found for it, and flagging it to explain the outcome would be "
           "reasoning backwards from the trial.")
 
+TOVAXIN = _from_mechanism(
+    "Tovaxin", SUPPRESSIVE,
+    notes="autologous attenuated myelin-reactive T cells; the induced response "
+          "deletes myelin-reactive effector clones. Suppressive by mechanism, and "
+          "TERMS missed its primary endpoint -- another arm where the class rule "
+          "predicts benefit and the trial disagrees.")
+
 LIBRARY = {i.name: i for i in (
     UNTREATED, IFN_BETA, GLATIRAMER, APL_CGP77116,
     NATALIZUMAB, FINGOLIMOD, PONESIMOD, TERIFLUNOMIDE, DIMETHYL_FUMARATE,
     OCRELIZUMAB, ALEMTUZUMAB, LENERCEPT, ATACICEPT, IFN_GAMMA,
     OFATUMUMAB, DACLIZUMAB, CLADRIBINE,
     UBLITUXIMAB, IFN_BETA_1B, OZANIMOD, RITUXIMAB, USTEKINUMAB, ABATACEPT,
+    TOVAXIN,
 )}
 
 

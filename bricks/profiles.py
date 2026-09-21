@@ -381,6 +381,23 @@ ABATACEPT = _p(
     delta=SUPPRESS,
 )
 
+TOVAXIN = _p(
+    "Tovaxin",
+    "Autologous attenuated myelin-reactive T cells (T-cell vaccination). The "
+    "induced response deletes myelin-reactive EFFECTOR clones, so the defensible "
+    "dial is gamma_E — effector loss — not a regulatory axis. **That assignment "
+    "is deliberately the unhelpful one.** Pairing it with daclizumab on alpha_R "
+    "would have turned a singleton into a scored group and improved the "
+    "out-of-sample ceiling in the same commit that reports it; gamma_E is "
+    "already the largest group and buys that measurement nothing. Direction-only: "
+    "TERMS (n=150, RRMS, randomised placebo-controlled) MISSED its primary "
+    "endpoint, and its ARR figure is post-hoc against a placebo arm the paper "
+    "itself notes was lowered by prior DMT, so no magnitude is claimed. It is "
+    "here because gamma_E's six arms all WORKED, and a dial whose training data "
+    "is all successes cannot teach a model that the dial sometimes does nothing.",
+    gamma_E=ENHANCE,
+)
+
 # NOT ASSIGNED, and the reasons matter more than the arms.
 #
 # laquinimod (ALLEGRO, PMID 22417253, -23.1%): aryl hydrocarbon receptor agonism
@@ -397,6 +414,7 @@ PROFILES: dict[str, MechanismProfile] = {p.label: p for p in (
     OCRELIZUMAB, ALEMTUZUMAB, LENERCEPT, ATACICEPT, IFN_GAMMA,
     OFATUMUMAB, DACLIZUMAB, CLADRIBINE,
     UBLITUXIMAB, IFN_BETA_1B, OZANIMOD, RITUXIMAB, USTEKINUMAB, ABATACEPT,
+    TOVAXIN,
 )}
 
 

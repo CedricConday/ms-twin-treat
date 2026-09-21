@@ -136,6 +136,16 @@ KNOWN_OUTCOMES = [
                     "ACCLAIM, Mult Scler 2017 (PMID 27481207): no significant "
                     "difference, stopped early for futility at 65 of 123 planned "
                     "patients"),
+    ClinicalOutcome("Tovaxin", "neutral", None,
+                    "TERMS, phase 2b placebo-controlled, n=150 RRMS and CIS "
+                    "(Mult Scler 2012, PMID 22065170): 'no statistically significant "
+                    "clinical or radiological benefit ... in the modified "
+                    "intent-to-treat population'. The favourable ARR is a prospective "
+                    "SUBSET of more-active subjects, and the same paper reports a "
+                    "prior-DMT legacy effect that lowered the placebo arm's ARR -- so "
+                    "this arm scores direction only and no magnitude is taken. "
+                    "gamma_E's other six arms all worked; this is that dial's first "
+                    "negative. Note the population includes CIS, not RRMS alone"),
 ]
 
 NEUTRAL_BAND = 5.0   # |change| < 5% reads as "no effect"

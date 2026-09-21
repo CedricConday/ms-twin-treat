@@ -1454,3 +1454,53 @@ every sanity check a reader applies to the number itself.**
 `scripts/verify_anchors.py` now resolves every identifier in the table and
 flags any whose title is off topic. It is not in the test suite: it needs the
 network, and a test that fails when the wifi drops teaches people to skip tests.
+
+#### THE EXAM CANNOT BE WIDENED WHERE IT MOST NEEDS IT (2026-09-21)
+
+The widening result above said the lever needs arms in the SMALL dial groups —
+`alpha_R`, `alpha_R|delta` — not more arms in the large ones. The parallel
+session then went looking for a quantified arm on a regulatory dial and came
+back with a null result that is sharper than "nothing found" (e2f8cb9,
+`docs/TRIAL_ANCHORS.md`). Searched live 2026-09-21:
+
+| candidate | why it does not qualify |
+|---|---|
+| low-dose IL-2 | randomised in SLE and Sjögren's; no MS trial with a relapse endpoint |
+| Tovaxin / TERMS | randomised, placebo-controlled, n=150 RRMS — **missed its primary**; ARR only post-hoc, against a placebo arm the paper says prior DMT lowered |
+| T-cell vaccination | randomised and double-blind but n=17/arm, relapsing-PROGRESSIVE, outcome is proportion relapse-free, not an ARR |
+| ATX-MS-1467 | two real 2018 *Neurology* trials, both open-label, one single-arm, MRI endpoints |
+| basiliximab | same target as daclizumab; no randomised MS trial found |
+
+**No MS therapy whose primary mechanism is regulatory-T-cell restoration has a
+published ARR against a stated comparator.**
+
+**So the singletons are singletons in the arm set because they are nearly
+singletons in the FIELD.** The model's regulatory dials sit on the region of MS
+pharmacology with almost no successful randomised evidence. That is a boundary
+on the cheapest lever this repo has: **the exam can only be widened where the
+trials already are — `alpha_E`, `gamma_E`, `ke` — and those are precisely the
+groups that are already the largest.** It explains why six arms moved the prize
+0.8pp to 0.9pp, and it predicts the next six will do the same.
+
+The uncomfortable corollary, worth stating because it is not about this repo:
+the dials this model can least afford to leave unmeasured are the ones the
+field has the least evidence on.
+
+#### TOVAXIN WIRED — the honest dial is the unhelpful one
+
+TERMS is exactly the kind of arm the set is starved of: a real randomised
+NEGATIVE result in RRMS. Pairing it with daclizumab on `alpha_R` would have
+converted a singleton into a scored group and improved the ceiling reported in
+the same commit — which is the reason to distrust that reading. Tovaxin is
+autologous attenuated myelin-reactive T cells and the response it induces
+deletes effector clones, so its defensible dial is **`gamma_E`**, already the
+largest group, which buys the out-of-sample variant nothing.
+
+Wired anyway, direction-only, on completeness grounds: **`gamma_E`'s other six
+arms all worked**, and a dial whose training data is all successes cannot teach
+a model that the dial sometimes does nothing. Arms 23 -> 24, quantified
+unchanged at 15.
+
+That is the second time in two hours that the assignment which would have
+improved the measurement was the one without the evidence, and the second time
+the search, not the judgement, is what settled it.
