@@ -1535,12 +1535,37 @@ abatacept and Tovaxin all suppress by mechanism and all missed. The exam got
 harder on purpose; a rule that maps class to direction cannot pass it, and now
 the score says so on nine failures instead of seven.
 
-**The capacity extension and the transcription have pulled apart.** They scored
+~~**The capacity extension and the transcription have pulled apart.** They scored
 45.6 and 45.9 on the 12-arm set — inside the noise floor, which is what made
 `screen/`'s 28% verdict disagreement so pointed. On 15 arms they are 42.2 and
-45.4, a 3.2pp gap. **Both still lose to the null by a factor of three and a
-half, so nothing about the ranking gate changes.** But the two models are no
-longer indistinguishable on the evidence, and if that separation holds as arms
-are added it eventually becomes possible to say which one to screen over —
-which is the one thing that would make the survivor list a model-independent
-object. Worth re-checking, not worth acting on at n=15.
+45.4, a 3.2pp gap. But the two models are no longer indistinguishable on the
+evidence, and if that separation holds as arms are added it eventually becomes
+possible to say which one to screen over.~~
+
+**WRONG ON BOTH COUNTS, STRUCK 2026-09-21. The parallel session re-ran it
+rather than taking my numbers and found two errors; both reproduced here
+before this correction was written.**
+
+**The label was wrong.** 42.2pp is the variant with **K fitted per fold on the
+training arms** — an extra free parameter fitted inside each fold, which should
+beat a fixed-K model by construction. The screen ran at **fixed K = 2000**, and
+that variant scores **48.0pp, WORSE than the transcription's 45.4pp**. Full
+diagnostic, re-measured:
+
+    K=None 45.4   K=10000 51.2   K=3000 54.7   K=2000 48.0   K=1500 42.5   K=1000 40.4
+
+So the comparison as I wrote it set a one-parameter model against a
+two-parameter one and credited the difference to the wrong variant.
+
+**And neither gap clears the noise floor.** `backtest/lomo.py` states a
+bootstrapped floor of roughly 10% on these figures — about 4.5pp here. The
+fold-fitted gap is 3.2pp and the fixed-K gap is 2.6pp. By this repo's own rule
+that a difference below the floor is not a result, **the evidence has not
+started to separate the two models.**
+
+**The conclusion that depended on this is untouched, and is now better
+supported than when I overstated it.** The provenance argument is that two
+models this repo CANNOT TELL APART disagree about 11 of 40 survivors, and
+2.6pp inside a 4.5pp floor is still cannot-tell-apart. Nothing about the
+ranking gate changes: every variant above loses to an 11.8pp null by three to
+four times.
