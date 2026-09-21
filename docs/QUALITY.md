@@ -43,11 +43,60 @@ Before treating a result as informative, record:
 5. the comparison against the identity and mean-shift nulls, both reported;
 6. the measurement-noise ceiling, and which folds were excluded as unreliable;
 7. which outputs are illustrative or stand-ins;
-8. uncertainty and failure cases.
+8. uncertainty and failure cases;
+9. **which exam a cached number was measured on** — see below.
 
 Point 6 is not optional here. The Kang backtest carries a per-fold reliability
 number precisely because one cell type (Megakaryocytes, 63/69 cells) scores
 noise for every model including the nulls, and silently drags every aggregate.
+
+## Staleness is the failure mode this repository actually has
+
+Most of the discipline above guards against claiming too much from a measurement.
+The failure that has actually occurred here, repeatedly, is subtler: a
+measurement that was correct when taken, still being read after the thing it
+measured changed.
+
+On one night — 2026-09-20 into 2026-09-21 — four instances were found in two
+independent work streams:
+
+- a cached mechanism-holdout run measured over twelve quantified arms, still
+  being read by the decision gate after fifteen were wired;
+- a screen's survivor list computed against the dials the arms occupied *before*
+  three more arms were wired onto them, which changes which candidates count as
+  duplicates of an existing drug;
+- a cached capacity comparison with no record of the arm set it ran against;
+- a hardcoded summary string in `backtest/clinical_velez.py` printing a
+  measurement from a previous arm set beside a freshly computed one.
+
+Plus a citation that resolved to the wrong paper (one digit out, with the row's
+own numbers correct), and a model comparison quoted as a separation when the gap
+sat inside the stated noise floor.
+
+**None of these were caught by a failing test.** Every one was found by a person
+reading, and mechanised afterwards. That ordering is the honest lesson, and it is
+the opposite of the reassuring one: the checks in this repo do not find staleness,
+they *keep it found* once a human has found it once. `scripts/verify_gate_docs.py`,
+`scripts/verify_anchors.py` and `scripts/state_of_build.py` all exist because
+someone read something and noticed, not because a test went red.
+
+### The rule that came out of it
+
+**A cached measurement carries the exam it was taken on, and is refused when that
+exam has changed.** Not the date, not the commit — those were present on every
+stale artifact above and told nobody anything. The arm set itself, by name rather
+than by count, because swapping one arm for another leaves the count unchanged
+and changes the exam completely.
+
+Caches under `results/` that this applies to are listed in
+`docs/REPRODUCIBILITY.md`, with what regenerates each.
+
+### What this means when reading a number in this repo
+
+A figure quoted in prose is the least trustworthy form a number takes here. It
+was true of some exam, and the exam is not usually stated. Prefer a number that
+a named command regenerates, and when one is quoted, check what it was measured
+on before relying on it.
 
 ## What the clinical gate is and is not
 
