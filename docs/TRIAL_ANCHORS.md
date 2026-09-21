@@ -132,3 +132,111 @@ potency fitted through MRI inherits it.
 **Still to extract** (needs full-text access): PRISMS, CONFIRM, AFFIRM, FREEDOMS,
 TEMSO, DEFINE, CARE-MS I, OPTIMUM. For each: new/enlarging T2 lesion count and
 Gd-enhancing lesion count, treated arm and its comparator, as reported.
+
+---
+
+## Candidate additions — researched 2026-09-21, not yet wired
+
+The exam is thin, and that is the binding limit on what any model can demonstrate
+here: the out-of-sample dial-level headroom is **0.8pp** (`gate/headroom.py`),
+because twelve arms in three multi-member dial groups leave predict-the-mean
+almost nothing to lose by. Widening the arm set is the cheapest available lever —
+cheaper than any model port.
+
+These rows are **research output only**. Nothing below is wired into
+`bricks/profiles.py`, `bricks/intervention.py` or `backtest/clinical.py`; the
+dial assignment is a separate call made from pharmacology, and the reasoning here
+is an input to it, not a decision.
+
+What the arm set is starved of, in priority order:
+
+1. **More arms *per dial*, not more arms.** The out-of-sample variant can only
+   score groups with n ≥ 2, so a third `ke` arm is worth more than a sixth
+   `gamma_E` arm.
+2. **The singletons are the cheapest win.** `glatiramer` (`alpha_R|delta`) and
+   `daclizumab` (`alpha_R`) are fitted exactly for free and drop out of the
+   honest variant entirely. Anything landing on those dials converts a free-fit
+   arm into a scored one and adds two rows, not one.
+3. **Failures are worth more than successes.** The set is almost all winners, so
+   the outcomes cluster and the null is hard to beat. Arms that did nothing widen
+   the spread the null has to cover.
+
+### Quantified — ARR for both arms, from the trial's own report
+
+| candidate | trial | comparator | ARR (drug vs comp.) | change | PMID | proposed dial, from pharmacology |
+|---|---|---|---|---|---|---|
+| ublituximab | ULTIMATE I 2022 | teriflunomide | 0.08 vs 0.19 | **−57.9%** | 36001711 | `ke` — anti-CD20 B-cell depletion, the same target class as ocrelizumab and ofatumumab, which `bricks/profiles.py` already routes to `ke` on the Martinez-Pasamar measurement |
+| interferon beta-1b 8 MIU | IFNB MS Study Group 1993 | placebo | 0.84 vs 1.27 (annual exacerbation rate) | **−33.9%** | 8469318 | `alpha_E` — type I interferon, the same pharmacology as IFN beta-1a, which is already on `alpha_E` |
+| ozanimod 1.0 mg | RADIANCE 2019 | IFN beta-1a | 0.17 vs 0.28 (RR 0.62) | **−39.3%** | 31492652 | `gamma_E` — S1P receptor modulator, lymph-node egress block, the same lump as fingolimod and ponesimod |
+| laquinimod 0.6 mg | ALLEGRO 2012 | placebo | 0.30 vs 0.39 | **−23.1%** | 22417253 | **no confident dial** — see below |
+
+**Value to the exam.** Ublituximab is the highest-value single row available: it
+takes `ke` from 2 arms to 3, which is the group most starved in the out-of-sample
+variant. IFN beta-1b takes `alpha_E` from 3 to 4 and costs nothing to justify,
+since it is the same molecule class as an arm already assigned. Ozanimod grows
+`gamma_E` from 5 to 6, which is the least useful addition — that group is already
+the largest and is the one no potency can reach.
+
+**Laquinimod is listed and deliberately not assigned.** Its mechanism — aryl
+hydrocarbon receptor agonism shifting myeloid cells toward an anti-inflammatory
+phenotype — does not map cleanly onto any of the Vélez model's named rates. It is
+the weakest quantified effect available (−23.1%), which is exactly what the arm
+set needs for spread, but forcing it onto a dial to get that spread would be
+fitting the representation to the outcome. Assign it only if a defensible dial can
+be argued from its pharmacology; otherwise leave it out.
+
+**SUNBEAM is the second ozanimod trial** (PMID 31492651, ARR 0.18 vs 0.35 on IFN
+beta-1a, −48.6%). One arm per drug is this table's existing convention — ASCLEPIOS
+I was taken over ASCLEPIOS II on the same basis — so RADIANCE is proposed and
+SUNBEAM recorded rather than added. The two disagree by 9pp on the same drug,
+which is a useful measure of how much of any arm's number is trial noise.
+
+### Direction-only — real randomised results, no ARR to score
+
+These carry a direction and no magnitude, like `lenercept` and `IFN-gamma`
+already do. They are the ones that widen the *failure* side of the exam.
+
+| candidate | trial | comparator | result | direction | PMID | proposed dial |
+|---|---|---|---|---|---|---|
+| ustekinumab | phase II 2008 | placebo | no significant reduction in cumulative new Gd-enhancing lesions at any of four doses | **no effect** | 18703004 | `alpha_E` — anti-IL-12/23 p40, blocking Th1/Th17 differentiation, i.e. effector activation |
+| abatacept | ACCLAIM 2017 | placebo | no significant difference in new Gd+ lesions or any clinical measure; enrolment closed early at 65 of 123 | **no effect** | 27481207 | `alpha_E` *with a caveat* — CTLA4-Ig blocks costimulation of effectors but also acts on regulatory populations, so the sign on `alpha_R` is not clean |
+| secukinumab | proof-of-concept 2016 | placebo | primary endpoint missed: CUAL reduced 49%, CI −10 to 77, p=0.087; Gd+ lesions −67% (p=0.003), n=73 | **ambiguous** | 27142710 | `alpha_E` — anti-IL-17A |
+| rituximab | RIFUND-MS 2022 | dimethyl fumarate | 3% vs 16% of patients relapsed, risk ratio 0.19 | **improves** | 35841908 | `ke` — anti-CD20, as above |
+
+**A caution on RIFUND-MS.** Its outcome is the *proportion of patients who
+relapsed*, not an annualised relapse rate. Those are different quantities and
+converting one to the other would invent precision, so it belongs in this table
+and not the quantified one — the same rule that keeps the active-comparator arms
+un-chained.
+
+**Ustekinumab and abatacept are the most valuable rows here** despite carrying no
+magnitude, because `alpha_E` currently contains three arms that all worked. A dial
+whose training data is all successes cannot teach a model that the dial sometimes
+does nothing.
+
+### Researched and rejected
+
+**Opicinumab (AFFINITY Part 1, PMID 41454463, *Mult Scler* 2026).** Real,
+randomised, and it missed: adjusted mean difference on ODRS 0.15, CI −0.05 to
+0.35, p=0.148. Excluded anyway, for two reasons that are both about this model
+rather than about the trial. Its target is LINGO-1 — a remyelination agent, acting
+on oligodendrocyte differentiation, which is not an immune rate the Vélez model
+represents at all; there is no dial it could honestly land on. And it was given as
+an add-on to a background DMT, so its comparator is placebo-plus-DMT rather than
+placebo, which is not a comparator any arm in this table uses.
+
+**Mitoxantrone (MIMS, PMID 12504397).** A *progressive* MS population, not RRMS.
+Every arm in this table is relapsing-remitting; mixing populations would make the
+gate's arms non-comparable.
+
+### A note on how these were verified, which is itself a result
+
+Five candidate PMIDs were checked from memory before being searched. **Four of the
+five pointed at entirely unrelated papers** — a note on relative afferent
+pupillary defect, a diabetes-diagnosis review, a childhood cholera trial, and a
+selenium-supplementation study. Only the 1993 interferon beta-1b PMID was correct.
+
+Every identifier in the tables above was resolved by live query against Europe PMC
+and NCBI E-utilities, and every ARR was read out of the retrieved abstract rather
+than recalled. A recalled PMID is not a citation; it is a plausible-looking number
+that happens to index something else.
