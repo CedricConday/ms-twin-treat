@@ -42,12 +42,14 @@ certify past those.
 
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
 
+from backtest.clinical import KNOWN_OUTCOMES
 from gate.criterion import CRITERION, AcceptanceCriterion
 
 # Where a LOMO run leaves its scored rows for the certificate to read. Written
@@ -57,6 +59,23 @@ LOMO_CACHE = Path(__file__).resolve().parent.parent / "results" / "lomo_certific
 
 MEASURED = "MEASURED"
 UNMEASURED = "UNMEASURED"
+
+
+def arm_set_fingerprint() -> str:
+    """A short digest of the quantified arms the scorers are graded on.
+
+    A cached LOMO run is a measurement OF AN EXAM. When arms are wired the exam
+    changes, and the old number stops being a measurement of the current one --
+    silently, because the file still parses and still carries a date and a
+    commit. This is what makes that detectable: the cache records the arm set it
+    was taken on, and `_lomo_evidence` refuses it when the live set differs.
+
+    Names rather than a count, because swapping one arm for another leaves the
+    count unchanged and changes the exam completely.
+    """
+    arms = sorted(o.arm for o in KNOWN_OUTCOMES
+                  if o.relapse_change_pct is not None and o.arm != "untreated")
+    return hashlib.sha256("|".join(arms).encode()).hexdigest()[:12]
 
 
 def _paired_bootstrap(diffs: list[float], resamples: int, confidence: float,
@@ -203,6 +222,18 @@ def _lomo_evidence(criterion: AcceptanceCriterion,
         return ScorerEvidence(
             name="leave-one-mechanism-out", status=UNMEASURED,
             detail=f"cache unreadable ({type(exc).__name__}); treated as no measurement")
+
+    live = arm_set_fingerprint()
+    cached_fp = payload.get("arm_set_fingerprint")
+    if cached_fp != live:
+        n_cached = len(payload.get("arm_set") or [])
+        return ScorerEvidence(
+            name="leave-one-mechanism-out", status=UNMEASURED,
+            detail=(f"cache was measured on a different arm set "
+                    f"({n_cached or 'unrecorded'} quantified arms, fingerprint "
+                    f"{cached_fp or 'absent'}; live is {live}). A LOMO taken on "
+                    "another exam is not a measurement of this one -- re-run "
+                    "scripts/cache_lomo_certificate.py"))
     lo, hi = _paired_bootstrap(diffs, criterion.bootstrap_resamples,
                                criterion.bootstrap_confidence)
     return ScorerEvidence(

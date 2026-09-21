@@ -1,39 +1,57 @@
 {
-  "measured_on": "2026-09-20",
-  "commit": "519bfe4",
-  "mae": 45.88333333333333,
-  "null_mae": 12.299066859066857,
+  "measured_on": "2026-09-21",
+  "commit": "e2f8cb9",
+  "arm_set": [
+    "IFN-beta",
+    "IFN-beta-1b",
+    "alemtuzumab",
+    "cladribine",
+    "daclizumab",
+    "dimethyl fumarate",
+    "fingolimod",
+    "glatiramer acetate",
+    "natalizumab",
+    "ocrelizumab",
+    "ofatumumab",
+    "ozanimod",
+    "ponesimod",
+    "teriflunomide",
+    "ublituximab"
+  ],
+  "arm_set_fingerprint": "a8ca6c871083",
+  "mae": 45.446666666666665,
+  "null_mae": 11.786094276094277,
   "n_groups": 5,
   "folds": [
     {
       "mechanism": "alpha_E",
-      "n_arms": 3,
-      "mae": 38.166666666666664,
-      "null_mae": 13.318518518518518
+      "n_arms": 4,
+      "mae": 37.1,
+      "null_mae": 13.640909090909089
     },
     {
       "mechanism": "alpha_R|delta",
       "n_arms": 1,
       "mae": 29.0,
-      "null_mae": 18.41818181818182
+      "null_mae": 17.621428571428567
     },
     {
       "mechanism": "gamma_E",
-      "n_arms": 5,
-      "mae": 53.220000000000006,
-      "null_mae": 16.634285714285713
+      "n_arms": 6,
+      "mae": 50.900000000000006,
+      "null_mae": 13.696296296296296
     },
     {
       "mechanism": "ke",
-      "n_arms": 2,
-      "mae": 48.0,
-      "null_mae": 2.539999999999999
+      "n_arms": 3,
+      "mae": 51.300000000000004,
+      "null_mae": 7.316666666666673
     },
     {
       "mechanism": "alpha_R",
       "n_arms": 1,
       "mae": 45.0,
-      "null_mae": 0.9636363636363683
+      "null_mae": 0.47857142857142065
     }
   ],
   "note": "written by scripts/cache_lomo_certificate.py; read by gate/evidence.py. Simulation numbers are proxies from a ported toy model."

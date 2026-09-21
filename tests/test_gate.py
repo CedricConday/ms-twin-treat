@@ -290,3 +290,56 @@ def test_the_live_device_halves_agree_today():
     from backtest.lomo import load
 
     assert combined(from_simulator(), from_table(load())).label() == "velez2011"
+
+
+def test_a_cache_from_a_different_arm_set_is_refused(tmp_path):
+    """A LOMO run is a measurement OF AN EXAM. When arms are wired the exam
+    changes and the cached number stops measuring it -- silently, because the
+    file still parses and still carries a date and a commit. That is exactly how
+    a stale 12-arm figure survived two arm-set changes into a 15-arm repo."""
+    from gate.evidence import arm_set_fingerprint
+
+    stale = tmp_path / "lomo_certificate.json"
+    stale.write_text(json.dumps({
+        "mae": 1.0, "null_mae": 50.0,           # would clear the bar easily
+        "folds": [{"mae": 1.0, "null_mae": 50.0}] * 5,
+        "arm_set": ["a", "b"], "arm_set_fingerprint": "deadbeefcafe",
+    }))
+    cert = certify(lomo_cache=stale)
+    lomo = cert.scorers["leave-one-mechanism-out"]
+    assert lomo.status == UNMEASURED
+    assert "different arm set" in lomo.detail
+    assert not cert.unlocks_pass, "a stale cache unlocked PASS"
+    assert arm_set_fingerprint() != "deadbeefcafe"
+
+
+def test_a_cache_with_no_arm_set_recorded_is_refused(tmp_path):
+    """Caches written before the fingerprint existed cannot be trusted either."""
+    old = tmp_path / "lomo_certificate.json"
+    old.write_text(json.dumps({"mae": 1.0, "null_mae": 50.0,
+                               "folds": [{"mae": 1.0, "null_mae": 50.0}]}))
+    assert certify(lomo_cache=old).scorers["leave-one-mechanism-out"].status == UNMEASURED
+
+
+def test_the_fingerprint_tracks_names_not_just_count():
+    """Swapping one arm for another leaves the count unchanged and changes the
+    exam completely, so a count-based check would miss it."""
+    import backtest.clinical as clinical
+    from gate.evidence import arm_set_fingerprint
+
+    before = arm_set_fingerprint()
+    original = clinical.KNOWN_OUTCOMES
+    swapped = list(original)
+    for i, o in enumerate(swapped):
+        if o.relapse_change_pct is not None and o.arm != "untreated":
+            swapped[i] = dataclasses.replace(o, arm=o.arm + "-renamed")
+            break
+    try:
+        clinical.KNOWN_OUTCOMES = swapped
+        import gate.evidence as ev
+        ev.KNOWN_OUTCOMES = swapped
+        assert arm_set_fingerprint() != before
+    finally:
+        clinical.KNOWN_OUTCOMES = original
+        import gate.evidence as ev
+        ev.KNOWN_OUTCOMES = original

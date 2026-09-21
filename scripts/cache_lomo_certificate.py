@@ -20,7 +20,9 @@ import subprocess
 from datetime import date
 from pathlib import Path
 
+from backtest.clinical import KNOWN_OUTCOMES
 from backtest.lomo import run_lomo
+from gate.evidence import arm_set_fingerprint
 
 OUT = Path(__file__).resolve().parent.parent / "results" / "lomo_certificate.json"
 
@@ -36,9 +38,16 @@ def _commit() -> str:
 
 def main() -> int:
     r = run_lomo()
+    quantified = sorted(o.arm for o in KNOWN_OUTCOMES
+                        if o.relapse_change_pct is not None and o.arm != "untreated")
     payload = {
         "measured_on": date.today().isoformat(),
         "commit": _commit(),
+        # The exam this run was taken on. `gate/evidence.py` refuses the cache
+        # when the live arm set no longer matches -- a LOMO measured on a
+        # different set of arms is not a measurement of this one.
+        "arm_set": quantified,
+        "arm_set_fingerprint": arm_set_fingerprint(),
         "mae": r["mae"],
         "null_mae": r["null_mae"],
         "n_groups": r["n_groups"],
@@ -48,7 +57,8 @@ def main() -> int:
     }
     OUT.write_text(json.dumps(payload, indent=2) + "\n")
     print(f"wrote {OUT.relative_to(OUT.parent.parent)}: "
-          f"MAE {r['mae']:.1f}pp vs null {r['null_mae']:.1f}pp over {len(r['folds'])} folds")
+          f"MAE {r['mae']:.1f}pp vs null {r['null_mae']:.1f}pp over {len(r['folds'])} folds, "
+          f"{len(quantified)} quantified arms")
     return 0
 
 
