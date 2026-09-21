@@ -69,12 +69,31 @@ independent work streams:
 - a hardcoded summary string in `backtest/clinical_velez.py` printing a
   measurement from a previous arm set beside a freshly computed one.
 
+- and, in the same night's clean-up, **five stale figures that were fixed,
+  committed, and reported as fixed — while sitting unpushed.** The working tree
+  was clean and the fixes were real; they were simply not in the repository. The
+  other work stream, scanning a fresh clone of the remote, reported the same
+  figures still stale, which from where it stood was indistinguishable from the
+  fix having been wrong.
+
 Plus a citation that resolved to the wrong paper (one digit out, with the row's
 own numbers correct), and a model comparison quoted as a separation when the gap
 sat inside the stated noise floor.
 
+That last one has the same shape as all the caches and is worth naming as its
+own rule: **committed is not published.** A cache is correct on disk and quoted
+against a different exam; a fix is correct in a working tree and quoted as being
+in the repo. In both cases an artifact that is correct *somewhere* is reported as
+correct *everywhere*, and nothing local can tell the difference — a clean `git
+status` looks identical whether or not you have pushed.
+
 **None of these were caught by a failing test.** Every one was found by a person
-reading, and mechanised afterwards. That ordering is the honest lesson, and it is
+reading, and mechanised afterwards. The unpushed-fixes case was found by reading
+from a *clean clone of the remote* rather than from the tree the work was done
+in — and that is the general point, not a fact about clones. **Reading your own
+work from the place you did it cannot show you what you left behind.** It applies
+to a cache you did not regenerate, to a commit you did not push, and to a
+document you wrote and did not re-read. That ordering is the honest lesson, and it is
 the opposite of the reassuring one: the checks in this repo do not find staleness,
 they *keep it found* once a human has found it once. `scripts/verify_gate_docs.py`,
 `scripts/verify_anchors.py` and `scripts/state_of_build.py` all exist because

@@ -34,6 +34,8 @@ import re
 import sys
 from pathlib import Path
 
+from backtest.clinical import KNOWN_OUTCOMES
+
 ROOT = Path(__file__).resolve().parent.parent
 TOLERANCE = 0.051          # figures are quoted to one decimal
 FIGURE = re.compile(r"(\d+\.\d)pp")
@@ -72,8 +74,19 @@ STRIKETHROUGH = re.compile(r"~~")
 # A figure here is a claim that something was true at a stated time, not a claim
 # about the current exam.
 PINNED_FIGURES = {
+    "4.0": "a KNOWN LIMIT OF THE HISTORY RULE, not a false positive. "
+           "docs/PERNICE_PORT_SCOPE.md reads '4.0pp on the 12-arm exam, 3.3pp now' "
+           "-- correctly dated, but dated IN PROSE rather than under a dated heading, "
+           "which is the one thing the mechanical rule cannot see. Pinned because a "
+           "permanently-red check gets ignored and then stops working for the cases "
+           "that matter. If a future 4.0pp appears that is NOT history, this pin will "
+           "hide it: that is the cost, and it is why the rule is a filter on the scan "
+           "and not a substitute for reading.",
     "0.8": "the out-of-sample prize BEFORE six arms were wired, retained because the "
            "page reports that widening the exam moved it to 0.9pp.",
+    "45.9": "the 12-arm LOMO, quoted in docs/PERNICE_PORT_SCOPE.md as '45.4pp on this "
+            "exam (45.9pp on the 12-arm one)'. Correctly dated in prose, which the "
+            "history rule cannot see — same known limit as the 4.0 pin above.",
 }
 
 
@@ -139,6 +152,19 @@ def live_measurements() -> dict[str, float]:
     out["headroom.null"] = head["null_mae"]
     out["headroom.excl_singletons"] = head["mae_excl_singletons"]
     out["headroom.excl_singletons_null"] = head["null_mae_excl_singletons"]
+
+    # Per-dial-group spreads. docs/PERNICE_PORT_SCOPE.md argues from them — its
+    # whole case rests on how tightly the arms on a dial agree — so they are a
+    # measured quantity this scanner has to know. Pinning them instead would
+    # silence the one figure most likely to move when an arm is wired: `ke`
+    # tripled from 4.0pp to 11.9pp when ublituximab landed.
+    from backtest.lomo import mechanism_groups
+
+    known = {o.arm: o.relapse_change_pct for o in KNOWN_OUTCOMES
+             if o.relapse_change_pct is not None and o.arm != "untreated"}
+    for pattern, arms in mechanism_groups().items():
+        vals = [known[a] for a in arms]
+        out[f"spread.{'|'.join(pattern)}"] = max(vals) - min(vals)
 
     dial = dial_ceiling()
     for row in ("in_sample", "multi_only", "out_of_sample"):
