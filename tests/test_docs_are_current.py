@@ -89,3 +89,30 @@ def test_readme_points_at_the_regenerated_state_file():
     readme = _read("README.md")
     assert "results/STATE.md" in readme
     assert "state_of_build" in readme
+
+
+def test_the_screen_artifact_was_run_against_the_current_arm_set():
+    """A screen result is only valid for the arms it ran against.
+
+    The DEGENERATE filter asks whether a candidate shares its dials with a drug
+    that already exists, so adding ONE arm on a previously free dial silently
+    flips candidates from SURVIVED to DEGENERATE. That happened on 2026-09-21:
+    abatacept landed on `delta`, and a synthetic `delta-` survivor in the gate's
+    tests became correctly DEGENERATE overnight.
+
+    Without this check the screen artifacts rot invisibly — they keep saying
+    38 survivors while the code would now say something else.
+    """
+    from bricks.profiles import PROFILES, touched_points
+
+    raw = _read("results/screen.json")
+    rep = json.loads(raw)
+    if "occupied_patterns" not in rep:
+        pytest.fail("results/screen.json predates occupancy recording; "
+                    "regenerate with `python -m screen.report`")
+    live = sorted({"|".join(touched_points(p))
+                   for n, p in PROFILES.items() if n != "untreated"})
+    assert rep["occupied_patterns"] == live, (
+        "the screen ran against a different arm set than the one in bricks/profiles.py; "
+        "regenerate with `python -m screen.report`"
+    )

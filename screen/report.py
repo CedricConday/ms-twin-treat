@@ -37,6 +37,7 @@ import json
 from datetime import date
 from pathlib import Path
 
+from bricks.profiles import PROFILES, touched_points
 from bricks.qsp_velez import INTERVENTION_POINTS
 from screen.kill_filter import (
     NOISE_FLOOR,
@@ -118,8 +119,17 @@ def run(max_points: int = 2, potency: float = 0.5,
     killed = sorted((r for r in results if not r.survived),
                     key=lambda r: (r.killed_by.name, r.profile.label))
 
+    # The DEGENERATE filter compares candidates against the dial patterns real
+    # arms occupy, so this report is only valid for the arm set it ran against.
+    # Recording that set is what makes staleness detectable instead of silent:
+    # adding one arm on a previously free dial flips candidates to DEGENERATE.
+    occupied = sorted({"|".join(touched_points(prof))
+                       for name, prof in PROFILES.items() if name != "untreated"})
+
     imp = _implausibility([row(r) for r in survivors])
     return {
+        "occupied_patterns": occupied,
+        "n_arms_in_library": len(PROFILES) - 1,
         "implausibility": imp,
         "generated": date.today().isoformat(),
         "carrying_capacity": carrying_capacity,
