@@ -276,3 +276,60 @@ checked against that abstract and are correct — ARR 0.14 vs 0.33 at 96 weeks �
 so the data was right and the citation pointed somewhere else entirely. That is
 worse than a wrong number, because it survives every sanity check a reader
 applies to the number itself.
+
+---
+
+## The regulatory dials cannot be widened — a null result, 2026-09-21
+
+`alpha_R` and `alpha_R|delta` are the two singleton groups: `daclizumab` and
+`glatiramer acetate` sit alone on them, are fitted exactly for free, and drop out
+of the out-of-sample variant entirely. A second **quantified** arm on either is
+worth more to the exam than any number of additional anti-CD20s, which is why it
+was searched for specifically.
+
+**There is no such arm.** No MS therapy whose *primary* sourced mechanism is
+regulatory-T-cell restoration or expansion has a published annualised relapse
+rate against a stated comparator. Searched live on 2026-09-21 against PubMed and
+Europe PMC:
+
+| candidate | what exists | why it cannot be an anchor |
+|---|---|---|
+| low-dose IL-2 | randomised trials in SLE and Sjögren's | no randomised MS trial with a relapse endpoint |
+| Tovaxin / imilecleucel-T | TERMS, phase 2b, randomised, placebo-controlled, n=150, RRMS+CIS (PMID 22065170) | **negative on its primary**; ARR appears only in *post-hoc* subsets, and the paper itself notes a prior-DMT legacy effect that lowered the placebo ARR. A post-hoc subgroup number is not an anchor |
+| T-cell vaccination | randomised, double-blind, placebo-controlled (PMID 23272061) | n=17 per arm, *relapsing-progressive* population, and the outcome is the proportion staying relapse-free (94.1% vs 42.9%), not an ARR |
+| ATX-MS-1467 | two real trials, 2018 *Neurology* (PMID 29467307) | both **open-label**, one single-arm; MRI endpoints, no comparator to score against |
+| basiliximab | anti-CD25, the same target as daclizumab | no randomised MS trial found |
+| daclizumab SELECT | a second daclizumab trial | same drug already in the table; a second trial of one drug is not a second arm |
+
+### Why this is a result and not a gap in the search
+
+The model's regulatory dials correspond to the region of MS pharmacology with
+almost no successful randomised evidence. That is not a coincidence and it is not
+something more searching fixes: **those groups are singletons in the arm set
+because they are nearly singletons in the field.** Every mechanism above either
+failed its primary endpoint, was tested without a control arm, or was tested in
+another disease.
+
+The uncomfortable corollary is worth stating plainly. The dials this model can
+least afford to leave unmeasured are the ones clinical trials have the least to
+say about, so the part of the exam that most needs widening is the part that
+cannot be widened from the literature. Widening the exam is still the cheapest
+lever available (`gate/headroom.py`), but it can only be pulled where the trials
+already are — which is `alpha_E`, `gamma_E` and `ke`, the groups that are already
+the largest.
+
+### Tovaxin was the near miss, and it is recorded as one
+
+TERMS is a real randomised negative result in RRMS, and a negative arm is exactly
+what the exam is starved of. It is **not** proposed for `alpha_R` anyway. Tovaxin
+is autologous attenuated myelin-reactive T cells; the response it induces deletes
+myelin-reactive effector clones, so its defensible dial is `gamma_E` — effector
+loss — not regulatory expansion. Assigning it to `alpha_R` would pair it with
+daclizumab, convert a singleton into a scored group, and improve the exam, which
+is precisely the reason to distrust the assignment. `gamma_E` is already the
+largest group, so the honest assignment is also the one that helps least.
+
+That is the same trap the wiring session avoided with abatacept and CTLA4-Ig: the
+dial that would have fixed the measurement was the one with no evidence behind
+it. Recorded here so that neither the tempting version nor the search that ruled
+it out has to be redone.
