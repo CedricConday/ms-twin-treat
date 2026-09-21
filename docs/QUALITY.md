@@ -110,6 +110,37 @@ and changes the exam completely.
 Caches under `results/` that this applies to are listed in
 `docs/REPRODUCIBILITY.md`, with what regenerates each.
 
+### The limit of that rule, which matters as much as the rule
+
+**A staleness guard tells you an input changed. It does not tell you a result is
+wrong, and it does not tell you a result is right.** Those are three different
+claims and the guard only makes the first.
+
+The case that forced this distinction: `results/mechanism_curve*.json` was
+nominated for the same arm-set fingerprint, and it does not need one. It is a
+measurement of the *model* — one column per mechanism pattern per potency — not
+of the exam, so wiring an arm onto an existing dial leaves it exactly valid, and
+wiring one onto a new dial already fails loudly with a missing key. A fingerprint
+there would fire on changes that invalidate nothing, charge an eight-minute
+rebuild, and hand back a byte-identical table.
+
+Worse, it would not catch that file's one genuinely silent failure. Each pattern's
+column is computed from a single representative arm and shared by every arm on
+that pattern, which is sound only while those arms move their dials in the same
+direction — a property nothing enforced, because the grouping key carries point
+names and not signs. An arm wired onto an existing dial pointing the other way
+*does* change the arm set, so the fingerprint fires, and the rebuild pools the
+same two arms the same wrong way. Loud, expensive, and still wrong.
+
+`tests/test_curve_soundness.py` enforces the property instead. If it ever fires,
+**split the group by direction before rebuilding anything** — the other cache
+failures in this repo all taught the reflex of reaching for a regeneration, and
+here a regeneration reproduces the fault.
+
+The general lesson is that paying a cost creates the feeling of having checked
+something. A guard that fires on the wrong signal is not neutral; it buys false
+confidence at real expense.
+
 ### What this means when reading a number in this repo
 
 A figure quoted in prose is the least trustworthy form a number takes here. It
