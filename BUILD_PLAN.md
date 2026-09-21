@@ -1391,3 +1391,66 @@ PYTHONPATH=. python3 -m gate.device      # verdicts and the certificate
 PYTHONPATH=. python3 -m gate.ceiling     # oracle ceiling and recoverability
 PYTHONPATH=. python3 -m gate.headroom    # which failure binds, and the 1.0pp prize
 ```
+
+#### WIDENING THE EXAM BARELY MOVED THE PRIZE (2026-09-21)
+
+`scripts/dial_ceiling.py` had just established that the out-of-sample headroom
+over a predict-the-mean null was **0.8pp**, and that the headroom is a property
+of the ARMS rather than of the model — twelve quantified arms across three
+multi-member dial groups is a thin exam. That made widening the arm set the
+cheapest lever available, far cheaper than porting a richer model. The parallel
+session researched eight candidate arms (f2ca0d4); six were wired here.
+
+    quantified:      ublituximab -> ke, IFN-beta-1b -> alpha_E, ozanimod -> gamma_E
+    direction-only:  rituximab -> ke, ustekinumab -> alpha_E, abatacept -> delta
+
+    arms 17 -> 23, quantified 12 -> 15
+
+**Out-of-sample headroom went 0.8pp -> 0.9pp.** Measured, not estimated, and
+confirmed by two independent implementations (`scripts/dial_ceiling.py` and
+`gate/headroom.py`) that agree to 1e-9 on all three variants.
+
+**Why it barely moved, which is the useful part.** Two of the three quantified
+arms landed in groups that were already the largest — `gamma_E` went 5 to 6 and
+`alpha_E` 3 to 4 — and the out-of-sample variant can only score groups with at
+least two members. The groups it is starved of are the singletons: `alpha_R`
+(daclizumab), `alpha_R|delta` (glatiramer) and now `delta` (abatacept, which
+carries no magnitude). **The lever is real and the per-arm return is far smaller
+than "widen the exam" implied.** What it needs is arms in the SMALL groups, and
+a quantified second arm on `alpha_R` is worth more than five more anti-CD20s.
+
+#### THREE ASSIGNMENTS DELIBERATELY NOT MADE — and one of them was tempting
+
+Recorded in full under "Negative results from dial assignment" in
+`docs/TRIAL_ANCHORS.md`, because the tempting one is the shape of mistake this
+repo keeps finding.
+
+**Abatacept was nearly given an `alpha_R` axis.** CTLA4-Ig blocks CD28
+costimulation, and regulatory T cells depend on CD28, so impairing them is
+plausible. Asserting it would have put abatacept on `alpha_R|delta` beside
+glatiramer — **turning a singleton into a scored pair, which is directly worth
+headroom in the measurement being reported in the same commit.** That is exactly
+when to go and look for the source. Europe PMC on 2026-09-21 has CTLA4-Ig/Treg
+evidence in LRBA deficiency, transplantation and autoimmune haemolytic anaemia,
+and none in MS. No source, no axis; abatacept sits on `delta` alone.
+
+Laquinimod (AhR agonism) and secukinumab (IL-17) got no dial at all — neither
+mechanism corresponds to a rate this model has.
+
+#### A CITATION POINTED AT THE WRONG PAPER (2026-09-21)
+
+The parallel session reported that four of five PMIDs it recalled from memory
+resolved to unrelated work, and checked its own by live query instead. Running
+that check over the EXISTING anchor table found one:
+
+    cladribine, CLARITY 2010, cited as PMID 20089950
+      -> "Signaling by the high-affinity HDL receptor scavenger receptor B type I."
+    the real CLARITY paper is PMID 20089960
+
+One digit. The row's own numbers were checked against the correct abstract and
+are right — ARR 0.14 vs 0.33 at 96 weeks — so the data was sound and only the
+pointer was wrong. **That is worse than a wrong number, because it survives
+every sanity check a reader applies to the number itself.**
+`scripts/verify_anchors.py` now resolves every identifier in the table and
+flags any whose title is off topic. It is not in the test suite: it needs the
+network, and a test that fails when the wifi drops teaches people to skip tests.
