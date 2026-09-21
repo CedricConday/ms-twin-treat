@@ -42,10 +42,12 @@ the predictor is reliably worse than the null rather than close to it:
 Both re-measured 2026-09-21 on the 15-quantified-arm exam, LOMO via
 `results/lomo_certificate.json`, which now records the arm set it was taken on
 and is refused if that set has changed.
-The carrying-capacity extension to the QSP model (ec4ee5b) was the live candidate
-for lifting this and does not: 45.6pp against the same null, measured by the
-session that owns the master checkout. It fixes the depletion SIGN and not the
-magnitude.
+The carrying-capacity extension to the QSP model was the live candidate for
+lifting this and does not. With K fitted per fold on training arms it scores
+42.2pp against the same null; held fixed at K = 2000, the value the screen ran
+at, it scores 48.0pp -- WORSE than the transcription's 45.4pp. Neither gap
+escapes the ~10% noise floor these figures carry. It fixes the depletion SIGN and
+not the magnitude.
 
 Do not read those numbers from here. `gate.evidence.certify()` recomputes them,
 and every figure in `BUILD_PLAN.md` older than 2026-09-20 predates the arm set

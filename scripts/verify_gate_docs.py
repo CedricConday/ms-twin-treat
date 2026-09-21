@@ -48,10 +48,6 @@ SCANNED = [
 # A figure here is a claim that something was true at a stated time, not a claim
 # about the current exam.
 PINNED_FIGURES = {
-    "45.9": "the transcription half of the K=2000 model comparison, measured on the "
-            "12-arm exam. Paired with 45.6 — re-running one half turns a comparison "
-            "into two unrelated numbers.",
-    "45.6": "the K=2000 extension half of that same paired comparison.",
     "0.8": "the out-of-sample prize BEFORE six arms were wired, retained because the "
            "page reports that widening the exam moved it to 0.9pp.",
 }
@@ -94,6 +90,25 @@ def live_measurements() -> dict[str, float]:
     for row in rec["rows"]:
         out[f"recoverability.{row['arm']}.error"] = row["error"]
         out[f"recoverability.{row['arm']}.null"] = row["null_error"]
+
+    # The capacity comparison lives in backtest/lomo_capacity.py's artifact rather
+    # than in gate/, but gate/provenance.py and DECISION_GATE.md both quote it to
+    # justify why a verdict must name its model. A figure this lane quotes is a
+    # figure this lane has to keep current.
+    cap = ROOT / "results" / "lomo_capacity.json"
+    if cap.exists():
+        import json as _json
+
+        payload = _json.loads(cap.read_text())
+        out["capacity.fold_fitted.mae"] = payload["mae"]
+        out["capacity.null"] = payload["null_mae"]
+        for k, row in (payload.get("fixed_k_diagnostic") or {}).items():
+            label = "transcription" if k == "None" else f"K{float(k):g}"
+            out[f"capacity.{label}.mae"] = row["mae"]
+        base = out.get("capacity.transcription.mae")
+        k2000 = out.get("capacity.K2000.mae")
+        if base is not None and k2000 is not None:
+            out["capacity.gap_transcription_vs_K2000"] = abs(base - k2000)
 
     head = run_headroom()
     out["headroom.mae"] = head["mae"]

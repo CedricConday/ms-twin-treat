@@ -27,12 +27,10 @@ Run over the 14 single-dial candidates the model admits: **13 KILL, 1 ABSTAIN,
 
 Every verdict names the model that produced it — `velez2011` today — and that is
 a required field, not a note. Survival is not a model-independent fact: the
-published transcription and the K = 2000 carrying-capacity extension scored
-45.9pp and 45.6pp — which this repo has no measurement capable of telling apart —
-and they disagreed about 11 of 40 survivors. (That paired comparison was made on
-the 12-arm exam and has not been re-run since; the transcription alone now scores
-45.4pp on 15 arms, so the two models' *difference* is unmeasured on the current
-set rather than known to be small.) The label carries the *parameter*
+published transcription and the K = 2000 carrying-capacity extension score
+45.4pp and 48.0pp on the current exam — a 2.6pp gap, inside this repo's own ~10%
+noise floor for these figures, so nothing here can prefer one model — and they
+disagree about 11 of 40 survivors. The label carries the *parameter*
 too, because K = 50000 and K = 2000 are both "the extension" and behave
 oppositely (+109% and −3% on the same dial). The device also refuses to issue a
 verdict at all if its kill filters and its certificate turn out to describe
@@ -148,6 +146,24 @@ widening is the part that cannot be widened from the literature.
 
 (The dial-level bound originates in `scripts/dial_ceiling.py`; the out-of-sample
 variant and the singleton caveat are `gate/headroom.py`'s.)
+
+## One thing both lanes got wrong on the same night
+
+Two independent caches in this repository were found, two hours apart, to be
+answering questions about an exam that no longer existed. The gate's
+mechanism-holdout cache had been measured over twelve arms and was still being
+read after fifteen were wired; the screen's survivor list had been computed
+against the dials the arms occupied *before* three more arms were wired onto
+them, which changes which candidates count as duplicates of an existing drug.
+
+Neither was detected by a failing test. Both were found by a person reading, and
+in both cases the stale artifact was indistinguishable from a fresh one — it
+parsed, it carried a date, it carried a commit.
+
+The rule that came out of it, now enforced in code on both sides: **a cached
+measurement carries the exam it was taken on, and is refused when that exam has
+changed.** It is worth stating on this page because it is the failure most likely
+to recur, and the one a reader has no way to see.
 
 ## What can honestly be said to a third party today
 

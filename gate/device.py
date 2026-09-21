@@ -64,9 +64,9 @@ class Verdict:
     """One candidate's answer, with everything needed to disagree with it.
 
     `model` is REQUIRED and has no default. Two models this repo cannot tell
-    apart -- the transcription and the K = 2000 extension, 45.9pp and 45.6pp --
-    disagree about 11 of 40 survivors, so a verdict that does not name its model
-    is not reproducible. It is a field rather than a docstring warning because
+    apart -- the transcription and the K = 2000 extension, 45.4pp and 48.0pp,
+    a gap inside the noise floor -- disagree about 11 of 40 survivors, so a
+    verdict that does not name its model is not reproducible. It is a field rather than a docstring warning because
     this repo has spent a night discovering that docstring warnings do not hold.
     """
 
@@ -188,8 +188,8 @@ def main() -> int:
     print(f"\n  {len(verdicts)} candidates under {verdicts[0].model.label()}: "
           + ", ".join(f"{n} {k}" for k, n in counts.items() if n))
     print("  Survival is model-relative: the transcription and the K=2000 extension")
-    print("  score 45.9pp and 45.6pp — indistinguishable — and disagree on 11 of 40")
-    print("  survivors. Quote the label above with any verdict from this run.")
+    print("  score 45.4pp and 48.0pp — a gap inside the noise floor — and disagree on")
+    print("  11 of 40 survivors. Quote the label above with any verdict from this run.")
 
     cert = verdicts[0].certificate if verdicts and verdicts[0].certificate else certify()
     print()

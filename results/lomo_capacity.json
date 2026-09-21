@@ -5,99 +5,121 @@
       "arm": "IFN-beta",
       "known": -30.0,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "predicted": -3.922826083254627,
-      "error": 26.077173916745373,
-      "null_predicted": -48.455555555555556,
-      "null_error": 18.455555555555556
+      "fitted_potency": 0.59,
+      "predicted": -4.505350497207811,
+      "error": 25.49464950279219,
+      "null_predicted": -48.48181818181818,
+      "null_error": 18.481818181818177
     },
     {
       "held_mechanism": "alpha_E",
       "arm": "teriflunomide",
       "known": -31.5,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "predicted": -3.922826083254627,
-      "error": 27.577173916745373,
-      "null_predicted": -48.455555555555556,
-      "null_error": 16.955555555555556
+      "fitted_potency": 0.59,
+      "predicted": -4.505350497207811,
+      "error": 26.99464950279219,
+      "null_predicted": -48.48181818181818,
+      "null_error": 16.981818181818177
     },
     {
       "held_mechanism": "alpha_E",
       "arm": "dimethyl fumarate",
       "known": -53.0,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "predicted": -3.922826083254627,
-      "error": 49.07717391674537,
-      "null_predicted": -48.455555555555556,
-      "null_error": 4.544444444444444
+      "fitted_potency": 0.59,
+      "predicted": -4.505350497207811,
+      "error": 48.494649502792186,
+      "null_predicted": -48.48181818181818,
+      "null_error": 4.518181818181823
+    },
+    {
+      "held_mechanism": "alpha_E",
+      "arm": "IFN-beta-1b",
+      "known": -33.9,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.59,
+      "predicted": -4.505350497207811,
+      "error": 29.394649502792188,
+      "null_predicted": -48.48181818181818,
+      "null_error": 14.581818181818178
     },
     {
       "held_mechanism": "alpha_R|delta",
       "arm": "glatiramer acetate",
       "known": -29.0,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.6,
-      "predicted": -10.0983239423182,
-      "error": 18.9016760576818,
-      "null_predicted": -47.41818181818182,
-      "null_error": 18.41818181818182
+      "fitted_potency": 0.64,
+      "predicted": -10.652166006092445,
+      "error": 18.347833993907557,
+      "null_predicted": -46.62142857142857,
+      "null_error": 17.621428571428567
     },
     {
       "held_mechanism": "gamma_E",
       "arm": "natalizumab",
       "known": -68.0,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "predicted": -3.609898133118822,
-      "error": 64.39010186688118,
-      "null_predicted": -40.642857142857146,
-      "null_error": 27.357142857142854
+      "fitted_potency": 0.6,
+      "predicted": -3.883578315199027,
+      "error": 64.11642168480097,
+      "null_predicted": -41.81111111111111,
+      "null_error": 26.18888888888889
     },
     {
       "held_mechanism": "gamma_E",
       "arm": "fingolimod",
       "known": -55.0,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "predicted": -3.609898133118822,
-      "error": 51.39010186688118,
-      "null_predicted": -40.642857142857146,
-      "null_error": 14.357142857142854
+      "fitted_potency": 0.6,
+      "predicted": -3.883578315199027,
+      "error": 51.116421684800976,
+      "null_predicted": -41.81111111111111,
+      "null_error": 13.18888888888889
     },
     {
       "held_mechanism": "gamma_E",
       "arm": "alemtuzumab",
       "known": -55.0,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "predicted": -3.609898133118822,
-      "error": 51.39010186688118,
-      "null_predicted": -40.642857142857146,
-      "null_error": 14.357142857142854
+      "fitted_potency": 0.6,
+      "predicted": -3.883578315199027,
+      "error": 51.116421684800976,
+      "null_predicted": -41.81111111111111,
+      "null_error": 13.18888888888889
     },
     {
       "held_mechanism": "gamma_E",
       "arm": "ponesimod",
       "known": -30.5,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "predicted": -3.609898133118822,
-      "error": 26.890101866881178,
-      "null_predicted": -40.642857142857146,
-      "null_error": 10.142857142857146
+      "fitted_potency": 0.6,
+      "predicted": -3.883578315199027,
+      "error": 26.616421684800972,
+      "null_predicted": -41.81111111111111,
+      "null_error": 11.31111111111111
     },
     {
       "held_mechanism": "gamma_E",
       "arm": "cladribine",
       "known": -57.6,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "predicted": -3.609898133118822,
-      "error": 53.990101866881176,
-      "null_predicted": -40.642857142857146,
-      "null_error": 16.957142857142856
+      "fitted_potency": 0.6,
+      "predicted": -3.883578315199027,
+      "error": 53.71642168480098,
+      "null_predicted": -41.81111111111111,
+      "null_error": 15.788888888888891
+    },
+    {
+      "held_mechanism": "gamma_E",
+      "arm": "ozanimod",
+      "known": -39.3,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.6,
+      "predicted": -3.883578315199027,
+      "error": 35.41642168480097,
+      "null_predicted": -41.81111111111111,
+      "null_error": 2.511111111111113
     },
     {
       "held_mechanism": "ke",
@@ -107,8 +129,8 @@
       "fitted_potency": 0.95,
       "predicted": -82.36363855259242,
       "error": 36.36363855259242,
-      "null_predicted": -45.46,
-      "null_error": 0.5399999999999991
+      "null_predicted": -43.98333333333333,
+      "null_error": 2.016666666666673
     },
     {
       "held_mechanism": "ke",
@@ -118,8 +140,19 @@
       "fitted_potency": 0.95,
       "predicted": -82.36363855259242,
       "error": 32.36363855259242,
-      "null_predicted": -45.46,
-      "null_error": 4.539999999999999
+      "null_predicted": -43.98333333333333,
+      "null_error": 6.016666666666673
+    },
+    {
+      "held_mechanism": "ke",
+      "arm": "ublituximab",
+      "known": -57.9,
+      "fitted_capacity": 1000.0,
+      "fitted_potency": 0.95,
+      "predicted": -82.36363855259242,
+      "error": 24.46363855259242,
+      "null_predicted": -43.98333333333333,
+      "null_error": 13.916666666666671
     },
     {
       "held_mechanism": "alpha_R",
@@ -129,42 +162,42 @@
       "fitted_potency": 0.95,
       "predicted": 63.798203080101835,
       "error": 108.79820308010184,
-      "null_predicted": -45.96363636363637,
-      "null_error": 0.9636363636363683
+      "null_predicted": -45.47857142857142,
+      "null_error": 0.47857142857142065
     }
   ],
   "folds": [
     {
       "mechanism": "alpha_E",
-      "n_arms": 3,
+      "n_arms": 4,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "mae": 34.24384058341204,
-      "null_mae": 13.318518518518518
+      "fitted_potency": 0.59,
+      "mae": 32.59464950279219,
+      "null_mae": 13.640909090909089
     },
     {
       "mechanism": "alpha_R|delta",
       "n_arms": 1,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.6,
-      "mae": 18.9016760576818,
-      "null_mae": 18.41818181818182
+      "fitted_potency": 0.64,
+      "mae": 18.347833993907557,
+      "null_mae": 17.621428571428567
     },
     {
       "mechanism": "gamma_E",
-      "n_arms": 5,
+      "n_arms": 6,
       "fitted_capacity": 1000.0,
-      "fitted_potency": 0.55,
-      "mae": 49.61010186688118,
-      "null_mae": 16.634285714285713
+      "fitted_potency": 0.6,
+      "mae": 47.016421684800974,
+      "null_mae": 13.696296296296296
     },
     {
       "mechanism": "ke",
-      "n_arms": 2,
+      "n_arms": 3,
       "fitted_capacity": 1000.0,
       "fitted_potency": 0.95,
-      "mae": 34.36363855259242,
-      "null_mae": 2.539999999999999
+      "mae": 31.06363855259242,
+      "null_mae": 7.316666666666673
     },
     {
       "mechanism": "alpha_R",
@@ -172,36 +205,36 @@
       "fitted_capacity": 1500.0,
       "fitted_potency": 0.95,
       "mae": 108.79820308010184,
-      "null_mae": 0.9636363636363683
+      "null_mae": 0.47857142857142065
     }
   ],
   "fixed_k_diagnostic": {
     "None": {
-      "mae": 45.88333333333333,
-      "null_mae": 12.299066859066857
+      "mae": 45.446666666666665,
+      "null_mae": 11.786094276094277
     },
     "10000.0": {
-      "mae": 49.487347511206906,
-      "null_mae": 12.299066859066857
+      "mae": 51.17802001904655,
+      "null_mae": 11.786094276094277
     },
     "3000.0": {
-      "mae": 58.11465840795851,
-      "null_mae": 12.299066859066857
+      "mae": 54.711528822199355,
+      "null_mae": 11.786094276094277
     },
     "2000.0": {
-      "mae": 50.597817272754924,
-      "null_mae": 12.299066859066857
+      "mae": 48.00402509648457,
+      "null_mae": 11.786094276094277
     },
     "1500.0": {
-      "mae": 45.75675047271465,
-      "null_mae": 12.299066859066857
+      "mae": 42.54598101561094,
+      "null_mae": 11.786094276094277
     },
     "1000.0": {
-      "mae": 43.39203426964664,
-      "null_mae": 12.299066859066857
+      "mae": 40.42062031732737,
+      "null_mae": 11.786094276094277
     }
   },
-  "mae": 45.600765610634205,
-  "null_mae": 12.299066859066857,
+  "mae": 42.18760539011742,
+  "null_mae": 11.786094276094277,
   "note": "Capacity is an EXTENSION to Velez de Mendizabal 2011, not transcription. K and potency are fitted per fold on training arms only; the held-out mechanism sees neither. validated=False."
 }

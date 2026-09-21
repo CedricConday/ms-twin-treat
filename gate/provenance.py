@@ -1,10 +1,11 @@
 """Which model produced this verdict? Read it off the artifact, never declare it.
 
-A candidate's survival is not a model-independent fact. The master checkout
-measured this directly: the published transcription and the carrying-capacity
-extension at K = 2000 score 45.9pp and 45.6pp -- indistinguishable, inside the
-noise floor, so no measurement in this repo can prefer one -- and they disagree
-about 11 of 40 survivors. Nine patterns survive the transcription and are killed
+A candidate's survival is not a model-independent fact. The published
+transcription and the carrying-capacity extension at K = 2000 score 45.4pp and
+48.0pp on the current 15-arm exam. That 2.6pp gap sits inside this repo's own
+~10% noise floor for these figures (`backtest/lomo.py`), so no measurement here
+can prefer one model over the other -- and they disagree about 11 of 40
+survivors. Nine patterns survive the transcription and are killed
 by the extension, two go the other way.
 
 So "this candidate survived" means nothing without the model that said so, and
