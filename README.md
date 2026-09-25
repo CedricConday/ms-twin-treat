@@ -21,7 +21,7 @@ The whole spine is built and runs end to end — **and it is honest about being 
 - **GRN** recovers the interferon module (IFIT1/IFIT3–ISG15) + MHC-II from raw data. **QSP / ABM / barrier / readout** are toy models, directionally coherent, every one flagged `validated=False`.
 - **The wedge** (`bricks/vpop.py`) — a first open Python plausible-patient generator (LHS + a rejection filter that actually rejects) pointed at a neuroimmune model. No such implementation exists on GitHub.
 
-**Reproduce it** (in a venv — the pins matter, a system Python gives different numbers):
+**Reproduce it** (in a Python 3.12+ venv — the pins matter, a system Python gives different numbers):
 ```bash
 python -m pip install -r requirements-dev.txt   # harness, toy pipeline, tests, lint
 python -m ruff check .           # lint gate

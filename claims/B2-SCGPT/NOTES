@@ -171,9 +171,8 @@ VERDICT: the bar is beaten. 0.8732 vs 0.8498, LOCTO, on real Kang IFN-beta.
 
 6. REPRODUCING THE scGPT PATH (optional, not needed to wire)
 ------------------------------------------------------------
-    python3 -m venv .venv-scgpt && . .venv-scgpt/bin/activate
-    pip install --index-url https://download.pytorch.org/whl/cpu torch
-    pip install "numpy<2.1" scipy anndata scanpy
+    python3.12 -m venv .venv-scgpt && . .venv-scgpt/bin/activate
+    pip install -r requirements-scgpt.txt   # pinned; was unpinned here before
     # checkpoints (gitignored, ~156 MB / ~205 MB):
     #   https://huggingface.co/perturblab/scgpt-blood  -> data/cache/scgpt/blood/
     #   https://huggingface.co/perturblab/scgpt-human  -> data/cache/scgpt/human/

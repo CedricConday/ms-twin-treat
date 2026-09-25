@@ -7,8 +7,13 @@ numbers it produces are not the ones in `results/RESULTS.md`.
 
 ## Environment
 
+**Python 3.12 or newer** (pinned in `.python-version`, which CI also reads).
+The core install works on 3.11, but `requirements-data.txt` does not:
+`scanpy==1.12` requires Python >= 3.12, and pip reports it as "No matching
+distribution found" rather than as a version mismatch.
+
 ```bash
-python -m venv .venv
+python3.12 -m venv .venv
 . .venv/bin/activate                 # Windows: .venv\Scripts\activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements-dev.txt
@@ -31,6 +36,22 @@ python -m pip install -r requirements-data.txt
 scanpy is pinned to 1.12 — the newest release still compatible with
 `pandas==2.2.3`. 1.12.1 and later require `pandas>=2.3`, which breaks the
 pinned stack.
+
+## The scGPT path
+
+`python -m bricks.cell_scgpt` reads `data/cache/scgpt_embeddings_blood.npz`.
+Making that file needs torch and an scGPT checkpoint, which live in a **separate**
+venv so they never touch the pinned stack above:
+
+```bash
+python3.12 -m venv .venv-scgpt && . .venv-scgpt/bin/activate
+python -m pip install -r requirements-scgpt.txt
+# download a checkpoint into data/cache/scgpt/blood/ (links in requirements-scgpt.txt)
+python scripts/scgpt_embed.py --ckpt data/cache/scgpt/blood --n-per-type 128
+```
+
+About 25 minutes on 4 CPU cores. Without the npz, `bricks.cell_scgpt` still
+runs its non-scGPT similarity variants and tells you how to produce it.
 
 ## Gates
 

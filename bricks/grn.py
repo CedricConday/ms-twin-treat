@@ -18,16 +18,16 @@ Writes state["grn_edges"] = list[(gene_a, gene_b, weight)] + meta.
 from __future__ import annotations
 
 import numpy as np
-import scanpy as sc
 from scipy.stats import rankdata
 
-from data.kang import fetch_kang
+from data.kang import _scanpy, fetch_kang
 
 
 def _load_expr(n_genes: int, n_cells: int, seed: int = 0):
     """Return (gene_names, X[n_cells, n_genes]) of top-variance genes, log-normalized."""
     adata = fetch_kang()
     if float(adata.X.max()) > 30:
+        sc = _scanpy()  # lazy: importing this module must not need scanpy
         sc.pp.normalize_total(adata, target_sum=1e4)
         sc.pp.log1p(adata)
     X = adata.X.toarray() if hasattr(adata.X, "toarray") else np.asarray(adata.X)

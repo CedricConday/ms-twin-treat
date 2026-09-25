@@ -1,0 +1,26 @@
+# scGPT embedding extraction ONLY: scripts/scgpt_embed.py, in its own venv.
+#
+#     python3.12 -m venv .venv-scgpt && . .venv-scgpt/bin/activate
+#     python -m pip install -r requirements-scgpt.txt
+#
+# Never install this into the main .venv. It is deliberately NOT layered on
+# requirements.txt: torch and the pinned analysis stack are kept apart, and the
+# scoring brick (bricks/cell_scgpt.py) reads the npz this env writes with plain
+# numpy. The `scgpt` package itself is not needed -- scripts/scgpt_model.py
+# re-implements the encoder in plain torch (it pins flash-attn and an old torch).
+#
+# The extra index serves CPU-only torch wheels (torch==2.9.1 resolves to
+# 2.9.1+cpu there). Without it pip falls back to the PyPI wheel, which works
+# but pulls several GB of CUDA libraries.
+#
+# Checkpoints are not pip-installable and are git-ignored (~156 MB / ~205 MB):
+#   https://huggingface.co/perturblab/scgpt-blood  -> data/cache/scgpt/blood/
+#   https://huggingface.co/perturblab/scgpt-human  -> data/cache/scgpt/human/
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.9.1
+# numpy<2.1 as in claims/B2-SCGPT/NOTES §6, where the published embeddings were made.
+numpy==2.0.2
+scipy==1.14.1
+pandas==2.2.3
+anndata==0.11.3
+scanpy==1.11.5

@@ -3,6 +3,10 @@
 # no build backend. Test config lives in pytest.ini, deliberately in ONE place:
 # pytest reads pytest.ini in preference to pyproject.toml, so a duplicate
 # [tool.pytest.ini_options] block here would be silently dead config.
+#
+# Python >= 3.12 is required (scanpy==1.12 in requirements-data.txt needs it).
+# Without a [project] table there is no requires-python to enforce that, so the
+# version lives in .python-version, which CI reads too.
 
 [tool.ruff]
 line-length = 100

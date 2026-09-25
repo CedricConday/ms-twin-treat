@@ -6,6 +6,7 @@
 # spine/run_demo.py --with-data, or the grounding derivation.
 #
 # scanpy 1.12 is the newest release compatible with the pandas==2.2.3 pin in
-# requirements.txt (1.12.1+ requires pandas>=2.3).
+# requirements.txt (1.12.1+ requires pandas>=2.3). scanpy 1.12 itself requires
+# Python >= 3.12; on 3.11 pip reports "No matching distribution found".
 -r requirements.txt
 scanpy==1.12
