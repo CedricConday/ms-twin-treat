@@ -108,7 +108,7 @@ and if it lost, why. Then `echo "done: $(date -u +%FT%TZ)" >> claims/B2-SCGPT/OW
 and commit.
 
 ## 9. CONTEXT (optional, for grounding)
-Full research + brick map: `~/repos/ms-twin/docs/RESEARCH_FINDINGS.md` (scGPT is
+Full research + brick map: `docs/research/RESEARCH_FINDINGS.md` (scGPT is
 B1 there: MIT, brain+blood checkpoints, the commercial-clean cell brick). Why the
 bar is 0.85 and hard: the interferon signature is largely shared across immune
 cell types, so beating "everyone responds the same" requires real cell-type-
