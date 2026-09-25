@@ -1,0 +1,11 @@
+This project makes use of GenBio AI Materials.
+
+  This is licensed under the GenBio AI Community License Agreement,
+  Copyright (c) GENBIO.AI, INC. All Rights Reserved.
+
+Powered by GenBio AI.
+
+MS-Twin has modified/extended the GenBio Materials only by composing them
+behind an orchestration layer ("the spine") and a validation harness
+("the backtest"). No GenBio model weights are redistributed in this repo.
+GenBio Materials are used for Non-Commercial Purposes only.

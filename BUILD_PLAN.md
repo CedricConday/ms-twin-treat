@@ -7,7 +7,7 @@
 - **Repo:** `/home/ubuntu/repos/ms-twin-treat` — local git, 2 commits, author `Cedric Conday <cedric@condaydigital.com>`. **NOT pushed** (push held for 1300, Cedric's go only).
 - **Built + validated:** brick #0 backtest harness, brick #1 Kang data loader. **2 of 10.**
 - **Real result on real data:** Kang 2018 IFN-β PBMCs, 8 cell types. identity null = 0.00, global-mean-shift null = **0.85 aggregate delta_pearson** (the bar). Megakaryocytes = 0.48 (the honest outlier). No model beats the bar yet.
-- **Brain repo (research):** `/home/ubuntu/repos/ms-twin/` — `docs/RESEARCH_FINDINGS.md` (all bricks, licenses, sources), `PROJECT_MS_TWIN.md`, `docs/REVIEW_CHARGE.md`.
+- **Brain repo (research):** ~~`/home/ubuntu/repos/ms-twin/`~~ **folded into `docs/research/` on 2026-09-25; the separate repo is retired** — `RESEARCH_FINDINGS.md` (all bricks, licenses, sources), `PROJECT_MS_TWIN.md`, `REVIEW_CHARGE.md`.
 
 ## 1. COLD-BOOT CHECKS (run first, ~1 min)
 ```bash

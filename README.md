@@ -10,7 +10,7 @@ A multi-scale simulation loop — cell → cell-population → tissue/barrier �
 Not a cure. Not a trial replacement. Not a promise to patients. **In-silico evidence de-risks and augments; it does not replace a pivotal trial or a control arm — anywhere, for any therapy.** This tool separates good candidates from doomed ones before $200M is spent on the wrong one. We demonstrate; we do not assert. Overclaiming to the MS community is the one thing that ends this project.
 
 ## Scope
-This repo is the **treat** arm only — intervention on someone who *already has* MS. A separate **prevent** arm (pre-symptomatic, genetically-susceptible virtual patient) is scoped in the research brain and will live in its own repo when it earns one. The two arms share a spine and will converge; they do not share a repo yet.
+This repo models intervention on someone who *already has* MS. It is the whole project: the research notes that used to live in a separate `ms-twin` repo are in [`docs/research/`](docs/research/) since 2026-09-25, and a *prevent* arm that was once planned as a second repo was never built.
 
 ## What runs today (v0)
 The whole spine is built and runs end to end — **and it is honest about being a skeleton, not a validated model.** The backtest harness came first, on purpose: nothing is trusted until it replays known history.
@@ -38,7 +38,7 @@ python -m backtest.clinical      # two-directional clinical gate vs REAL trial o
 Full setup, pins and gates: **[`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md)**. What the
 repo's evidence labels claim, and what they don't: **[`docs/QUALITY.md`](docs/QUALITY.md)**.
 
-See **[`results/RESULTS.md`](results/RESULTS.md)** for every verified number and an explicit real-vs-toy table, and `results/figures/` for the deck figures. Full brick/data map + citations: `../ms-twin/docs/RESEARCH_FINDINGS.md`.
+See **[`results/RESULTS.md`](results/RESULTS.md)** for every verified number and an explicit real-vs-toy table, and `results/figures/` for the deck figures. Full brick/data map + citations: [`docs/research/RESEARCH_FINDINGS.md`](docs/research/RESEARCH_FINDINGS.md).
 
 ## Honest state of the science
 Every disease/PK/ABM parameter is illustrative, not fitted. The pipeline separates the therapies that *worked* from untreated, and directs the ones that **harmed** patients correctly (APL CGP77116 and IFN-γ) — that harm emerges from an `immunogenic` parameter set from each drug's *documented mechanism*, not fitted to its relapse number.
