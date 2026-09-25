@@ -161,3 +161,58 @@ the operator's call, recorded with a date.
 ## Result
 
 *(appended after running — nothing above this line changed)*
+
+Run 2026-09-25 at 67f8b5f, `PYTHONPATH=. python -m backtest.exam_v2`, 128 seeds,
+three new response columns built into `results/exam_v2_curve.json`
+(`alpha_E|alpha_R`, `delta|naive_E`, `delta`). Full rows in `results/exam_v2.json`.
+
+| statistic | model | null | verdict |
+|---|---|---|---|
+| S1 interval-LOMO, comparator-adjusted | **30.7pp** | 20.0pp | loses; fold-gap CI [−13.0, +20.2] |
+| S1 placebo-controlled subset | 25.2pp | 21.2pp | loses |
+| S1 unadjusted (lomo.py convention) | 30.7pp | 20.0pp | identical, see below |
+| **S2 oracle, perfect dial-level model** | **9.1pp** | **20.0pp** | **headroom 10.9pp, 54% of the null** |
+| S3 direction, accuracy / balanced | 13% / 0.33 | 70% / 0.33 | loses; permutation p = 1.000 |
+| S4 MRI channel within-dial rank, all pairs (n=10) | tau **+0.80** | permutation | **p = 0.024** |
+| S4 same-metric pairs only (n=2) | tau +1.00 | permutation | p = 0.247, underpowered |
+
+**R6 falsifiers, read in order.** S2 clears the 20% margin by a wide
+distance: the widened exam is passable, and the ranking goal survives. S1 does
+not clear it, so the model is what fails, and the prize on this exam is
+10.9pp against a 4.5pp prize on the point exam. That is the expected outcome,
+and the widened exam is the one to score a replacement model on.
+
+**Why the model scores what it scores: the fitted potency is 0.00 in all eight
+folds.** The least-squares fit switched the model off. Three dial patterns
+predict the wrong sign, and any positive potency is charged for them:
+
+| pattern | arms | trial says | model at s = 0.5 |
+|---|---|---|---|
+| `gamma_E` | 6 improving, 1 harm, 1 neutral | mostly benefit | **+235%** (harm) |
+| `delta\|naive_E` | IFN-gamma, APL | harm | **−12%** (benefit) |
+| `delta` | abatacept | nothing | **−43%** |
+| `alpha_R` | daclizumab | −45% | large harm |
+| `alpha_E\|alpha_R` | lenercept | harm | +845% at s = 0.2, out of regime by 0.5 |
+
+With one potency shared across dials, the arms the model gets backwards cost
+more than the arms it gets right can earn, at every s above zero. On the point
+exam this never showed, because the arms that expose it are the ones that exam
+discards; there the fit landed at s ≈ 0.55. The unadjusted figure is identical
+because at s = 0 there is nothing to adjust.
+
+So S3 carries no information for the same reason: a model at s = 0 predicts
+neutral for all 23 arms.
+
+**S4 is the one positive result in this repository to date.** The trial's own
+lesion ratio orders drugs within a dial group correctly on 8 of 10 pairs
+(p = 0.024 against a within-group permutation). `docs/RECOVERABILITY.md` found
+the MRI-fitted potency biased 1.55x high as a *magnitude*; bias does not
+disturb rank. So the MRI channel is a within-dial *ranking* input even though
+it is not a magnitude input. The same-metric restriction leaves two pairs and
+cannot confirm or refute it, which is the caveat to carry.
+
+**What this changes.** A replacement model is scored on exam v2, not on the
+point exam, and has to do three things the current one cannot: keep the sign
+of depletion, keep the sign of immunogenic challenge, and predict nothing for
+a costimulation block. The Pernice 2020 scope (`docs/PERNICE_PORT_SCOPE.md`)
+addresses the first; the other two are new acceptance tests for it.

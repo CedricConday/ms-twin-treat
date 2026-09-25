@@ -1574,3 +1574,40 @@ models this repo CANNOT TELL APART disagree about 11 of 40 survivors, and
 2.6pp inside a 4.5pp floor is still cannot-tell-apart. Nothing about the
 ranking gate changes: every variant above loses to an 11.8pp null by three to
 four times.
+
+### 2026-09-25 — exam v2: the widened exam is passable, the model switches itself off
+
+The point-ARR exam discards the eight direction-only arms. Pre-registered
+(`docs/EXAM_V2_PREREG.md`, 80a333d) and measured (`backtest/exam_v2.py`,
+`results/exam_v2.json`) on all 23 treated arms with interval outcomes:
+
+    S1 interval-LOMO      30.7pp vs 20.0pp null      loses
+    S2 oracle             9.1pp vs 20.0pp null       headroom 10.9pp (54%)
+    S3 direction          13% / balanced 0.33        no information
+    S4 MRI within-dial    tau +0.80, p = 0.024       the channel ranks
+
+Measured first, before the exam was widened: on the 15 quantified arms a
+PERFECT mechanism-level model scores 7.3pp against an 11.8pp LOMO null, a
+4.5pp headroom, under the model's own ~6pp noise floor at 128 seeds. The
+widened exam more than doubles the prize.
+
+**The fitted potency is 0.00 in every fold.** `gamma_E` predicts harm for
+six arms that worked, `delta|naive_E` predicts benefit for two arms that
+harmed, `delta` predicts −43% for an arm that did nothing, and the shared
+potency does least damage at zero. The point exam never saw this because the
+arms that expose it are the ones it discards.
+
+**S4 is the first positive out-of-sample-shaped result here.** The trial's
+observed lesion ratio orders arms within a dial on 8 of 10 pairs. The
+recoverability finding (biased 1.55x high) was about magnitude; rank
+survives it. Two same-metric pairs only, so the metric caveat stands.
+
+Three acceptance tests for any replacement model, from the sign table: keep
+the sign of depletion, keep the sign of immunogenic challenge, predict
+nothing for costimulation block. The gap list is `docs/GATE_GAP_ANALYSIS.md`.
+The 1024-seed tables (gap G2) are building detached to
+`results/mechanism_curve_n1024.json`; the qsp_damage wiring item above is
+struck (refuted 2026-09-20, never recorded here).
+
+Recovered from the 2026-09-21 session record: a direction-only scorer was
+proposed at 05:22 as "roughly an hour's work" and never built. S3 is it.
