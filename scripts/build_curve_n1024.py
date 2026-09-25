@@ -32,8 +32,27 @@ N = 1024
 RESULTS = Path(__file__).resolve().parent.parent / "results"
 
 
+def pick_seeds(n: int) -> tuple[int, ...]:
+    """The first `n` seeds whose untreated run stays in regime with damage > 0.
+
+    At 128 seeds every seed qualified, so backtest/lomo.build_table raises on a
+    seed that does not. At 1024 that assumption fails (seed 220 was the first
+    to produce no untreated damage), and a ratio against zero is undefined
+    rather than infinite. Skipped seeds are printed so the cohort is stated,
+    not implied. The skip rate is itself a property of the model worth having.
+    """
+    kept, skipped, seed = [], [], 0
+    while len(kept) < n:
+        d = lomo._damage(lomo.PROFILES["untreated"], seed)
+        (kept if d is not None and d > 0.0 else skipped).append(seed)
+        seed += 1
+    print(f"  cohort: {n} seeds from {seed} tried; skipped {len(skipped)}: {skipped}",
+          flush=True)
+    return tuple(kept)
+
+
 def main() -> int:
-    lomo.SEEDS = tuple(range(N))
+    lomo.SEEDS = pick_seeds(N)
     lomo.CACHE = RESULTS / f"mechanism_curve_n{N}.json"
     exam_v2.SEEDS = lomo.SEEDS
     exam_v2.CURVE = RESULTS / f"exam_v2_curve_n{N}.json"
