@@ -31,8 +31,8 @@ from pathlib import Path
 import numpy as np
 
 from backtest.clinical import KNOWN_OUTCOMES, MAG_TOLERANCE, NEUTRAL_BAND
-from backtest.lomo import (POTENCY_GRID, SEEDS, T_END, _cell, _damage,
-                           _median_ratio, load as load_base)
+from backtest.lomo import POTENCY_GRID, SEEDS, T_END, _cell, _damage, _median_ratio
+from backtest.lomo import load as load_base
 from backtest.potency import OBSERVED_LESION_RATIOS
 from bricks.profiles import PROFILES, touched_points
 
@@ -234,7 +234,7 @@ def run_oracle() -> dict:
         centre = float(grid[int(np.argmin(cost))])
         others = [o for p, os_ in groups.items() if p != pattern for o in os_]
         null = float(np.mean([anchor(o) for o in others]))
-        for o, iv in zip(arms, ivs):
+        for o, iv in zip(arms, ivs, strict=True):
             rows.append({"held": "|".join(pattern), "arm": o.arm, "oracle": centre,
                          "error": dist(centre, iv), "null_predicted": null,
                          "null_error": dist(null, iv)})
@@ -267,7 +267,7 @@ def _balanced_accuracy(true: list[str], pred: list[str]) -> float:
 def run_direction(lomo: dict) -> dict:
     true = [KNOWN_OUTCOMES_BY[r["arm"]].direction for r in lomo["rows"]]
     pred = [_cls(r["predicted"]) for r in lomo["rows"]]
-    acc = float(np.mean([t == p for t, p in zip(true, pred)]))
+    acc = float(np.mean([t == p for t, p in zip(true, pred, strict=True)]))
     bacc = _balanced_accuracy(true, pred)
     majority = max(set(true), key=true.count)
     maj_acc = float(np.mean([t == majority for t in true]))
@@ -279,7 +279,7 @@ def run_direction(lomo: dict) -> dict:
     return {"accuracy": acc, "balanced_accuracy": bacc, "majority_class": majority,
             "majority_accuracy": maj_acc, "majority_balanced_accuracy": maj_bacc,
             "permutation_p": p,
-            "confusion": {f"{t}->{pr}": sum(1 for a, b in zip(true, pred) if a == t and b == pr)
+            "confusion": {f"{t}->{pr}": sum(1 for a, b in zip(true, pred, strict=True) if a == t and b == pr)
                           for t in ("improves", "neutral", "harms")
                           for pr in ("improves", "neutral", "harms")}}
 
@@ -335,7 +335,7 @@ def run_mri_rank() -> dict:
             shuffled = {}
             for members in groups.values():
                 vals = [observed[m] for m in members]
-                for m, v in zip(members, rng.permutation(vals)):
+                for m, v in zip(members, rng.permutation(vals), strict=True):
                     shuffled[m] = float(v)
             perms.append(score(pl, shuffled))
         perms = [x for x in perms if not np.isnan(x)]

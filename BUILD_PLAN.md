@@ -994,6 +994,11 @@ tissue-damage readout, so it cannot answer the test and is not a replacement.
 - **wiring.** `qsp_traj` is written but nothing consumes it; the clinical gate
   runs through `abm_damage`. **The port does not move the gate on its own** —
   readout must read `qsp_damage` before any of this reaches the score.
+  **STRUCK 2026-09-25: refuted in code on 2026-09-20 (5e9ee90) and never struck
+  here. The readout clips damage to [0,1]; the port's damage is unbounded, 78%
+  of untreated runs sit above the clip (median 1.54, mean 11.0, max 248 over 32
+  runs at 730 d), so wiring it would peg the cohort at the ceiling. The scored
+  route is the arm-level Sormani ratio, which `clinical_velez` already uses.**
 
 #### THE HARM CHANNEL WAS ENLARGED UNDER PRE-REGISTRATION (2026-09-20)
 
