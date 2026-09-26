@@ -1,4 +1,6 @@
 {
+  "model": "velez",
+  "variant": "s2",
   "S1": {
     "adjusted": true,
     "mae": 30.726086956521737,

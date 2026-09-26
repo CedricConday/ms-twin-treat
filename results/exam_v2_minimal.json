@@ -1,5 +1,6 @@
 {
   "model": "minimal",
+  "variant": "s2",
   "S1": {
     "adjusted": true,
     "mae": 43.84648162273286,
