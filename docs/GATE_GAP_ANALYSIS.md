@@ -30,7 +30,7 @@ worked. `docs/EXAM_V2_PREREG.md` fixes interval scoring for all 23 arms and
 `backtest/exam_v2.py` measures it. The oracle on that exam (S2) is the number
 that says whether ranking is achievable at all.
 
-## G2. The headroom is under the noise floor — *one detached job*
+## G2. The headroom is under the noise floor — *CLOSED 2026-09-26: measured at 1024 seeds, LOMO and exam v2 unchanged to the decimal; the miss is form, not noise*
 
 A perfect model has 4.5pp to win; one model prediction carries ≈6pp of
 stochastic noise at 128 seeds. So even a near-perfect model fails the current

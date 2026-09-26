@@ -1611,3 +1611,20 @@ struck (refuted 2026-09-20, never recorded here).
 
 Recovered from the 2026-09-21 session record: a direction-only scorer was
 proposed at 05:22 as "roughly an hour's work" and never built. S3 is it.
+
+### 2026-09-26 — gap G2 closed: the miss is form, not noise
+
+`scripts/build_curve_n1024.py` rebuilt every response table at 1024 seeds
+(1029 tried, 5 skipped for zero untreated damage: 220, 615, 775, 877, 989),
+into `results/mechanism_curve_n1024.json` and `results/exam_v2_curve_n1024.json`.
+The 128-seed files are untouched. Measured with the same scorers:
+
+    LOMO            n128 45.4 vs 11.8      n1024 45.4 vs 11.8     identical, every fold
+    exam v2 S1      n128 30.7 vs 20.0      n1024 30.7 vs 20.0     potency 0.00 in all 8 folds
+    curve at s=0.5  alpha_E -33.8 -> -32.6   ke -66.3 -> -69.2   gamma_E +234.9 -> +208.3
+
+The response curves move by about a point between the two cohorts, and the
+gate does not move at all. The ~6pp noise floor was real for a hypothetical
+near-perfect model; it is irrelevant to this one, which sits 34pp from the
+null for structural reasons. G2 is closed and nothing further is bought by
+cohort size. G3, the model form, is the whole of what is left.
