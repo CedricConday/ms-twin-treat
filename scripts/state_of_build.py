@@ -82,6 +82,28 @@ GATES: list[tuple[str, str, list[tuple[str, str]]]] = [
         ("enlarged ranking", r"N=(\d+), both harm cases still top-2"),
         ("p", r"top-2:\s*1/\d+ = ([0-9]+\.[0-9]+)"),
     ]),
+    # Exam v2 (docs/EXAM_V2_PREREG.md): all 23 arms, interval-scored, per model.
+    # The module name carries its arguments; run_gate splits on whitespace.
+    ("exam v2, Velez transcription", "backtest.exam_v2 --model velez", [
+        ("S1 MAE", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE ([\d.]+pp)"),
+        ("null", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE [\d.]+pp vs null ([\d.]+pp)"),
+        ("S2 headroom", r"headroom ([\d.]+pp)"),
+    ]),
+    ("exam v2, Jenner 2026 two-equation probe", "backtest.exam_v2 --model minimal", [
+        ("S1 MAE", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE ([\d.]+pp)"),
+        ("null", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE [\d.]+pp vs null ([\d.]+pp)"),
+        ("S2 headroom", r"headroom ([\d.]+pp)"),
+    ]),
+    ("exam v2, Pernice 2020 port (Figure S2 readings)", "backtest.exam_v2 --model pernice", [
+        ("S1 MAE", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE ([\d.]+pp)"),
+        ("null", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE [\d.]+pp vs null ([\d.]+pp)"),
+        ("S2 headroom", r"headroom ([\d.]+pp)"),
+    ]),
+    ("exam v2, Pernice 2020 port (memory-read variant)", "backtest.exam_v2 --model pernice --variant memread", [
+        ("S1 MAE", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE ([\d.]+pp)"),
+        ("null", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE [\d.]+pp vs null ([\d.]+pp)"),
+        ("S2 headroom", r"headroom ([\d.]+pp)"),
+    ]),
 ]
 
 
@@ -98,7 +120,7 @@ def sha() -> str:
 
 def run_gate(module: str) -> tuple[str, bool]:
     try:
-        p = subprocess.run([sys.executable, "-m", module], cwd=ROOT,
+        p = subprocess.run([sys.executable, "-m", *module.split()], cwd=ROOT,
                            capture_output=True, text=True, timeout=3600,
                            env={**__import__("os").environ, "PYTHONPATH": str(ROOT)})
         return p.stdout + p.stderr, p.returncode == 0

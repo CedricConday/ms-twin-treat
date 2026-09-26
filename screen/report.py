@@ -37,6 +37,7 @@ import json
 from datetime import date
 from pathlib import Path
 
+from backtest.potency import OBSERVED_LESION_RATIOS
 from bricks.profiles import PROFILES, touched_points
 from bricks.qsp_velez import INTERVENTION_POINTS
 from screen.kill_filter import (
@@ -107,6 +108,50 @@ def _implausibility(survivors: list[dict]) -> dict:
     }
 
 
+EXAM_V2_RESULT = ROOT / "results" / "exam_v2.json"
+
+
+def within_dial_mri_order() -> dict:
+    """Gap G4: the MRI channel as the WITHIN-DIAL rank input for the real arms.
+
+    Exam v2's S4 (docs/EXAM_V2_PREREG.md) measured that a trial's own observed
+    lesion ratio orders the arms inside a dial group by relapse outcome. That
+    is a statement about real arms with an MRI number, so this is what it
+    wires: for each dial pattern with two or more such arms, the arms in the
+    order the MRI channel puts them, lowest lesion ratio first. The S4 tau and
+    permutation p are READ from results/exam_v2.json, never typed here, and
+    the section is labelled as not applicable when that file is absent or its
+    p is not below 0.05.
+
+    It does not touch the survivors. A screened candidate has no MRI trial,
+    so the channel has nothing to say about it, and `rank_candidates()` still
+    raises.
+    """
+    groups: dict[str, list[tuple[float, str, str]]] = {}
+    for arm, (ratio, source) in OBSERVED_LESION_RATIOS.items():
+        if arm not in PROFILES:
+            continue
+        key = "|".join(touched_points(PROFILES[arm]))
+        metric = source[source.rfind("[") + 1:source.rfind("]")] if "[" in source else "?"
+        groups.setdefault(key, []).append((float(ratio), arm, metric))
+    ordered = {k: [{"arm": a, "lesion_ratio": r, "metric": m} for r, a, m in sorted(v)]
+               for k, v in groups.items() if len(v) >= 2}
+    stat: dict = {"available": False}
+    if EXAM_V2_RESULT.exists():
+        try:
+            s4 = json.loads(EXAM_V2_RESULT.read_text())["S4"]["all_pairs"]
+            stat = {"available": True, "n_pairs": s4["n_pairs"], "tau": s4["tau"],
+                    "permutation_p": s4["permutation_p"], "source": "results/exam_v2.json S4"}
+        except (KeyError, ValueError, TypeError):
+            stat = {"available": False}
+    usable = bool(stat.get("available") and stat.get("permutation_p", 1.0) < 0.05)
+    return {"groups": ordered, "statistic": stat, "usable_as_rank_input": usable,
+            "note": ("Within-dial order of REAL arms by their trial's observed lesion "
+                     "ratio (backtest/potency.py). A rank input, not a magnitude: "
+                     "docs/RECOVERABILITY.md found the MRI-fitted potency biased 1.55x "
+                     "high. Never applied to survivors, which have no MRI trial.")}
+
+
 def run(max_points: int = 2, potency: float = 0.5,
         carrying_capacity: float | None = None) -> dict:
     candidates = enumerate_candidates(max_points=max_points, potency=potency)
@@ -160,6 +205,7 @@ def run(max_points: int = 2, potency: float = 0.5,
         "survivors": [row(r) for r in survivors],
         "killed": [row(r) for r in killed],
         "ordering": "survivors alphabetical by label; NOT by predicted benefit",
+        "within_dial_mri_order": within_dial_mri_order(),
         "caveats": CAVEATS,
         "validated": False,
     }
@@ -212,6 +258,23 @@ def to_markdown(rep: dict) -> str:
     lines += ["", "## Killed", "", "| candidate | verdict | why |", "|---|---|---|"]
     for k in rep["killed"]:
         lines.append(f"| `{k['label']}` | {k['verdict']} | {k['detail']} |")
+
+    mri = rep.get("within_dial_mri_order")
+    if mri:
+        st = mri["statistic"]
+        head = (f"tau {st['tau']:+.2f} over {st['n_pairs']} within-dial pairs, permutation "
+                f"p = {st['permutation_p']:.3f} ({st['source']})" if st.get("available")
+                else "exam v2 S4 statistic not available in this checkout")
+        verdict = ("usable as a within-dial RANK input" if mri["usable_as_rank_input"]
+                   else "NOT usable as a rank input (p not below 0.05)")
+        lines += ["", "## Within-dial order of the real arms, by the MRI channel (gap G4)", "",
+                  f"{head}; {verdict}. {mri['note']}", "",
+                  "| dial pattern | arms, lowest observed lesion ratio first |", "|---|---|"]
+        for pat, arms in mri["groups"].items():
+            cells = ", ".join(f"{a['arm']} ({a['lesion_ratio']:.2f}, {a['metric']})" for a in arms)
+            lines.append(f"| `{pat}` | {cells} |")
+        lines += ["", "Survivors are not in this table and cannot be: a screened candidate "
+                  "has no MRI trial. The order above is of drugs that already exist."]
 
     lines += ["", "## Read this before quoting any line above", ""]
     imp = rep.get("implausibility") or {}
