@@ -9,7 +9,8 @@ scorer in this repository loses to predict-the-mean** — to answering with the
 average of the other arms' outcomes, ignoring which drug it was asked about.
 That was true of the transcription on 2026-09-21; on 2026-09-26 it is true of
 the two candidate replacements as well, scored on the widened exam that was
-built to give them the fairest possible hearing.
+built to give them the fairest possible hearing, and true again on a second,
+independent exam (the Cochrane 2024 network) run the same day.
 
 This document is for the reader who is not going to run the code. Everything
 below is produced by the commands at the end, and every command re-measures.
@@ -37,6 +38,32 @@ null, the fold-gap CI excluding zero, the placebo-only subset clearing too.
 Every row loses. No fold-gap CI excludes zero. The nulls differ because the
 folds are each model's own dial groups, and the null is drawn from the same
 arms the model is scored on, in the same folds.
+
+## The second exam, measured 2026-09-26
+
+Exam C (`docs/EXAM_COCHRANE_PREREG.md`, registered before it was run) scores
+the same cached response curves, unrebuilt, against a different truth: the
+Cochrane 2024 network risk ratio versus placebo for relapses at 24 months,
+ten arms, one analysis. It cannot replace exam v2 (fewer arms, no
+direction-only arms); it asks whether the order survives a change of exam.
+
+| model | dial folds | CS1 interval-LOMO | null | fold-gap CI | CS2 oracle | headroom |
+|---|---|---|---|---|---|---|
+| Velez 2011 transcription | 3 | **28.8pp** | 12.4pp | [-3.3, +31.9] | 0.8pp | 11.6pp (94%) |
+| Jenner 2026 two-equation probe | 1 | **23.1pp** | undefined | — | 4.4pp | undefined |
+| Pernice 2020 port, Figure S2 readings | 4 | **10.0pp** | 8.6pp | [-4.0, +13.3] | 0.8pp | 7.8pp (91%) |
+| Pernice 2020 port, memory-read variant | 4 | **25.8pp** | 8.6pp | [-2.8, +23.0] | 0.8pp | 7.8pp (91%) |
+
+Every model loses here too. The probe puts all ten arms on one dial, so it
+has no training fold and no null: not blamed, not credited. The port on its
+Figure S2 readings loses by 1.4pp with the CI straddling zero, and two of its
+four dial folds beat their null (transit block, proliferation block) while
+depletion and the glatiramer singleton lose. That is the closest any
+out-of-sample scorer in this repository has come to its null. It is not
+green: green is 80% of the null with the CI excluding zero, and this is 116%
+with the CI including it. What it fails to collect is, again, per-dial
+magnitude: depletion is under-predicted at the one shared potency that suits
+transit block.
 
 Read the last two columns first. **The exam is passable**: a perfect
 dial-level model beats the null by 54% to 68% depending on how finely the
@@ -71,7 +98,9 @@ nine of sixteen working drugs score neutral. The costimulation block still
 predicts benefit, and it shares its dial with the anti-CD20 arms. The port's
 two-year behaviour does not reproduce the paper's two-year figures under
 either reading of the memory arc; its 30-day figure reproduces on 10 of 12
-landmarks. Both readings are scored and both lose.
+landmarks. Both readings are scored and both lose, on both exams; the
+memory-read variant's saturated untreated arm compresses every curve on
+exam C and its in-sample tau turns negative.
 
 ## The one positive result, and what it is wired to
 
@@ -99,14 +128,17 @@ model, and it was the missing input on 2026-09-21 too. What changed is that the
 port now has dials on which the sign is right, so a magnitude channel would
 have something to scale. The MRI channel ranks within a dial but does not size
 (1.55x bias). No other independent channel has been found. The 2024 Cochrane
-network (`docs/EXAM_COCHRANE_PREREG.md`) is registered as a second exam of the
-same curves, not as a source of magnitudes.
+network (`docs/EXAM_COCHRANE_PREREG.md`) was run as a second exam of the same
+curves, not as a source of magnitudes, and it names the same missing input.
+The per-trial forest data behind the Cochrane Library's bot wall is not used;
+obtained, it would be a different exam under a new registration.
 
 What has been ruled out, with the measurement: cohort size (G2, 1024 seeds,
 no change); the carrying-capacity extension (inside the noise floor of the
 transcription); widening the arm set from 12 to 15 (0.8pp to 0.9pp of
 out-of-sample headroom on the point exam); the two-equation form (signs wrong
-structurally); and the port as transcribed (signs right, magnitude absent).
+structurally); and the port as transcribed (signs right, magnitude absent,
+on two exams).
 
 ## What can honestly be said to a third party today
 
@@ -117,6 +149,8 @@ structurally); and the port as transcribed (signs right, magnitude absent).
 - It **kills** candidates on structural grounds, and that judgement stands.
 - The MRI channel **orders drugs within a mechanism class** and the repo
   says so with a p-value and a pair count.
+- On a second, independent exam the best model comes within 1.4pp of
+  predict-the-mean and still does not beat it; the repo says so with the CI.
 - It **cannot rank** candidates or predict an effect size, on any model.
 - No candidate has passed, and the criterion for passing was fixed and dated
   before any candidate or any model was scored against it.
@@ -131,11 +165,13 @@ PYTHONPATH=. python -m backtest.exam_v2                          # transcription
 PYTHONPATH=. python -m backtest.exam_v2 --model minimal          # two-equation probe
 PYTHONPATH=. python -m backtest.exam_v2 --model pernice          # the port, Figure S2 readings
 PYTHONPATH=. python -m backtest.exam_v2 --model pernice --variant memread
+PYTHONPATH=. python -m backtest.exam_cochrane                    # exam C, all four rows
 PYTHONPATH=. python -m gate.device                               # the verdicts
 PYTHONPATH=. python -m screen.report                             # the screen, with the G4 table
 PYTHONPATH=. python scripts/state_of_build.py                    # every gate, one page
 ```
 
-Figures on this page were measured 2026-09-26 on the 23-arm exam. If a number
+Figures on this page were measured 2026-09-26 on the 23-arm exam and the
+10-arm Cochrane exam. If a number
 here disagrees with what the code prints, **the code is right and this page
 is stale**. `results/STATE.md` is regenerated, never edited; start there.
