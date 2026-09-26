@@ -74,19 +74,12 @@ STRIKETHROUGH = re.compile(r"~~")
 # A figure here is a claim that something was true at a stated time, not a claim
 # about the current exam.
 PINNED_FIGURES = {
-    "4.0": "a KNOWN LIMIT OF THE HISTORY RULE, not a false positive. "
-           "docs/PERNICE_PORT_SCOPE.md reads '4.0pp on the 12-arm exam, 3.3pp now' "
-           "-- correctly dated, but dated IN PROSE rather than under a dated heading, "
-           "which is the one thing the mechanical rule cannot see. Pinned because a "
-           "permanently-red check gets ignored and then stops working for the cases "
-           "that matter. If a future 4.0pp appears that is NOT history, this pin will "
-           "hide it: that is the cost, and it is why the rule is a filter on the scan "
-           "and not a substitute for reading.",
+    "1.4": "the exam C gap: Pernice port 10.0pp vs 8.6pp predict-the-mean null on the "
+           "Cochrane 2024 network (results/exam_cochrane.json, measured 2026-09-26). "
+           "Exam C is not part of the live-measurement set this verifier reads, so the "
+           "figure cannot match a live quantity; re-pin if exam C is re-run.",
     "0.8": "the out-of-sample prize BEFORE six arms were wired, retained because the "
            "page reports that widening the exam moved it to 0.9pp.",
-    "45.9": "the 12-arm LOMO, quoted in docs/PERNICE_PORT_SCOPE.md as '45.4pp on this "
-            "exam (45.9pp on the 12-arm one)'. Correctly dated in prose, which the "
-            "history rule cannot see — same known limit as the 4.0 pin above.",
 }
 
 
