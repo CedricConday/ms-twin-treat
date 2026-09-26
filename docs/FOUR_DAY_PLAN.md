@@ -59,6 +59,11 @@ Decision at end of day 1: if S1 beats the null, the rest of the week hardens
 and ranks (skip to day 4). If not, the sign table says which of the three
 acceptance tests it failed, and day 2 starts the port.
 
+~~Day 1 items 1-5~~ **done 2026-09-26**: S1 43.8pp vs 30.6pp null, loses;
+tests 1 and 2 of the three fail structurally (BUILD_PLAN §8.4, same date).
+The port starts. **Also 2026-09-26: the day boundaries are dropped on
+Cedric's instruction; the remaining items run in order, today, none skipped.**
+
 ## Day 2 — 2026-09-27 — Pernice 2020 port, structure and reproduction
 
 Sources vendored at `docs/research/pernice2020/` (CC BY paper text and

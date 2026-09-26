@@ -1635,3 +1635,51 @@ cohort size. G3, the model form, is the whole of what is left.
 file for any new instance: definition of done, what is settled, one probe and
 one port, in order. Source materials for both candidate models are vendored
 under `docs/research/jenner2026/` and `docs/research/pernice2020/` (CC BY).
+
+### 2026-09-26 — probe A measured: the two-equation model loses, and where
+
+`bricks/qsp_minimal.py` transcribes Jenner 2026 equation (2.1) (RK4, dt 0.01
+month; tests/test_qsp_minimal.py pins the figure-3 landmarks phi* = 1.7 and
+phi_H = 5.67, the figure-2C equilibrium, the figure-2D cycle at 28.3 months
+against the caption's 30, and the Hopf on both parameter sets).
+`bricks/profiles_minimal.py` maps the 23 arms onto r, phi, eta, delta from
+pharmacology: 18 arms are "phi down", two are "phi up", lenercept is
+"r down, phi down", abatacept and daclizumab touch no rate (the reasons are
+in `UNASSIGNABLE`, neither mentions a trial). Untreated arm is the paper's own
+RRMS example (figure 2D); readout is the time-integrated inflammation ratio
+over 240 treated months after a 120-month burn-in, through Sormani unchanged.
+`PYTHONPATH=. python -m backtest.exam_v2 --model minimal`, one run per cell:
+
+    S1 interval-LOMO      43.8pp vs 30.6pp null    loses; fold-gap CI [-4.5, +25.1]
+    S1 placebo-only       42.5pp vs 29.7pp         loses
+    S2 oracle             12.7pp vs 30.6pp         headroom 17.9pp (58%) on 4 dials
+    S3 direction          9% / balanced 0.19       p = 0.867
+    S4 MRI within-dial    tau +0.24 (45 pairs)     p = 0.187
+
+The null is 30.6pp rather than 20.0pp because the fold structure changed: four
+patterns instead of eight, and holding out the 18-arm "phi down" fold leaves a
+training set whose anchors are mostly harm and neutral.
+
+**Why it loses: mean inflammation is not monotone in phi.** Measured on the
+cached curve (`results/exam_v2_curve_minimal.json`), lesion ratio at potency s:
+
+    phi down   s=0.1 1.13  0.2 1.28  0.3 1.43  0.4 1.53  0.5 1.22  0.55 0.51  0.6 0.09
+    phi up     s=0.1 0.91  0.3 0.78  0.5 0.68  0.9 0.54
+
+Lowering the disease strength moves the patient off the limit cycle onto the
+disease equilibrium, whose inflammation is HIGHER than the cycle's time
+average (the paper's own figure 3C: I* rises then falls with phi), and only
+past the branch point (s > 0.57 here) does inflammation collapse. Raising it
+destroys myelin faster, and with less myelin the inflammation term
+phi M I / (M + eta) has less to feed on, so time-averaged inflammation FALLS.
+Mean myelin moves the right way on both dials (0.23 untreated; 0.71 at phi
+x0.5; 0.135 at phi x1.5), but mean myelin is not what the registered readout
+scores, and the readout was fixed in the plan before this was measured. It
+stays as registered; a demyelination readout would be a new scorer and is
+noted here, not run.
+
+Against the three acceptance tests: (1) sign of depletion — fails for any
+potency below 0.55 and passes above it, which is a cliff, not a sign; (2) sign
+of immune challenge — fails at every potency; (3) costimulation block — passes
+by absence, the model has no rate for it, which is not the dynamics passing.
+Two of three fail structurally. The port starts.

@@ -1,0 +1,1251 @@
+{
+  "table": {
+    "phi-": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.05": {
+        "mean": 2.984235300952709,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0581789835897522,
+        "relapses_per_year": 0.2,
+        "mean_M": 0.24494418326077042,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.1": {
+        "mean": 6.341588069940962,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.1255173535207108,
+        "relapses_per_year": 0.15,
+        "mean_M": 0.25797966965285674,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.15": {
+        "mean": 10.030030624773056,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.2017919643936479,
+        "relapses_per_year": 0.1,
+        "mean_M": 0.27502014685108,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.2": {
+        "mean": 13.737185638813942,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.280869147253893,
+        "relapses_per_year": 0.1,
+        "mean_M": 0.29857895219845154,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.25": {
+        "mean": 17.153730147146916,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.355886415472979,
+        "relapses_per_year": 0.1,
+        "mean_M": 0.32845620813111964,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.3": {
+        "mean": 20.481271426878035,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.430917199014654,
+        "relapses_per_year": 0.05,
+        "mean_M": 0.3664974466501142,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.35": {
+        "mean": 23.248827558919373,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.4947972877906157,
+        "relapses_per_year": 0.05,
+        "mean_M": 0.41709034559796637,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.4": {
+        "mean": 24.623536105847975,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.527025495796391,
+        "relapses_per_year": 0.05,
+        "mean_M": 0.48460518392590585,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.45": {
+        "mean": 22.544653553671147,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.4784167088307238,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.5775372161026857,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.5": {
+        "mean": 11.06694006979092,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.2236665560801374,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.7106459043604485,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.55": {
+        "mean": -29.79781535052133,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.5064311807495141,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.8926738462881586,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.6": {
+        "mean": -71.96981640582348,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.08664473879688186,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9649973935866277,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.65": {
+        "mean": -81.30144796147414,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.0397768809624559,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9726900432678631,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.7": {
+        "mean": -84.57081219526664,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.02748661627005705,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9749792912084841,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.75": {
+        "mean": -86.32299408549923,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.02179938781134934,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9762182423081521,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.8": {
+        "mean": -87.45627792525912,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.018458850804740218,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9770683581011166,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.85": {
+        "mean": -88.26957851403652,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.016226262381027298,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9777241609695296,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.9": {
+        "mean": -88.8932067772245,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.014608096465159873,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9782644992263584,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.95": {
+        "mean": -89.39378915448214,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.013368337956602697,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9787280169018236,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      }
+    },
+    "": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.05": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.1": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.15": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.2": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.25": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.3": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.35": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.4": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.45": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.5": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.55": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.6": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.65": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.7": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.75": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.8": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.85": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.9": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.95": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      }
+    },
+    "r-|phi-": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.05": {
+        "mean": 0.6869565226360175,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.01325258043181,
+        "relapses_per_year": 0.05,
+        "mean_M": 0.24067298797166267,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.1": {
+        "mean": 1.3902585476380347,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.026907232341162,
+        "relapses_per_year": 0.05,
+        "mean_M": 0.2585917975664271,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.15": {
+        "mean": 0.8430729279766958,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0162760135847626,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.2768913971367041,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.2": {
+        "mean": 1.0990102650131117,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0212419859428665,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.29613698999276084,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.25": {
+        "mean": 0.6242658845082572,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0120396970943275,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.32660813983951326,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.3": {
+        "mean": -0.1654975863857766,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9968197852275424,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.3629909656726427,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.35": {
+        "mean": -1.8466798197052992,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9647897533975569,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.41198769209675534,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.4": {
+        "mean": -4.930244943380369,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9073478155965371,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.47750262370188445,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.45": {
+        "mean": -10.933503316704552,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8003811756911333,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.5680939907350974,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.5": {
+        "mean": -23.87450971325672,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.5917977020654508,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.6985219305185241,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.55": {
+        "mean": -56.662628577598895,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.20028977610535,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.8740771575253183,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.6": {
+        "mean": -82.10996055667586,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.036535414157749364,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9275496981527042,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.65": {
+        "mean": -86.47411643164664,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.021338539998170182,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.925588963709602,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.7": {
+        "mean": -87.84354393694062,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.01737854577748155,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9171514376440215,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.75": {
+        "mean": -88.53556482313701,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.015526115532835129,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.9039823358882392,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.8": {
+        "mean": -88.96585325125234,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.014424905990544423,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.8835894752969646,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.85": {
+        "mean": -89.26549301626756,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.01368104995283531,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.8491668066035944,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.9": {
+        "mean": -89.48961895294238,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.013137025445574681,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.7799338270131327,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.95": {
+        "mean": -89.66574033746248,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.012716962864052368,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.5765899042542909,
+        "in_range": {
+          "r": false,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      }
+    },
+    "phi+": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "relapses_per_year": 0.4,
+        "mean_M": 0.233727484232648,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.05": {
+        "mean": -2.6462287093410697,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9497329371250106,
+        "relapses_per_year": 0.3,
+        "mean_M": 0.22334397767463085,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.1": {
+        "mean": -4.988549023180388,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9062780119398353,
+        "relapses_per_year": 0.25,
+        "mean_M": 0.21340228758965882,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.15": {
+        "mean": -7.045908441478687,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8689162225157537,
+        "relapses_per_year": 0.2,
+        "mean_M": 0.2036700198128685,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.2": {
+        "mean": -8.83532029330244,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8370347371492423,
+        "relapses_per_year": 0.25,
+        "mean_M": 0.1939250304767967,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.25": {
+        "mean": -10.410041455183682,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8094518687939867,
+        "relapses_per_year": 0.25,
+        "mean_M": 0.1840320426554299,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.3": {
+        "mean": -11.876393021704946,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.784166349531753,
+        "relapses_per_year": 0.2,
+        "mean_M": 0.17405314331059352,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.35": {
+        "mean": -13.341718624152909,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.759283538203335,
+        "relapses_per_year": 0.15,
+        "mean_M": 0.1640998043836038,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.4": {
+        "mean": -14.875476051493052,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7336514839710752,
+        "relapses_per_year": 0.15,
+        "mean_M": 0.15420735909803368,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.45": {
+        "mean": -16.510793379571066,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7067878968630109,
+        "relapses_per_year": 0.1,
+        "mean_M": 0.14438409010124464,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.5": {
+        "mean": -18.250351279089326,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.678740313275179,
+        "relapses_per_year": 0.1,
+        "mean_M": 0.1347252028436231,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.55": {
+        "mean": -20.065942656091096,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.6500486792533943,
+        "relapses_per_year": 0.05,
+        "mean_M": 0.12579165902587428,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.6": {
+        "mean": -21.86381388440678,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.6222237101582686,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.12000916777796701,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.65": {
+        "mean": -23.18799413153848,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.6021037866491395,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.11929635059733691,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.7": {
+        "mean": -23.271534345237555,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.6008451034699505,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.113884077089867,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.75": {
+        "mean": -23.94110975027196,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.5908024366869739,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.10669889266894589,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.8": {
+        "mean": -25.02987265364469,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.5746461190516992,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.10182073625901746,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.85": {
+        "mean": -26.181519881575845,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.557790796751726,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.09926470508087872,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.9": {
+        "mean": -27.622650727408015,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.5370381542029384,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.09829537762703275,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      },
+      "0.95": {
+        "mean": -29.61301998618664,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.5089979381143575,
+        "relapses_per_year": 0.0,
+        "mean_M": 0.09665104235881875,
+        "in_range": {
+          "r": true,
+          "phi": true,
+          "eta": true,
+          "delta": true
+        }
+      }
+    }
+  },
+  "model": "minimal",
+  "potency_grid": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95
+  ],
+  "seeds": [
+    0
+  ],
+  "schedule_months": {
+    "dt": 0.01,
+    "burn_in": 120.0,
+    "score": 240.0
+  },
+  "untreated_params": {
+    "r": 0.5,
+    "phi": 0.7,
+    "eta": 0.5,
+    "delta": 0.2
+  },
+  "untreated_relapses_per_year": 0.4,
+  "note": "Jenner 2026 two-equation model (bricks/qsp_minimal.py), arms from bricks/profiles_minimal.py, deterministic: one run per cell. The scored number is the Sormani-mapped percent change of the time-integrated inflammation ratio, treated over untreated."
+}

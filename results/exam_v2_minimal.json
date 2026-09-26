@@ -1,0 +1,973 @@
+{
+  "model": "minimal",
+  "S1": {
+    "adjusted": true,
+    "mae": 43.84648162273286,
+    "null_mae": 30.594758140410317,
+    "n_arms": 23,
+    "n_folds": 4,
+    "ci_fold_gap": [
+      -4.497442201611019,
+      25.05342875616376
+    ],
+    "placebo_mae": 42.48822452232616,
+    "placebo_null_mae": 29.705613275613278,
+    "folds": [
+      {
+        "held": "phi-",
+        "n": 18,
+        "fitted_potency": 0.3,
+        "mae": 45.36181745937669,
+        "null_mae": 31.31666666666667
+      },
+      {
+        "held": "",
+        "n": 2,
+        "fitted_potency": 0.55,
+        "mae": 43.72285474398168,
+        "null_mae": 15.0
+      },
+      {
+        "held": "r-|phi-",
+        "n": 1,
+        "fitted_potency": 0.54,
+        "mae": 55.10500480473046,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "phi+",
+        "n": 2,
+        "fitted_potency": 0.54,
+        "mae": 24.702824380690743,
+        "null_mae": 37.22380952380953
+      }
+    ],
+    "rows": [
+      {
+        "held": "phi-",
+        "arm": "IFN-beta",
+        "interval": [
+          -30.0,
+          -30.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 50.48127142687804,
+        "null_predicted": -6.0,
+        "null_error": 24.0
+      },
+      {
+        "held": "phi-",
+        "arm": "glatiramer acetate",
+        "interval": [
+          -29.0,
+          -29.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 49.48127142687804,
+        "null_predicted": -6.0,
+        "null_error": 23.0
+      },
+      {
+        "held": "phi-",
+        "arm": "natalizumab",
+        "interval": [
+          -68.0,
+          -68.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 88.48127142687804,
+        "null_predicted": -6.0,
+        "null_error": 62.0
+      },
+      {
+        "held": "phi-",
+        "arm": "fingolimod",
+        "interval": [
+          -55.0,
+          -55.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 75.48127142687804,
+        "null_predicted": -6.0,
+        "null_error": 49.0
+      },
+      {
+        "held": "phi-",
+        "arm": "teriflunomide",
+        "interval": [
+          -31.5,
+          -31.5
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 51.98127142687804,
+        "null_predicted": -6.0,
+        "null_error": 25.5
+      },
+      {
+        "held": "phi-",
+        "arm": "dimethyl fumarate",
+        "interval": [
+          -53.0,
+          -53.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 73.48127142687804,
+        "null_predicted": -6.0,
+        "null_error": 47.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ocrelizumab",
+        "interval": [
+          -46.0,
+          -46.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 0.0,
+        "error": 46.0,
+        "null_predicted": -6.0,
+        "null_error": 40.0
+      },
+      {
+        "held": "phi-",
+        "arm": "alemtuzumab",
+        "interval": [
+          -55.0,
+          -55.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 0.0,
+        "error": 55.0,
+        "null_predicted": -6.0,
+        "null_error": 49.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ponesimod",
+        "interval": [
+          -30.5,
+          -30.5
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 0.0,
+        "error": 30.5,
+        "null_predicted": -6.0,
+        "null_error": 24.5
+      },
+      {
+        "held": "phi-",
+        "arm": "ofatumumab",
+        "interval": [
+          -50.0,
+          -50.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 0.0,
+        "error": 50.0,
+        "null_predicted": -6.0,
+        "null_error": 44.0
+      },
+      {
+        "held": "phi-",
+        "arm": "cladribine",
+        "interval": [
+          -57.6,
+          -57.6
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 78.08127142687803,
+        "null_predicted": -6.0,
+        "null_error": 51.6
+      },
+      {
+        "held": "phi-",
+        "arm": "atacicept",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 0.0,
+        "null_predicted": -6.0,
+        "null_error": 11.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ublituximab",
+        "interval": [
+          -57.9,
+          -57.9
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 0.0,
+        "error": 57.9,
+        "null_predicted": -6.0,
+        "null_error": 51.9
+      },
+      {
+        "held": "phi-",
+        "arm": "IFN-beta-1b",
+        "interval": [
+          -33.9,
+          -33.9
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 54.38127142687803,
+        "null_predicted": -6.0,
+        "null_error": 27.9
+      },
+      {
+        "held": "phi-",
+        "arm": "ozanimod",
+        "interval": [
+          -39.3,
+          -39.3
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 0.0,
+        "error": 39.3,
+        "null_predicted": -6.0,
+        "null_error": 33.3
+      },
+      {
+        "held": "phi-",
+        "arm": "rituximab",
+        "interval": [
+          -Infinity,
+          -5.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 0.0,
+        "error": 5.0,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ustekinumab",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 5.481271426878035,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "phi-",
+        "arm": "Tovaxin",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.3,
+        "predicted": 20.481271426878035,
+        "error": 5.481271426878035,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "",
+        "arm": "daclizumab",
+        "interval": [
+          -45.0,
+          -45.0
+        ],
+        "fitted_potency": 0.55,
+        "predicted": 42.445709487963356,
+        "error": 87.44570948796336,
+        "null_predicted": -29.604761904761908,
+        "null_error": 15.395238095238092
+      },
+      {
+        "held": "",
+        "arm": "abatacept",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.55,
+        "predicted": 0.0,
+        "error": 0.0,
+        "null_predicted": -29.604761904761908,
+        "null_error": 14.604761904761908
+      },
+      {
+        "held": "r-|phi-",
+        "arm": "lenercept",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.54,
+        "predicted": -50.10500480473046,
+        "error": 55.10500480473046,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "phi+",
+        "arm": "IFN-gamma",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.54,
+        "predicted": -19.702824380690743,
+        "error": 24.702824380690743,
+        "null_predicted": -32.22380952380953,
+        "null_error": 37.22380952380953
+      },
+      {
+        "held": "phi+",
+        "arm": "APL CGP77116",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.54,
+        "predicted": -19.702824380690743,
+        "error": 24.702824380690743,
+        "null_predicted": -32.22380952380953,
+        "null_error": 37.22380952380953
+      }
+    ]
+  },
+  "S1_unadjusted": {
+    "adjusted": false,
+    "mae": 35.18709255551838,
+    "null_mae": 30.594758140410317,
+    "n_arms": 23,
+    "n_folds": 4,
+    "ci_fold_gap": [
+      -6.973719466541472,
+      24.56798537147487
+    ],
+    "placebo_mae": 32.040208585128184,
+    "placebo_null_mae": 29.705613275613278,
+    "folds": [
+      {
+        "held": "phi-",
+        "n": 18,
+        "fitted_potency": 0.0,
+        "mae": 35.92777777777778,
+        "null_mae": 31.31666666666667
+      },
+      {
+        "held": "",
+        "n": 2,
+        "fitted_potency": 0.56,
+        "mae": 22.5,
+        "null_mae": 15.0
+      },
+      {
+        "held": "r-|phi-",
+        "n": 1,
+        "fitted_potency": 0.56,
+        "mae": 66.7520949734143,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "phi+",
+        "n": 2,
+        "fitted_potency": 0.56,
+        "mae": 25.425516901754232,
+        "null_mae": 37.22380952380953
+      }
+    ],
+    "rows": [
+      {
+        "held": "phi-",
+        "arm": "IFN-beta",
+        "interval": [
+          -30.0,
+          -30.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 30.0,
+        "null_predicted": -6.0,
+        "null_error": 24.0
+      },
+      {
+        "held": "phi-",
+        "arm": "glatiramer acetate",
+        "interval": [
+          -29.0,
+          -29.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 29.0,
+        "null_predicted": -6.0,
+        "null_error": 23.0
+      },
+      {
+        "held": "phi-",
+        "arm": "natalizumab",
+        "interval": [
+          -68.0,
+          -68.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 68.0,
+        "null_predicted": -6.0,
+        "null_error": 62.0
+      },
+      {
+        "held": "phi-",
+        "arm": "fingolimod",
+        "interval": [
+          -55.0,
+          -55.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 55.0,
+        "null_predicted": -6.0,
+        "null_error": 49.0
+      },
+      {
+        "held": "phi-",
+        "arm": "teriflunomide",
+        "interval": [
+          -31.5,
+          -31.5
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 31.5,
+        "null_predicted": -6.0,
+        "null_error": 25.5
+      },
+      {
+        "held": "phi-",
+        "arm": "dimethyl fumarate",
+        "interval": [
+          -53.0,
+          -53.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 53.0,
+        "null_predicted": -6.0,
+        "null_error": 47.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ocrelizumab",
+        "interval": [
+          -46.0,
+          -46.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 46.0,
+        "null_predicted": -6.0,
+        "null_error": 40.0
+      },
+      {
+        "held": "phi-",
+        "arm": "alemtuzumab",
+        "interval": [
+          -55.0,
+          -55.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 55.0,
+        "null_predicted": -6.0,
+        "null_error": 49.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ponesimod",
+        "interval": [
+          -30.5,
+          -30.5
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 30.5,
+        "null_predicted": -6.0,
+        "null_error": 24.5
+      },
+      {
+        "held": "phi-",
+        "arm": "ofatumumab",
+        "interval": [
+          -50.0,
+          -50.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 50.0,
+        "null_predicted": -6.0,
+        "null_error": 44.0
+      },
+      {
+        "held": "phi-",
+        "arm": "cladribine",
+        "interval": [
+          -57.6,
+          -57.6
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 57.6,
+        "null_predicted": -6.0,
+        "null_error": 51.6
+      },
+      {
+        "held": "phi-",
+        "arm": "atacicept",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 5.0,
+        "null_predicted": -6.0,
+        "null_error": 11.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ublituximab",
+        "interval": [
+          -57.9,
+          -57.9
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 57.9,
+        "null_predicted": -6.0,
+        "null_error": 51.9
+      },
+      {
+        "held": "phi-",
+        "arm": "IFN-beta-1b",
+        "interval": [
+          -33.9,
+          -33.9
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 33.9,
+        "null_predicted": -6.0,
+        "null_error": 27.9
+      },
+      {
+        "held": "phi-",
+        "arm": "ozanimod",
+        "interval": [
+          -39.3,
+          -39.3
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 39.3,
+        "null_predicted": -6.0,
+        "null_error": 33.3
+      },
+      {
+        "held": "phi-",
+        "arm": "rituximab",
+        "interval": [
+          -Infinity,
+          -5.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 5.0,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ustekinumab",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 0.0,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "phi-",
+        "arm": "Tovaxin",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 0.0,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "",
+        "arm": "daclizumab",
+        "interval": [
+          -45.0,
+          -45.0
+        ],
+        "fitted_potency": 0.56,
+        "predicted": 0.0,
+        "error": 45.0,
+        "null_predicted": -29.604761904761908,
+        "null_error": 15.395238095238092
+      },
+      {
+        "held": "",
+        "arm": "abatacept",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.56,
+        "predicted": 0.0,
+        "error": 0.0,
+        "null_predicted": -29.604761904761908,
+        "null_error": 14.604761904761908
+      },
+      {
+        "held": "r-|phi-",
+        "arm": "lenercept",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.56,
+        "predicted": -61.7520949734143,
+        "error": 66.7520949734143,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "phi+",
+        "arm": "IFN-gamma",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.56,
+        "predicted": -20.425516901754232,
+        "error": 25.425516901754232,
+        "null_predicted": -32.22380952380953,
+        "null_error": 37.22380952380953
+      },
+      {
+        "held": "phi+",
+        "arm": "APL CGP77116",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.56,
+        "predicted": -20.425516901754232,
+        "error": 25.425516901754232,
+        "null_predicted": -32.22380952380953,
+        "null_error": 37.22380952380953
+      }
+    ]
+  },
+  "S2": {
+    "mae": 12.730434782608697,
+    "null_mae": 30.594758140410317,
+    "headroom": 17.86432335780162,
+    "relative": 0.5839014407571335,
+    "rows": [
+      {
+        "held": "phi-",
+        "arm": "IFN-beta",
+        "oracle": -39.5,
+        "error": 9.5,
+        "null_predicted": -6.0,
+        "null_error": 24.0
+      },
+      {
+        "held": "phi-",
+        "arm": "glatiramer acetate",
+        "oracle": -39.5,
+        "error": 10.5,
+        "null_predicted": -6.0,
+        "null_error": 23.0
+      },
+      {
+        "held": "phi-",
+        "arm": "natalizumab",
+        "oracle": -39.5,
+        "error": 28.5,
+        "null_predicted": -6.0,
+        "null_error": 62.0
+      },
+      {
+        "held": "phi-",
+        "arm": "fingolimod",
+        "oracle": -39.5,
+        "error": 15.5,
+        "null_predicted": -6.0,
+        "null_error": 49.0
+      },
+      {
+        "held": "phi-",
+        "arm": "teriflunomide",
+        "oracle": -39.5,
+        "error": 8.0,
+        "null_predicted": -6.0,
+        "null_error": 25.5
+      },
+      {
+        "held": "phi-",
+        "arm": "dimethyl fumarate",
+        "oracle": -39.5,
+        "error": 13.5,
+        "null_predicted": -6.0,
+        "null_error": 47.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ocrelizumab",
+        "oracle": -39.5,
+        "error": 6.5,
+        "null_predicted": -6.0,
+        "null_error": 40.0
+      },
+      {
+        "held": "phi-",
+        "arm": "alemtuzumab",
+        "oracle": -39.5,
+        "error": 15.5,
+        "null_predicted": -6.0,
+        "null_error": 49.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ponesimod",
+        "oracle": -39.5,
+        "error": 9.0,
+        "null_predicted": -6.0,
+        "null_error": 24.5
+      },
+      {
+        "held": "phi-",
+        "arm": "ofatumumab",
+        "oracle": -39.5,
+        "error": 10.5,
+        "null_predicted": -6.0,
+        "null_error": 44.0
+      },
+      {
+        "held": "phi-",
+        "arm": "cladribine",
+        "oracle": -39.5,
+        "error": 18.1,
+        "null_predicted": -6.0,
+        "null_error": 51.6
+      },
+      {
+        "held": "phi-",
+        "arm": "atacicept",
+        "oracle": -39.5,
+        "error": 44.5,
+        "null_predicted": -6.0,
+        "null_error": 11.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ublituximab",
+        "oracle": -39.5,
+        "error": 18.4,
+        "null_predicted": -6.0,
+        "null_error": 51.9
+      },
+      {
+        "held": "phi-",
+        "arm": "IFN-beta-1b",
+        "oracle": -39.5,
+        "error": 5.600000000000001,
+        "null_predicted": -6.0,
+        "null_error": 27.9
+      },
+      {
+        "held": "phi-",
+        "arm": "ozanimod",
+        "oracle": -39.5,
+        "error": 0.20000000000000284,
+        "null_predicted": -6.0,
+        "null_error": 33.3
+      },
+      {
+        "held": "phi-",
+        "arm": "rituximab",
+        "oracle": -39.5,
+        "error": 0.0,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "phi-",
+        "arm": "ustekinumab",
+        "oracle": -39.5,
+        "error": 24.5,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "phi-",
+        "arm": "Tovaxin",
+        "oracle": -39.5,
+        "error": 24.5,
+        "null_predicted": -6.0,
+        "null_error": 0.0
+      },
+      {
+        "held": "",
+        "arm": "daclizumab",
+        "oracle": -45.0,
+        "error": 0.0,
+        "null_predicted": -29.604761904761908,
+        "null_error": 15.395238095238092
+      },
+      {
+        "held": "",
+        "arm": "abatacept",
+        "oracle": -45.0,
+        "error": 30.0,
+        "null_predicted": -29.604761904761908,
+        "null_error": 14.604761904761908
+      },
+      {
+        "held": "r-|phi-",
+        "arm": "lenercept",
+        "oracle": 5.0,
+        "error": 0.0,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "phi+",
+        "arm": "IFN-gamma",
+        "oracle": 5.0,
+        "error": 0.0,
+        "null_predicted": -32.22380952380953,
+        "null_error": 37.22380952380953
+      },
+      {
+        "held": "phi+",
+        "arm": "APL CGP77116",
+        "oracle": 5.0,
+        "error": 0.0,
+        "null_predicted": -32.22380952380953,
+        "null_error": 37.22380952380953
+      }
+    ]
+  },
+  "S3": {
+    "accuracy": 0.08695652173913043,
+    "balanced_accuracy": 0.19444444444444442,
+    "majority_class": "improves",
+    "majority_accuracy": 0.6956521739130435,
+    "majority_balanced_accuracy": 0.3333333333333333,
+    "permutation_p": 0.8668,
+    "confusion": {
+      "improves->improves": 0,
+      "improves->neutral": 7,
+      "improves->harms": 9,
+      "neutral->improves": 0,
+      "neutral->neutral": 1,
+      "neutral->harms": 2,
+      "harms->improves": 3,
+      "harms->neutral": 0,
+      "harms->harms": 1
+    }
+  },
+  "S4": {
+    "all_pairs": {
+      "n_pairs": 45,
+      "tau": 0.24444444444444444,
+      "permutation_p": 0.187,
+      "pairs": [
+        "IFN-beta vs glatiramer acetate",
+        "IFN-beta vs natalizumab",
+        "IFN-beta vs fingolimod",
+        "IFN-beta vs teriflunomide",
+        "IFN-beta vs dimethyl fumarate",
+        "IFN-beta vs ocrelizumab",
+        "IFN-beta vs ponesimod",
+        "IFN-beta vs ofatumumab",
+        "IFN-beta vs cladribine",
+        "glatiramer acetate vs natalizumab",
+        "glatiramer acetate vs fingolimod",
+        "glatiramer acetate vs teriflunomide",
+        "glatiramer acetate vs dimethyl fumarate",
+        "glatiramer acetate vs ocrelizumab",
+        "glatiramer acetate vs ponesimod",
+        "glatiramer acetate vs ofatumumab",
+        "glatiramer acetate vs cladribine",
+        "natalizumab vs fingolimod",
+        "natalizumab vs teriflunomide",
+        "natalizumab vs dimethyl fumarate",
+        "natalizumab vs ocrelizumab",
+        "natalizumab vs ponesimod",
+        "natalizumab vs ofatumumab",
+        "natalizumab vs cladribine",
+        "fingolimod vs teriflunomide",
+        "fingolimod vs dimethyl fumarate",
+        "fingolimod vs ocrelizumab",
+        "fingolimod vs ponesimod",
+        "fingolimod vs ofatumumab",
+        "fingolimod vs cladribine",
+        "teriflunomide vs dimethyl fumarate",
+        "teriflunomide vs ocrelizumab",
+        "teriflunomide vs ponesimod",
+        "teriflunomide vs ofatumumab",
+        "teriflunomide vs cladribine",
+        "dimethyl fumarate vs ocrelizumab",
+        "dimethyl fumarate vs ponesimod",
+        "dimethyl fumarate vs ofatumumab",
+        "dimethyl fumarate vs cladribine",
+        "ocrelizumab vs ponesimod",
+        "ocrelizumab vs ofatumumab",
+        "ocrelizumab vs cladribine",
+        "ponesimod vs ofatumumab",
+        "ponesimod vs cladribine",
+        "ofatumumab vs cladribine"
+      ]
+    },
+    "same_metric_pairs": {
+      "n_pairs": 10,
+      "tau": 0.4,
+      "permutation_p": 0.2118,
+      "pairs": [
+        "IFN-beta vs cladribine",
+        "glatiramer acetate vs natalizumab",
+        "glatiramer acetate vs fingolimod",
+        "glatiramer acetate vs dimethyl fumarate",
+        "natalizumab vs fingolimod",
+        "natalizumab vs dimethyl fumarate",
+        "fingolimod vs dimethyl fumarate",
+        "teriflunomide vs ocrelizumab",
+        "teriflunomide vs ofatumumab",
+        "ocrelizumab vs ofatumumab"
+      ]
+    }
+  }
+}

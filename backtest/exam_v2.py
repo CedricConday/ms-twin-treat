@@ -17,11 +17,20 @@ docstring only says where each rule lands in the code.
 Nothing here touches gate/criterion.py or backtest/lomo.py. Both exams run;
 both are reported.
 
-Run:  PYTHONPATH=. python -m backtest.exam_v2
+Run:  PYTHONPATH=. python -m backtest.exam_v2                 (Velez port, default)
+      PYTHONPATH=. python -m backtest.exam_v2 --model minimal  (Jenner 2026 probe)
+
+`--model` swaps the response-table builder and the arm-to-dial map
+(docs/FOUR_DAY_PLAN.md, day 1, item 4) and nothing else: the rules R1-R4 and
+the statistics S1-S4 are the registered ones and are shared. The minimal model
+is deterministic, so its table is one run per cell, cached to
+results/exam_v2_curve_minimal.json, and its result goes to
+results/exam_v2_minimal.json. The Velez files are untouched by that switch.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 from concurrent.futures import ProcessPoolExecutor
@@ -34,11 +43,36 @@ from backtest.clinical import KNOWN_OUTCOMES, MAG_TOLERANCE, NEUTRAL_BAND
 from backtest.lomo import POTENCY_GRID, SEEDS, T_END, _cell, _damage, _median_ratio
 from backtest.lomo import load as load_base
 from backtest.potency import OBSERVED_LESION_RATIOS
+from bricks import profiles_minimal, qsp_minimal
 from bricks.profiles import PROFILES, touched_points
+from bricks.sormani import predict_relapse_ratio
 
 RESULTS = Path(__file__).resolve().parent.parent / "results"
 CURVE = RESULTS / "exam_v2_curve.json"
 OUT = RESULTS / "exam_v2.json"
+CURVE_MINIMAL = RESULTS / "exam_v2_curve_minimal.json"
+OUT_MINIMAL = RESULTS / "exam_v2_minimal.json"
+
+# --------------------------------------------------------------------------- #
+# The model under examination. "velez" is the transcription the exam was
+# registered on; "minimal" is probe A. Only the dial map and the table builder
+# read this.
+# --------------------------------------------------------------------------- #
+MODELS = ("velez", "minimal")
+MODEL = {"name": "velez"}
+
+
+def select_model(name: str) -> None:
+    if name not in MODELS:
+        raise ValueError(f"unknown model {name!r}; one of {MODELS}")
+    MODEL["name"] = name
+
+
+def _pattern(arm: str) -> tuple[str, ...]:
+    """The arm's dial pattern under the selected model. The fold key of S1/S2."""
+    if MODEL["name"] == "minimal":
+        return profiles_minimal.touched_points(profiles_minimal.PROFILES[arm])
+    return touched_points(PROFILES[arm])
 
 INF = float("inf")
 FIT_GRID = [round(float(s), 2) for s in np.arange(0.0, 0.951, 0.01)]
@@ -81,7 +115,7 @@ def treated() -> list:
 def all_groups() -> dict[tuple[str, ...], list]:
     groups: dict[tuple[str, ...], list] = {}
     for o in treated():
-        groups.setdefault(touched_points(PROFILES[o.arm]), []).append(o)
+        groups.setdefault(_pattern(o.arm), []).append(o)
     return groups
 
 
@@ -120,12 +154,79 @@ def _build_columns(patterns: list[tuple[str, ...]], groups: dict, verbose: bool 
     return cols
 
 
+def _build_columns_minimal(patterns: list[tuple[str, ...]], groups: dict,
+                           verbose: bool = True) -> dict:
+    """Probe A's table: deterministic model, one run per (pattern, potency) cell.
+
+    Same cell semantics as `_build_columns`: the pattern's first arm is swept
+    over POTENCY_GRID with `profiles_minimal.profile_at`, the lesion ratio goes
+    through the unchanged Sormani map, and the column stores the percent
+    change. `sd` is None and `n_ok` is 1 because there is no cohort: the model
+    has no noise, so there is nothing to take a median over. The lesion ratio
+    and the relapse proxy are kept beside the scored number for reading.
+    """
+    if verbose:
+        print(f"  building {len(patterns)} pattern column(s) for the minimal model: "
+              f"{len(patterns) * len(POTENCY_GRID)} deterministic runs ...")
+    untreated = qsp_minimal.simulate(qsp_minimal.UNTREATED_PROFILE)
+    cols = {}
+    for p in patterns:
+        arm = groups[p][0].arm
+        col = {}
+        for s in POTENCY_GRID:
+            c = qsp_minimal.compare(profiles_minimal.profile_at(arm, s), untreated)
+            ok = c["in_regime"] and np.isfinite(c["lesion_ratio"]) and c["lesion_ratio"] > 0
+            col[f"{s:g}"] = {
+                "mean": predict_relapse_ratio(c["lesion_ratio"]).percent_change if ok else None,
+                "sd": None,
+                "n_ok": 1 if ok else 0,
+                "n_out_of_regime": 0 if ok else 1,
+                "lesion_ratio": c["lesion_ratio"] if ok else None,
+                "relapses_per_year": c["relapses_per_year"],
+                "mean_M": c["mean_M"],
+                "in_range": c["in_range"],
+            }
+        cols["|".join(p)] = col
+    return cols
+
+
+def load_curve_minimal(verbose: bool = True) -> dict:
+    """Probe A's whole table lives in exam_v2_curve_minimal.json; no base file."""
+    extra = json.loads(CURVE_MINIMAL.read_text()) if CURVE_MINIMAL.exists() else {"table": {}}
+    table = dict(extra["table"])
+    groups = all_groups()
+    missing = [p for p in groups if "|".join(p) not in table]
+    if missing:
+        cols = _build_columns_minimal(missing, groups, verbose=verbose)
+        extra["table"].update(cols)
+        extra.update({
+            "model": "minimal",
+            "potency_grid": POTENCY_GRID,
+            "seeds": [0],
+            "schedule_months": {"dt": qsp_minimal.DT, "burn_in": qsp_minimal.BURN_IN_MONTHS,
+                                "score": qsp_minimal.SCORE_MONTHS},
+            "untreated_params": qsp_minimal.UNTREATED_PARAMS,
+            "untreated_relapses_per_year": qsp_minimal.compare(qsp_minimal.UNTREATED_PROFILE)
+            ["untreated_relapses_per_year"],
+            "note": ("Jenner 2026 two-equation model (bricks/qsp_minimal.py), arms from "
+                     "bricks/profiles_minimal.py, deterministic: one run per cell. The "
+                     "scored number is the Sormani-mapped percent change of the "
+                     "time-integrated inflammation ratio, treated over untreated."),
+        })
+        CURVE_MINIMAL.write_text(json.dumps(extra, indent=2))
+        table.update(cols)
+    return {"table": table, "potency_grid": POTENCY_GRID}
+
+
 def load_curve(verbose: bool = True) -> dict:
     """The transcription's own table plus the columns the widened exam needs.
 
     The base file is never written to. Extra columns live in exam_v2_curve.json
     and are rebuilt only if a pattern in the arm set has no column anywhere.
+    Under `--model minimal` the whole table comes from `load_curve_minimal`.
     """
+    if MODEL["name"] == "minimal":
+        return load_curve_minimal(verbose=verbose)
     base = load_base()
     extra = json.loads(CURVE.read_text()) if CURVE.exists() else {"table": {}}
     table = dict(base["table"])
@@ -157,10 +258,10 @@ def _curve_value(pattern: tuple[str, ...], s: float, curve: dict) -> float:
 # R4
 # --------------------------------------------------------------------------- #
 def _predict(o, s: float, curve: dict, adjust: bool) -> float:
-    drug = _curve_value(touched_points(PROFILES[o.arm]), s, curve)
+    drug = _curve_value(_pattern(o.arm), s, curve)
     if not adjust or o.comparator == "untreated":
         return drug
-    comp = _curve_value(touched_points(PROFILES[o.comparator]), s, curve)
+    comp = _curve_value(_pattern(o.comparator), s, curve)
     return ((1.0 + drug / 100.0) / (1.0 + comp / 100.0) - 1.0) * 100.0
 
 
@@ -307,7 +408,7 @@ def run_mri_rank() -> dict:
             if o.relapse_change_pct is not None and o.arm in OBSERVED_LESION_RATIOS}
     groups: dict[tuple[str, ...], list[str]] = {}
     for a in arms:
-        groups.setdefault(touched_points(PROFILES[a]), []).append(a)
+        groups.setdefault(_pattern(a), []).append(a)
 
     def pairs(same_metric: bool):
         out = []
@@ -349,8 +450,14 @@ KNOWN_OUTCOMES_BY = {o.arm: o for o in KNOWN_OUTCOMES}
 
 
 # --------------------------------------------------------------------------- #
-def main() -> int:
-    print("exam v2 -- rules in docs/EXAM_V2_PREREG.md")
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--model", choices=MODELS, default="velez",
+                    help="which model's dial map and response table to score (default: velez)")
+    args = ap.parse_args(argv)
+    select_model(args.model)
+    out = OUT_MINIMAL if args.model == "minimal" else OUT
+    print(f"exam v2 -- rules in docs/EXAM_V2_PREREG.md -- model: {args.model}")
     curve = load_curve()
     s1 = run_interval_lomo(curve, adjust=True)
     s1u = run_interval_lomo(curve, adjust=False)
@@ -378,9 +485,9 @@ def main() -> int:
     for k, v in s4.items():
         print(f"    {k:<18} n_pairs={v['n_pairs']:2d}  tau={v['tau']:+.2f}  p={v['permutation_p']:.3f}")
 
-    OUT.write_text(json.dumps({"S1": s1, "S1_unadjusted": s1u, "S2": s2, "S3": s3, "S4": s4},
-                              indent=2, default=float))
-    print(f"\nwritten {OUT.relative_to(RESULTS.parent)}")
+    out.write_text(json.dumps({"model": args.model, "S1": s1, "S1_unadjusted": s1u,
+                               "S2": s2, "S3": s3, "S4": s4}, indent=2, default=float))
+    print(f"\nwritten {out.relative_to(RESULTS.parent)}")
     return 0
 
 
