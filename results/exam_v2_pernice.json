@@ -1,0 +1,1026 @@
+{
+  "model": "pernice",
+  "variant": "s2",
+  "S1": {
+    "adjusted": true,
+    "mae": 35.08308109853147,
+    "null_mae": 19.84960688942382,
+    "n_arms": 23,
+    "n_folds": 11,
+    "ci_fold_gap": [
+      -13.397402423954883,
+      19.591445625759828
+    ],
+    "placebo_mae": 24.873351197891463,
+    "placebo_null_mae": 21.46688716741348,
+    "folds": [
+      {
+        "held": "pTeff_Dup-",
+        "n": 5,
+        "fitted_potency": 0.0,
+        "mae": 29.68,
+        "null_mae": 9.403333333333336
+      },
+      {
+        "held": "pTeff_Activation-|pTreg_Activation+",
+        "n": 1,
+        "fitted_potency": 0.03,
+        "mae": 21.511243508891383,
+        "null_mae": 0.013636363636361892
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "n": 4,
+        "fitted_potency": 0.0,
+        "mae": 48.2,
+        "null_mae": 23.2578947368421
+      },
+      {
+        "held": "pTeff_Activation-",
+        "n": 5,
+        "fitted_potency": 0.11,
+        "mae": 48.829970639117384,
+        "null_mae": 16.49555555555556
+      },
+      {
+        "held": "Teff_death+|Treg_death+",
+        "n": 2,
+        "fitted_potency": 0.04,
+        "mae": 57.63711315630877,
+        "null_mae": 29.914285714285715
+      },
+      {
+        "held": "pNKkillsTeff+|dac",
+        "n": 1,
+        "fitted_potency": 0.06,
+        "mae": 59.06184636931176,
+        "null_mae": 16.74090909090909
+      },
+      {
+        "held": "pTeff_Dup-|pTreg_Dup-|pRemyelinization-",
+        "n": 1,
+        "fitted_potency": 0.04,
+        "mae": 11.929373915706812,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "",
+        "n": 1,
+        "fitted_potency": 0.04,
+        "mae": 5.0,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "pIFNgConsuption-",
+        "n": 1,
+        "fitted_potency": 0.04,
+        "mae": 5.152717008195502,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "pTeff_Activation+",
+        "n": 1,
+        "fitted_potency": 0.04,
+        "mae": 3.6316049559138364,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "Teff_death+",
+        "n": 1,
+        "fitted_potency": 0.04,
+        "mae": 0.0,
+        "null_mae": 15.304545454545458
+      }
+    ],
+    "rows": [
+      {
+        "held": "pTeff_Dup-",
+        "arm": "IFN-beta",
+        "interval": [
+          -30.0,
+          -30.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 30.0,
+        "null_predicted": -28.79444444444444,
+        "null_error": 1.2055555555555593
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "teriflunomide",
+        "interval": [
+          -31.5,
+          -31.5
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 31.5,
+        "null_predicted": -28.79444444444444,
+        "null_error": 2.7055555555555593
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "dimethyl fumarate",
+        "interval": [
+          -53.0,
+          -53.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 53.0,
+        "null_predicted": -28.79444444444444,
+        "null_error": 24.20555555555556
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "IFN-beta-1b",
+        "interval": [
+          -33.9,
+          -33.9
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 33.9,
+        "null_predicted": -28.79444444444444,
+        "null_error": 5.105555555555558
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "ustekinumab",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 0.0,
+        "null_predicted": -28.79444444444444,
+        "null_error": 13.79444444444444
+      },
+      {
+        "held": "pTeff_Activation-|pTreg_Activation+",
+        "arm": "glatiramer acetate",
+        "interval": [
+          -29.0,
+          -29.0
+        ],
+        "fitted_potency": 0.03,
+        "predicted": -7.4887564911086155,
+        "error": 21.511243508891383,
+        "null_predicted": -28.986363636363638,
+        "null_error": 0.013636363636361892
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "natalizumab",
+        "interval": [
+          -68.0,
+          -68.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 68.0,
+        "null_predicted": -24.942105263157895,
+        "null_error": 43.0578947368421
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "fingolimod",
+        "interval": [
+          -55.0,
+          -55.0
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 55.0,
+        "null_predicted": -24.942105263157895,
+        "null_error": 30.057894736842105
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "ponesimod",
+        "interval": [
+          -30.5,
+          -30.5
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 30.5,
+        "null_predicted": -24.942105263157895,
+        "null_error": 5.557894736842105
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "ozanimod",
+        "interval": [
+          -39.3,
+          -39.3
+        ],
+        "fitted_potency": 0.0,
+        "predicted": 0.0,
+        "error": 39.3,
+        "null_predicted": -24.942105263157895,
+        "null_error": 14.357894736842102
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ocrelizumab",
+        "interval": [
+          -46.0,
+          -46.0
+        ],
+        "fitted_potency": 0.11,
+        "predicted": 21.312463298896734,
+        "error": 67.31246329889673,
+        "null_predicted": -28.21111111111111,
+        "null_error": 17.78888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ofatumumab",
+        "interval": [
+          -50.0,
+          -50.0
+        ],
+        "fitted_potency": 0.11,
+        "predicted": 21.312463298896734,
+        "error": 71.31246329889673,
+        "null_predicted": -28.21111111111111,
+        "null_error": 21.78888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ublituximab",
+        "interval": [
+          -57.9,
+          -57.9
+        ],
+        "fitted_potency": 0.11,
+        "predicted": 21.312463298896734,
+        "error": 79.21246329889674,
+        "null_predicted": -28.21111111111111,
+        "null_error": 29.68888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "rituximab",
+        "interval": [
+          -Infinity,
+          -5.0
+        ],
+        "fitted_potency": 0.11,
+        "predicted": 21.312463298896734,
+        "error": 26.312463298896734,
+        "null_predicted": -28.21111111111111,
+        "null_error": 0.0
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "abatacept",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.11,
+        "predicted": -4.149302036124867,
+        "error": 0.0,
+        "null_predicted": -28.21111111111111,
+        "null_error": 13.211111111111109
+      },
+      {
+        "held": "Teff_death+|Treg_death+",
+        "arm": "alemtuzumab",
+        "interval": [
+          -55.0,
+          -55.0
+        ],
+        "fitted_potency": 0.04,
+        "predicted": 5.7988977329531455,
+        "error": 60.798897732953144,
+        "null_predicted": -26.385714285714286,
+        "null_error": 28.614285714285714
+      },
+      {
+        "held": "Teff_death+|Treg_death+",
+        "arm": "cladribine",
+        "interval": [
+          -57.6,
+          -57.6
+        ],
+        "fitted_potency": 0.04,
+        "predicted": -3.1246714203356074,
+        "error": 54.47532857966439,
+        "null_predicted": -26.385714285714286,
+        "null_error": 31.214285714285715
+      },
+      {
+        "held": "pNKkillsTeff+|dac",
+        "arm": "daclizumab",
+        "interval": [
+          -45.0,
+          -45.0
+        ],
+        "fitted_potency": 0.06,
+        "predicted": 14.061846369311759,
+        "error": 59.06184636931176,
+        "null_predicted": -28.25909090909091,
+        "null_error": 16.74090909090909
+      },
+      {
+        "held": "pTeff_Dup-|pTreg_Dup-|pRemyelinization-",
+        "arm": "lenercept",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.04,
+        "predicted": -6.929373915706813,
+        "error": 11.929373915706812,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "",
+        "arm": "atacicept",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.04,
+        "predicted": 0.0,
+        "error": 5.0,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "pIFNgConsuption-",
+        "arm": "IFN-gamma",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.04,
+        "predicted": -0.15271700819550205,
+        "error": 5.152717008195502,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "pTeff_Activation+",
+        "arm": "APL CGP77116",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.04,
+        "predicted": 1.3683950440861636,
+        "error": 3.6316049559138364,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "Teff_death+",
+        "arm": "Tovaxin",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.04,
+        "predicted": -4.344517941474627,
+        "error": 0.0,
+        "null_predicted": -30.30454545454546,
+        "null_error": 15.304545454545458
+      }
+    ]
+  },
+  "S1_unadjusted": {
+    "adjusted": false,
+    "mae": 20.056544684018803,
+    "null_mae": 19.84960688942382,
+    "n_arms": 23,
+    "n_folds": 11,
+    "ci_fold_gap": [
+      -15.463857064419216,
+      8.101174186841176
+    ],
+    "placebo_mae": 14.078703126034396,
+    "placebo_null_mae": 21.46688716741348,
+    "folds": [
+      {
+        "held": "pTeff_Dup-",
+        "n": 5,
+        "fitted_potency": 0.31,
+        "mae": 15.413500270246313,
+        "null_mae": 9.403333333333336
+      },
+      {
+        "held": "pTeff_Activation-|pTreg_Activation+",
+        "n": 1,
+        "fitted_potency": 0.27,
+        "mae": 18.126460858177495,
+        "null_mae": 0.013636363636361892
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "n": 4,
+        "fitted_potency": 0.28,
+        "mae": 13.3,
+        "null_mae": 23.2578947368421
+      },
+      {
+        "held": "pTeff_Activation-",
+        "n": 5,
+        "fitted_potency": 0.22,
+        "mae": 25.449985189703806,
+        "null_mae": 16.49555555555556
+      },
+      {
+        "held": "Teff_death+|Treg_death+",
+        "n": 2,
+        "fitted_potency": 0.22,
+        "mae": 40.89927882060819,
+        "null_mae": 29.914285714285715
+      },
+      {
+        "held": "pNKkillsTeff+|dac",
+        "n": 1,
+        "fitted_potency": 0.26,
+        "mae": 45.0,
+        "null_mae": 16.74090909090909
+      },
+      {
+        "held": "pTeff_Dup-|pTreg_Dup-|pRemyelinization-",
+        "n": 1,
+        "fitted_potency": 0.28,
+        "mae": 39.229294940502086,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "",
+        "n": 1,
+        "fitted_potency": 0.26,
+        "mae": 5.0,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "pIFNgConsuption-",
+        "n": 1,
+        "fitted_potency": 0.26,
+        "mae": 6.051305188414162,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "pTeff_Activation+",
+        "n": 1,
+        "fitted_potency": 0.26,
+        "mae": 0.0,
+        "null_mae": 35.53181818181818
+      },
+      {
+        "held": "Teff_death+",
+        "n": 1,
+        "fitted_potency": 0.26,
+        "mae": 8.57748180437179,
+        "null_mae": 15.304545454545458
+      }
+    ],
+    "rows": [
+      {
+        "held": "pTeff_Dup-",
+        "arm": "IFN-beta",
+        "interval": [
+          -30.0,
+          -30.0
+        ],
+        "fitted_potency": 0.31,
+        "predicted": -44.82250045041052,
+        "error": 14.822500450410523,
+        "null_predicted": -28.79444444444444,
+        "null_error": 1.2055555555555593
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "teriflunomide",
+        "interval": [
+          -31.5,
+          -31.5
+        ],
+        "fitted_potency": 0.31,
+        "predicted": -44.82250045041052,
+        "error": 13.322500450410523,
+        "null_predicted": -28.79444444444444,
+        "null_error": 2.7055555555555593
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "dimethyl fumarate",
+        "interval": [
+          -53.0,
+          -53.0
+        ],
+        "fitted_potency": 0.31,
+        "predicted": -44.82250045041052,
+        "error": 8.177499549589477,
+        "null_predicted": -28.79444444444444,
+        "null_error": 24.20555555555556
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "IFN-beta-1b",
+        "interval": [
+          -33.9,
+          -33.9
+        ],
+        "fitted_potency": 0.31,
+        "predicted": -44.82250045041052,
+        "error": 10.922500450410524,
+        "null_predicted": -28.79444444444444,
+        "null_error": 5.105555555555558
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "ustekinumab",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.31,
+        "predicted": -44.82250045041052,
+        "error": 29.822500450410523,
+        "null_predicted": -28.79444444444444,
+        "null_error": 13.79444444444444
+      },
+      {
+        "held": "pTeff_Activation-|pTreg_Activation+",
+        "arm": "glatiramer acetate",
+        "interval": [
+          -29.0,
+          -29.0
+        ],
+        "fitted_potency": 0.27,
+        "predicted": -47.126460858177495,
+        "error": 18.126460858177495,
+        "null_predicted": -28.986363636363638,
+        "null_error": 0.013636363636361892
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "natalizumab",
+        "interval": [
+          -68.0,
+          -68.0
+        ],
+        "fitted_potency": 0.28,
+        "predicted": -54.03538803639467,
+        "error": 13.964611963605329,
+        "null_predicted": -24.942105263157895,
+        "null_error": 43.0578947368421
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "fingolimod",
+        "interval": [
+          -55.0,
+          -55.0
+        ],
+        "fitted_potency": 0.28,
+        "predicted": -54.03538803639467,
+        "error": 0.9646119636053285,
+        "null_predicted": -24.942105263157895,
+        "null_error": 30.057894736842105
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "ponesimod",
+        "interval": [
+          -30.5,
+          -30.5
+        ],
+        "fitted_potency": 0.28,
+        "predicted": -54.03538803639467,
+        "error": 23.53538803639467,
+        "null_predicted": -24.942105263157895,
+        "null_error": 5.557894736842105
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "ozanimod",
+        "interval": [
+          -39.3,
+          -39.3
+        ],
+        "fitted_potency": 0.28,
+        "predicted": -54.03538803639467,
+        "error": 14.735388036394674,
+        "null_predicted": -24.942105263157895,
+        "null_error": 14.357894736842102
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ocrelizumab",
+        "interval": [
+          -46.0,
+          -46.0
+        ],
+        "fitted_potency": 0.22,
+        "predicted": -8.883358017160319,
+        "error": 37.11664198283968,
+        "null_predicted": -28.21111111111111,
+        "null_error": 17.78888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ofatumumab",
+        "interval": [
+          -50.0,
+          -50.0
+        ],
+        "fitted_potency": 0.22,
+        "predicted": -8.883358017160319,
+        "error": 41.11664198283968,
+        "null_predicted": -28.21111111111111,
+        "null_error": 21.78888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ublituximab",
+        "interval": [
+          -57.9,
+          -57.9
+        ],
+        "fitted_potency": 0.22,
+        "predicted": -8.883358017160319,
+        "error": 49.01664198283968,
+        "null_predicted": -28.21111111111111,
+        "null_error": 29.68888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "rituximab",
+        "interval": [
+          -Infinity,
+          -5.0
+        ],
+        "fitted_potency": 0.22,
+        "predicted": -8.883358017160319,
+        "error": 0.0,
+        "null_predicted": -28.21111111111111,
+        "null_error": 0.0
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "abatacept",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.22,
+        "predicted": -8.883358017160319,
+        "error": 0.0,
+        "null_predicted": -28.21111111111111,
+        "null_error": 13.211111111111109
+      },
+      {
+        "held": "Teff_death+|Treg_death+",
+        "arm": "alemtuzumab",
+        "interval": [
+          -55.0,
+          -55.0
+        ],
+        "fitted_potency": 0.22,
+        "predicted": -15.400721179391816,
+        "error": 39.599278820608184,
+        "null_predicted": -26.385714285714286,
+        "null_error": 28.614285714285714
+      },
+      {
+        "held": "Teff_death+|Treg_death+",
+        "arm": "cladribine",
+        "interval": [
+          -57.6,
+          -57.6
+        ],
+        "fitted_potency": 0.22,
+        "predicted": -15.400721179391816,
+        "error": 42.199278820608185,
+        "null_predicted": -26.385714285714286,
+        "null_error": 31.214285714285715
+      },
+      {
+        "held": "pNKkillsTeff+|dac",
+        "arm": "daclizumab",
+        "interval": [
+          -45.0,
+          -45.0
+        ],
+        "fitted_potency": 0.26,
+        "predicted": 0.0,
+        "error": 45.0,
+        "null_predicted": -28.25909090909091,
+        "null_error": 16.74090909090909
+      },
+      {
+        "held": "pTeff_Dup-|pTreg_Dup-|pRemyelinization-",
+        "arm": "lenercept",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.28,
+        "predicted": -34.229294940502086,
+        "error": 39.229294940502086,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "",
+        "arm": "atacicept",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.26,
+        "predicted": 0.0,
+        "error": 5.0,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "pIFNgConsuption-",
+        "arm": "IFN-gamma",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.26,
+        "predicted": -1.0513051884141622,
+        "error": 6.051305188414162,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "pTeff_Activation+",
+        "arm": "APL CGP77116",
+        "interval": [
+          5.0,
+          Infinity
+        ],
+        "fitted_potency": 0.26,
+        "predicted": 7.893942281055427,
+        "error": 0.0,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "Teff_death+",
+        "arm": "Tovaxin",
+        "interval": [
+          -15.0,
+          15.0
+        ],
+        "fitted_potency": 0.26,
+        "predicted": -23.57748180437179,
+        "error": 8.57748180437179,
+        "null_predicted": -30.30454545454546,
+        "null_error": 15.304545454545458
+      }
+    ]
+  },
+  "S2": {
+    "mae": 6.28695652173913,
+    "null_mae": 19.84960688942382,
+    "headroom": 13.562650367684691,
+    "relative": 0.683270477004312,
+    "rows": [
+      {
+        "held": "pTeff_Dup-",
+        "arm": "IFN-beta",
+        "oracle": -31.5,
+        "error": 1.5,
+        "null_predicted": -28.79444444444444,
+        "null_error": 1.2055555555555593
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "teriflunomide",
+        "oracle": -31.5,
+        "error": 0.0,
+        "null_predicted": -28.79444444444444,
+        "null_error": 2.7055555555555593
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "dimethyl fumarate",
+        "oracle": -31.5,
+        "error": 21.5,
+        "null_predicted": -28.79444444444444,
+        "null_error": 24.20555555555556
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "IFN-beta-1b",
+        "oracle": -31.5,
+        "error": 2.3999999999999986,
+        "null_predicted": -28.79444444444444,
+        "null_error": 5.105555555555558
+      },
+      {
+        "held": "pTeff_Dup-",
+        "arm": "ustekinumab",
+        "oracle": -31.5,
+        "error": 16.5,
+        "null_predicted": -28.79444444444444,
+        "null_error": 13.79444444444444
+      },
+      {
+        "held": "pTeff_Activation-|pTreg_Activation+",
+        "arm": "glatiramer acetate",
+        "oracle": -29.0,
+        "error": 0.0,
+        "null_predicted": -28.986363636363638,
+        "null_error": 0.013636363636361892
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "natalizumab",
+        "oracle": -55.0,
+        "error": 13.0,
+        "null_predicted": -24.942105263157895,
+        "null_error": 43.0578947368421
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "fingolimod",
+        "oracle": -55.0,
+        "error": 0.0,
+        "null_predicted": -24.942105263157895,
+        "null_error": 30.057894736842105
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "ponesimod",
+        "oracle": -55.0,
+        "error": 24.5,
+        "null_predicted": -24.942105263157895,
+        "null_error": 5.557894736842105
+      },
+      {
+        "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+        "arm": "ozanimod",
+        "oracle": -55.0,
+        "error": 15.700000000000003,
+        "null_predicted": -24.942105263157895,
+        "null_error": 14.357894736842102
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ocrelizumab",
+        "oracle": -50.0,
+        "error": 4.0,
+        "null_predicted": -28.21111111111111,
+        "null_error": 17.78888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ofatumumab",
+        "oracle": -50.0,
+        "error": 0.0,
+        "null_predicted": -28.21111111111111,
+        "null_error": 21.78888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "ublituximab",
+        "oracle": -50.0,
+        "error": 7.899999999999999,
+        "null_predicted": -28.21111111111111,
+        "null_error": 29.68888888888889
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "rituximab",
+        "oracle": -50.0,
+        "error": 0.0,
+        "null_predicted": -28.21111111111111,
+        "null_error": 0.0
+      },
+      {
+        "held": "pTeff_Activation-",
+        "arm": "abatacept",
+        "oracle": -50.0,
+        "error": 35.0,
+        "null_predicted": -28.21111111111111,
+        "null_error": 13.211111111111109
+      },
+      {
+        "held": "Teff_death+|Treg_death+",
+        "arm": "alemtuzumab",
+        "oracle": -57.5,
+        "error": 2.5,
+        "null_predicted": -26.385714285714286,
+        "null_error": 28.614285714285714
+      },
+      {
+        "held": "Teff_death+|Treg_death+",
+        "arm": "cladribine",
+        "oracle": -57.5,
+        "error": 0.10000000000000142,
+        "null_predicted": -26.385714285714286,
+        "null_error": 31.214285714285715
+      },
+      {
+        "held": "pNKkillsTeff+|dac",
+        "arm": "daclizumab",
+        "oracle": -45.0,
+        "error": 0.0,
+        "null_predicted": -28.25909090909091,
+        "null_error": 16.74090909090909
+      },
+      {
+        "held": "pTeff_Dup-|pTreg_Dup-|pRemyelinization-",
+        "arm": "lenercept",
+        "oracle": 5.0,
+        "error": 0.0,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "",
+        "arm": "atacicept",
+        "oracle": 5.0,
+        "error": 0.0,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "pIFNgConsuption-",
+        "arm": "IFN-gamma",
+        "oracle": 5.0,
+        "error": 0.0,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "pTeff_Activation+",
+        "arm": "APL CGP77116",
+        "oracle": 5.0,
+        "error": 0.0,
+        "null_predicted": -30.531818181818185,
+        "null_error": 35.53181818181818
+      },
+      {
+        "held": "Teff_death+",
+        "arm": "Tovaxin",
+        "oracle": -15.0,
+        "error": 0.0,
+        "null_predicted": -30.30454545454546,
+        "null_error": 15.304545454545458
+      }
+    ]
+  },
+  "S3": {
+    "accuracy": 0.17391304347826086,
+    "balanced_accuracy": 0.3541666666666667,
+    "majority_class": "improves",
+    "majority_accuracy": 0.6956521739130435,
+    "majority_balanced_accuracy": 0.3333333333333333,
+    "permutation_p": 0.3867,
+    "confusion": {
+      "improves->improves": 1,
+      "improves->neutral": 9,
+      "improves->harms": 6,
+      "neutral->improves": 0,
+      "neutral->neutral": 3,
+      "neutral->harms": 0,
+      "harms->improves": 1,
+      "harms->neutral": 3,
+      "harms->harms": 0
+    }
+  },
+  "S4": {
+    "all_pairs": {
+      "n_pairs": 7,
+      "tau": 1.0,
+      "permutation_p": 0.0132,
+      "pairs": [
+        "IFN-beta vs teriflunomide",
+        "IFN-beta vs dimethyl fumarate",
+        "teriflunomide vs dimethyl fumarate",
+        "natalizumab vs fingolimod",
+        "natalizumab vs ponesimod",
+        "fingolimod vs ponesimod",
+        "ocrelizumab vs ofatumumab"
+      ]
+    },
+    "same_metric_pairs": {
+      "n_pairs": 2,
+      "tau": 1.0,
+      "permutation_p": 0.2546,
+      "pairs": [
+        "natalizumab vs fingolimod",
+        "ocrelizumab vs ofatumumab"
+      ]
+    }
+  }
+}

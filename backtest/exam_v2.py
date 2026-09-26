@@ -43,7 +43,7 @@ from backtest.clinical import KNOWN_OUTCOMES, MAG_TOLERANCE, NEUTRAL_BAND
 from backtest.lomo import POTENCY_GRID, SEEDS, T_END, _cell, _damage, _median_ratio
 from backtest.lomo import load as load_base
 from backtest.potency import OBSERVED_LESION_RATIOS
-from bricks import profiles_minimal, qsp_minimal
+from bricks import profiles_minimal, profiles_pernice, qsp_minimal, qsp_pernice
 from bricks.profiles import PROFILES, touched_points
 from bricks.sormani import predict_relapse_ratio
 
@@ -52,26 +52,42 @@ CURVE = RESULTS / "exam_v2_curve.json"
 OUT = RESULTS / "exam_v2.json"
 CURVE_MINIMAL = RESULTS / "exam_v2_curve_minimal.json"
 OUT_MINIMAL = RESULTS / "exam_v2_minimal.json"
+CURVE_PERNICE = RESULTS / "exam_v2_curve_pernice.json"
+OUT_PERNICE = RESULTS / "exam_v2_pernice.json"
 
 # --------------------------------------------------------------------------- #
 # The model under examination. "velez" is the transcription the exam was
-# registered on; "minimal" is probe A. Only the dial map and the table builder
-# read this.
+# registered on; "minimal" is probe A; "pernice" is the port. Only the dial
+# map and the table builder read this.
 # --------------------------------------------------------------------------- #
-MODELS = ("velez", "minimal")
-MODEL = {"name": "velez"}
+MODELS = ("velez", "minimal", "pernice")
+MODEL = {"name": "velez", "variant": "s2"}
+OUT_BY_MODEL = {"velez": OUT, "minimal": OUT_MINIMAL, "pernice": OUT_PERNICE}
 
 
-def select_model(name: str) -> None:
+def select_model(name: str, variant: str = "s2") -> None:
+    """`variant` is the Pernice port's arc-reading set (qsp_pernice.READING_VARIANTS);
+    "s2" is the Figure S2 reproduction, the registered target."""
     if name not in MODELS:
         raise ValueError(f"unknown model {name!r}; one of {MODELS}")
+    if variant not in qsp_pernice.READING_VARIANTS:
+        raise ValueError(f"unknown variant {variant!r}")
     MODEL["name"] = name
+    MODEL["variant"] = variant
+
+
+def _pernice_paths() -> tuple[Path, Path]:
+    v = MODEL["variant"]
+    suffix = "" if v == "s2" else f"_{v}"
+    return (RESULTS / f"exam_v2_curve_pernice{suffix}.json", RESULTS / f"exam_v2_pernice{suffix}.json")
 
 
 def _pattern(arm: str) -> tuple[str, ...]:
     """The arm's dial pattern under the selected model. The fold key of S1/S2."""
     if MODEL["name"] == "minimal":
         return profiles_minimal.touched_points(profiles_minimal.PROFILES[arm])
+    if MODEL["name"] == "pernice":
+        return profiles_pernice.touched_points(profiles_pernice.PROFILES[arm])
     return touched_points(PROFILES[arm])
 
 INF = float("inf")
@@ -218,15 +234,90 @@ def load_curve_minimal(verbose: bool = True) -> dict:
     return {"table": table, "potency_grid": POTENCY_GRID}
 
 
+def _pernice_cell(job: tuple[str, float, float]) -> tuple[str, float, dict]:
+    """One (arm, potency) cell of the port: a two-year deterministic run.
+
+    Picklable so the table can fan across processes. The untreated lesion load
+    is passed in. The scored number is the Sormani-mapped percent change of the
+    lesion-load ratio (time-integrated ODC below Lmax, treated / untreated).
+    """
+    arm, s, untreated_load = job
+    tr = qsp_pernice.simulate(profiles_pernice.profile_at(arm, s), sample_hours=24.0,
+                              readings=qsp_pernice.READING_VARIANTS[MODEL["variant"]])
+    ok = tr["in_regime"] and untreated_load > 0 and tr["lesion_load"] > 0
+    ratio = tr["lesion_load"] / untreated_load if ok else None
+    return arm, s, {
+        "mean": predict_relapse_ratio(ratio).percent_change if ok else None,
+        "sd": None,
+        "n_ok": 1 if ok else 0,
+        "n_out_of_regime": 0 if ok else 1,
+        "lesion_ratio": ratio,
+        "irreversibly_damaged": tr["irreversibly_damaged"],
+    }
+
+
+def _build_columns_pernice(patterns: list[tuple[str, ...]], groups: dict,
+                           verbose: bool = True) -> dict:
+    workers = min(os.cpu_count() or 1, 8)
+    untreated = qsp_pernice.simulate(qsp_pernice.UNTREATED_PROFILE, sample_hours=24.0,
+                                     readings=qsp_pernice.READING_VARIANTS[MODEL["variant"]])
+    if not untreated["in_regime"] or untreated["lesion_load"] <= 0:
+        raise RuntimeError("the untreated two-year run left the regime or did no damage")
+    jobs = [(groups[p][0].arm, s, untreated["lesion_load"]) for p in patterns for s in POTENCY_GRID]
+    if verbose:
+        print(f"  building {len(patterns)} pattern column(s) for the Pernice port: "
+              f"{len(jobs)} deterministic two-year runs on {workers} workers ...")
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        results = list(pool.map(_pernice_cell, jobs, chunksize=1))
+    by_cell = {(arm, s): cell for arm, s, cell in results}
+    cols = {}
+    for p in patterns:
+        arm = groups[p][0].arm
+        cols["|".join(p)] = {f"{s:g}": by_cell[(arm, s)] for s in POTENCY_GRID}
+    return cols, untreated
+
+
+def load_curve_pernice(verbose: bool = True) -> dict:
+    curve_path, _ = _pernice_paths()
+    extra = json.loads(curve_path.read_text()) if curve_path.exists() else {"table": {}}
+    table = dict(extra["table"])
+    groups = all_groups()
+    missing = [p for p in groups if "|".join(p) not in table]
+    if missing:
+        cols, untreated = _build_columns_pernice(missing, groups, verbose=verbose)
+        extra["table"].update(cols)
+        extra.update({
+            "model": "pernice",
+            "variant": MODEL["variant"],
+            "potency_grid": POTENCY_GRID,
+            "seeds": [0],
+            "schedule": {"t_end_hours": qsp_pernice.TWO_YEAR_HOURS,
+                         "injections_days": list(qsp_pernice.TWO_YEAR_INJECTIONS_DAYS)},
+            "readings": qsp_pernice.READING_VARIANTS[MODEL["variant"]],
+            "untreated": {"lesion_load": untreated["lesion_load"],
+                          "irreversibly_damaged": untreated["irreversibly_damaged"]},
+            "note": ("Pernice 2020 port (bricks/qsp_pernice.py), MS parameters, the paper's "
+                     "two-year antigen schedule, arms from bricks/profiles_pernice.py, "
+                     "deterministic. Scored number: Sormani-mapped percent change of the "
+                     "lesion-load ratio (time-integrated ODC below Lmax, treated/untreated)."),
+        })
+        curve_path.write_text(json.dumps(extra, indent=2))
+        table.update(cols)
+    return {"table": table, "potency_grid": POTENCY_GRID}
+
+
 def load_curve(verbose: bool = True) -> dict:
     """The transcription's own table plus the columns the widened exam needs.
 
     The base file is never written to. Extra columns live in exam_v2_curve.json
     and are rebuilt only if a pattern in the arm set has no column anywhere.
-    Under `--model minimal` the whole table comes from `load_curve_minimal`.
+    Under `--model minimal` / `--model pernice` the whole table comes from that
+    model's loader.
     """
     if MODEL["name"] == "minimal":
         return load_curve_minimal(verbose=verbose)
+    if MODEL["name"] == "pernice":
+        return load_curve_pernice(verbose=verbose)
     base = load_base()
     extra = json.loads(CURVE.read_text()) if CURVE.exists() else {"table": {}}
     table = dict(base["table"])
@@ -454,10 +545,13 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--model", choices=MODELS, default="velez",
                     help="which model's dial map and response table to score (default: velez)")
+    ap.add_argument("--variant", choices=tuple(qsp_pernice.READING_VARIANTS), default="s2",
+                    help="Pernice port only: which arc-reading set (default: s2, the Figure S2 one)")
     args = ap.parse_args(argv)
-    select_model(args.model)
-    out = OUT_MINIMAL if args.model == "minimal" else OUT
-    print(f"exam v2 -- rules in docs/EXAM_V2_PREREG.md -- model: {args.model}")
+    select_model(args.model, args.variant)
+    out = _pernice_paths()[1] if args.model == "pernice" else OUT_BY_MODEL[args.model]
+    tag = f" (variant {args.variant})" if args.model == "pernice" else ""
+    print(f"exam v2 -- rules in docs/EXAM_V2_PREREG.md -- model: {args.model}{tag}")
     curve = load_curve()
     s1 = run_interval_lomo(curve, adjust=True)
     s1u = run_interval_lomo(curve, adjust=False)
@@ -485,8 +579,9 @@ def main(argv: list[str] | None = None) -> int:
     for k, v in s4.items():
         print(f"    {k:<18} n_pairs={v['n_pairs']:2d}  tau={v['tau']:+.2f}  p={v['permutation_p']:.3f}")
 
-    out.write_text(json.dumps({"model": args.model, "S1": s1, "S1_unadjusted": s1u,
-                               "S2": s2, "S3": s3, "S4": s4}, indent=2, default=float))
+    out.write_text(json.dumps({"model": args.model, "variant": args.variant, "S1": s1,
+                               "S1_unadjusted": s1u, "S2": s2, "S3": s3, "S4": s4},
+                              indent=2, default=float))
     print(f"\nwritten {out.relative_to(RESULTS.parent)}")
     return 0
 

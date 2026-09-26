@@ -1,0 +1,1842 @@
+{
+  "table": {
+    "pTeff_Dup-": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": -1.3577495648381621,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9740531114482925,
+        "irreversibly_damaged": 500.00000000000745
+      },
+      "0.1": {
+        "mean": -2.8112999568405184,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.946638534695674,
+        "irreversibly_damaged": 500.0000000000058
+      },
+      "0.15": {
+        "mean": -4.333792301908657,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9183267345384194,
+        "irreversibly_damaged": 500.00000000000045
+      },
+      "0.2": {
+        "mean": -5.886600718716184,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.88987648509807,
+        "irreversibly_damaged": 499.9999999999928
+      },
+      "0.25": {
+        "mean": -7.420495184963805,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.862194975284862,
+        "irreversibly_damaged": 500.00000000001074
+      },
+      "0.3": {
+        "mean": -8.879994793400748,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8362461040674796,
+        "irreversibly_damaged": 499.9999999999835
+      },
+      "0.35": {
+        "mean": -10.211462881675015,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8129057291443011,
+        "irreversibly_damaged": 500.00000000002564
+      },
+      "0.4": {
+        "mean": -11.372952882222641,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7928041639627896,
+        "irreversibly_damaged": 500.000000000011
+      },
+      "0.45": {
+        "mean": -12.342284139838034,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.776213259817163,
+        "irreversibly_damaged": 499.99999999981475
+      },
+      "0.5": {
+        "mean": -13.119871893367819,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7630259916313831,
+        "irreversibly_damaged": 499.9999997520888
+      },
+      "0.55": {
+        "mean": -13.728248858873737,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7527840530314005,
+        "irreversibly_damaged": 499.9999178924793
+      },
+      "0.6": {
+        "mean": -14.228507527492129,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7444120564040991,
+        "irreversibly_damaged": 499.99186413326515
+      },
+      "0.65": {
+        "mean": -14.832672610730956,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7343610800687645,
+        "irreversibly_damaged": 499.7076859036049
+      },
+      "0.7": {
+        "mean": -16.299852310165953,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7102260298887761,
+        "irreversibly_damaged": 495.4287218510251
+      },
+      "0.75": {
+        "mean": -20.80920145325583,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.6384747060073215,
+        "irreversibly_damaged": 464.39895912800074
+      },
+      "0.8": {
+        "mean": -32.42108175215649,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.47066717894577687,
+        "irreversibly_damaged": 351.99697697220705
+      },
+      "0.85": {
+        "mean": -53.32702614737541,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.23098695260216565,
+        "irreversibly_damaged": 161.47852957351327
+      },
+      "0.9": {
+        "mean": -76.10474626399397,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.06374490438996515,
+        "irreversibly_damaged": 30.919846392645898
+      },
+      "0.95": {
+        "mean": -89.07756041109398,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.014145383104932517,
+        "irreversibly_damaged": 1.5385400608680733
+      }
+    },
+    "pTeff_Activation-|pTreg_Activation+": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": -1.0623989598448347,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9796694578639382,
+        "irreversibly_damaged": 500.00000000000193
+      },
+      "0.1": {
+        "mean": -2.131978758139075,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9594040622759712,
+        "irreversibly_damaged": 500.0000000000001
+      },
+      "0.15": {
+        "mean": -3.195450812363365,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9394560653045779,
+        "irreversibly_damaged": 500.0000000000007
+      },
+      "0.2": {
+        "mean": -4.242545266251785,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9200119103926147,
+        "irreversibly_damaged": 499.9999999999953
+      },
+      "0.25": {
+        "mean": -5.266571653557273,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9011849926841645,
+        "irreversibly_damaged": 499.9999999999998
+      },
+      "0.3": {
+        "mean": -6.264414700609777,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8830192750658848,
+        "irreversibly_damaged": 500.00000000000176
+      },
+      "0.35": {
+        "mean": -7.235714239178515,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8655073872148437,
+        "irreversibly_damaged": 499.99999999999943
+      },
+      "0.4": {
+        "mean": -8.181766673473579,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8486126182240449,
+        "irreversibly_damaged": 500.0
+      },
+      "0.45": {
+        "mean": -9.10437217521578,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8322905965691978,
+        "irreversibly_damaged": 499.9999999999992
+      },
+      "0.5": {
+        "mean": -10.004420731783192,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8165143116604708,
+        "irreversibly_damaged": 500.0000000000019
+      },
+      "0.55": {
+        "mean": -10.880433745045092,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8012985448781847,
+        "irreversibly_damaged": 499.99999999999477
+      },
+      "0.6": {
+        "mean": -11.72685389030217,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7867273369021477,
+        "irreversibly_damaged": 499.99999999999665
+      },
+      "0.65": {
+        "mean": -12.532319533791137,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7729803970396202,
+        "irreversibly_damaged": 499.99999999999966
+      },
+      "0.7": {
+        "mean": -13.278872848473512,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7603428211901546,
+        "irreversibly_damaged": 499.99999999906333
+      },
+      "0.75": {
+        "mean": -13.945737541521453,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7491387849201299,
+        "irreversibly_damaged": 499.9999923468924
+      },
+      "0.8": {
+        "mean": -14.585721210378422,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7384614737688742,
+        "irreversibly_damaged": 499.9853012984916
+      },
+      "0.85": {
+        "mean": -16.643392166403647,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7046307659641384,
+        "irreversibly_damaged": 495.513026008142
+      },
+      "0.9": {
+        "mean": -31.417230525774965,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.48420456758988173,
+        "irreversibly_damaged": 362.5563209285106
+      },
+      "0.95": {
+        "mean": -73.85020096588936,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.07581355079153096,
+        "irreversibly_damaged": 39.18195895221849
+      }
+    },
+    "pPass_BBB_teff-|pPass_BBB_treg-": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": -0.7616099767757012,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9854051480736495,
+        "irreversibly_damaged": 499.9999999999979
+      },
+      "0.1": {
+        "mean": -1.5669251074681756,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9700848347625368,
+        "irreversibly_damaged": 500.0000000000021
+      },
+      "0.15": {
+        "mean": -2.4158771795225076,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9540591756953828,
+        "irreversibly_damaged": 499.9999999999972
+      },
+      "0.2": {
+        "mean": -3.3089288670958616,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9373393901691935,
+        "irreversibly_damaged": 500.00000000000705
+      },
+      "0.25": {
+        "mean": -4.247624297385388,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9199180704452674,
+        "irreversibly_damaged": 500.0000000000004
+      },
+      "0.3": {
+        "mean": -5.234712093791205,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9017679201628978,
+        "irreversibly_damaged": 500.00000000000153
+      },
+      "0.35": {
+        "mean": -6.2735542476150545,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8828537104709597,
+        "irreversibly_damaged": 499.9999999999969
+      },
+      "0.4": {
+        "mean": -7.365884687553548,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8631732968837752,
+        "irreversibly_damaged": 500.00000000000125
+      },
+      "0.45": {
+        "mean": -8.507812856213459,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8428270781534964,
+        "irreversibly_damaged": 500.00000000000136
+      },
+      "0.5": {
+        "mean": -9.684002649644297,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.822114070210148,
+        "irreversibly_damaged": 500.0000000000042
+      },
+      "0.55": {
+        "mean": -10.86122442517896,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8016307246152194,
+        "irreversibly_damaged": 500.00000000000045
+      },
+      "0.6": {
+        "mean": -11.985574691098899,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7822990503669199,
+        "irreversibly_damaged": 500.00000000000153
+      },
+      "0.65": {
+        "mean": -12.989175608722213,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7652349126845336,
+        "irreversibly_damaged": 499.99999999999625
+      },
+      "0.7": {
+        "mean": -13.810455259226295,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7514052156776011,
+        "irreversibly_damaged": 500.00000000000097
+      },
+      "0.75": {
+        "mean": -14.42241169681976,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7411790927075247,
+        "irreversibly_damaged": 499.99999999999943
+      },
+      "0.8": {
+        "mean": -14.850010208598242,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7340736174297537,
+        "irreversibly_damaged": 500.00000000000176
+      },
+      "0.85": {
+        "mean": -15.160600276406889,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7289330930894019,
+        "irreversibly_damaged": 500.00000000000057
+      },
+      "0.9": {
+        "mean": -15.434851582051435,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7244084226723385,
+        "irreversibly_damaged": 500.0000000000007
+      },
+      "0.95": {
+        "mean": -15.74608396872117,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7192900122349826,
+        "irreversibly_damaged": 499.9999999999962
+      }
+    },
+    "pTeff_Activation-": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": -0.4729166895680481,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9909253012967547,
+        "irreversibly_damaged": 500.00000000000233
+      },
+      "0.1": {
+        "mean": -0.9990292671259282,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9808765066231432,
+        "irreversibly_damaged": 500.00000000000074
+      },
+      "0.15": {
+        "mean": -1.5845678263960328,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9697504897056866,
+        "irreversibly_damaged": 500.00000000000193
+      },
+      "0.2": {
+        "mean": -2.236188623750679,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9574404635257863,
+        "irreversibly_damaged": 499.9999999999999
+      },
+      "0.25": {
+        "mean": -2.9605713524856636,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9438444879058937,
+        "irreversibly_damaged": 499.99999999999875
+      },
+      "0.3": {
+        "mean": -3.7640346437943895,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9288734555129462,
+        "irreversibly_damaged": 499.99999999999693
+      },
+      "0.35": {
+        "mean": -4.651607233732024,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9124688183043135,
+        "irreversibly_damaged": 499.99999999999926
+      },
+      "0.4": {
+        "mean": -5.625485334728619,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8946305282290649,
+        "irreversibly_damaged": 499.999999999999
+      },
+      "0.45": {
+        "mean": -6.68289511352712,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8754537063863126,
+        "irreversibly_damaged": 499.9999999999925
+      },
+      "0.5": {
+        "mean": -7.813022538382475,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.855178703051992,
+        "irreversibly_damaged": 499.9999999999987
+      },
+      "0.55": {
+        "mean": -8.993488117547432,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8342442260773782,
+        "irreversibly_damaged": 499.99999999999784
+      },
+      "0.6": {
+        "mean": -10.187468447896364,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8133235402812988,
+        "irreversibly_damaged": 499.9999999999999
+      },
+      "0.65": {
+        "mean": -11.343882671819305,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7933043254128641,
+        "irreversibly_damaged": 499.99999999999
+      },
+      "0.7": {
+        "mean": -12.404400268053573,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7751558340787468,
+        "irreversibly_damaged": 499.99999997222454
+      },
+      "0.75": {
+        "mean": -13.323881393488469,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.759584117631026,
+        "irreversibly_damaged": 499.9999242927052
+      },
+      "0.8": {
+        "mean": -14.184880750770068,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7451403762681738,
+        "irreversibly_damaged": 499.95400827174757
+      },
+      "0.85": {
+        "mean": -16.36866720083362,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7091035343850515,
+        "irreversibly_damaged": 494.15612447963605
+      },
+      "0.9": {
+        "mean": -30.63408287142243,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.4948935500551146,
+        "irreversibly_damaged": 363.45651682599623
+      },
+      "0.95": {
+        "mean": -73.83179936211158,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.07591618020345259,
+        "irreversibly_damaged": 37.95341582459029
+      }
+    },
+    "Teff_death+|Treg_death+": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": -0.6755348791573024,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9870494558649852,
+        "irreversibly_damaged": 500.0000000000025
+      },
+      "0.1": {
+        "mean": -1.3662059843245644,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9738925335916125,
+        "irreversibly_damaged": 499.9999999999928
+      },
+      "0.15": {
+        "mean": -2.06464746065792,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.960673794852972,
+        "irreversibly_damaged": 500.00000000000125
+      },
+      "0.2": {
+        "mean": -2.7637892607503822,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9475286667291208,
+        "irreversibly_damaged": 499.99999999999744
+      },
+      "0.25": {
+        "mean": -3.4570987218203286,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9345790682978602,
+        "irreversibly_damaged": 499.99999999999665
+      },
+      "0.3": {
+        "mean": -4.1387628652221675,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.921930395391226,
+        "irreversibly_damaged": 499.9999999999901
+      },
+      "0.35": {
+        "mean": -4.8038682971730085,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9096687414434077,
+        "irreversibly_damaged": 500.00000000000216
+      },
+      "0.4": {
+        "mean": -5.448390422147065,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.897861756785892,
+        "irreversibly_damaged": 500.00000000000034
+      },
+      "0.45": {
+        "mean": -6.06918276769165,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8865594967564174,
+        "irreversibly_damaged": 500.0000000000019
+      },
+      "0.5": {
+        "mean": -6.663909728329931,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8757962601761635,
+        "irreversibly_damaged": 500.0000000000046
+      },
+      "0.55": {
+        "mean": -7.230943757060171,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8655929843462259,
+        "irreversibly_damaged": 499.99999999999505
+      },
+      "0.6": {
+        "mean": -7.769239972748854,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8559599356385991,
+        "irreversibly_damaged": 499.9999999999927
+      },
+      "0.65": {
+        "mean": -8.27826218682366,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.846898370352216,
+        "irreversibly_damaged": 499.99999999999983
+      },
+      "0.7": {
+        "mean": -8.757897234638168,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8384023212557028,
+        "irreversibly_damaged": 500.0000000000016
+      },
+      "0.75": {
+        "mean": -9.2083606340694,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8304604561649145,
+        "irreversibly_damaged": 500.0000000000025
+      },
+      "0.8": {
+        "mean": -9.630158291461054,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8230568792577998,
+        "irreversibly_damaged": 499.9999999999985
+      },
+      "0.85": {
+        "mean": -10.024028270398166,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8161722387471088,
+        "irreversibly_damaged": 500.0000000000031
+      },
+      "0.9": {
+        "mean": -10.390902130295999,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8097844500616329,
+        "irreversibly_damaged": 499.99999999999955
+      },
+      "0.95": {
+        "mean": -10.731865453006739,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8038694028657787,
+        "irreversibly_damaged": 499.99999999999613
+      }
+    },
+    "pNKkillsTeff+|dac": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.1": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.99999999999994
+      },
+      "0.15": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 500.00000000000205
+      },
+      "0.2": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999985
+      },
+      "0.25": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999983
+      },
+      "0.3": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999996
+      },
+      "0.35": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.99999999999847
+      },
+      "0.4": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999976
+      },
+      "0.45": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 500.00000000000057
+      },
+      "0.5": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 500.00000000000114
+      },
+      "0.55": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999962
+      },
+      "0.6": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999985
+      },
+      "0.65": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.99999999999574
+      },
+      "0.7": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.99999999999915
+      },
+      "0.75": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 500.0000000000029
+      },
+      "0.8": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 500.00000000000045
+      },
+      "0.85": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999988
+      },
+      "0.9": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999984
+      },
+      "0.95": {
+        "mean": null,
+        "sd": null,
+        "n_ok": 0,
+        "n_out_of_regime": 1,
+        "lesion_ratio": null,
+        "irreversibly_damaged": 499.9999999999995
+      }
+    },
+    "pTeff_Dup-|pTreg_Dup-|pRemyelinization-": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": -1.14976127288422,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9780065739168975,
+        "irreversibly_damaged": 500.0000000000015
+      },
+      "0.1": {
+        "mean": -2.3835991752122476,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.954666143670002,
+        "irreversibly_damaged": 499.9999999999949
+      },
+      "0.15": {
+        "mean": -3.6872728340880845,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9302988033329163,
+        "irreversibly_damaged": 500.0000000000116
+      },
+      "0.2": {
+        "mean": -5.036009202252956,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9054076269694235,
+        "irreversibly_damaged": 499.99999999992906
+      },
+      "0.25": {
+        "mean": -6.3930194293318365,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8806909469752736,
+        "irreversibly_damaged": 499.99999999994145
+      },
+      "0.3": {
+        "mean": -7.710809240660144,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8570030756407034,
+        "irreversibly_damaged": 500.00000000029047
+      },
+      "0.35": {
+        "mean": -8.937164408533004,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8352374168532307,
+        "irreversibly_damaged": 499.9999999983842
+      },
+      "0.4": {
+        "mean": -10.024627649368822,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8161617830716212,
+        "irreversibly_damaged": 499.9999999989504
+      },
+      "0.45": {
+        "mean": -10.940330122022324,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8002632030489891,
+        "irreversibly_damaged": 500.0000000015328
+      },
+      "0.5": {
+        "mean": -11.672024014917426,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7876673502801951,
+        "irreversibly_damaged": 499.9999999955939
+      },
+      "0.55": {
+        "mean": -12.227938190863208,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7781616221738613,
+        "irreversibly_damaged": 499.99999778831744
+      },
+      "0.6": {
+        "mean": -12.633504011641982,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7712616994197216,
+        "irreversibly_damaged": 499.99962789911405
+      },
+      "0.65": {
+        "mean": -12.942083481404264,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.766031576198574,
+        "irreversibly_damaged": 499.97675232241204
+      },
+      "0.7": {
+        "mean": -13.335634660126273,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7593860541150539,
+        "irreversibly_damaged": 499.363316668312
+      },
+      "0.75": {
+        "mean": -14.567956115778602,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7387568688320535,
+        "irreversibly_damaged": 491.3386765614012
+      },
+      "0.8": {
+        "mean": -19.027857286821735,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.6663806365393803,
+        "irreversibly_damaged": 438.4682202310752
+      },
+      "0.85": {
+        "mean": -30.335232085338305,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.49900201270486344,
+        "irreversibly_damaged": 276.52103210244036
+      },
+      "0.9": {
+        "mean": -45.76821604810404,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.3082831514409674,
+        "irreversibly_damaged": 81.20733867691168
+      },
+      "0.95": {
+        "mean": -53.89232741330054,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.2256368359307564,
+        "irreversibly_damaged": 7.012238597643993
+      }
+    },
+    "": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.1": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.15": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.2": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.25": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.3": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.35": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.4": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.45": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.5": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.55": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.6": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.65": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.7": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.75": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.8": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.85": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.9": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.95": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      }
+    },
+    "pIFNgConsuption-": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": -0.07790230200954706,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9985024174663761,
+        "irreversibly_damaged": 499.9999999999989
+      },
+      "0.1": {
+        "mean": -0.16163928492827218,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9968938712965071,
+        "irreversibly_damaged": 500.00000000000034
+      },
+      "0.15": {
+        "mean": -0.2518072822499384,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9951631804600546,
+        "irreversibly_damaged": 499.9999999999996
+      },
+      "0.2": {
+        "mean": -0.3490214636604372,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9932988618136893,
+        "irreversibly_damaged": 499.9999999999969
+      },
+      "0.25": {
+        "mean": -0.45396363318815913,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.991288223651519,
+        "irreversibly_damaged": 499.9999999999973
+      },
+      "0.3": {
+        "mean": -0.5673446283719019,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9891180997641972,
+        "irreversibly_damaged": 499.99999999999983
+      },
+      "0.35": {
+        "mean": -0.6898842584238563,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9867752457377844,
+        "irreversibly_damaged": 500.0000000000005
+      },
+      "0.4": {
+        "mean": -0.822262525787476,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9842472820657315,
+        "irreversibly_damaged": 500.0000000000024
+      },
+      "0.45": {
+        "mean": -0.9650551132934782,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.981523930877273,
+        "irreversibly_damaged": 499.99999999999875
+      },
+      "0.5": {
+        "mean": -1.1186459504566315,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9785986780635421,
+        "irreversibly_damaged": 500.00000000000244
+      },
+      "0.55": {
+        "mean": -1.2829536873546044,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.975473953956787,
+        "irreversibly_damaged": 500.00000000000176
+      },
+      "0.6": {
+        "mean": -1.4571937510821198,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9721655826109232,
+        "irreversibly_damaged": 500.0000000000028
+      },
+      "0.65": {
+        "mean": -1.639538403038765,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9687091036031661,
+        "irreversibly_damaged": 499.9999999999994
+      },
+      "0.7": {
+        "mean": -1.8266282135694811,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9651688190684898,
+        "irreversibly_damaged": 499.99999999999653
+      },
+      "0.75": {
+        "mean": -2.0135737110862584,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9616374804553457,
+        "irreversibly_damaged": 500.000000000001
+      },
+      "0.8": {
+        "mean": -2.1951036840460403,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9582143855222344,
+        "irreversibly_damaged": 499.99999999999704
+      },
+      "0.85": {
+        "mean": -2.370181276152572,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9549185135132459,
+        "irreversibly_damaged": 499.9999999999972
+      },
+      "0.9": {
+        "mean": -2.551687956594295,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9515073677955408,
+        "irreversibly_damaged": 500.0000000000008
+      },
+      "0.95": {
+        "mean": -2.7703926596571726,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9474049253621977,
+        "irreversibly_damaged": 499.99999999999807
+      }
+    },
+    "pTeff_Activation+": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": 0.4254350298247056,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0081975057726504,
+        "irreversibly_damaged": 500.00000000000273
+      },
+      "0.1": {
+        "mean": 0.808590164334344,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0156078300352473,
+        "irreversibly_damaged": 499.9999999999923
+      },
+      "0.15": {
+        "mean": 1.1541077875791395,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0223125673802926,
+        "irreversibly_damaged": 499.99999999999164
+      },
+      "0.2": {
+        "mean": 1.4661234657335154,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0283853962156546,
+        "irreversibly_damaged": 499.9999999999999
+      },
+      "0.25": {
+        "mean": 1.748346539774226,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0338932339056857,
+        "irreversibly_damaged": 499.99999999999943
+      },
+      "0.3": {
+        "mean": 2.004044895228785,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0388956098105175,
+        "irreversibly_damaged": 500.0000000000011
+      },
+      "0.35": {
+        "mean": 2.2361281367521357,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0434460220819641,
+        "irreversibly_damaged": 499.999999999998
+      },
+      "0.4": {
+        "mean": 2.447167072194012,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0475921087953923,
+        "irreversibly_damaged": 500.00000000000045
+      },
+      "0.45": {
+        "mean": 2.6394092568142735,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0513757815348115,
+        "irreversibly_damaged": 499.99999999999744
+      },
+      "0.5": {
+        "mean": 2.8149035575035786,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0548355423014468,
+        "irreversibly_damaged": 500.000000000013
+      },
+      "0.55": {
+        "mean": 2.9754233678867426,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0580048674308635,
+        "irreversibly_damaged": 499.9999999999988
+      },
+      "0.6": {
+        "mean": 3.122538529979302,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0609135372733622,
+        "irreversibly_damaged": 499.99999999999903
+      },
+      "0.65": {
+        "mean": 3.257661107716814,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0635884740946948,
+        "irreversibly_damaged": 499.99999999999903
+      },
+      "0.7": {
+        "mean": 3.382024199434408,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0660532693212668,
+        "irreversibly_damaged": 500.000000000002
+      },
+      "0.75": {
+        "mean": 3.4967286758426974,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.068329064805302,
+        "irreversibly_damaged": 499.999999999998
+      },
+      "0.8": {
+        "mean": 3.60274565287122,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.070434567321284,
+        "irreversibly_damaged": 499.9999999999984
+      },
+      "0.85": {
+        "mean": 3.7009365841641273,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0723864190454202,
+        "irreversibly_damaged": 499.9999999999953
+      },
+      "0.9": {
+        "mean": 3.792074918067523,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0741996055984642,
+        "irreversibly_damaged": 500.00000000000085
+      },
+      "0.95": {
+        "mean": 3.876839139891275,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0758872995459863,
+        "irreversibly_damaged": 500.00000000000296
+      }
+    },
+    "Teff_death+": {
+      "0": {
+        "mean": 0.0,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 1.0,
+        "irreversibly_damaged": 499.9999999999978
+      },
+      "0.05": {
+        "mean": -0.812652910951539,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9844306874520558,
+        "irreversibly_damaged": 500.00000000000017
+      },
+      "0.1": {
+        "mean": -1.638797553119642,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.968723135010319,
+        "irreversibly_damaged": 500.00000000000176
+      },
+      "0.15": {
+        "mean": -2.4657141022354057,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9531223869960862,
+        "irreversibly_damaged": 499.99999999999903
+      },
+      "0.2": {
+        "mean": -3.2820646424694844,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9378402741582917,
+        "irreversibly_damaged": 500.00000000000153
+      },
+      "0.25": {
+        "mean": -4.078336303851748,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9230483031532496,
+        "irreversibly_damaged": 499.9999999999954
+      },
+      "0.3": {
+        "mean": -4.847254628776798,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.9088716242189964,
+        "irreversibly_damaged": 499.9999999999989
+      },
+      "0.35": {
+        "mean": -5.5835318305612835,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8953954957139445,
+        "irreversibly_damaged": 499.99999999999983
+      },
+      "0.4": {
+        "mean": -6.283686612838213,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8826701782075081,
+        "irreversibly_damaged": 499.9999999999995
+      },
+      "0.45": {
+        "mean": -6.945735449742985,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8707178817254604,
+        "irreversibly_damaged": 500.00000000000216
+      },
+      "0.5": {
+        "mean": -7.568785903356745,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8595411027264515,
+        "irreversibly_damaged": 499.9999999999948
+      },
+      "0.55": {
+        "mean": -8.152759737734339,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8491282532145004,
+        "irreversibly_damaged": 500.0000000000029
+      },
+      "0.6": {
+        "mean": -8.698144220473624,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8394585181980238,
+        "irreversibly_damaged": 500.0000000000015
+      },
+      "0.65": {
+        "mean": -9.205848254616345,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8305046498824533,
+        "irreversibly_damaged": 500.00000000000114
+      },
+      "0.7": {
+        "mean": -9.677047047277076,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8222358329014188,
+        "irreversibly_damaged": 499.99999999999653
+      },
+      "0.75": {
+        "mean": -10.113146311067823,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8146183533829856,
+        "irreversibly_damaged": 499.99999999999585
+      },
+      "0.8": {
+        "mean": -10.51573193416161,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8076164816755788,
+        "irreversibly_damaged": 499.99999999999955
+      },
+      "0.85": {
+        "mean": -10.886486194009205,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.8011938957850389,
+        "irreversibly_damaged": 500.0000000000052
+      },
+      "0.9": {
+        "mean": -11.22720076476471,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7953133951326382,
+        "irreversibly_damaged": 500.00000000000387
+      },
+      "0.95": {
+        "mean": -11.539720877189142,
+        "sd": null,
+        "n_ok": 1,
+        "n_out_of_regime": 0,
+        "lesion_ratio": 0.7899377979010113,
+        "irreversibly_damaged": 499.99999999999534
+      }
+    }
+  },
+  "model": "pernice",
+  "variant": "memread",
+  "potency_grid": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95
+  ],
+  "seeds": [
+    0
+  ],
+  "schedule": {
+    "t_end_hours": 17520.0,
+    "injections_days": [
+      2.0,
+      67.0,
+      127.0,
+      295.0,
+      300.0,
+      303.0,
+      307.0,
+      600.0
+    ]
+  },
+  "readings": {
+    "activation_consumes_antigen": false,
+    "treg_activation_needs_teff": true,
+    "nk_consumed_in_kill": true,
+    "bbb_cytokine_consumed": false,
+    "crossing_lands_resting": true,
+    "theta_plus_denominator": true,
+    "thymic_influx": false,
+    "asym_keeps_teff": false,
+    "mem_activation_consumes_memory": false
+  },
+  "untreated": {
+    "lesion_load": 299165.84177021147,
+    "irreversibly_damaged": 499.9999999999978
+  },
+  "note": "Pernice 2020 port (bricks/qsp_pernice.py), MS parameters, the paper's two-year antigen schedule, arms from bricks/profiles_pernice.py, deterministic. Scored number: Sormani-mapped percent change of the lesion-load ratio (time-integrated ODC below Lmax, treated/untreated)."
+}

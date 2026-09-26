@@ -1683,3 +1683,76 @@ potency below 0.55 and passes above it, which is a cliff, not a sign; (2) sign
 of immune challenge — fails at every potency; (3) costimulation block — passes
 by absence, the model has no rate for it, which is not the dynamics passing.
 Two of three fail structurally. The port starts.
+
+### 2026-09-26 — the Pernice port, transcribed, reproduced on Figure S2, scored: loses
+
+`bricks/qsp_pernice.py`: 26 places, the 48 named transitions of the net
+diagram (55 with the coloured instances of TeffKillsODC and Remyelinization
+counted, as Table S1 lists them), the 15 general transitions from S1.1
+verbatim, Table S1 (MS column where it differs), Table S2, Table 2 marking,
+the paper's injection schedule; deterministic LSODA in hours (Table S2's
+"1/24 h^-1" and the 20-day DAC half-life fix the unit). Nine arc readings the
+diagram leaves open are enumerated in `READINGS_DOC`; all 256 combinations of
+the first eight were run against twelve Figure S2 landmarks. Ten of twelve
+reproduce under the chosen set (`DEFAULT_READINGS`, each choice annotated with
+what decided it). The two misses are the peripheral effector peak in both
+configurations (about 1000 against the figure's 400 MS / 100 HD): with the
+transcribed activation function and the Table 2 marking the resting pool
+activates within the first hour at every reading. The ninth reading, whether
+memory cells are consumed on re-challenge, is invisible to Figure S2 and
+neither setting reproduces the two-year figures (S4, 7): consumed gives one
+attack and no damage after day 30; read gives damage that saturates all 500
+ODC by day 310 in MS and HD alike. So the Figure S2 set is primary and the
+memory-read set is a labelled variant (`--variant memread`).
+
+`bricks/profiles_pernice.py`: 23 arms on the port's own dials, 10 treated
+patterns. Depletion, effector-only deletion, transit block, activation block
+and proliferation block are now five different patterns; the S1P modulators
+stay lumped with natalizumab (one peripheral compartment), the anti-CD20 arms
+share the activation dial with abatacept, and atacicept has no rate (no B
+lineage). Daclizumab runs through the paper's own DAC transitions (dose
+s x 15000, the paper's largest scenario) plus NK killing up.
+
+`PYTHONPATH=. python -m backtest.exam_v2 --model pernice [--variant memread]`,
+one deterministic two-year run per cell, 220 runs in 30 s / 70 s:
+
+                                s2 (primary)          memread
+    S1 interval-LOMO            35.1 vs 19.8 loses    31.2 vs 19.8 loses
+    S1 fold-gap CI              [-13.4, +19.6]        [-13.8, +17.3]
+    S1 placebo-only             24.9 vs 21.5          22.8 vs 21.5
+    S1 unadjusted               20.1 vs 19.8          29.0 vs 19.8
+    S2 oracle                   6.3 vs 19.8, headroom 13.6pp (68%), both
+    S3 direction                17% / 0.35, p 0.387   22% / 0.19, p 0.920
+    S4 MRI within-dial (7 pairs) tau +1.00, p 0.013   same
+
+The port's dial map has the widest oracle headroom of the three models (Velez
+10.9pp, minimal 17.9pp on a coarser null, Pernice 13.6pp) and the cleanest S4.
+The model on it still loses.
+
+**Against the three acceptance tests, at s = 0.5 on the primary reading**
+(`results/exam_v2_curve_pernice.json`, lesion-load ratio through Sormani):
+(1) sign of depletion: both-types depletion -30%, effector-only -38%, transit
+block -74% — passes, at every potency, monotone. (2) sign of immune
+challenge: activation up +13% (harm, passes); raised IFN-gamma -2% (the
+port's IFN-gamma slows activation and speeds killing, and the two nearly
+cancel — fails as neutral). (3) costimulation block: -24% (predicts benefit,
+fails), and it shares the dial with four anti-CD20 arms that did work, so
+the pattern cannot be neutral for one and not the others. Under memread the
+untreated arm saturates and every curve is compressed to under 16% until
+s = 0.9, where two dials fall off a cliff; that is the ceiling of a damage
+count with a hard maximum, not a sign result.
+
+**Why S1 loses with the signs mostly right:** the fitted potency is 0.00 to
+0.11 in every fold on the primary reading. One shared potency has to serve a
+transit-block curve that reaches -74% at s = 0.5 and an activation-block
+curve at -24%, against truths between -30% and -68% on both; least squares
+settles near zero and the model predicts neutral for arms that worked (9 of
+16 improving arms scored neutral, S3). The per-dial magnitude is the missing
+input, which is gap G4's claim exactly, and S4 says the MRI channel orders
+arms within a dial on 7 of 7 pairs here. The daclizumab cell is out of regime
+at every dose (the DAC kill functions drive a T-cell place negative within
+the first day); recorded, not patched.
+
+Not built: tau-leaping. The plan gated it on the deterministic run reproducing
+the figure, and the two-year figures did not reproduce. Not built: nothing
+else; the arm set, exam and scorers are unchanged.

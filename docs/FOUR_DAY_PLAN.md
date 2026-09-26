@@ -66,6 +66,10 @@ Cedric's instruction; the remaining items run in order, today, none skipped.**
 
 ## Day 2 — 2026-09-27 — Pernice 2020 port, structure and reproduction
 
+~~Items 1-3~~ **done 2026-09-26**: `bricks/qsp_pernice.py`, 10 of 12 Figure S2
+landmarks, readings annotated; two-year figures not reproduced (BUILD_PLAN §8.4).
+Tau-leaping not built, per item 1's condition.
+
 Sources vendored at `docs/research/pernice2020/` (CC BY paper text and
 supplement; the net diagram as `fig3_net.jpg`; the deterministic 30-day
 HD-vs-MS solution as `figS2_reproduction_target.png`). Scope, licence and
@@ -88,6 +92,9 @@ the parameter tables are in `docs/PERNICE_PORT_SCOPE.md`.
    silently.
 
 ## Day 3 — 2026-09-28 — Pernice arms and scoring
+
+~~Items 1-3~~ **done 2026-09-26**: S1 35.1pp vs 19.8pp (primary reading), 31.2pp
+(memory-read variant); loses. Deterministic, one run per cell, 30 s.
 
 1. `bricks/profiles_pernice.py`: arms as multipliers on the port's own named
    transition rates, from pharmacology. Peripheral killing, BBB passage,
