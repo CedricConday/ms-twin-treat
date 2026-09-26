@@ -107,6 +107,11 @@ the parameter tables are in `docs/PERNICE_PORT_SCOPE.md`.
 
 ## Day 4 — 2026-09-29 — the best model, ranked and written up
 
+~~Items 1-3~~ **done 2026-09-26**: G4 wired into `screen/report.py`; `results/STATE.md`
+regenerated; `docs/DECISION_GATE.md` rewritten red; exam C registered, run,
+recorded (`docs/EXAM_COCHRANE_PREREG.md`). Per-trial forest data still behind the
+bot wall. **Gate: red, with the reason per model in BUILD_PLAN §8.4.**
+
 1. For whichever model scored best: wire the MRI lesion ratio as the
    within-dial rank input (gap G4), re-run `screen/report.py`, regenerate
    `results/STATE.md` with `scripts/state_of_build.py`.

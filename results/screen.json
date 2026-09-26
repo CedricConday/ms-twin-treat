@@ -18,7 +18,7 @@
     "beyond_90pct": 22,
     "best_real_arm_pct": -68.0
   },
-  "generated": "2026-09-21",
+  "generated": "2026-09-26",
   "carrying_capacity": null,
   "n_candidates": 98,
   "max_points": 2,
@@ -1161,6 +1161,70 @@
     }
   ],
   "ordering": "survivors alphabetical by label; NOT by predicted benefit",
+  "within_dial_mri_order": {
+    "groups": {
+      "ke": [
+        {
+          "arm": "ofatumumab",
+          "lesion_ratio": 0.025246981339187704,
+          "metric": "Gd-T1/scan"
+        },
+        {
+          "arm": "ocrelizumab",
+          "lesion_ratio": 0.06896551724137932,
+          "metric": "Gd-T1/scan"
+        }
+      ],
+      "gamma_E": [
+        {
+          "arm": "natalizumab",
+          "lesion_ratio": 0.17272727272727273,
+          "metric": "new-T2"
+        },
+        {
+          "arm": "fingolimod",
+          "lesion_ratio": 0.25510204081632654,
+          "metric": "new-T2"
+        },
+        {
+          "arm": "cladribine",
+          "lesion_ratio": 0.26573426573426573,
+          "metric": "active-T2"
+        },
+        {
+          "arm": "ponesimod",
+          "lesion_ratio": 0.4440581542351454,
+          "metric": "CUAL/year"
+        }
+      ],
+      "alpha_E": [
+        {
+          "arm": "dimethyl fumarate",
+          "lesion_ratio": 0.15294117647058825,
+          "metric": "new-T2"
+        },
+        {
+          "arm": "teriflunomide",
+          "lesion_ratio": 0.1960931630353118,
+          "metric": "Gd-T1/scan"
+        },
+        {
+          "arm": "IFN-beta",
+          "lesion_ratio": 0.2222222222222222,
+          "metric": "active-T2"
+        }
+      ]
+    },
+    "statistic": {
+      "available": true,
+      "n_pairs": 10,
+      "tau": 0.8,
+      "permutation_p": 0.0239,
+      "source": "results/exam_v2.json S4"
+    },
+    "usable_as_rank_input": true,
+    "note": "Within-dial order of REAL arms by their trial's observed lesion ratio (backtest/potency.py). A rank input, not a magnitude: docs/RECOVERABILITY.md found the MRI-fitted potency biased 1.55x high. Never applied to survivors, which have no MRI trial."
+  },
   "caveats": [
     "Nothing here is evidence about multiple sclerosis. validated=False throughout.",
     "Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.4pp vs 11.8pp).",

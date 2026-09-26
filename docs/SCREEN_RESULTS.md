@@ -1,6 +1,6 @@
 # Screen results — candidates the model cannot rule out
 
-Generated 2026-09-21 by `PYTHONPATH=. python -m screen.report`. 98 candidates: every combination of up to 2 of the model's 7 named intervention points, each turned both ways at potency 0.5.
+Generated 2026-09-26 by `PYTHONPATH=. python -m screen.report`. 98 candidates: every combination of up to 2 of the model's 7 named intervention points, each turned both ways at potency 0.5.
 
 **This is a kill list with a remainder, not a ranking.** Survivors are listed ALPHABETICALLY, never by predicted benefit. Ranking is gated on backtest/lomo.py beating its null; it does not (45.4pp vs 11.8pp).
 
@@ -122,6 +122,18 @@ Alphabetical. The damage column is a simulated median over 8 infection histories
 | `naive_E+` | UNREACHABLE | best probed damage 1.5360 vs untreated 1.4575 — no improvement beyond the 14% noise floor at any potency |
 | `naive_E+,ke+` | UNREACHABLE | best probed damage 4.6095 vs untreated 1.4575 — no improvement beyond the 14% noise floor at any potency |
 | `naive_E-` | UNREACHABLE | best probed damage 3.1844 vs untreated 1.4575 — no improvement beyond the 14% noise floor at any potency |
+
+## Within-dial order of the real arms, by the MRI channel (gap G4)
+
+tau +0.80 over 10 within-dial pairs, permutation p = 0.024 (results/exam_v2.json S4); usable as a within-dial RANK input. Within-dial order of REAL arms by their trial's observed lesion ratio (backtest/potency.py). A rank input, not a magnitude: docs/RECOVERABILITY.md found the MRI-fitted potency biased 1.55x high. Never applied to survivors, which have no MRI trial.
+
+| dial pattern | arms, lowest observed lesion ratio first |
+|---|---|
+| `ke` | ofatumumab (0.03, Gd-T1/scan), ocrelizumab (0.07, Gd-T1/scan) |
+| `gamma_E` | natalizumab (0.17, new-T2), fingolimod (0.26, new-T2), cladribine (0.27, active-T2), ponesimod (0.44, CUAL/year) |
+| `alpha_E` | dimethyl fumarate (0.15, new-T2), teriflunomide (0.20, Gd-T1/scan), IFN-beta (0.22, active-T2) |
+
+Survivors are not in this table and cannot be: a screened candidate has no MRI trial. The order above is of drugs that already exist.
 
 ## Read this before quoting any line above
 

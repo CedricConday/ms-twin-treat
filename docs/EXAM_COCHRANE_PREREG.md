@@ -69,3 +69,39 @@ CS2 clears and CS1 does not, the model is what fails. CS3 is descriptive.
 
 **C7. What is not done.** No new response tables. No new arms wired. The
 disability-worsening endpoint (gap G10) is not scored here.
+
+## Result
+
+*(appended after running — nothing above this line changed)*
+
+Run 2026-09-26, `PYTHONPATH=. python -m backtest.exam_cochrane`, on the cached
+exam v2 curves, unchanged. Ten arms have a row in Summary of findings 2; five
+rows have no arm (azathioprine, immunoglobulins, the pooled interferon
+beta 1a-1b row, laquinimod, mitoxantrone). Full rows in `results/exam_cochrane.json`.
+
+| model | dial folds | CS1 interval-LOMO | null | fold-gap CI | CS2 oracle | headroom | CS3 tau (in sample) |
+|---|---|---|---|---|---|---|---|
+| Velez transcription | 3 | 28.8pp | 12.4pp | [-3.3, +31.9] | 0.8pp | 11.6pp (94%) | undefined, s = 0 ties all |
+| Jenner probe | 1 | 23.1pp | undefined | — | 4.4pp | undefined | undefined |
+| **Pernice, Figure S2 readings** | 4 | **10.0pp** | **8.6pp** | [-4.0, +13.3] | 0.8pp | 7.8pp (91%) | +0.06 |
+| Pernice, memory-read variant | 4 | 25.8pp | 8.6pp | [-2.8, +23.0] | 0.8pp | 7.8pp (91%) | -0.59 |
+
+**C6, read in order.** CS2 clears the margin for every model with more than
+one fold: the exam resolves. The probe puts all ten arms on one dial, so C3
+leaves it no training fold and no null; it is not blamed for that, and it
+also cannot be credited. CS1: every model loses. The port on its Figure S2
+readings loses by 1.4pp with a CI that straddles zero, and two of its four
+dial folds beat their null (transit block 1.6pp vs 7.4pp; proliferation block
+8.9pp vs 11.0pp); depletion (23.0 vs 4.6) and the glatiramer singleton (13.5
+vs 10.3) lose. That is the closest any out-of-sample scorer in this repository
+has come to its null. It is not green: the definition of done is 80% of the
+null with the CI excluding zero, and this is 116% with the CI including it.
+CS3 is descriptive and near zero for the port at its all-arm potency (0.17),
+and negative for the memory-read variant, whose saturated untreated arm
+compresses every curve until s = 0.9.
+
+The exam has ten arms on three to four dials; the oracle at 0.8pp says the
+dial mean predicts each arm almost exactly, so the prize here is nearly the
+whole null. What the port fails to collect is again the per-dial magnitude
+(depletion is under-predicted at the shared potency that suits transit
+block), the same missing input exam v2 names.

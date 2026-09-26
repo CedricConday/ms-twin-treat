@@ -104,6 +104,14 @@ GATES: list[tuple[str, str, list[tuple[str, str]]]] = [
         ("null", r"S1 interval-LOMO, comparator-adjusted \(primary\): MAE [\d.]+pp vs null ([\d.]+pp)"),
         ("S2 headroom", r"headroom ([\d.]+pp)"),
     ]),
+    # Exam C (docs/EXAM_COCHRANE_PREREG.md): the Cochrane 2024 network, 10 arms,
+    # scored on the cached curves. The row quotes the port's Figure S2 reading,
+    # the closest any scorer here has come to its null; the others are in the log.
+    ("exam C (Cochrane 2024 network), Pernice port", "backtest.exam_cochrane", [
+        ("CS1 MAE", r"\npernice: .*?\n\s*CS1 interval-LOMO\s+MAE ([\d.]+pp)"),
+        ("null", r"\npernice: .*?\n\s*CS1 interval-LOMO\s+MAE [\d.]+pp vs null ([\d.]+pp)"),
+        ("CS2 headroom", r"\npernice: (?:.*\n)*?\s*CS2 oracle .*?headroom ([\d.]+pp)"),
+    ]),
 ]
 
 

@@ -1,0 +1,1236 @@
+{
+  "source": "Gonzalez-Lorenzo et al. 2024, Cochrane Database Syst Rev 1:CD011381 (PMC10765473), Summary of findings 2, relapses at 24 months, network RR vs placebo with 95% CrI; open-access XML via Europe PMC, read 2026-09-26",
+  "arms": {
+    "alemtuzumab": [
+      0.57,
+      0.47,
+      0.68,
+      "high",
+      "no direct evidence"
+    ],
+    "cladribine": [
+      0.53,
+      0.44,
+      0.64,
+      "high",
+      "1 RCT, 1326"
+    ],
+    "dimethyl fumarate": [
+      0.62,
+      0.55,
+      0.7,
+      "moderate",
+      "2 RCTs, 2307"
+    ],
+    "fingolimod": [
+      0.54,
+      0.48,
+      0.6,
+      "moderate",
+      "2 RCTs, 2355"
+    ],
+    "glatiramer acetate": [
+      0.84,
+      0.76,
+      0.93,
+      "moderate",
+      "3 RCTs, 1014"
+    ],
+    "IFN-beta-1b": [
+      0.85,
+      0.76,
+      0.94,
+      "low",
+      "1 RCT, 372"
+    ],
+    "IFN-beta": [
+      0.84,
+      0.78,
+      0.91,
+      "moderate",
+      "3 RCTs, 1629"
+    ],
+    "natalizumab": [
+      0.56,
+      0.48,
+      0.65,
+      "high",
+      "1 RCT, 942"
+    ],
+    "ponesimod": [
+      0.58,
+      0.48,
+      0.7,
+      "moderate",
+      "no direct evidence"
+    ],
+    "teriflunomide": [
+      0.82,
+      0.71,
+      0.94,
+      "very low",
+      "1 RCT, 1088"
+    ]
+  },
+  "not_in_arm_set": {
+    "azathioprine": [
+      0.77,
+      0.51,
+      1.18
+    ],
+    "immunoglobulins": [
+      0.73,
+      0.59,
+      0.9
+    ],
+    "interferon beta 1a-1b": [
+      1.21,
+      0.66,
+      2.19
+    ],
+    "laquinimod": [
+      0.83,
+      0.76,
+      0.91
+    ],
+    "mitoxantrone": [
+      0.47,
+      0.27,
+      0.8
+    ]
+  },
+  "models": {
+    "velez": {
+      "CS1": {
+        "mae": 28.76995431735933,
+        "null_mae": 12.433333333333332,
+        "n_arms": 10,
+        "n_folds": 3,
+        "ci_fold_gap": [
+          -3.333333333333341,
+          31.93990863471866
+        ],
+        "folds": [
+          {
+            "held": "gamma_E",
+            "n": 5,
+            "fitted_potency": 0.04,
+            "mae": 45.939908634718655,
+            "null_mae": 13.999999999999996
+          },
+          {
+            "held": "alpha_E",
+            "n": 4,
+            "fitted_potency": 0.0,
+            "mae": 12.750000000000002,
+            "null_mae": 10.999999999999996
+          },
+          {
+            "held": "alpha_R|delta",
+            "n": 1,
+            "fitted_potency": 0.0,
+            "mae": 6.999999999999995,
+            "null_mae": 10.333333333333336
+          }
+        ],
+        "rows": [
+          {
+            "held": "gamma_E",
+            "arm": "alemtuzumab",
+            "interval": [
+              -53.0,
+              -31.999999999999996
+            ],
+            "observed": -43.00000000000001,
+            "fitted_potency": 0.04,
+            "predicted": 11.339908634718654,
+            "error": 43.339908634718654,
+            "null_predicted": -20.6,
+            "null_error": 11.399999999999995
+          },
+          {
+            "held": "gamma_E",
+            "arm": "cladribine",
+            "interval": [
+              -56.00000000000001,
+              -36.0
+            ],
+            "observed": -47.0,
+            "fitted_potency": 0.04,
+            "predicted": 11.339908634718654,
+            "error": 47.339908634718654,
+            "null_predicted": -20.6,
+            "null_error": 15.399999999999999
+          },
+          {
+            "held": "gamma_E",
+            "arm": "fingolimod",
+            "interval": [
+              -52.0,
+              -40.0
+            ],
+            "observed": -46.0,
+            "fitted_potency": 0.04,
+            "predicted": 11.339908634718654,
+            "error": 51.339908634718654,
+            "null_predicted": -20.6,
+            "null_error": 19.4
+          },
+          {
+            "held": "gamma_E",
+            "arm": "natalizumab",
+            "interval": [
+              -52.0,
+              -35.0
+            ],
+            "observed": -43.99999999999999,
+            "fitted_potency": 0.04,
+            "predicted": 11.339908634718654,
+            "error": 46.339908634718654,
+            "null_predicted": -20.6,
+            "null_error": 14.399999999999999
+          },
+          {
+            "held": "gamma_E",
+            "arm": "ponesimod",
+            "interval": [
+              -52.0,
+              -30.000000000000004
+            ],
+            "observed": -42.00000000000001,
+            "fitted_potency": 0.04,
+            "predicted": 11.339908634718654,
+            "error": 41.339908634718654,
+            "null_predicted": -20.6,
+            "null_error": 9.400000000000002
+          },
+          {
+            "held": "alpha_E",
+            "arm": "dimethyl fumarate",
+            "interval": [
+              -44.99999999999999,
+              -30.000000000000004
+            ],
+            "observed": -38.0,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 30.000000000000004,
+            "null_predicted": -39.666666666666664,
+            "null_error": 0.0
+          },
+          {
+            "held": "alpha_E",
+            "arm": "IFN-beta-1b",
+            "interval": [
+              -24.0,
+              -6.000000000000005
+            ],
+            "observed": -15.000000000000002,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 6.000000000000005,
+            "null_predicted": -39.666666666666664,
+            "null_error": 15.666666666666664
+          },
+          {
+            "held": "alpha_E",
+            "arm": "IFN-beta",
+            "interval": [
+              -21.999999999999996,
+              -8.999999999999996
+            ],
+            "observed": -16.000000000000004,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 8.999999999999996,
+            "null_predicted": -39.666666666666664,
+            "null_error": 17.666666666666668
+          },
+          {
+            "held": "alpha_E",
+            "arm": "teriflunomide",
+            "interval": [
+              -29.000000000000004,
+              -6.000000000000005
+            ],
+            "observed": -18.000000000000004,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 6.000000000000005,
+            "null_predicted": -39.666666666666664,
+            "null_error": 10.66666666666666
+          },
+          {
+            "held": "alpha_R|delta",
+            "arm": "glatiramer acetate",
+            "interval": [
+              -24.0,
+              -6.999999999999995
+            ],
+            "observed": -16.000000000000004,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 6.999999999999995,
+            "null_predicted": -34.333333333333336,
+            "null_error": 10.333333333333336
+          }
+        ]
+      },
+      "CS2": {
+        "mae": 0.8000000000000007,
+        "null_mae": 12.433333333333332,
+        "headroom": 11.633333333333331,
+        "relative": 0.935656836461126,
+        "rows": [
+          {
+            "held": "gamma_E",
+            "arm": "alemtuzumab",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -20.6,
+            "null_error": 11.399999999999995
+          },
+          {
+            "held": "gamma_E",
+            "arm": "cladribine",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -20.6,
+            "null_error": 15.399999999999999
+          },
+          {
+            "held": "gamma_E",
+            "arm": "fingolimod",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -20.6,
+            "null_error": 19.4
+          },
+          {
+            "held": "gamma_E",
+            "arm": "natalizumab",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -20.6,
+            "null_error": 14.399999999999999
+          },
+          {
+            "held": "gamma_E",
+            "arm": "ponesimod",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -20.6,
+            "null_error": 9.400000000000002
+          },
+          {
+            "held": "alpha_E",
+            "arm": "dimethyl fumarate",
+            "oracle": -24.0,
+            "error": 6.0000000000000036,
+            "null_predicted": -39.666666666666664,
+            "null_error": 0.0
+          },
+          {
+            "held": "alpha_E",
+            "arm": "IFN-beta-1b",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -39.666666666666664,
+            "null_error": 15.666666666666664
+          },
+          {
+            "held": "alpha_E",
+            "arm": "IFN-beta",
+            "oracle": -24.0,
+            "error": 2.0000000000000036,
+            "null_predicted": -39.666666666666664,
+            "null_error": 17.666666666666668
+          },
+          {
+            "held": "alpha_E",
+            "arm": "teriflunomide",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -39.666666666666664,
+            "null_error": 10.66666666666666
+          },
+          {
+            "held": "alpha_R|delta",
+            "arm": "glatiramer acetate",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -34.333333333333336,
+            "null_error": 10.333333333333336
+          }
+        ]
+      },
+      "CS3": {
+        "fitted_potency_all_arms": 0.0,
+        "tau": NaN,
+        "n_pairs": 45,
+        "predicted": {
+          "alemtuzumab": 0.0,
+          "cladribine": 0.0,
+          "dimethyl fumarate": 0.0,
+          "fingolimod": 0.0,
+          "glatiramer acetate": 0.0,
+          "IFN-beta-1b": 0.0,
+          "IFN-beta": 0.0,
+          "natalizumab": 0.0,
+          "ponesimod": 0.0,
+          "teriflunomide": 0.0
+        },
+        "in_sample": true
+      }
+    },
+    "minimal": {
+      "CS1": {
+        "mae": 23.1,
+        "null_mae": NaN,
+        "n_arms": 10,
+        "n_folds": 1,
+        "ci_fold_gap": [
+          -Infinity,
+          Infinity
+        ],
+        "folds": [
+          {
+            "held": "phi-",
+            "n": 10,
+            "fitted_potency": 0.0,
+            "mae": 23.1,
+            "null_mae": NaN
+          }
+        ],
+        "rows": [
+          {
+            "held": "phi-",
+            "arm": "alemtuzumab",
+            "interval": [
+              -53.0,
+              -31.999999999999996
+            ],
+            "observed": -43.00000000000001,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 31.999999999999996,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "cladribine",
+            "interval": [
+              -56.00000000000001,
+              -36.0
+            ],
+            "observed": -47.0,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 36.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "dimethyl fumarate",
+            "interval": [
+              -44.99999999999999,
+              -30.000000000000004
+            ],
+            "observed": -38.0,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 30.000000000000004,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "fingolimod",
+            "interval": [
+              -52.0,
+              -40.0
+            ],
+            "observed": -46.0,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 40.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "glatiramer acetate",
+            "interval": [
+              -24.0,
+              -6.999999999999995
+            ],
+            "observed": -16.000000000000004,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 6.999999999999995,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "IFN-beta-1b",
+            "interval": [
+              -24.0,
+              -6.000000000000005
+            ],
+            "observed": -15.000000000000002,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 6.000000000000005,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "IFN-beta",
+            "interval": [
+              -21.999999999999996,
+              -8.999999999999996
+            ],
+            "observed": -16.000000000000004,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 8.999999999999996,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "natalizumab",
+            "interval": [
+              -52.0,
+              -35.0
+            ],
+            "observed": -43.99999999999999,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 35.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "ponesimod",
+            "interval": [
+              -52.0,
+              -30.000000000000004
+            ],
+            "observed": -42.00000000000001,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 30.000000000000004,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "teriflunomide",
+            "interval": [
+              -29.000000000000004,
+              -6.000000000000005
+            ],
+            "observed": -18.000000000000004,
+            "fitted_potency": 0.0,
+            "predicted": 0.0,
+            "error": 6.000000000000005,
+            "null_predicted": NaN,
+            "null_error": NaN
+          }
+        ]
+      },
+      "CS2": {
+        "mae": 4.4,
+        "null_mae": NaN,
+        "headroom": NaN,
+        "relative": NaN,
+        "rows": [
+          {
+            "held": "phi-",
+            "arm": "alemtuzumab",
+            "oracle": -32.0,
+            "error": 0.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "cladribine",
+            "oracle": -32.0,
+            "error": 4.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "dimethyl fumarate",
+            "oracle": -32.0,
+            "error": 0.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "fingolimod",
+            "oracle": -32.0,
+            "error": 8.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "glatiramer acetate",
+            "oracle": -32.0,
+            "error": 8.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "IFN-beta-1b",
+            "oracle": -32.0,
+            "error": 8.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "IFN-beta",
+            "oracle": -32.0,
+            "error": 10.000000000000004,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "natalizumab",
+            "oracle": -32.0,
+            "error": 3.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "ponesimod",
+            "oracle": -32.0,
+            "error": 0.0,
+            "null_predicted": NaN,
+            "null_error": NaN
+          },
+          {
+            "held": "phi-",
+            "arm": "teriflunomide",
+            "oracle": -32.0,
+            "error": 2.9999999999999964,
+            "null_predicted": NaN,
+            "null_error": NaN
+          }
+        ]
+      },
+      "CS3": {
+        "fitted_potency_all_arms": 0.55,
+        "tau": NaN,
+        "n_pairs": 45,
+        "predicted": {
+          "alemtuzumab": -29.79781535052133,
+          "cladribine": -29.79781535052133,
+          "dimethyl fumarate": -29.79781535052133,
+          "fingolimod": -29.79781535052133,
+          "glatiramer acetate": -29.79781535052133,
+          "IFN-beta-1b": -29.79781535052133,
+          "IFN-beta": -29.79781535052133,
+          "natalizumab": -29.79781535052133,
+          "ponesimod": -29.79781535052133,
+          "teriflunomide": -29.79781535052133
+        },
+        "in_sample": true
+      }
+    },
+    "pernice": {
+      "CS1": {
+        "mae": 10.001845038366477,
+        "null_mae": 8.586904761904762,
+        "n_arms": 10,
+        "n_folds": 4,
+        "ci_fold_gap": [
+          -3.9578072086430005,
+          13.278276131780625
+        ],
+        "folds": [
+          {
+            "held": "Teff_death+|Treg_death+",
+            "n": 2,
+            "fitted_potency": 0.15,
+            "mae": 23.015754030402405,
+            "null_mae": 4.624999999999998
+          },
+          {
+            "held": "pTeff_Dup-",
+            "n": 4,
+            "fitted_potency": 0.23,
+            "mae": 8.940842435915284,
+            "null_mae": 10.999999999999996
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "n": 3,
+            "fitted_potency": 0.16,
+            "mae": 1.5721145753701389,
+            "null_mae": 7.428571428571428
+          },
+          {
+            "held": "pTeff_Activation-|pTreg_Activation+",
+            "n": 1,
+            "fitted_potency": 0.19,
+            "mae": 13.5072288530884,
+            "null_mae": 10.333333333333336
+          }
+        ],
+        "rows": [
+          {
+            "held": "Teff_death+|Treg_death+",
+            "arm": "alemtuzumab",
+            "interval": [
+              -53.0,
+              -31.999999999999996
+            ],
+            "observed": -43.00000000000001,
+            "fitted_potency": 0.15,
+            "predicted": -10.984245969597595,
+            "error": 21.0157540304024,
+            "null_predicted": -29.375,
+            "null_error": 2.6249999999999964
+          },
+          {
+            "held": "Teff_death+|Treg_death+",
+            "arm": "cladribine",
+            "interval": [
+              -56.00000000000001,
+              -36.0
+            ],
+            "observed": -47.0,
+            "fitted_potency": 0.15,
+            "predicted": -10.984245969597595,
+            "error": 25.015754030402405,
+            "null_predicted": -29.375,
+            "null_error": 6.625
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "dimethyl fumarate",
+            "interval": [
+              -44.99999999999999,
+              -30.000000000000004
+            ],
+            "observed": -38.0,
+            "fitted_potency": 0.23,
+            "predicted": -36.921123247887046,
+            "error": 0.0,
+            "null_predicted": -39.666666666666664,
+            "null_error": 0.0
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "IFN-beta-1b",
+            "interval": [
+              -24.0,
+              -6.000000000000005
+            ],
+            "observed": -15.000000000000002,
+            "fitted_potency": 0.23,
+            "predicted": -36.921123247887046,
+            "error": 12.921123247887046,
+            "null_predicted": -39.666666666666664,
+            "null_error": 15.666666666666664
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "IFN-beta",
+            "interval": [
+              -21.999999999999996,
+              -8.999999999999996
+            ],
+            "observed": -16.000000000000004,
+            "fitted_potency": 0.23,
+            "predicted": -36.921123247887046,
+            "error": 14.92112324788705,
+            "null_predicted": -39.666666666666664,
+            "null_error": 17.666666666666668
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "teriflunomide",
+            "interval": [
+              -29.000000000000004,
+              -6.000000000000005
+            ],
+            "observed": -18.000000000000004,
+            "fitted_potency": 0.23,
+            "predicted": -36.921123247887046,
+            "error": 7.921123247887042,
+            "null_predicted": -39.666666666666664,
+            "null_error": 10.66666666666666
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "fingolimod",
+            "interval": [
+              -52.0,
+              -40.0
+            ],
+            "observed": -46.0,
+            "fitted_potency": 0.16,
+            "predicted": -35.283656273889584,
+            "error": 4.716343726110416,
+            "null_predicted": -27.571428571428573,
+            "null_error": 12.428571428571427
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "natalizumab",
+            "interval": [
+              -52.0,
+              -35.0
+            ],
+            "observed": -43.99999999999999,
+            "fitted_potency": 0.16,
+            "predicted": -35.283656273889584,
+            "error": 0.0,
+            "null_predicted": -27.571428571428573,
+            "null_error": 7.428571428571427
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "ponesimod",
+            "interval": [
+              -52.0,
+              -30.000000000000004
+            ],
+            "observed": -42.00000000000001,
+            "fitted_potency": 0.16,
+            "predicted": -35.283656273889584,
+            "error": 0.0,
+            "null_predicted": -27.571428571428573,
+            "null_error": 2.4285714285714306
+          },
+          {
+            "held": "pTeff_Activation-|pTreg_Activation+",
+            "arm": "glatiramer acetate",
+            "interval": [
+              -24.0,
+              -6.999999999999995
+            ],
+            "observed": -16.000000000000004,
+            "fitted_potency": 0.19,
+            "predicted": -37.5072288530884,
+            "error": 13.5072288530884,
+            "null_predicted": -34.333333333333336,
+            "null_error": 10.333333333333336
+          }
+        ]
+      },
+      "CS2": {
+        "mae": 0.8000000000000007,
+        "null_mae": 8.586904761904762,
+        "headroom": 7.786904761904761,
+        "relative": 0.9068348814640232,
+        "rows": [
+          {
+            "held": "Teff_death+|Treg_death+",
+            "arm": "alemtuzumab",
+            "oracle": -53.0,
+            "error": 0.0,
+            "null_predicted": -29.375,
+            "null_error": 2.6249999999999964
+          },
+          {
+            "held": "Teff_death+|Treg_death+",
+            "arm": "cladribine",
+            "oracle": -53.0,
+            "error": 0.0,
+            "null_predicted": -29.375,
+            "null_error": 6.625
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "dimethyl fumarate",
+            "oracle": -24.0,
+            "error": 6.0000000000000036,
+            "null_predicted": -39.666666666666664,
+            "null_error": 0.0
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "IFN-beta-1b",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -39.666666666666664,
+            "null_error": 15.666666666666664
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "IFN-beta",
+            "oracle": -24.0,
+            "error": 2.0000000000000036,
+            "null_predicted": -39.666666666666664,
+            "null_error": 17.666666666666668
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "teriflunomide",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -39.666666666666664,
+            "null_error": 10.66666666666666
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "fingolimod",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -27.571428571428573,
+            "null_error": 12.428571428571427
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "natalizumab",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -27.571428571428573,
+            "null_error": 7.428571428571427
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "ponesimod",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -27.571428571428573,
+            "null_error": 2.4285714285714306
+          },
+          {
+            "held": "pTeff_Activation-|pTreg_Activation+",
+            "arm": "glatiramer acetate",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -34.333333333333336,
+            "null_error": 10.333333333333336
+          }
+        ]
+      },
+      "CS3": {
+        "fitted_potency_all_arms": 0.17,
+        "tau": 0.058823529411764705,
+        "n_pairs": 45,
+        "predicted": {
+          "alemtuzumab": -12.268565503635683,
+          "cladribine": -12.268565503635683,
+          "dimethyl fumarate": -29.667175481486126,
+          "fingolimod": -37.057034540430934,
+          "glatiramer acetate": -34.58667786511361,
+          "IFN-beta-1b": -29.667175481486126,
+          "IFN-beta": -29.667175481486126,
+          "natalizumab": -37.057034540430934,
+          "ponesimod": -37.057034540430934,
+          "teriflunomide": -29.667175481486126
+        },
+        "in_sample": true
+      }
+    },
+    "pernice_memread": {
+      "CS1": {
+        "mae": 25.84401201707406,
+        "null_mae": 8.586904761904762,
+        "n_arms": 10,
+        "n_folds": 4,
+        "ci_fold_gap": [
+          -2.7505199242565173,
+          22.995789260160244
+        ],
+        "folds": [
+          {
+            "held": "Teff_death+|Treg_death+",
+            "n": 2,
+            "fitted_potency": 0.77,
+            "mae": 24.622920302973938,
+            "null_mae": 4.624999999999998
+          },
+          {
+            "held": "pTeff_Dup-",
+            "n": 4,
+            "fitted_potency": 0.88,
+            "mae": 36.99365821734655,
+            "null_mae": 10.999999999999996
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "n": 3,
+            "fitted_potency": 0.77,
+            "mae": 20.40654889846885,
+            "null_mae": 7.428571428571428
+          },
+          {
+            "held": "pTeff_Activation-|pTreg_Activation+",
+            "n": 1,
+            "fitted_potency": 0.78,
+            "mae": 0.0,
+            "null_mae": 10.333333333333336
+          }
+        ],
+        "rows": [
+          {
+            "held": "Teff_death+|Treg_death+",
+            "arm": "alemtuzumab",
+            "interval": [
+              -53.0,
+              -31.999999999999996
+            ],
+            "observed": -43.00000000000001,
+            "fitted_potency": 0.77,
+            "predicted": -9.377079697026062,
+            "error": 22.622920302973935,
+            "null_predicted": -29.375,
+            "null_error": 2.6249999999999964
+          },
+          {
+            "held": "Teff_death+|Treg_death+",
+            "arm": "cladribine",
+            "interval": [
+              -56.00000000000001,
+              -36.0
+            ],
+            "observed": -47.0,
+            "fitted_potency": 0.77,
+            "predicted": -9.377079697026062,
+            "error": 26.622920302973938,
+            "null_predicted": -29.375,
+            "null_error": 6.625
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "dimethyl fumarate",
+            "interval": [
+              -44.99999999999999,
+              -30.000000000000004
+            ],
+            "observed": -38.0,
+            "fitted_potency": 0.88,
+            "predicted": -66.99365821734655,
+            "error": 21.993658217346557,
+            "null_predicted": -39.666666666666664,
+            "null_error": 0.0
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "IFN-beta-1b",
+            "interval": [
+              -24.0,
+              -6.000000000000005
+            ],
+            "observed": -15.000000000000002,
+            "fitted_potency": 0.88,
+            "predicted": -66.99365821734655,
+            "error": 42.99365821734655,
+            "null_predicted": -39.666666666666664,
+            "null_error": 15.666666666666664
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "IFN-beta",
+            "interval": [
+              -21.999999999999996,
+              -8.999999999999996
+            ],
+            "observed": -16.000000000000004,
+            "fitted_potency": 0.88,
+            "predicted": -66.99365821734655,
+            "error": 44.99365821734655,
+            "null_predicted": -39.666666666666664,
+            "null_error": 17.666666666666668
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "teriflunomide",
+            "interval": [
+              -29.000000000000004,
+              -6.000000000000005
+            ],
+            "observed": -18.000000000000004,
+            "fitted_potency": 0.88,
+            "predicted": -66.99365821734655,
+            "error": 37.99365821734655,
+            "null_predicted": -39.666666666666664,
+            "null_error": 10.66666666666666
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "fingolimod",
+            "interval": [
+              -52.0,
+              -40.0
+            ],
+            "observed": -46.0,
+            "fitted_potency": 0.77,
+            "predicted": -14.593451101531153,
+            "error": 25.40654889846885,
+            "null_predicted": -27.571428571428573,
+            "null_error": 12.428571428571427
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "natalizumab",
+            "interval": [
+              -52.0,
+              -35.0
+            ],
+            "observed": -43.99999999999999,
+            "fitted_potency": 0.77,
+            "predicted": -14.593451101531153,
+            "error": 20.40654889846885,
+            "null_predicted": -27.571428571428573,
+            "null_error": 7.428571428571427
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "ponesimod",
+            "interval": [
+              -52.0,
+              -30.000000000000004
+            ],
+            "observed": -42.00000000000001,
+            "fitted_potency": 0.77,
+            "predicted": -14.593451101531153,
+            "error": 15.40654889846885,
+            "null_predicted": -27.571428571428573,
+            "null_error": 2.4285714285714306
+          },
+          {
+            "held": "pTeff_Activation-|pTreg_Activation+",
+            "arm": "glatiramer acetate",
+            "interval": [
+              -24.0,
+              -6.999999999999995
+            ],
+            "observed": -16.000000000000004,
+            "fitted_potency": 0.78,
+            "predicted": -14.329727742835635,
+            "error": 0.0,
+            "null_predicted": -34.333333333333336,
+            "null_error": 10.333333333333336
+          }
+        ]
+      },
+      "CS2": {
+        "mae": 0.8000000000000007,
+        "null_mae": 8.586904761904762,
+        "headroom": 7.786904761904761,
+        "relative": 0.9068348814640232,
+        "rows": [
+          {
+            "held": "Teff_death+|Treg_death+",
+            "arm": "alemtuzumab",
+            "oracle": -53.0,
+            "error": 0.0,
+            "null_predicted": -29.375,
+            "null_error": 2.6249999999999964
+          },
+          {
+            "held": "Teff_death+|Treg_death+",
+            "arm": "cladribine",
+            "oracle": -53.0,
+            "error": 0.0,
+            "null_predicted": -29.375,
+            "null_error": 6.625
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "dimethyl fumarate",
+            "oracle": -24.0,
+            "error": 6.0000000000000036,
+            "null_predicted": -39.666666666666664,
+            "null_error": 0.0
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "IFN-beta-1b",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -39.666666666666664,
+            "null_error": 15.666666666666664
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "IFN-beta",
+            "oracle": -24.0,
+            "error": 2.0000000000000036,
+            "null_predicted": -39.666666666666664,
+            "null_error": 17.666666666666668
+          },
+          {
+            "held": "pTeff_Dup-",
+            "arm": "teriflunomide",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -39.666666666666664,
+            "null_error": 10.66666666666666
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "fingolimod",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -27.571428571428573,
+            "null_error": 12.428571428571427
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "natalizumab",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -27.571428571428573,
+            "null_error": 7.428571428571427
+          },
+          {
+            "held": "pPass_BBB_teff-|pPass_BBB_treg-",
+            "arm": "ponesimod",
+            "oracle": -52.0,
+            "error": 0.0,
+            "null_predicted": -27.571428571428573,
+            "null_error": 2.4285714285714306
+          },
+          {
+            "held": "pTeff_Activation-|pTreg_Activation+",
+            "arm": "glatiramer acetate",
+            "oracle": -24.0,
+            "error": 0.0,
+            "null_predicted": -34.333333333333336,
+            "null_error": 10.333333333333336
+          }
+        ]
+      },
+      "CS3": {
+        "fitted_potency_all_arms": 0.78,
+        "tau": -0.5882352941176471,
+        "n_pairs": 45,
+        "predicted": {
+          "alemtuzumab": -9.461439228504393,
+          "cladribine": -9.461439228504393,
+          "dimethyl fumarate": -27.776329632596227,
+          "fingolimod": -14.678970803886848,
+          "glatiramer acetate": -14.329727742835635,
+          "IFN-beta-1b": -27.776329632596227,
+          "IFN-beta": -27.776329632596227,
+          "natalizumab": -14.678970803886848,
+          "ponesimod": -14.678970803886848,
+          "teriflunomide": -27.776329632596227
+        },
+        "in_sample": true
+      }
+    }
+  }
+}
