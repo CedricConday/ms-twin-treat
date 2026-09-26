@@ -1628,3 +1628,10 @@ gate does not move at all. The ~6pp noise floor was real for a hypothetical
 near-perfect model; it is irrelevant to this one, which sits 34pp from the
 null for structural reasons. G2 is closed and nothing further is bought by
 cohort size. G3, the model form, is the whole of what is left.
+
+### 2026-09-26 — the four-day plan
+
+`docs/FOUR_DAY_PLAN.md` is the worklist through 2026-09-29 and the cold-start
+file for any new instance: definition of done, what is settled, one probe and
+one port, in order. Source materials for both candidate models are vendored
+under `docs/research/jenner2026/` and `docs/research/pernice2020/` (CC BY).

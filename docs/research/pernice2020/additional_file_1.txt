@@ -1,0 +1,1197 @@
+                                                                                             Page 1 of 11
+
+
+
+
+S1 Model
+In this section we reported the functions associated with the general transitions of
+the Extended Stochastic Symmetric Nets (ESSNs) [1, 2] model , and successively
+the constants values and parameters exploited through the analysis.
+
+S1.1 General transitions
+Let us recall that by the definition of the ESSN formalism, transitions which do not
+follow the Mass Action (MA) law are modelled as general transitions because. In
+details the speed of general transition t ∈ Tg is defined by a function fht,ci (x̂(ν), ν),
+where x̂(ν) represents the vector of the average number of tokens for all the transi-
+tion input places at time ν and ht, ci is the instance transition. Given that the place
+ODC is the only place with an associated color domain, just the functions associ-
+ated with transitions connected with this place will depend on the color instance c,
+for the other cases the function will be defined as ft (x̂(ν), ν).
+In the ESSN representing the Relapsing-Remitting Multiple Sclerosis (RRMS) in-
+troduced in the main paper, see Fig. S1, the general transitions are 15 modeling
+the i) the killing of a cell, e.g., TregKillsTeff in or TeffKillsODC, ii) the entry of
+Natural Killer (NK) cells into the system, NKentry, iii) the activation of T cells,
+e.g., TeffActivation in, iv) the duplication of a cell, e.g., such as TeffDup in, and
+v) the injections of the DAC and Antigen into the system, i.e., DACInjection and
+AntigenInjection.
+
+Duplication. Considering the Teff duplication event we have to distinguish two
+possible cases: 1) the Teff symmetric duplication with probability ρdup = 2/3 and a
+Teff asymmetric duplication, implying the T Memory effector differentiation, with
+probability ρmem = 1 − ρdup . This is modeled exploiting three different transitions:
+TeffDup Sym out( in) and TeffDup Asym out. In the CNS we model only the sym-
+metric differentiation. The asymmetric differentiation give rise to the production
+of Effector memory cells. These last remain in blood circulation and are able to
+respond faster to antigen stimulation.The asymmetric differentiation occurs in pe-
+ripheral blood circulation, then the produced effector memory cells can migrate to
+all other tissues (e.g. CNS).
+
+ So let define
+
+       in
+      rdup = xT ef f in (ν) ∗ pT ef f Dup
+       out
+      rdup = xT ef f out (ν) ∗ pT ef f Dup
+
+ then these two transitions are defined as:
+
+       fT ef f Dup Sym in (x̂(ν), ν) = ρdup ∗ rdup
+                                               in
+
+
+      fT ef f Dup Sym out (x̂(ν), ν) = ρdup ∗ rdup
+                                               out
+
+
+
+and
+
+      fT ef f Dup Asym out (x̂(ν), ν) = ρmem ∗ rdup
+                                                out
+                                                    ,
+                                                                                                         Page 2 of 11
+
+
+
+
+ Where pT ef f Dup is the constant Teff duplication rate, see Table S1, and x̂(ν) =
+xT ef f in when the transition considered is the TeffDup Sym in, otherwise x̂(ν) =
+xT ef f out .
+
+
+Activation. The TeffActivation out and TeffActivation in transitions model the
+activation of the Teff cells in the peripheral lymphonode/blood vessel ( out) and
+the Central Nervous System (CNS) ( in).
+The activation of the Teff cells is modeled by the following functions
+
+
+        fT ef f Activation out (x̂(ν), ν) = pT ef f Activation ∗ xRestingT ef f out (ν) ∗ xAntigen (ν)
+                                             ∗ (0.5 + exp(−xIF N g out (ν)/Cif n));
+      fhT ef f Activation in,li (x̂(ν), ν) = pT ef f Activation ∗ xRestingT ef f in (ν) ∗ xODC l (ν)
+                                             ∗ (0.5 + exp(−xIF N g in (ν)/Cif n)),
+
+
+where pT ef f Activation is the constant Teff activation rate, see Table S1, and
+x̂(ν) = {xRestingT ef f out , xAntigen , xIF N g out } when the transition considered is the
+TeffActivation out, otherwise x̂(ν) = {xRestingT ef f in , xODC l , xIF N g in }l∈cd(ODC)
+. Let us note that the term (0.5 + exp(−xIF N g in( out) (ν)/Cif n)) is a coefficient
+varying in [0.5, 1.5] respectively to the concentration of INFγ , more is present into
+the system slower is the velocity. In particular when there is no INFγ then to the
+velocity is associated the highest value, (i.e., 1.5). otherwise it decreases until 0.5 .
+
+
+  Similarly, the transition MemActivation modeling the activation of T Memory
+effectors only in the peripheral lymphonode/blood vessel is defined as
+
+                                     
+                                     0                                      ν < t2inj ,
+      fM emActivation (x̂(ν), ν) =
+                                     rM emA ∗ xEf f ectorM emory (ν) ν ≥ t2inj ,
+
+
+where
+
+
+     rM emA = 2 ∗ pT ef f Activation ∗ xAntigen (ν) ∗ (0.5 + exp(−xIF N g out (ν)/Cif n)),
+
+
+and t2inj is the time corresponding to the second antigen injection. We are consid-
+ering the velocity of this transition as zero ∀ν < t2inj , since we are assuming that
+the T Memory effectors start to react after the first virus occurrence, with twice
+the velocity of the Teff cells (for this reason we have 2 ∗ pT ef f Activation ).
+
+
+NK entry. The NKentry transition keeps in a constant range around 30 ( [3, 4])
+the number of N K out. It is defined by the following function:
+                               
+                               0                           xN K out (ν) > 30,
+      fN Kentry (x̂(ν), ν) =
+                               0.267 ∗ (30 − xN K out (ν)) xN K out (ν) ≤ 30.
+                                                                                                      Page 3 of 11
+
+
+
+
+Killing. The general transitions modeling the killing of specific cell are the follow-
+ing:
+
+   • the TregKillsTeff out and TregKillsTeff in modeling the controlling action of
+     the Treg over the Teff cells. These are defined as follows:
+
+           fT regKillsT ef f out (x̂(ν), ν) = pT regKillsT ef f ∗ xT reg out (ν) ∗ xT ef f out (ν)
+                                                ∗ (1 − exp(−xIL10 out (ν)/cIL10)),
+            fT regKillsT ef f in (x̂(ν), ν) = pT regKillsT ef f ∗ xT reg in (ν) ∗ xT ef f in (ν)
+                                                ∗ (1 − exp(−xIL10 in (ν)/cIL10)),
+
+
+
+     where the coefficient (1−exp(−xIL10 in (ν)/cIL10)) varies in [0,1] representing
+     the Treg cell need fo te IL-10 for suppression of the Teff cells. Indeed, with
+     an increasing number of IL-10 (i.e., the coefficient goes to 1) the transition
+     velocity increases, otherwise it decreases.
+   • The TeffkillsA and TeffKillsODC modeling the annihilation of the pathogen
+     by the Teff action and the ODC damage due to Activated Teff cells, respec-
+     tively, are defined as follows:
+
+                  fT ef f killsA (x̂(ν), ν) = pT ef f killsA ∗ Θout (ν) ∗ xAntigen (ν) ∗ xT ef f out (ν),
+           fhT ef f KillsODC,li (x̂(ν), ν) = pT ef f KillsODC ∗ Θin (ν) ∗ xODCl (ν) ∗ xT ef f in (ν),
+
+
+
+     with l ∈ cd(ODC), Let define Θin(/out) as a coefficient varying in [0.5, 1.5]
+     which takes in account the pro- (IL-17, IFNg) and anti-inflammatory (IL-10)
+     cytokines in order to increase the velocity of the Teff action when more pro-
+     inflammatory cytokines are present into the system, or decrease it otherwise.
+     These coefficients are defined as follows:
+
+                            xIL17 out (ν) + xIF N g out (ν) − xIL10 out (ν)
+           Θout = 1 + 0.5 ∗                                                 ,
+                            xIL17 out (ν) + xIF N g out (ν) − xIL10 out (ν)
+                            xIL17 in (ν) + xIF N g in (ν) − xIL10 in (ν)
+            Θin = 1 + 0.5 ∗                                              .
+                            xIL17 in (ν) + xIF N g in (ν) − xIL10 in (ν)
+
+
+
+   • Finally the Daclizumab action to control the Treg and Teff cells spreading is
+     modeled by the transitions DACkillTeff and DACkillTreg, whose functions are
+     defined as follows:
+
+                                                           xT reg out (ν)
+           fDACkillT ef f (x̂(ν), ν) = pDACkill ∗                                  ∗ xDAC (ν)
+                                                  xT reg out (ν) + xT ef f out (ν)
+                                                          xT ef f out (ν)
+            fDACkillT reg (x̂(ν), ν) = pDACkill ∗                                  ∗ xDAC (ν)
+                                                  xT reg out (ν) + xT ef f out (ν)
+                                                                                          Page 4 of 11
+
+
+
+
+                                         1
+     where the coefficient                                 scales the velocity with re-
+                          xT reg out (ν) + xT ef f out (ν)
+     spect to the number of Teff and Treg cells.
+
+
+
+
+The parameters pTransition name are defined in Table S1.
+
+
+
+
+Injections. The AntigenInjection and DACinjection transitions inject into the sys-
+
+
+tem specific quantities of Antigen and Daclizumab respectively at fixed time points.
+
+
+These transitions are modeled by the occurrence of discrete events during the simu-
+
+
+lation which modify the model marking in specific time points (feature implemented
+
+
+in the Epimod Package [5]).
+                                                                                                   Page 5 of 11
+
+
+
+
+S1.2 Model parameters
+
+
+
+
+Table S1 List of the calibrated parameters to fit with the real data, in both the healthy and MS
+patient.
+
+                                                                     Healthy    MS
+ Parameter                         Transition                             Value
+ pT ef f Activation                T ef f Activation out              0.015     0.018
+                                   M emActivation
+                                   T ef f Activation in l le1
+                                   T ef f Activation in l le2
+                                   T ef f Activation in l le3
+                                   T ef f Activation in l le4
+                                   T ef f Activation in l le5
+
+ pT reg Activation                 T regActivation in                 4e-04     7e-05
+                                   T regActivation out
+
+ pT reg Dup                        T regDup in T regDup out           0.006       –
+
+ pT ef f Dup                       T ef f Dup Asym out                0.04        –
+                                   T ef f Dup Sym in
+                                   T ef f Dup Sym out
+
+ pT ef f KillsODC                  T ef f KillsODC l le1              6e-04       –
+                                   T ef f KillsODC l le2
+                                   T ef f KillsODC l le3
+                                   T ef f KillsODC l le4
+
+ pT rkT e                          T regKillsT ef f in                0.02        –
+                                   T regKillsT ef f out
+
+ pT ekA                            T ef f killsA                      6e-04       –
+
+ pP ass BBB treg                   T reg pass BBB                     0.45        –
+
+ pP ass BBB tef f                  T ef f pass BBB                    0.005       –
+
+ pN KkillsT ef f                   N KkillsT ef f out                 0.01        –
+
+ pN K prod IF N g                  N K prod IF N g                    0.03        –
+
+ pN K prod IL10                    N K prod IL10                      0.045       –
+
+ pIL17 BBB                         IL17 BBB                          0.0115       –
+
+ pIL10 BBB                         IL10 BBB                          0.0765       –
+
+ pRemyelinization                  Remyelinization l le2              0.01        –
+                                   Remyelinization l le3
+                                   Remyelinization l le4
+
+ pIL10Consuption                   IL10Consuption out                 0.09        –
+                                   IL10Consuption in
+
+ pIL17Consuption                   IL17Consuption out                 0.03        –
+                                   IL17Consuption in
+
+ pIF N gConsuption                 IF N gConsuption out               0.05        –
+                                   IF N gConsuption in
+
+ Cif n                             as pT ef f Activation               20         –
+
+ CIL10                             as pT regKillsT ef f                10         –
+                                                                                                                              Page 6 of 11
+
+
+
+
+Table S2 List of the fixed parameters.
+
+  Transition                               Rate value
+  FromTimoREG                              0.317
+  FromTimoEFF                              0.296
+  NKdup                                    1/24h−1
+  NKDegradation                            1/24h−1
+  Teff death                               1/24h−1
+  Teff to NLT                              1/24h−1
+  Treg death                               1/24h−1
+  Treg to NLT                              1/24h−1
+  Treg prod IL10 [1]                       0.05556
+  Teff prod IL17                           0.00895
+  Teff prod IFNg                           0.0466
+  DACDegradation [2]                       0.001444057
+
+
+
+S1.3 Data information
+Referring to the Table 2 in the main paper, we related those numbers to 1 ul
+and identified the values to be included in our model. In particular, we infer the
+numbers of T effector cells from the sum of IFNg values and IL-17 values, and the
+the number of regulatory T cells from IL-10 values. Differently, to attribute a value
+for circulating cells in the CNS in healthy subjects we identified a threshold value
+from the literature and then attributed random values below this threshold [7].
+
+S2 Supplementary figures
+Author details
+References
+1. Pernice, S., Follia, L., Balbo, G., Sartini, G., Totis, N., Lió, P., Merelli, I., Cordero, F., Beccuti, M.: Integrating
+   petri nets and flux balance methods in computational biology models: a methodological and computational
+   practice. Fundamenta Informaticae, To be published (2019)
+2. Pernice, S., Pennisi, M., Romano, G., Maglione, A., Cutrupi, S., Pappalardo, F., Balbo, G., Beccuti, M.,
+   Cordero, F., Calogero, R.A.: A computational approach based on the colored petri net formalism for studying
+   multiple sclerosis. BMC bioinformatics 20(6), 1–17 (2019)
+3. Poli, A., Michel, T., Thérésine, M., Andrès, E., Hentges, F., Zimmer, J.: Cd56bright natural killer (nk) cells: an
+   important nk cell subset. Immunology 126(4), 458–465 (2009)
+4. Laroni, A., Uccelli, A.: Cd56bright natural killer cells: A possible biomarker of different treatments in multiple
+   sclerosis. Journal of Clinical Medicine 9(5), 1450 (2020)
+5. Castagno, P., Pernice, S., Ghetti, G., Povero, M., Pradelli, L., Paolotti, D., Balbo, G., Sereno, M., Beccuti, M.:
+   A computational framework for modeling and studying pertussis epidemiology and vaccination, (2020)
+6. Keizer, R.J., Huitema, A.D., Schellens, J.H., Beijnen, J.H.: Clinical pharmacokinetics of therapeutic monoclonal
+   antibodies. Clinical pharmacokinetics 49(8), 493–507 (2010)
+7. Deisenhammer, F., Zetterberg, H., Fitzner, B., Zettl, U.K.: The cerebrospinal fluid in multiple sclerosis. Frontiers
+   in immunology 10, 726 (2019)
+                                                                                                                                                          Page 7 of 11
+
+
+
+
+                                                                                                   IFNgConsuption_out
+                 IL10_out            NK_prod_IL10
+
+IL10Consuption_out                                                                                     IFNg_out
+                                                                                                                     IL17Consuption_out    Teff_prod_IL
+                                                    AntigenInjection
+       Treg_prod_IL10                                                                                                                IL17_out
+                                                    Antigen            TeffKillsA
+
+
+
+                                                                                              Teff_prod_IFNg          NK_prod_IFNg
+
+      Resting_Treg_temp                                                         Resting_Teff_temp
+                         FromTimoReg                                   FromTimoEff
+                                        Effector
+                                        Memory
+
+                                                     MemActivation                                                         NKentry
+                      Resting_Treg_out                                        Resting_Teff_out
+                                             TeffDup_Asym_out
+             TregActivation_out                                                                                                NKdup
+                                                                             Teff_out
+                                             TregKillsTeff_out                                                  NK_out
+       Treg_death
+                                                                                                                       NKDegradation
+                                  Treg_out          DAC
+                                     DACkillTreg           DACkillTeff
+                TregDup_out                                                                              NKkillsTeff_out
+                                                                              TeffDup_Sym_out
+
+
+                                               DACInjection DACDegradation
+
+                                                           IL17_BBB
+              Treg_pass_BBB                                                  Teff_pass_BBB
+
+                                                                     Resting_Teff_in
+                                                    BBB
+
+                                   Resting_Treg_in                                        ODC
+                                                                   TeffActivation_in
+
+              TregActivation_in                                                                             Remyelinization
+                                  Treg_in                                     Teff_in
+                                                                                                 TeffKillsODC
+          Treg_to_NLT
+
+
+
+                     TregDup_in                                  TeffDup_Sym_in         Teff_to_NLT
+
+
+           Treg_prod_IL10_in                              Teff_prod_IFNg_in             Teff_prod_IL17_in
+
+
+
+                                     IFNgConsuption_in           IL17Consuption_in
+
+
+
+      IL10Consuption_in           IL10_in          IFNg_in                          IL17_in
+
+
+
+Figure S1 RRMS model represented by exploiting the ESSN graphical formalism. Name of the
+places are represented in bold text
+                                                                                                                       Page 8 of 11
+
+
+
+
+                         Teff_out                      Treg_out                                    Antigen
+            400                                                                     100
+            300                              20                                      75
+            200                                                                      50
+                                             10
+            100                                                                      25
+              0                              0                                        0
+                  0
+
+
+                       10
+
+
+                                   20
+
+
+                                        30
+
+                                                  0
+
+
+                                                      10
+
+
+                                                                     20
+
+
+                                                                               30
+
+
+                                                                                           0
+
+
+                                                                                                 10
+
+
+                                                                                                             20
+
+
+                                                                                                                  30
+                      EffectorMemory                   NK_out                                         BBB
+                                             30                                     1.25
+            75                                                                      1.00
+            50                               20                                     0.75
+                                                                                    0.50
+            25                               10                                     0.25
+             0                                                                      0.00
+                  0
+
+
+                       10
+
+
+                                   20
+
+
+                                        30
+
+                                                  0
+
+
+                                                      10
+
+
+                                                                     20
+
+
+                                                                               30
+
+
+                                                                                           0
+
+
+                                                                                                 10
+
+
+                                                                                                             20
+
+
+                                                                                                                  30
+                         IL10_out                      IL17_out                                   IFNg_out
+ Quantity
+
+
+
+
+            20                               40                                     300
+                                                                                    200
+            10                               20
+                                                                                    100
+              0                              0                                        0
+                  0
+
+
+                       10
+
+
+                                   20
+
+
+                                        30
+
+                                                  0
+
+
+                                                      10
+
+
+                                                                     20
+
+
+                                                                               30
+
+
+                                                                                           0
+
+
+                                                                                                 10
+
+
+                                                                                                             20
+
+
+                                                                                                                  30
+                         Treg_in                           Teff_in                             ODC irr. damaged
+            2.0                              30
+            1.5                                                                      10
+                                             20
+            1.0
+                                             10                                       5
+            0.5
+            0.0                               0                                       0
+                  0
+
+
+                       10
+
+
+                                   20
+
+
+                                        30
+
+                                                  0
+
+
+                                                      10
+
+
+                                                                     20
+
+
+                                                                               30
+
+
+                                                                                           0
+
+
+                                                                                                 10
+
+
+                                                                                                             20
+
+
+                                                                                                                  30
+                         IL17_in                       IFNg_in                                     IL10_in
+                                             30                                      2.0
+              3
+                                             20                                      1.5
+              2                                                                      1.0
+              1                              10                                      0.5
+              0                              0                                       0.0
+                  0
+
+
+                       10
+
+
+                                   20
+
+
+                                        30
+
+                                                  0
+
+
+                                                      10
+
+
+                                                                     20
+
+
+                                                                               30
+
+
+                                                                                           0
+
+
+                                                                                                 10
+
+
+                                                                                                             20
+
+
+                                                                                                                  30
+
+
+
+
+                                                           Days
+                                                      Healthy             MS
+
+
+Figure S2 Deterministic solution of the ODEs system considering both the parameters
+combinations, red the MS patient and blue the healthy individual. The violin plots are the
+representation of the real data.
+                                                                                                                                Page 9 of 11
+
+
+
+
+                             Healthy                              MS
+                  400
+
+
+
+
+                                                                                    Teff_out Treg_out Antigen
+                  300
+                  200
+                  100
+                    0
+                   30
+                   20
+                   10
+                    0
+                  100
+                   75
+                   50
+                   25
+
+
+
+
+                                                                                                           EffectorMemory
+                    0
+                  250
+                  200
+                  150
+                  100
+                   50
+                    0
+
+
+
+
+                                                                                                                       NK_out
+                  200
+                  100
+                    0
+                   15
+                   10
+
+
+
+
+                                                                                    BBB
+                    5
+                    0
+                  150
+
+
+
+
+                                                                                    IL10_out IL17_out IFNg_out Treg_in
+                  100
+                   50
+                    0
+       Quantity
+
+
+
+
+                   40
+                   20
+                    0
+                  300
+                  200
+                  100
+                    0
+                   30
+                   20
+                   10
+                    0
+                                                                                    Teff_in
+
+
+
+
+                  100
+                   50
+                                                                                        ODC irr. damaged
+
+
+
+
+                    0
+                  500
+                  400
+                  300
+                  200
+                  100
+                    0
+                   30
+                                                                                                     IL17_in IFNg_in IL10_in
+
+
+
+
+                   20
+                   10
+                    0
+                   90
+                   60
+                   30
+                    0
+                   10
+                    5
+                    0
+                        0
+
+
+                            10
+
+
+                                       20
+
+
+                                               30
+                                                0
+
+
+                                                             10
+
+
+                                                                       20
+
+
+                                                                                 30
+
+
+
+
+                                              Days
+                                 Healthy       MS      Simulations
+
+Figure S3 1000 stochastic simulations considering the healthy (first column) and the MS (second
+column) parameters configuration. The colored bold lines represent the mean traces of the
+simulations, blue for the healthy and red for the MS scenario. The violin plots are the
+representation of the real data.
+                                                                                                                                                                                                                                                                                                                   Page 10 of 11
+
+
+
+
+                                                                                                                Healthy           MS     1000            2000         5000        10000      15000
+                         Healthy                    MS          DP 0.01; DAC 1000     DP 0.01; DAC 2000     DP 0.01; DAC 5000      DP 0.01; DAC 10000     DP 0.01; DAC 15000       DP 0.03; DAC 1000    DP 0.03; DAC 2000     DP 0.03; DAC 5000     DP 0.03; DAC 10000    DP 0.03; DAC 15000
+             400
+             300
+
+
+
+
+                                                                                                                                                                                                                                                                                                Antigen
+             200
+             100
+               0
+           20000
+           15000
+
+
+
+
+                                                                                                                                                                                                                                                                                                DAC
+           10000
+            5000
+               0
+             150
+
+
+
+
+                                                                                                                                                                                                                                                                                                Teff_out
+             100
+              50
+               0
+            100
+
+
+
+
+                                                                                                                                                                                                                                                                                                IFNg_out
+              50
+              30
+              20
+
+
+
+
+                                                                                                                                                                                                                                                                                                IL17_out
+              10
+              0
+             20
+             15
+
+
+
+
+                                                                                                                                                                                                                                                                                                Treg_out
+             10
+              5
+              0
+            100
+             75
+
+
+
+
+                                                                                                                                                                                                                                                                                                IL10_out
+             50
+             25
+              0
+            200
+Quantity
+
+
+
+
+            150
+
+
+
+
+                                                                                                                                                                                                                                                                                                NK_out
+            100
+             50
+              0
+              6
+               4
+
+
+
+
+                                                                                                                                                                                                                                                                                                BBB
+               2
+                0
+               50
+               40
+               30
+
+
+
+
+                                                                                                                                                                                                                                                                                                Teff_in
+               20
+               10
+                0
+               40
+               30
+
+
+
+
+                                                                                                                                                                                                                                                                                                IFNg_in
+               20
+               10
+            12.50
+            10.0
+
+                                                                                                                                                                                                                                                                                                IL17_in
+              7.5
+              5.0
+              2.5
+              0.0
+                8
+                6
+                                                                                                                                                                                                                                                                                                Treg_in
+
+
+
+
+                4
+                2
+                0
+                5
+                4
+                                                                                                                                                                                                                                                                                                IL10_in
+
+
+
+
+                3
+                2
+                1
+                0
+             400
+                                                                                                                                                                                                                                                                                                ODC irr. damaged
+
+
+
+
+             300
+             200
+             100
+                0
+                    0
+                        200
+                              400
+                                    600
+                                          0
+                                              200
+                                                    400
+                                                          600
+                                                                0
+                                                                    200
+                                                                          400
+                                                                                600
+                                                                                      0
+                                                                                          200
+                                                                                                400
+                                                                                                      600
+                                                                                                            0
+                                                                                                                200
+                                                                                                                      400
+                                                                                                                            600
+                                                                                                                                  0
+                                                                                                                                       200
+                                                                                                                                             400
+                                                                                                                                                   600
+                                                                                                                                                          0
+                                                                                                                                                                200
+                                                                                                                                                                      400
+                                                                                                                                                                            600
+                                                                                                                                                                                  0
+                                                                                                                                                                                      200
+                                                                                                                                                                                            400
+                                                                                                                                                                                                  600
+                                                                                                                                                                                                        0
+                                                                                                                                                                                                            200
+                                                                                                                                                                                                                  400
+                                                                                                                                                                                                                        600
+                                                                                                                                                                                                                              0
+                                                                                                                                                                                                                                  200
+                                                                                                                                                                                                                                        400
+                                                                                                                                                                                                                                              600
+                                                                                                                                                                                                                                                    0
+                                                                                                                                                                                                                                                        200
+                                                                                                                                                                                                                                                              400
+                                                                                                                                                                                                                                                                    600
+                                                                                                                                                                                                                                                                          0
+                                                                                                                                                                                                                                                                              200
+                                                                                                                                                                                                                                                                                    400
+                                                                                                                                                                                                                                                                                          600
+
+
+
+
+                                                                                                                                                    Days
+
+
+
+
+Figure S4 Stochastic simulations considering the early therapy. Different colors are associated to
+quantity of DAC injected for each scenario, from 1000 to 15000 cells. The first two column
+represent the healthy and MS scenarios. Two drug potencies (called DP) are showed, i.e., 0.01 e
+0.03.
+                                                                                                                                                                                                                                                                                                                   Page 11 of 11
+
+
+
+
+                                                                                                                Healthy           MS     1000            2000         5000        10000      15000
+                         Healthy                    MS          DP 0.01; DAC 1000     DP 0.01; DAC 2000     DP 0.01; DAC 5000      DP 0.01; DAC 10000     DP 0.01; DAC 15000       DP 0.03; DAC 1000    DP 0.03; DAC 2000     DP 0.03; DAC 5000     DP 0.03; DAC 10000    DP 0.03; DAC 15000
+             400
+             300
+
+
+
+
+                                                                                                                                                                                                                                                                                                Antigen
+             200
+             100
+               0
+           20000
+           15000
+
+
+
+
+                                                                                                                                                                                                                                                                                                DAC
+           10000
+            5000
+               0
+             150
+
+
+
+
+                                                                                                                                                                                                                                                                                                Teff_out
+             100
+              50
+               0
+            100
+
+
+
+
+                                                                                                                                                                                                                                                                                                IFNg_out
+              50
+              30
+              20
+
+
+
+
+                                                                                                                                                                                                                                                                                                IL17_out
+              10
+              0
+             20
+             15
+
+
+
+
+                                                                                                                                                                                                                                                                                                Treg_out
+             10
+              5
+              0
+            100
+             75
+
+
+
+
+                                                                                                                                                                                                                                                                                                IL10_out
+             50
+             25
+              0
+            200
+Quantity
+
+
+
+
+            150
+
+
+
+
+                                                                                                                                                                                                                                                                                                NK_out
+            100
+             50
+              0
+              6
+               4
+
+
+
+
+                                                                                                                                                                                                                                                                                                BBB
+               2
+                0
+               40
+               30
+
+
+
+
+                                                                                                                                                                                                                                                                                                Teff_in
+               20
+               10
+                0
+               40
+               30
+
+
+
+
+                                                                                                                                                                                                                                                                                                IFNg_in
+               20
+               10
+            12.50
+            10.0
+
+                                                                                                                                                                                                                                                                                                IL17_in
+              7.5
+              5.0
+              2.5
+              0.0
+                8
+                6
+                                                                                                                                                                                                                                                                                                Treg_in
+
+
+
+
+                4
+                2
+                0
+                5
+                4
+                                                                                                                                                                                                                                                                                                IL10_in
+
+
+
+
+                3
+                2
+                1
+                0
+             400
+                                                                                                                                                                                                                                                                                                ODC irr. damaged
+
+
+
+
+             300
+             200
+             100
+                0
+                    0
+                        200
+                              400
+                                    600
+                                          0
+                                              200
+                                                    400
+                                                          600
+                                                                0
+                                                                    200
+                                                                          400
+                                                                                600
+                                                                                      0
+                                                                                          200
+                                                                                                400
+                                                                                                      600
+                                                                                                            0
+                                                                                                                200
+                                                                                                                      400
+                                                                                                                            600
+                                                                                                                                  0
+                                                                                                                                       200
+                                                                                                                                             400
+                                                                                                                                                   600
+                                                                                                                                                          0
+                                                                                                                                                                200
+                                                                                                                                                                      400
+                                                                                                                                                                            600
+                                                                                                                                                                                  0
+                                                                                                                                                                                      200
+                                                                                                                                                                                            400
+                                                                                                                                                                                                  600
+                                                                                                                                                                                                        0
+                                                                                                                                                                                                            200
+                                                                                                                                                                                                                  400
+                                                                                                                                                                                                                        600
+                                                                                                                                                                                                                              0
+                                                                                                                                                                                                                                  200
+                                                                                                                                                                                                                                        400
+                                                                                                                                                                                                                                              600
+                                                                                                                                                                                                                                                    0
+                                                                                                                                                                                                                                                        200
+                                                                                                                                                                                                                                                              400
+                                                                                                                                                                                                                                                                    600
+                                                                                                                                                                                                                                                                          0
+                                                                                                                                                                                                                                                                              200
+                                                                                                                                                                                                                                                                                    400
+                                                                                                                                                                                                                                                                                          600
+
+
+
+
+                                                                                                                                                    Days
+
+
+
+
+Figure S5 Stochastic simulations considering the late therapy. Different colors are associated to
+quantity of DAC injected for each scenario, from 1000 to 15000 cells. The first two column
+represent the healthy and MS scenarios. Two drug potencies (called DP) are showed, i.e., 0.01 e
+0.03.
+
