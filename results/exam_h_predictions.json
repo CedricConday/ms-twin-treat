@@ -1,0 +1,258 @@
+{
+  "pipeline": "exam v5 at 85a32fc",
+  "null_vs_untreated": -28.986956521739128,
+  "observed_comparators": {
+    "IFN-beta": -30.0,
+    "glatiramer acetate": -29.0,
+    "natalizumab": -68.0,
+    "fingolimod": -55.0,
+    "teriflunomide": -31.5,
+    "dimethyl fumarate": -53.0,
+    "cladribine": -57.6,
+    "lenercept": 5.0,
+    "atacicept": 5.0,
+    "IFN-gamma": 5.0,
+    "APL CGP77116": 5.0,
+    "IFN-beta-1b": -33.9,
+    "ustekinumab": 0.0,
+    "abatacept": 0.0,
+    "Tovaxin": 0.0
+  },
+  "dropped": {
+    "firategrast": "relapse rate per treatment period, not annualised"
+  },
+  "rows": [
+    {
+      "stratum": "A",
+      "drug": "siponimod",
+      "trial": "BOLD",
+      "comparator": "untreated",
+      "profile": "s1p",
+      "anchor": [
+        0.907,
+        0.904
+      ],
+      "anchored": true,
+      "predicted": -91.89534661278552,
+      "null_predicted": -28.986956521739128
+    },
+    {
+      "stratum": "A",
+      "drug": "mitoxantrone",
+      "trial": "Millefiorini 1997",
+      "comparator": "untreated",
+      "profile": "cladribine",
+      "anchor": null,
+      "anchored": false,
+      "predicted": -28.986956521739128,
+      "null_predicted": -28.986956521739128
+    },
+    {
+      "stratum": "A",
+      "drug": "evobrutinib",
+      "trial": "evolutionRMS 1",
+      "comparator": "teriflunomide",
+      "profile": "abatacept",
+      "anchor": 0.95,
+      "anchored": true,
+      "predicted": -61.67119379107733,
+      "null_predicted": 3.668676610599797
+    },
+    {
+      "stratum": "A",
+      "drug": "evobrutinib",
+      "trial": "evolutionRMS 2",
+      "comparator": "teriflunomide",
+      "profile": "abatacept",
+      "anchor": 0.95,
+      "anchored": true,
+      "predicted": -61.67119379107733,
+      "null_predicted": 3.668676610599797
+    },
+    {
+      "stratum": "A",
+      "drug": "tolebrutinib",
+      "trial": "GEMINI 1",
+      "comparator": "teriflunomide",
+      "profile": "abatacept",
+      "anchor": 0.93,
+      "anchored": true,
+      "predicted": -56.17206240891828,
+      "null_predicted": 3.668676610599797
+    },
+    {
+      "stratum": "A",
+      "drug": "tolebrutinib",
+      "trial": "GEMINI 2",
+      "comparator": "teriflunomide",
+      "profile": "abatacept",
+      "anchor": 0.93,
+      "anchored": true,
+      "predicted": -56.17206240891828,
+      "null_predicted": 3.668676610599797
+    },
+    {
+      "stratum": "A",
+      "drug": "fenebrutinib",
+      "trial": "FENhance 1",
+      "comparator": "teriflunomide",
+      "profile": "abatacept",
+      "anchor": 0.9,
+      "anchored": true,
+      "predicted": -47.92336533567969,
+      "null_predicted": 3.668676610599797
+    },
+    {
+      "stratum": "A",
+      "drug": "fenebrutinib",
+      "trial": "FENhance 2",
+      "comparator": "teriflunomide",
+      "profile": "abatacept",
+      "anchor": 0.9,
+      "anchored": true,
+      "predicted": -47.92336533567969,
+      "null_predicted": 3.668676610599797
+    },
+    {
+      "stratum": "A",
+      "drug": "peginterferon beta-1a",
+      "trial": "ADVANCE",
+      "comparator": "untreated",
+      "profile": null,
+      "anchor": null,
+      "anchored": false,
+      "predicted": -28.986956521739128,
+      "null_predicted": -28.986956521739128
+    },
+    {
+      "stratum": "B",
+      "drug": "fingolimod",
+      "trial": "FREEDOMS II",
+      "comparator": "untreated",
+      "profile": "s1p",
+      "anchor": [
+        0.833,
+        0.933
+      ],
+      "anchored": true,
+      "predicted": -89.11675782797505,
+      "null_predicted": -28.986956521739128
+    },
+    {
+      "stratum": "B",
+      "drug": "fingolimod",
+      "trial": "TRANSFORMS",
+      "comparator": "IFN-beta",
+      "profile": "s1p",
+      "anchor": [
+        0.833,
+        0.933
+      ],
+      "anchored": true,
+      "predicted": -84.45251118282148,
+      "null_predicted": 1.4472049689441047
+    },
+    {
+      "stratum": "B",
+      "drug": "teriflunomide",
+      "trial": "TOWER",
+      "comparator": "untreated",
+      "profile": "teriflunomide",
+      "anchor": 0.116,
+      "anchored": true,
+      "predicted": -21.90032613256574,
+      "null_predicted": -28.986956521739128
+    },
+    {
+      "stratum": "B",
+      "drug": "dimethyl fumarate",
+      "trial": "CONFIRM",
+      "comparator": "untreated",
+      "profile": "dimethyl fumarate",
+      "anchor": 0.3,
+      "anchored": true,
+      "predicted": -43.9846949654738,
+      "null_predicted": -28.986956521739128
+    },
+    {
+      "stratum": "B",
+      "drug": "ocrelizumab",
+      "trial": "OPERA II",
+      "comparator": "IFN-beta",
+      "profile": "ocrelizumab",
+      "anchor": 0.95,
+      "anchored": true,
+      "predicted": -62.49252535269709,
+      "null_predicted": 1.4472049689441047
+    },
+    {
+      "stratum": "B",
+      "drug": "ofatumumab",
+      "trial": "ASCLEPIOS II",
+      "comparator": "teriflunomide",
+      "profile": "ofatumumab",
+      "anchor": 0.95,
+      "anchored": true,
+      "predicted": -61.67119379107733,
+      "null_predicted": 3.668676610599797
+    },
+    {
+      "stratum": "B",
+      "drug": "ublituximab",
+      "trial": "ULTIMATE II",
+      "comparator": "teriflunomide",
+      "profile": "ublituximab",
+      "anchor": 0.95,
+      "anchored": true,
+      "predicted": -61.67119379107733,
+      "null_predicted": 3.668676610599797
+    },
+    {
+      "stratum": "B",
+      "drug": "alemtuzumab",
+      "trial": "CARE-MS II",
+      "comparator": "IFN-beta",
+      "profile": "alemtuzumab",
+      "anchor": 0.72,
+      "anchored": true,
+      "predicted": -54.98686249293412,
+      "null_predicted": 1.4472049689441047
+    },
+    {
+      "stratum": "B",
+      "drug": "ozanimod",
+      "trial": "SUNBEAM",
+      "comparator": "IFN-beta",
+      "profile": "s1p",
+      "anchor": [
+        0.639,
+        0.654
+      ],
+      "anchored": true,
+      "predicted": -73.16556122153044,
+      "null_predicted": 1.4472049689441047
+    },
+    {
+      "stratum": "B",
+      "drug": "daclizumab",
+      "trial": "SELECT",
+      "comparator": "untreated",
+      "profile": null,
+      "anchor": null,
+      "anchored": false,
+      "predicted": -28.986956521739128,
+      "null_predicted": -28.986956521739128
+    },
+    {
+      "stratum": "B",
+      "drug": "rituximab",
+      "trial": "HERMES",
+      "comparator": "untreated",
+      "profile": "rituximab",
+      "anchor": 0.95,
+      "anchored": true,
+      "predicted": -73.74476774688796,
+      "null_predicted": -28.986956521739128
+    }
+  ]
+}
