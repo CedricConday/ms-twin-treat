@@ -97,7 +97,7 @@ def main() -> int:
            "unreachable": [r["arm"] for r in rows if r["error"] > 5.0],
            "depletion_curves": {a: {"reduction": xs, "percent_change": ys} for a, (xs, ys) in dep.items()},
            "rows": rows}
-    OUT.write_text(json.dumps(out, indent=2, default=lambda v: None if not np.isfinite(v) else v))
+    OUT.write_text(json.dumps(out, indent=2, default=float))
     fmt = lambda v: "inf" if not np.isfinite(v) else f"{v:.0f}"  # noqa: E731
     for r in sorted(rows, key=lambda r: -r["error"]):
         print(f"  {r['arm']:<18} vs {r['comparator'][:14]:<14} truth ({fmt(r['interval'][0])},{fmt(r['interval'][1])})"
@@ -105,7 +105,7 @@ def main() -> int:
     print(f"\nceiling MAE {mae:.1f}pp | exam v2 S1 {v2['mae']:.1f} | null {v2['null_mae']:.1f} | green needs {0.8 * v2['null_mae']:.1f}")
     print("no magnitude rescues:", ", ".join(out["unreachable"]) or "none")
     for a, (xs, ys) in dep.items():
-        print(f"  {a} by count reduction: " + ", ".join(f"{x:g}:{y:.0f}" for x, y in zip(xs, ys)))
+        print(f"  {a} by count reduction: " + ", ".join(f"{x:g}:{y:.0f}" for x, y in zip(xs, ys, strict=True)))
     return 0
 
 
