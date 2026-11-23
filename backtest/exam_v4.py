@@ -45,9 +45,13 @@ def load_s1p(path: Path) -> dict[str, tuple[float, float]]:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--anchors-v4", type=Path, default=ANCHORS_V4)
+    ap.add_argument("--extra-anchors", type=Path, default=None,
+                    help="further single-anchor drugs in pd_anchors.tsv format (exam v5)")
     ap.add_argument("--out", type=Path, default=OUT)
     args = ap.parse_args(argv)
     anchors = {d: a for d, a in load_anchors(ANCHORS).items() if d not in INTERFERONS and d not in S1P}  # C2
+    if args.extra_anchors is not None:
+        anchors.update({d: a for d, a in load_anchors(args.extra_anchors).items() if d not in INTERFERONS and d not in S1P})
     s1p = load_s1p(args.anchors_v4)
     model = Model()
     untreated = _run(qsp_pernice.UNTREATED_PROFILE)

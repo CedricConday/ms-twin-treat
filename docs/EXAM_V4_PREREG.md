@@ -51,3 +51,28 @@ Everything else is v3: abatacept and daclizumab stay unanchored, Tovaxin keeps i
 
 S1 over 23 arms against the null, the fold-gap CI, the placebo-controlled subset, the
 anchored arms alone, and the per-arm table. One run. Appended below, whatever it is.
+
+## Result, one run, 2026-11-23 (`python -m backtest.exam_v4`, anchors at the commit before this one)
+
+**Red, and under its null for the first time.** `results/exam_v4.json`.
+
+| | S1 | null | share of null | fold-gap CI | placebo subset | anchored arms only (n = 13) |
+|---|---|---|---|---|---|---|
+| exam v4 | 17.6pp | 19.8pp | 89 % | [-6.6, +12.2] | 21.1 vs 21.5 (98 %) | 16.9 vs 21.0 |
+| exam v3, V3-P | 21.7pp | 19.8pp | 109 % | [-3.5, +13.5] | 22.4 vs 21.5 | 21.5 vs 18.6 |
+
+Green needs 80 %, the CI excluding zero and the placebo subset at 80 %; none of the three
+holds. By change:
+
+- **C1 helped.** With the comparator's observed effect, alemtuzumab is predicted exactly
+  (-55.0 against -55), ublituximab to 3.8pp, ofatumumab to 11.7pp, ocrelizumab to 16.5pp.
+- **C2 did what a rule does**: the interferons score the null's error (1.2 and 5.1pp).
+- **C3 failed.** Effector memory T cells are not spared in absolute counts: fingolimod
+  0.83 (regulatory 0.93), ozanimod 0.64 (0.65). The predictions moved further from the
+  outcomes (fingolimod -89 against -55, error 34.1, worse than v3's 28.5 and worse than
+  the null). Ponesimod could not be sourced at 20 mg and scores the null. So the S1P miss
+  is not the anchor; the port turns a given fall in passage into too large a fall in
+  damage, for natalizumab as well (-90 against -68).
+
+Eight arms are unanchored and carry 163 of the 405pp total error at the null's own level;
+four of them are the harm arms (35.5pp each), which the port has profiles for.
