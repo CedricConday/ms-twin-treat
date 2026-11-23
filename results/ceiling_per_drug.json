@@ -1,0 +1,393 @@
+{
+  "ceiling_mae": 4.301053193430545,
+  "exam_v2_s1": 35.08308109853147,
+  "null_mae": 19.84960688942382,
+  "green_needs": 15.879685511539058,
+  "n_arms": 23,
+  "unreachable": [
+    "daclizumab"
+  ],
+  "depletion_curves": {
+    "Tovaxin": {
+      "reduction": [
+        0.0,
+        0.2,
+        0.33,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9,
+        0.95
+      ],
+      "percent_change": [
+        0.0,
+        -22.878900315081264,
+        -37.41725377831895,
+        -54.920007753375,
+        -63.942643856003166,
+        -71.85262432793806,
+        -78.98672178285241,
+        -87.14386248270274,
+        -92.8726539979685
+      ]
+    },
+    "alemtuzumab": {
+      "reduction": [
+        0.0,
+        0.2,
+        0.33,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9,
+        0.95
+      ],
+      "percent_change": [
+        0.0,
+        -17.20923574144032,
+        -29.484384341316904,
+        -46.503451793420815,
+        -56.69475511413784,
+        -66.6207147957621,
+        -75.971159542221,
+        -85.89985695719666,
+        -92.51842510968461
+      ]
+    },
+    "cladribine": {
+      "reduction": [
+        0.0,
+        0.2,
+        0.33,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9,
+        0.95
+      ],
+      "percent_change": [
+        0.0,
+        -17.20923574144032,
+        -29.484384341316904,
+        -46.503451793420815,
+        -56.69475511413784,
+        -66.6207147957621,
+        -75.971159542221,
+        -85.89985695719666,
+        -92.51842510968461
+      ]
+    }
+  },
+  "rows": [
+    {
+      "arm": "IFN-beta",
+      "comparator": "untreated",
+      "interval": [
+        -30.0,
+        -30.0
+      ],
+      "magnitude": 0.17250000000000001,
+      "predicted": -29.99221259718668,
+      "error": 0.0077874028133209094,
+      "null_error": 1.2055555555555593,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "glatiramer acetate",
+      "comparator": "untreated",
+      "interval": [
+        -29.0,
+        -29.0
+      ],
+      "magnitude": 0.135,
+      "predicted": -29.045470881143274,
+      "error": 0.0454708811432738,
+      "null_error": 0.013636363636361892,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "natalizumab",
+      "comparator": "untreated",
+      "interval": [
+        -68.0,
+        -68.0
+      ],
+      "magnitude": 0.41500000000000004,
+      "predicted": -68.08032766151828,
+      "error": 0.08032766151828241,
+      "null_error": 43.0578947368421,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "fingolimod",
+      "comparator": "untreated",
+      "interval": [
+        -55.0,
+        -55.0
+      ],
+      "magnitude": 0.28750000000000003,
+      "predicted": -55.0241948731754,
+      "error": 0.02419487317539648,
+      "null_error": 30.057894736842105,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "teriflunomide",
+      "comparator": "untreated",
+      "interval": [
+        -31.5,
+        -31.5
+      ],
+      "magnitude": 0.185,
+      "predicted": -31.617398175689445,
+      "error": 0.11739817568944488,
+      "null_error": 2.7055555555555593,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "dimethyl fumarate",
+      "comparator": "untreated",
+      "interval": [
+        -53.0,
+        -53.0
+      ],
+      "magnitude": 0.4175,
+      "predicted": -52.94229516562584,
+      "error": 0.05770483437415663,
+      "null_error": 24.20555555555556,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "cladribine",
+      "comparator": "untreated",
+      "interval": [
+        -57.6,
+        -57.6
+      ],
+      "magnitude": 0.61,
+      "predicted": -57.68735108230027,
+      "error": 0.08735108230026611,
+      "null_error": 31.214285714285715,
+      "count_reduction_dial": true
+    },
+    {
+      "arm": "lenercept",
+      "comparator": "untreated",
+      "interval": [
+        5.0,
+        Infinity
+      ],
+      "magnitude": 0.935,
+      "predicted": 5.653069409786152,
+      "error": 0.0,
+      "null_error": 35.53181818181818,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "atacicept",
+      "comparator": "untreated",
+      "interval": [
+        5.0,
+        Infinity
+      ],
+      "magnitude": 0.0,
+      "predicted": 0.0,
+      "error": 5.0,
+      "null_error": 35.53181818181818,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "IFN-gamma",
+      "comparator": "untreated",
+      "interval": [
+        5.0,
+        Infinity
+      ],
+      "magnitude": 0.0,
+      "predicted": 0.0,
+      "error": 5.0,
+      "null_error": 35.53181818181818,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "APL CGP77116",
+      "comparator": "untreated",
+      "interval": [
+        5.0,
+        Infinity
+      ],
+      "magnitude": 0.1575,
+      "predicted": 5.061177030378572,
+      "error": 0.0,
+      "null_error": 35.53181818181818,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "IFN-beta-1b",
+      "comparator": "untreated",
+      "interval": [
+        -33.9,
+        -33.9
+      ],
+      "magnitude": 0.2025,
+      "predicted": -33.847079401392286,
+      "error": 0.05292059860771303,
+      "null_error": 5.105555555555558,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "ustekinumab",
+      "comparator": "untreated",
+      "interval": [
+        -15.0,
+        15.0
+      ],
+      "magnitude": 0.0,
+      "predicted": 0.0,
+      "error": 0.0,
+      "null_error": 13.79444444444444,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "abatacept",
+      "comparator": "untreated",
+      "interval": [
+        -15.0,
+        15.0
+      ],
+      "magnitude": 0.0,
+      "predicted": 0.0,
+      "error": 0.0,
+      "null_error": 13.211111111111109,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "Tovaxin",
+      "comparator": "untreated",
+      "interval": [
+        -15.0,
+        15.0
+      ],
+      "magnitude": 0.0,
+      "predicted": 0.0,
+      "error": 0.0,
+      "null_error": 15.304545454545458,
+      "count_reduction_dial": true
+    },
+    {
+      "arm": "ocrelizumab",
+      "comparator": "IFN-beta",
+      "comparator_predicted": -29.99221259718668,
+      "interval": [
+        -46.0,
+        -46.0
+      ],
+      "magnitude": 0.885,
+      "predicted": -45.89154819532417,
+      "error": 0.10845180467583049,
+      "null_error": 17.78888888888889,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "alemtuzumab",
+      "comparator": "IFN-beta",
+      "comparator_predicted": -29.99221259718668,
+      "interval": [
+        -55.0,
+        -55.0
+      ],
+      "magnitude": 0.72,
+      "predicted": -54.991869584954365,
+      "error": 0.00813041504563472,
+      "null_error": 28.614285714285714,
+      "count_reduction_dial": true
+    },
+    {
+      "arm": "ponesimod",
+      "comparator": "teriflunomide",
+      "comparator_predicted": -31.617398175689445,
+      "interval": [
+        -30.5,
+        -30.5
+      ],
+      "magnitude": 0.2675,
+      "predicted": -30.37319129715651,
+      "error": 0.12680870284349055,
+      "null_error": 5.557894736842105,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "ofatumumab",
+      "comparator": "teriflunomide",
+      "comparator_predicted": -31.617398175689445,
+      "interval": [
+        -50.0,
+        -50.0
+      ],
+      "magnitude": 0.9075,
+      "predicted": -49.89967556471705,
+      "error": 0.10032443528294976,
+      "null_error": 21.78888888888889,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "daclizumab",
+      "comparator": "IFN-beta",
+      "comparator_predicted": -29.99221259718668,
+      "interval": [
+        -45.0,
+        -45.0
+      ],
+      "magnitude": 0.0,
+      "predicted": 42.84125196617972,
+      "error": 87.84125196617973,
+      "null_error": 16.74090909090909,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "ublituximab",
+      "comparator": "teriflunomide",
+      "comparator_predicted": -31.617398175689445,
+      "interval": [
+        -57.9,
+        -57.9
+      ],
+      "magnitude": 0.9375,
+      "predicted": -58.162533871403596,
+      "error": 0.26253387140359763,
+      "null_error": 29.68888888888889,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "ozanimod",
+      "comparator": "IFN-beta",
+      "comparator_predicted": -29.99221259718668,
+      "interval": [
+        -39.3,
+        -39.3
+      ],
+      "magnitude": 0.3075,
+      "predicted": -39.30356674384943,
+      "error": 0.0035667438494328962,
+      "null_error": 14.357894736842102,
+      "count_reduction_dial": false
+    },
+    {
+      "arm": "rituximab",
+      "comparator": "dimethyl fumarate",
+      "comparator_predicted": -52.94229516562584,
+      "interval": [
+        -Infinity,
+        -5.0
+      ],
+      "magnitude": 0.8375,
+      "predicted": -5.218590958636737,
+      "error": 0.0,
+      "null_error": 0.0,
+      "count_reduction_dial": false
+    }
+  ]
+}

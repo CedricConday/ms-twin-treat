@@ -1800,3 +1800,40 @@ every model (per-dial magnitude from an independent source, which the MRI
 channel ranks but does not size). What it did not buy: a green gate. The
 plan's remaining item that a browser session on Cedric's machine would open,
 the per-trial forest data behind the Cochrane bot wall, is unchanged.
+
+### 2026-11-23 — the port's ceiling with per-drug magnitudes: 4.3pp, one arm unreachable
+
+Question asked before any new magnitude source is sought: if every drug had exactly the
+right magnitude, could the Pernice port score? `python -m backtest.ceiling_per_drug`
+(not an exam; magnitudes are chosen with the outcome in view, so this is an upper bound).
+
+On exam v2's own table the answer looked like no: per-arm best error 11.5pp against a
+green line of 15.9pp, with ocrelizumab, ofatumumab, ublituximab, alemtuzumab, cladribine
+and daclizumab out of reach at any potency. Five of those six were the table's form, not
+the model's:
+
+- **D1, the comparator shared the tested drug's potency.** "Drug at s against IFN-beta at
+  s" caps how far an active-comparator arm can fall. With the comparator held at the
+  potency that reproduces its own placebo-controlled arm, all three anti-CD20 arms are
+  reached to within 0.3pp.
+- **D2, raised dials stopped at multiplier 1.95**, at most a 49 % steady-state reduction
+  of the cell count. Swept as a count reduction up to 0.95, cladribine is reached at 0.61
+  and alemtuzumab at 0.72.
+
+With both: **ceiling 4.3pp over 23 arms** (exam v2 S1 35.1, null 19.8, green 15.9). One
+arm no magnitude rescues: daclizumab, where the paper's own drug function predicts harm
+at every dose (error 87.8pp of the 99pp total). Atacicept (no rate) and IFN-gamma (flat)
+miss their harm interval by 5pp each.
+
+The magnitudes the outcomes ask for, by dial: proliferation block 0.17 to 0.20 for both
+interferons and teriflunomide, 0.42 for dimethyl fumarate; transit block 0.27 to 0.31 for
+the three S1P modulators, 0.42 for natalizumab; anti-CD20 0.89 to 0.94; count reduction
+0.61 cladribine, 0.72 alemtuzumab; and 0.00 for the three arms that did nothing
+(abatacept, ustekinumab, Tovaxin). Within a class they agree with each other, which is
+what a magnitude that comes from pharmacodynamics would look like. So the structure is
+not what stands between the port and green; the magnitude source is, as 2026-09-26 said,
+and D1 and D2 are prerequisites for any exam that supplies one.
+
+Next: exam v3, registered before it is run. Per-drug magnitude from a pharmacodynamic
+anchor measured outside the efficacy trials (cell-count reduction, receptor saturation),
+D1 and D2 applied, same arms, same green line.
