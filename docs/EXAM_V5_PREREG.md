@@ -20,3 +20,22 @@ in the v3 format; an anchor that cannot be sourced leaves the arm unanchored.
 
 Run: `python -m backtest.exam_v4 --extra-anchors data/pd_anchors_v5.tsv --out results/exam_v5.json`.
 One run, appended below whatever it is.
+
+## Result, one run, 2026-11-23
+
+**Red, by 0.2pp on the first criterion and clearly on the other two.** `results/exam_v5.json`.
+
+| | S1 | null | share of null | fold-gap CI | placebo subset | anchored arms only |
+|---|---|---|---|---|---|---|
+| exam v5 | 16.0pp | 19.8pp | 81 % | [-12.6, +10.4] | 18.7 vs 21.5 (87 %) | 15.7 vs 22.0 (n = 14) |
+| exam v4 | 17.6pp | 19.8pp | 89 % | [-6.6, +12.2] | 21.1 vs 21.5 (98 %) | 16.9 vs 21.0 (n = 13) |
+
+Green is 80 % (15.8pp), a fold-gap CI excluding zero, and the placebo subset at 80 %.
+
+- **APL CGP77116** sourced (T cells specific for the peptide rose from 0.80 to 210.93 per
+  10^6, capped at 0.95): the port predicts +20.4 %, inside the harm interval, error 0
+  against the null's 35.5. The port called a harm from the drug's pharmacodynamics alone.
+- **Lenercept** could not be sourced: the MS trial measured no TNF bioactivity. A hedged
+  statement of near-complete binding from a rheumatoid arthritis study at half the dose
+  exists and would enter as 0.95, where the ceiling analysis says the port predicts harm.
+  It was not entered, because the registrant knows that value helps. The arm scores the null.

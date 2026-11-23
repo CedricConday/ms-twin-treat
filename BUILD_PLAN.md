@@ -1855,3 +1855,33 @@ barrier-passage sensitivity, which is a property of the transcribed net (pPass_B
 0.005 and 0.45) and needs a lymph-node compartment for the S1P class rather than a lump
 onto the barrier; (3) nothing: Tovaxin's pharmacodynamics did not become efficacy, and a
 model fed that anchor should miss it. Each of (1) and (2) is a new registration.
+
+### 2026-11-23 — exams v4 and v5: 89 %, then 81 % of null; red; and where the rest is
+
+Same 23 arms, nothing fitted, each change registered before its anchors were collected
+(`docs/EXAM_V4_PREREG.md`, `docs/EXAM_V5_PREREG.md`). S1 by exam: v2 35.1, v3 21.7,
+v4 17.6, v5 16.0, against a null of 19.8 and a green line of 15.8. v5 misses the line by
+0.2pp, its fold-gap CI is [-12.6, +10.4] and its placebo subset is at 87 %. **Red.**
+
+v4 and v5 were designed after reading v3's misses on these same arms, so even a green
+would have been a candidate only. The confirmation that counts is an exam on arms none of
+this has touched; it does not exist yet.
+
+What v5's 368pp of total error is made of:
+
+- 107pp, three harm arms scored at the null because they have no anchor (lenercept
+  unsourced; IFN-gamma has no quantity of this kind; atacicept has no rate in the net).
+- 68pp, fingolimod and ozanimod. **The net is steeply non-linear in barrier passage:**
+  lowering both passage rates by 30 % lowers the lesion load by 80 %, by 70 % lowers it by
+  97 % (`results/exam_v2_curve_pernice.json`; the paper's irreversible-damage readout is
+  steeper still). Oligodendrocytes take successive hits through five myelination levels
+  while remyelination competes, so damage falls as a high power of the attack rate. No
+  anchor repairs that. Natalizumab (22.5pp) is the same error, smaller.
+- 63pp, Tovaxin: pharmacodynamics that did not become efficacy.
+- 130pp, everything else, of which 35.5pp are arms scored at the null by rule.
+
+Next, in this order: (1) build the untouched-arm exam before changing the model again;
+(2) the barrier-passage response, as a registered structural change with its own
+independent calibration target (the drugs' MRI lesion ratios are available for that and
+are not the relapse outcome); (3) a B-cell place, so atacicept has a rate and anti-CD20 is
+not read as T-cell activation.
