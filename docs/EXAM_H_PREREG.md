@@ -42,3 +42,33 @@ committed in `results/exam_h_predictions.json`. Stratum A and B are reported sep
 and together; S1 against the null, per-arm table, same green line (80 % of null).
 One run. The registrant expects misses and names one in advance: the net has no B cell,
 so the BTK inhibitors are predicted as if occupancy were efficacy.
+
+## Result, one run, 2026-11-23 (predictions at 9835a4f, then `python -m backtest.exam_h score`)
+
+**Not confirmed.** `results/exam_h.json`. Twenty arms scored (firategrast dropped by the
+annualised-rate rule before the outcomes were opened); three unanchored and scored at the null.
+
+| | n | S1 | null | share of null | gap CI |
+|---|---|---|---|---|---|
+| all arms | 20 | 26.5pp | 30.8pp | 86 % | [-20.6, +12.6] |
+| stratum A, drugs never used | 9 | 36.9pp | 23.5pp | 157 % | [-16.1, +41.2] |
+| stratum B, known drugs in other trials | 11 | 18.0pp | 36.8pp | 49 % | [-33.3, -4.7] |
+
+- **Stratum B holds, with a caveat about its null.** Dimethyl fumarate in CONFIRM is
+  predicted to 0.1pp, ofatumumab in ASCLEPIOS II to 1.7pp, alemtuzumab in CARE-MS II to
+  5.0pp. But for a head-to-head trial the null says "no better than the comparator", which
+  a drug chosen for a head-to-head trial usually beats; the 49 % flatters the model.
+  Against placebo the model loses to the null on three of five (fingolimod, teriflunomide,
+  rituximab).
+- **Stratum A fails, where the registration said it would.** Evobrutinib and tolebrutinib
+  were predicted 56 to 62 % better than teriflunomide from their target occupancy; they
+  were not better at all (errors 55 to 69pp). Fenebrutinib, same class and nearly the same
+  occupancy, was better by about as much as predicted (errors 3 and 11pp). The model cannot
+  tell them apart: occupancy is not what separates them, and the net has no B cell.
+- **The S1P overshoot repeats** on siponimod, both fingolimod trials and ozanimod
+  (errors 25 to 41pp), as in exams v3 to v5.
+- Weak sources, as the collector flagged: siponimod and mitoxantrone outcomes from reviews,
+  fenebrutinib company-reported.
+
+So the 81 % on the 23 exam arms does not carry to drugs of a mechanism the model has not
+seen. It does carry, roughly, to new trials of drug classes whose pharmacodynamics it has.

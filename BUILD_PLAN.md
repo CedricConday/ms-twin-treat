@@ -1885,3 +1885,17 @@ Next, in this order: (1) build the untouched-arm exam before changing the model 
 independent calibration target (the drugs' MRI lesion ratios are available for that and
 are not the relapse outcome); (3) a B-cell place, so atacicept has a rate and anti-CD20 is
 not read as T-cell activation.
+
+### 2026-11-23 — exam H, the confirmation exam: not confirmed (86 % of null, CI includes zero)
+
+Registered, outcomes collected sealed, predictions committed (9835a4f) before the outcome
+file was read, one run. All 20 arms 26.5pp against 30.8pp; drugs never used 157 % of null;
+known drugs in other trials 49 %, against a null that head-to-head trials flatter. Details
+and the per-arm table in `docs/EXAM_H_PREREG.md`.
+
+What it settles. The port with pharmacodynamic anchors reproduces new trials of drug
+classes it already represents (anti-CD20, depletion, dimethyl fumarate) and fails on a
+class it does not (BTK inhibition read as T-cell activation block), and on the barrier
+dial everywhere. As a ranker of unseen mechanisms it is not usable: it rated two BTK
+inhibitors that matched teriflunomide as strongly superior to it. Its defensible use today
+is narrower: a new trial of a drug in a represented class, with a measured anchor.
