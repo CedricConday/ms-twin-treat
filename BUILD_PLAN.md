@@ -1837,3 +1837,21 @@ and D1 and D2 are prerequisites for any exam that supplies one.
 Next: exam v3, registered before it is run. Per-drug magnitude from a pharmacodynamic
 anchor measured outside the efficacy trials (cell-count reduction, receptor saturation),
 D1 and D2 applied, same arms, same green line.
+
+### 2026-11-23 — exam v3 run: red at 109 % of null, down from 177 %
+
+Registered (`docs/EXAM_V3_PREREG.md`), scorer committed before the anchors, anchors
+committed before the run, one run. Per-drug magnitude from a pharmacodynamic anchor with
+nothing fitted: **S1 21.7pp against a null of 19.8pp**; with one fitted kappa 25.1pp. Exam
+v2 with the shared potency was 35.1pp. Not green (green is 15.9pp with the CI excluding
+zero; the CI is [-3.5, +13.5]).
+
+What it settles: independent magnitudes carry most of the distance (13.4 of the 19.2pp
+between exam v2 and green) with no parameter, on the arms where the anchor measures the
+drug's own mechanism. What is left is named per arm in the prereg's Result section and is
+three separate jobs, none of them tuning: (1) a mechanism-appropriate anchor for the
+interferons, which also repairs the two arms compared against them; (2) the port's
+barrier-passage sensitivity, which is a property of the transcribed net (pPass_BBB at
+0.005 and 0.45) and needs a lymph-node compartment for the S1P class rather than a lump
+onto the barrier; (3) nothing: Tovaxin's pharmacodynamics did not become efficacy, and a
+model fed that anchor should miss it. Each of (1) and (2) is a new registration.

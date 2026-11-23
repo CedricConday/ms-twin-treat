@@ -60,3 +60,36 @@ cannot be sourced is unanchored and is said to be.
 Reported whatever comes out: S1, null, fold-gap CI, placebo subset, per-arm table.
 A red result is a result. Nothing in this file changes after the first run; a correction
 is a dated section appended below.
+
+## Result, first and only run, 2026-11-23 (`python -m backtest.exam_v3`, anchors at f379a2b)
+
+**Red.** Numbers in `results/exam_v3.json`.
+
+| score | S1 | null | share of null | fold-gap CI | placebo subset | anchored arms only (n = 15) |
+|---|---|---|---|---|---|---|
+| V3-P, anchor as magnitude, nothing fitted | 21.7pp | 19.8pp | 109 % | [-3.5, +13.5] | 22.4 vs 21.5 | 21.5 vs 18.6 |
+| V3-K, one kappa fitted out of fold | 25.1pp | 19.8pp | 126 % | [-0.8, +12.6] | 23.3 vs 21.5 | 26.6 vs 18.6 |
+| exam v2, shared potency (2026-09-26) | 35.1pp | 19.8pp | 177 % | | | |
+
+Green needs 80 %. The unfitted score is the better of the two and is the closest this
+exam has been to its null, but it loses. Fifteen arms were anchored; abatacept and
+IFN-beta-1b could not be sourced and six had no anchor defined, so eight arms score the
+null's error by rule.
+
+Beats its null on eight arms: dimethyl fumarate, ustekinumab, natalizumab, fingolimod
+(narrowly), ofatumumab, ublituximab, alemtuzumab, cladribine. Loses on six, in three groups:
+
+- **The anchor is not the drug's mechanism.** IFN-beta: a 1.6 % fall in lymphocyte count
+  (Avonex arm) predicts -3 % against -30 % observed. Lymphocyte count was the registered
+  anchor for the proliferation class; for interferon it measures nothing the drug does.
+  The error propagates to ozanimod and ocrelizumab, whose comparator it is.
+- **The port is too sensitive to barrier passage.** The S1P modulators' measured 55 to
+  70 % lymphocyte reduction predicts -76 to -84 % where -30 to -55 % was observed; the
+  outcomes ask for 0.27 to 0.31 on this dial (ceiling analysis). Natalizumab errs the same
+  way by less. Teriflunomide as comparator, under-predicted, widens the ponesimod miss.
+- **Pharmacodynamics that did not become efficacy.** Tovaxin: a 79 % fall in
+  myelin-reactive T cells predicts -78 %; the trial found nothing. Error 63pp, the largest
+  on the table.
+
+Kappa does not transfer: the folds fit 0.48 to 0.88, and scaling the anti-CD20 anchors by
+0.48 costs more than it buys anywhere else.
